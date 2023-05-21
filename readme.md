@@ -13,7 +13,7 @@
 
 ## Like below
 
-![image](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/assets/111847207/fd52cd27-9bb5-4ac9-8a03-f03e8cbb95a9)
+![image](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/assets/111847207/bc2a104a-7b30-4e92-815d-a3e9f53cdd0a)
 
 ---
 
