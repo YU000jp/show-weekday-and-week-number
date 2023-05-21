@@ -1,6 +1,7 @@
-# Logseq Plugin: Template for TypeScript
+# Logseq Plugin: Show Week-Day and Week-Number
 
-- Development stage 👷🚧
+- Plugin for Showing week day and week number beside journals page titles.
+> Development stage 👷🚧
 
 [![latest release version](https://img.shields.io/github/v/release/YU000jp/logseq-plugin-template-typescript)](https://github.com/YU000jp/logseq-plugin-template-typescript/releases)
 [![License](https://img.shields.io/github/license/YU000jp/logseq-plugin-template-typescript?color=blue)](https://github.com/YU000jp/logseq-plugin-template-typescript/LICENSE)
@@ -9,13 +10,9 @@ Published 2023
 
 ---
 
-## Features
+## Like below:
 
-### Feature A
-
-### Feature B
-
-## Demo
+![image](https://github.com/YU000jp/show-weekday-and-week-number/assets/111847207/fd52cd27-9bb5-4ac9-8a03-f03e8cbb95a9)
 
 ---
 
@@ -25,33 +22,21 @@ Published 2023
 
 - Press [`---`] on the top right toolbar to open [`Plugins`]
 - Select marketplace
-- Type '` `' in the search field, select it from the search results and install
+- Type 'Show' in the search field, select it from the search results and install
 
 ### Usage
 
-- 
+- When this plugin install, the style be applied to journals.
 
 ---
 
-## Showcase / Questions / Ideas / Help
+## Contributions
 
-Go to the [discussion](./discussions) tab to ask and find this kind of things.
+- [Show week day and week number - discuss.logseq.com](https://discuss.logseq.com/t/show-week-day-and-week-number/12685/18)
+   - [danilofaria](https://discuss.logseq.com/u/danilofaria/)
+   - [ottodevs](https://discuss.logseq.com/u/ottodevs/)
 
-## My plugins
-
-- [Weekdays and Holidays (Templates)](https://github.com/YU000jp/logseq-plugin-weekdays-and-weekends)
-- [Sticky Popup](https://github.com/YU000jp/logseq-plugin-sticky-popup)
-- [SomeMenuExtender](https://github.com/YU000jp/logseq-plugin-some-menu-extender)
-- [Column Layout (UI)](https://github.com/YU000jp/Logseq-column-Layout)
-- [Panel Coloring (Color)](https://github.com/YU000jp/logseq-plugin-panel-coloring)
-- [Page-tags and Hierarchy (UI)](https://github.com/YU000jp/logseq-page-tags-and-hierarchy)
-
-## Prior art & Credit
-
-### Library
-
-- [@logseq/libs](https://logseq.github.io/plugins/)
-- [logseq-l10n](https://github.com/sethyuan/logseq-l10n)
+## Credit
 
 ### Icon
 
