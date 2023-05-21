@@ -34,8 +34,8 @@ Published 2023
 ## Contributions
 
 - [Show week day and week number - discuss.logseq.com](https://discuss.logseq.com/t/show-week-day-and-week-number/12685/18)
-      - [danilofaria](https://discuss.logseq.com/u/danilofaria/)
-      - [ottodevs](https://discuss.logseq.com/u/ottodevs/)
+   - [danilofaria](https://discuss.logseq.com/u/danilofaria/)
+   - [ottodevs](https://discuss.logseq.com/u/ottodevs/)
 
 ## Credit
 
