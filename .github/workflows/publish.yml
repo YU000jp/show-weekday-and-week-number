@@ -1,0 +1,39 @@
+name: Release
+env:
+  PLUGIN_NAME: ${{ github.event.repository.name }}
+on:
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v3.6.0
+        with:
+          node-version: "19"
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2.2.4
+        with:
+          version: 7
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build dist
+        run: pnpm prod
+
+      - name: Install zip
+        uses: montudor/action-zip@v1
+
+      - name: Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npx semantic-release
+        

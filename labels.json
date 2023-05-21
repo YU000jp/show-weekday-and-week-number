@@ -1,0 +1,102 @@
+[
+	{
+		"name": "type: bug",
+		"color": "e11d21",
+		"aliases": [
+			"bug"
+		]
+	},
+	{
+		"name": "type: breaking",
+		"color": "990000",
+		"aliases": [
+			"breaking",
+			"breaking-change"
+		]
+	},
+	{
+		"name": "type: maintenance",
+		"color": "fbca04",
+		"aliases": [
+			"maintenance",
+			"refactor",
+			"testing",
+			"test"
+		]
+	},
+	{
+		"name": "type: enhancement",
+		"color": "009800",
+		"aliases": [
+			"enhancement",
+			"feature"
+		]
+	},
+	{
+		"name": "type: question",
+		"color": "cc317c",
+		"aliases": [
+			"question"
+		]
+	},
+	{
+		"name": "type: discussion",
+		"color": "cc317c",
+		"aliases": [
+			"discussion"
+		]
+	},
+	{
+		"name": "type: documentation",
+		"color": "207de5",
+		"aliases": [
+			"documentation"
+		]
+	},
+	{
+		"name": "type: design",
+		"color": "eb6420",
+		"aliases": [
+			"design"
+		]
+	},
+	{
+		"name": "status: good starter issue",
+		"color": "bfe5bf",
+		"aliases": [
+			"beginner-friendly",
+			"beginner",
+			"good-starter-issue",
+			"starter-issue"
+		]
+	},
+	{
+		"name": "status: help wanted",
+		"color": "bfe5bf",
+		"aliases": [
+			"help wanted"
+		]
+	},
+	{
+		"name": "status: wontfix",
+		"color": "cccccc",
+		"aliases": [
+			"wontfix",
+			"wont-fix"
+		]
+	},
+	{
+		"name": "status: duplicate",
+		"color": "cccccc",
+		"aliases": [
+			"duplicate"
+		]
+	},
+	{
+		"name": "status: blocked",
+		"color": "990000",
+		"aliases": [
+			"blocked"
+		]
+	}
+]
