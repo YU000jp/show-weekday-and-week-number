@@ -7,7 +7,7 @@
 [![latest release version](https://img.shields.io/github/v/release/YU000jp/logseq-plugin-show-weekday-and-week-number)](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/releases)
 [![License](https://img.shields.io/github/license/YU000jp/logseq-plugin-show-weekday-and-week-number?color=blue)](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/LICENSE)
 [![Downloads](https://img.shields.io/github/downloads/YU000jp/logseq-plugin-show-weekday-and-week-number/total.svg)](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/releases)
-Published 2023
+<!-- Published 2023 -->
 
 ---
 
@@ -34,8 +34,8 @@ Published 2023
 ## Contributions
 
 - [Show week day and week number - discuss.logseq.com](https://discuss.logseq.com/t/show-week-day-and-week-number/12685/18)
-      - [danilofaria](https://discuss.logseq.com/u/danilofaria/)
-      - [ottodevs](https://discuss.logseq.com/u/ottodevs/)
+   - [danilofaria](https://discuss.logseq.com/u/danilofaria/)
+   - [ottodevs](https://discuss.logseq.com/u/ottodevs/)
 
 ## Credit
 
