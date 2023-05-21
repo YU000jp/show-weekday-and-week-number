@@ -1,12 +1,12 @@
 {
-    "name": "logseq-plugin-template-typescript",
+    "name": "logseq-plugin-show-weekday-and-week-number",
     "description": "A template for Logseq plugin written in TypeScript",
-    "repository": "https://github.com/YU000jp/logseq-plugin-template-typescript.git",
+    "repository": "https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number.git",
     "author": "YU000jp",
     "license": "MIT",
     "logseq": {
-        "id": "template-typescript",
-        "title": "Template TypeScript",
+        "id": "show-weekday-and-week-number",
+        "title": "Show Weekday and Week-number",
         "icon": "./icon.svg",
         "main": "./dist/index.html"
     },
