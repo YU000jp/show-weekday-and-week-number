@@ -1,6 +1,6 @@
 # Logseq Plugin: Show Weekday and Week-number
 
-- Plugin for Showing week day and week-number of year beside journals page titles.
+- Plugin for Showing week day and week-number of the year beside journals page titles.
 
 > Development stage 👷🚧
 
