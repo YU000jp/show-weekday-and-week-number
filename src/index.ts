@@ -1,7 +1,7 @@
 import '@logseq/libs'; //https://plugins-doc.logseq.com/
-//import { SettingSchemaDesc } from '@logseq/libs/dist/LSPlugin.user';
-//import { setup as l10nSetup, t } from "logseq-l10n"; //https://github.com/sethyuan/logseq-l10n
-//import ja from "./translations/ja.json";
+import { SettingSchemaDesc } from '@logseq/libs/dist/LSPlugin.user';
+import { setup as l10nSetup, t } from "logseq-l10n"; //https://github.com/sethyuan/logseq-l10n
+import ja from "./translations/ja.json";
 
 
 //Credit: ottodevs  https://discuss.logseq.com/t/show-week-day-and-week-number/12685/18
@@ -17,16 +17,31 @@ function addExtendedDate(titleElement: HTMLElement) {
   // calculate dates
   const dayOfWeekName = new Intl.DateTimeFormat("default", { weekday: "long" }).format(journalDate);
   const days = Math.ceil((journalDate.getTime() - new Date(journalDate.getFullYear(), 0, 1).getTime()) / 86400000);
-  const weekNumber = Math.ceil(days / 7);
+  let weekNumber;
+  if (logseq.settings?.WeekNumberFormat === "ISO(EU) format") {
+    // ISO format (Monday is the first day of the week)
+    weekNumber = Math.ceil((days + 1 + (journalDate.getDay() || 7)) / 7);
+  } else if (logseq.settings?.WeekNumberFormat === "Japanese format") {
+    // Japanese format (Monday is the first day of the week, but week numbers start from 1 on January 1st)
+    weekNumber = Math.ceil((days + (journalDate.getDay() || 7)) / 7);
+  } else {
+    // US format (Sunday is the first day of the week)
+    weekNumber = Math.ceil((days + 1) / 7);
+  }
 
   // apply styles
   const dateInfoElement = parent.document.createElement("span");
-  Object.assign(dateInfoElement.style, {
-    opacity: "0.5",
-    fontSize: "0.7em",
-  });
-  dateInfoElement.textContent = ` ${dayOfWeekName}, Week ${weekNumber}`;
+  dateInfoElement.classList.add("weekday-and-week-number");
 
+  if (logseq.settings?.booleanWeekendsColor === true &&
+    dayOfWeekName === "Saturday" ||
+    dayOfWeekName === "Sunday" ||
+    dayOfWeekName === "土曜日" ||
+    dayOfWeekName === "日曜日") {
+    dateInfoElement.innerHTML = ` <span class="weekends">${dayOfWeekName}</span>, Week ${weekNumber}`;
+  } else {
+    dateInfoElement.textContent = ` ${dayOfWeekName}, Week ${weekNumber}`;
+  }
   titleElement.appendChild(dateInfoElement);
 }
 
@@ -39,15 +54,26 @@ const observer = new MutationObserver(() => {
 
 /* main */
 const main = () => {
-  // (async () => {
-  //   try {
-  //     await l10nSetup({ builtinTranslations: { ja } });
-  //   } finally {
-  //     /* user settings */
-  //     userSettings();
-  //   }
-  // })();
-  
+  (async () => {
+    try {
+      await l10nSetup({ builtinTranslations: { ja } });
+    } finally {
+      /* user settings */
+      userSettings();
+    }
+  })();
+
+  logseq.provideStyle({
+    key: "main", style: `
+  :is(span.title,h1.title) span.weekday-and-week-number {
+    opacity: 0.7;
+    font-size: 0.7em;
+  }
+  :is(span.title,h1.title) span.weekday-and-week-number span.weekends {
+    color:var(--ls-wb-stroke-color-red);
+  }
+  ` });
+
   observer.observe(parent.document.getElementById("main-content-container") as HTMLElement, {
     attributes: true,
     subtree: true,
@@ -57,15 +83,29 @@ const main = () => {
 };/* end_main */
 
 
-// function userSettings() {
-//   /* user setting */
-//   // https://logseq.github.io/plugins/types/SettingSchemaDesc.html
-  
-//   const settingsTemplate: SettingSchemaDesc[]  = [
+function userSettings() {
+  /* user setting */
+  // https://logseq.github.io/plugins/types/SettingSchemaDesc.html
 
-//   ];
-//   logseq.useSettingsSchema(settingsTemplate);
-//   }
+  const settingsTemplate: SettingSchemaDesc[] = [
+    {
+      key: "booleanWeekendsColor",
+      title: "Coloring red to the word of Saturday or Sunday",
+      type: "boolean",
+      default: true,
+      description: "",
+    },
+    {
+      key: "WeekNumberFormat",
+      title: "Week number format",
+      type: "enum",
+      default: "US format",
+      enumChoices: ["US format", "ISO(EU) format", "Japanese format"],
+      description: "",
+    },
+  ];
+  logseq.useSettingsSchema(settingsTemplate);
+}
 
 
 
