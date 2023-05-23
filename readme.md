@@ -32,7 +32,7 @@
 #### Plugin Settings
 
 - Coloring red to the word of Saturday or Sunday: boolean
-   - `true`
+   - `true` (default)
    - `false`
 - Week number format: select
    - `US format` (default)
