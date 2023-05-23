@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.1.0...v1.2.0) (2023-05-23)
+
+
+### Features
+
+* **Add setting:** Show week number of the year or month (unit) ([0510eb8](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/0510eb82545c207ce77e35cdba53e68241b5a074))
+
 # [1.1.0](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.0.0...v1.1.0) (2023-05-23)
 
 
