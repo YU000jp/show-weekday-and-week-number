@@ -22,8 +22,8 @@
 ### Install from Logseq Marketplace (Coming👷🚧)
 
 - Press [`---`] on the top right toolbar to open [`Plugins`]
-- Select marketplace
-- Type 'Show' in the search field, select it from the search results and install
+- Select `Marketplace`
+- Type `Show` in the search field, select it from the search results and install
 
 ### Usage
 
