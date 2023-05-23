@@ -35,7 +35,7 @@
    - `true` (default)
    - `false`
 - Week number format: select
-> Week numbers differ between like US format and ISO format when transitioning across years.
+> Week numbers differ between like US format and ISO format(Europe) when transitioning across years.
    - `US format` (default)
    - `ISO(EU) format`
    - `Japanese format`
