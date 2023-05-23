@@ -29,6 +29,16 @@
 
 - When this plugin install, the style be applied to journals.
 
+#### Plugin Settings
+
+- Coloring red to the word of Saturday or Sunday: boolean
+   - `true`
+   - `false`
+- Week number format: select
+   - `US format` (default)
+   - `ISO(EU) format`
+   - `Japanese format`
+
 ---
 
 ## Contributions
