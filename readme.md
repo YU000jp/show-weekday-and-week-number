@@ -40,7 +40,7 @@
    - `Japanese format`
 > Week numbers differ between like US format and ISO format(Europe) when transitioning across years.
 - Show week number of the year or month (unit): select
-   - `Year`
+   - `Year` default
    - `Month`
 
 ---
