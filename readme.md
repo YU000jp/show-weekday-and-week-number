@@ -1,6 +1,6 @@
 # Logseq Plugin: Show Weekday and Week-number
 
-- Plugin for Showing week day and week-number of the year beside journals page titles.
+- Plugin for Showing week day and week-number of the year or month beside journals page titles.
 
 > Development stage 👷🚧
 
@@ -39,6 +39,9 @@
    - `ISO(EU) format`
    - `Japanese format`
 > Week numbers differ between like US format and ISO format(Europe) when transitioning across years.
+- Show week number of the year or month (unit): select
+   - `Year`
+   - `Month`
 
 ---
 
