@@ -32,13 +32,13 @@
 #### Plugin Settings
 
 - Coloring red to the word of Saturday or Sunday: boolean
-   - `true` (default)
+   - `true` default
    - `false`
 - Week number format: select
-> Week numbers differ between like US format and ISO format(Europe) when transitioning across years.
-   - `US format` (default)
+   - `US format` default
    - `ISO(EU) format`
    - `Japanese format`
+> Week numbers differ between like US format and ISO format(Europe) when transitioning across years.
 
 ---
 
