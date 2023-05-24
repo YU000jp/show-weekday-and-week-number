@@ -1,3 +1,16 @@
+# [1.3.0](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.2.0...v1.3.0) (2023-05-24)
+
+
+### Bug Fixes
+
+* **bug:** Support yyyy年MM月dd日 date format ([b74c059](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/b74c0597a67d95e2cc2475a04d01f17b43d35372))
+
+
+### Features
+
+* **Add to settings:** `Turn on/off relative time` ([61b845c](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/61b845cdd7c4dfe365a693eb79b6244d3e7b7807))
+* **Add to settings:** Turn on/off the day of week ([682658b](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/682658b35e799b0408a570848a17e1c6c56b1f37))
+
 # [1.2.0](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.1.0...v1.2.0) (2023-05-23)
 
 
