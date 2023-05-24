@@ -46,10 +46,14 @@ function addExtendedDate(titleElement: HTMLElement) {
   if (!isFinite(Number(journalDate))) return;
 
   // calculate dates
-  const dayOfWeekName = new Intl.DateTimeFormat("default", { weekday: "long" }).format(journalDate);
+  let dayOfWeekName;
+  if (logseq.settings?.booleanDayOfWeek === true) {
+    dayOfWeekName = new Intl.DateTimeFormat("default", { weekday: "long" }).format(journalDate);
+  }
+  let weekNumber;
+  // get day of the year
   const days = Math.ceil((journalDate.getTime() - new Date(journalDate.getFullYear(), 0, 1).getTime()) / 86400000);
   // get week number of the year
-  let weekNumber;
   if (logseq.settings?.weekNumberOfTheYearOrMonth === "Year") {
     if (logseq.settings?.weekNumberFormat === "ISO(EU) format") {
       // ISO format (Monday is the first day of the week)
@@ -68,15 +72,24 @@ function addExtendedDate(titleElement: HTMLElement) {
   // apply styles
   const dateInfoElement = parent.document.createElement("span");
   dateInfoElement.classList.add("weekday-and-week-number");
-
-  if (logseq.settings?.booleanWeekendsColor === true &&
-    dayOfWeekName === "Saturday" ||
-    dayOfWeekName === "Sunday" ||
-    dayOfWeekName === "土曜日" ||
-    dayOfWeekName === "日曜日") {
-    dateInfoElement.innerHTML = ` <span class="weekends">${dayOfWeekName}</span>, Week ${weekNumber}`;
+  let printWeek;
+  if (logseq.settings?.weekNumberOfTheYearOrMonth === "Year") {
+    printWeek = `<span title="week number within the year">Week ${weekNumber}</span>`;
   } else {
-    dateInfoElement.textContent = ` ${dayOfWeekName}, Week ${weekNumber}`;
+    printWeek = `<span title="week number within the month">Week ${weekNumber}</span>`;
+  }
+  if (logseq.settings?.booleanDayOfWeek === true) {
+    if (logseq.settings?.booleanWeekendsColor === true &&
+      dayOfWeekName === "Saturday" ||
+      dayOfWeekName === "Sunday" ||
+      dayOfWeekName === "土曜日" ||
+      dayOfWeekName === "日曜日") {
+      dateInfoElement.innerHTML = ` <span class="weekends">${dayOfWeekName}</span>, ${printWeek}`;
+    } else {
+      dateInfoElement.innerHTML = ` ${dayOfWeekName}, ${printWeek}`;//textContent
+    }
+  } else {
+    dateInfoElement.innerHTML = ` ${printWeek}`;
   }
   titleElement.appendChild(dateInfoElement);
 }
@@ -90,8 +103,8 @@ const observer = new MutationObserver(() => {
 
 /* main */
 const main = () => {
-    //get user config Language >>> Country
-    const ByLanguage = setCountry();
+  //get user config Language >>> Country
+  const ByLanguage = setCountry();
   (async () => {
     try {
       await l10nSetup({ builtinTranslations: { ja } });
@@ -171,6 +184,13 @@ function userSettings(ByLanguage) {
       type: "enum",
       default: "Year",
       enumChoices: ["Year", "Month"],
+      description: "",
+    },
+    {
+      key: "booleanDayOfWeek",
+      title: t("Turn on/off the day of week"),
+      type: "boolean",
+      default: true,
       description: "",
     },
   ];
