@@ -4,6 +4,28 @@ import { setup as l10nSetup, t } from "logseq-l10n"; //https://github.com/sethyu
 import ja from "./translations/ja.json";
 
 
+function formatRelativeDate(targetDate: Date): string {
+  const currentDate = new Date();
+
+  // 日付を比較するために年月日の部分だけを取得
+  const targetDateOnly = new Date(targetDate.getFullYear(), targetDate.getMonth(), targetDate.getDate());
+  const currentDateOnly = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate());
+
+  // 比較した結果、同じ日付だった場合は空文字を返す
+  // if (targetDateOnly.getTime() === currentDateOnly.getTime()) {
+  //   return '';
+  // }
+
+  // 相対的な日付差を計算
+  const diffInDays = Math.floor((targetDateOnly.getTime() - currentDateOnly.getTime()) / (1000 * 60 * 60 * 24));
+
+  // 相対的な日付差をローカライズした文字列に変換
+  const formatter = new Intl.RelativeTimeFormat('default', { numeric: 'auto' });
+  const formattedString = formatter.format(diffInDays, 'day');
+
+  return formattedString;
+}
+
 function getWeekNumbersOfMonth(date: Date, weekNumberFormat: string): number {
   const month = date.getMonth();
   const year = date.getFullYear();
@@ -69,6 +91,15 @@ function addExtendedDate(titleElement: HTMLElement) {
     // get week numbers of the month
     weekNumber = getWeekNumbersOfMonth(journalDate, logseq.settings?.weekNumberFormat);
   }
+
+  //relative time
+  let relativeTime = "";
+  if (logseq.settings?.booleanRelativeTime === true) {
+    const formatString: string = formatRelativeDate(journalDate);
+    if (formatString !== "") {
+      relativeTime = `, ${formatString}`;
+    }
+  }
   // apply styles
   const dateInfoElement = parent.document.createElement("span");
   dateInfoElement.classList.add("weekday-and-week-number");
@@ -84,12 +115,12 @@ function addExtendedDate(titleElement: HTMLElement) {
       dayOfWeekName === "Sunday" ||
       dayOfWeekName === "土曜日" ||
       dayOfWeekName === "日曜日") {
-      dateInfoElement.innerHTML = ` <span class="weekends">${dayOfWeekName}</span>, ${printWeek}`;
+      dateInfoElement.innerHTML = ` <span class="weekends">${dayOfWeekName}</span>, ${printWeek}${relativeTime}`;
     } else {
-      dateInfoElement.innerHTML = ` ${dayOfWeekName}, ${printWeek}`;//textContent
+      dateInfoElement.innerHTML = ` ${dayOfWeekName}, ${printWeek}${relativeTime}`;//textContent
     }
   } else {
-    dateInfoElement.innerHTML = ` ${printWeek}`;
+    dateInfoElement.innerHTML = ` ${printWeek}${relativeTime}`;
   }
   titleElement.appendChild(dateInfoElement);
 }
@@ -187,11 +218,11 @@ function userSettings(ByLanguage) {
       description: "",
     },
     {
-      key: "booleanDayOfWeek",
-      title: t("Turn on/off the day of week"),
+      key: "booleanRelativeTime",
+      title: t("Turn on/off relative time"),
       type: "boolean",
-      default: true,
-      description: "",
+      default: false,
+      description: t("like `3 days ago`"),
     },
   ];
   logseq.useSettingsSchema(settingsTemplate);
