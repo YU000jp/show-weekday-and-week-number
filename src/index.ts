@@ -29,12 +29,6 @@ function getWeekNumbersOfMonth(date: Date, weekNumberFormat: string): number {
 }
 
 
-const parseDate = (dateString: string): Date => {
-  const dateRegex = /(\d+)(st|nd|rd|th)/;
-  const modifiedDateString = dateString.replace(dateRegex, "$1").replace(/年|月|日/g, "/");
-  return new Date(modifiedDateString);
-};
-
 //Credit: ottodevs  https://discuss.logseq.com/t/show-week-day-and-week-number/12685/18
 function addExtendedDate(titleElement: HTMLElement) {
   // check if element already has date info
@@ -42,7 +36,7 @@ function addExtendedDate(titleElement: HTMLElement) {
   if (existingSpan) return;
 
   // remove ordinal suffixes from date
-  const journalDate = parseDate(titleElement.textContent!);
+  const journalDate = new Date(Date.parse(titleElement.textContent!.replace(/(\d+)(st|nd|rd|th)/, "$1")));
   if (!isFinite(Number(journalDate))) return;
 
   // calculate dates
@@ -161,7 +155,7 @@ function userSettings(ByLanguage) {
       key: "weekNumberFormat",
       title: t("Week number format"),
       type: "enum",
-      default: ByLanguage || "ISO(EU) format",
+      default: ByLanguage || "US format",
       enumChoices: ["US format", "ISO(EU) format", "Japanese format"],
       description: "",
     },
