@@ -45,6 +45,9 @@
 - Turn on/off the day of week: boolean
    - `true` default
    - `false`
+- Turn on/off relative time: boolean
+   - `true`
+   - `false` default
 
 ## Contributions
 
