@@ -50,7 +50,6 @@ function getWeekNumbersOfMonth(date: Date, weekNumberFormat: string): number {
   return weekNumber;
 }
 
-
 function getISOWeekNumber(date: Date): number {
   const firstDayOfYear = new Date(date.getFullYear(), 0, 1);
   const daysOffset = (date.getDay() + 6) % 7; // Adjust for week starting on Monday
@@ -61,10 +60,14 @@ function getISOWeekNumber(date: Date): number {
 }
 
 function getJapaneseWeekNumber(date: Date): number {
-  const firstDayOfYear = new Date(date.getFullYear(), 0, 1);
-  const daysOffset = (date.getDay() + 6) % 7; // Adjust for week starting on Monday
-  const daysOfYear = Math.floor((date.getTime() - firstDayOfYear.getTime()) / (24 * 60 * 60 * 1000)) + 1;
-  const weekNumber = Math.floor((daysOfYear + daysOffset + 5) / 7);
+  const targetDate = new Date(date.getTime());
+  targetDate.setDate(targetDate.getDate() + 4 - (targetDate.getDay() || 7)); // Adjust for week starting on Sunday
+
+  const firstDayOfYear = new Date(targetDate.getFullYear(), 0, 1);
+  const daysOffset = (firstDayOfYear.getDay() + 6) % 7;
+  const diffDays = Math.floor((targetDate.getTime() - firstDayOfYear.getTime()) / (24 * 60 * 60 * 1000)) + 1;
+
+  const weekNumber = Math.floor((diffDays + daysOffset) / 7) + 1;
 
   return weekNumber;
 }
