@@ -20,7 +20,7 @@ function formatRelativeDate(targetDate: Date): string {
   const diffInDays = Math.floor((targetDateOnly.getTime() - currentDateOnly.getTime()) / (1000 * 60 * 60 * 24));
 
   // 相対的な日付差をローカライズした文字列に変換
-  const formatter = new Intl.RelativeTimeFormat('default', { numeric: 'auto' });
+  const formatter = new Intl.RelativeTimeFormat((logseq.settings?.localizeOrEnglish || "default"), { numeric: 'auto' });
   const formattedString = formatter.format(diffInDays, 'day');
 
   return formattedString;
@@ -70,7 +70,7 @@ function addExtendedDate(titleElement: HTMLElement) {
   // calculate dates
   let dayOfWeekName;
   if (logseq.settings?.booleanDayOfWeek === true) {
-    dayOfWeekName = new Intl.DateTimeFormat("default", { weekday: "long" }).format(journalDate);
+    dayOfWeekName = new Intl.DateTimeFormat((logseq.settings?.localizeOrEnglish || "default"), { weekday: "long" }).format(journalDate);
   }
   let weekNumber;
   // get day of the year
@@ -97,7 +97,7 @@ function addExtendedDate(titleElement: HTMLElement) {
   if (logseq.settings?.booleanRelativeTime === true) {
     const formatString: string = formatRelativeDate(journalDate);
     if (formatString !== "") {
-      relativeTime = `, ${formatString}`;
+      relativeTime = ` , ${formatString}`;
     }
   }
   // apply styles
@@ -105,9 +105,9 @@ function addExtendedDate(titleElement: HTMLElement) {
   dateInfoElement.classList.add("weekday-and-week-number");
   let printWeek;
   if (logseq.settings?.weekNumberOfTheYearOrMonth === "Year") {
-    printWeek = `<span title="week number within the year">Week ${weekNumber}</span>`;
+    printWeek = `<span title="week number within the year">week ${weekNumber} /<small>y</small></span>`;
   } else {
-    printWeek = `<span title="week number within the month">Week ${weekNumber}</span>`;
+    printWeek = `<span title="week number within the month">week ${weekNumber} /<small>m</small></span>`;
   }
   if (logseq.settings?.booleanDayOfWeek === true) {
     if (logseq.settings?.booleanWeekendsColor === true &&
@@ -115,12 +115,12 @@ function addExtendedDate(titleElement: HTMLElement) {
       dayOfWeekName === "Sunday" ||
       dayOfWeekName === "土曜日" ||
       dayOfWeekName === "日曜日") {
-      dateInfoElement.innerHTML = ` <span class="weekends">${dayOfWeekName}</span>, ${printWeek}${relativeTime}`;
+      dateInfoElement.innerHTML = `<span class="weekends">${dayOfWeekName}</span> , ${printWeek}${relativeTime}`;
     } else {
-      dateInfoElement.innerHTML = ` ${dayOfWeekName}, ${printWeek}${relativeTime}`;//textContent
+      dateInfoElement.innerHTML = `${dayOfWeekName} , ${printWeek}${relativeTime}`;//textContent
     }
   } else {
-    dateInfoElement.innerHTML = ` ${printWeek}${relativeTime}`;
+    dateInfoElement.innerHTML = `${printWeek}${relativeTime}`;
   }
   titleElement.appendChild(dateInfoElement);
 }
@@ -148,8 +148,9 @@ const main = () => {
   logseq.provideStyle({
     key: "main", style: `
   :is(span.title,h1.title) span.weekday-and-week-number {
-    opacity: 0.7;
-    font-size: 0.7em;
+    opacity: .7;
+    font-size: .6em;
+    margin-left: .8em;
   }
   :is(span.title,h1.title) span.weekday-and-week-number span.weekends {
     color:var(--ls-wb-stroke-color-red);
@@ -221,8 +222,16 @@ function userSettings(ByLanguage) {
       key: "booleanRelativeTime",
       title: t("Turn on/off relative time"),
       type: "boolean",
-      default: false,
+      default: true,
       description: t("like `3 days ago`"),
+    },
+    {
+      key: "localizeOrEnglish",
+      title: t("Select language default(Localize) or en(English)"),
+      type: "enum",
+      default: "default",
+      enumChoices: ["default", "en"],
+      description: "",
     },
   ];
   logseq.useSettingsSchema(settingsTemplate);
