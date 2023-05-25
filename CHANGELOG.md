@@ -1,3 +1,10 @@
+## [1.4.2](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.4.1...v1.4.2) (2023-05-25)
+
+
+### Bug Fixes
+
+* Support right sidebar ([e4e639d](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/e4e639dcc74424c16d9526fb4236308bc83635d6))
+
 ## [1.4.1](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.4.0...v1.4.1) (2023-05-25)
 
 
