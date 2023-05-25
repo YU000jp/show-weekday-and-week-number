@@ -221,6 +221,13 @@ function userSettings(ByLanguage) {
       description: "",
     },
     {
+      key: "booleanDayOfWeek",
+      title: t("Turn on/off day of the week"),
+      type: "boolean",
+      default: true,
+      description: "",
+    },
+    {
       key: "booleanRelativeTime",
       title: t("Turn on/off relative time"),
       type: "boolean",
