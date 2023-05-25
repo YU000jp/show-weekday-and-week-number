@@ -59,6 +59,7 @@ function getISOWeekNumber(date: Date): number {
   return weekNumber;
 }
 
+
 function getJapaneseWeekNumber(date: Date): number {
   const targetDate = new Date(date.getTime());
   targetDate.setDate(targetDate.getDate() + 4 - (targetDate.getDay() || 7)); // Adjust for week starting on Sunday
