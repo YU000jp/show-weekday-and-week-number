@@ -1,3 +1,11 @@
+## [1.4.3](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.4.2...v1.4.3) (2023-05-25)
+
+
+### Bug Fixes
+
+* **bug:** enable setting `Turn on/off day of the week` ([c8a560c](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/c8a560ca131f3ff9cfcec16b5b23ec25790e17cb))
+* **refactor:** week number ([c267139](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/c26713998fe4ebe1fdb1ab71f2b69a7aadc09dee))
+
 ## [1.4.2](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.4.1...v1.4.2) (2023-05-25)
 
 
