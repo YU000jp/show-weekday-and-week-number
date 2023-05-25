@@ -126,7 +126,7 @@ function addExtendedDate(titleElement: HTMLElement) {
 }
 
 const observer = new MutationObserver(() => {
-  parent.document.querySelectorAll("span.title, h1.title").forEach((titleElement) => {
+  parent.document.querySelectorAll("span.title, h1.title, a.page-title").forEach((titleElement) => {
     addExtendedDate(titleElement as HTMLElement);
   });
 });
@@ -151,10 +151,10 @@ const main = () => {
     opacity: .7;
     font-size: .6em;
   }
-  :is(span.title,h1.title) span.weekday-and-week-number>span {
+  :is(span.title,h1.title,a.page-title) span.weekday-and-week-number>span {
     margin-left: .75em;
   }
-  :is(span.title,h1.title) span.weekday-and-week-number span.weekends {
+  :is(span.title,h1.title,a.page-title) span.weekday-and-week-number span.weekends {
     color:var(--ls-wb-stroke-color-red);
   }
   ` });
