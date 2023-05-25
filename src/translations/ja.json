@@ -4,5 +4,6 @@
     "Show week number of the year or month (unit)": "週番号の単位(年または月)を変更する",
     "Turn on/off the day of week": "曜日を表示する",
     "Turn on/off relative time": "相対時間を表示する",
-    "like `3 days ago`": "例: 昨日、3日前"
+    "like `3 days ago`": "例: 昨日、3日前",
+    "Select language default(Localize) or en(English)": "言語を選択する (「default」は日本語ローカライズ、「en」は英語)"
 }
