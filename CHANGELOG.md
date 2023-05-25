@@ -1,3 +1,10 @@
+# [1.4.0](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.3.0...v1.4.0) (2023-05-25)
+
+
+### Features
+
+* **design:** Regarding relative time & Add to settings Select language default(Localize) or en(English) ([82da129](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/82da1298b037f6ca80c093e6644695dbe22d482e))
+
 # [1.3.0](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.2.0...v1.3.0) (2023-05-24)
 
 
