@@ -1,3 +1,10 @@
+## [1.4.1](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.4.0...v1.4.1) (2023-05-25)
+
+
+### Bug Fixes
+
+* **design:** remove , ([8511232](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/85112326c3bb32d78a62c72ee1c8d20ecf52bd6f))
+
 # [1.4.0](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.3.0...v1.4.0) (2023-05-25)
 
 
