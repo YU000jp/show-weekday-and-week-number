@@ -55,8 +55,35 @@
    - [danilofaria](https://discuss.logseq.com/u/danilofaria/)
    - [ottodevs](https://discuss.logseq.com/u/ottodevs/)
 
-## Credit
+## Showcase / Questions / Ideas / Help
+
+> Go to the [discussion](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/discussions) tab to ask and find this kind of things.
+
+## Author
+
+* GitHub: [YU000jp](https://github.com/YU000jp)
+
+### My Logseq plugins
+
+- [Show Weekday and Week-number](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number)
+- [Weekdays and Holidays (Templates)](https://github.com/YU000jp/logseq-plugin-weekdays-and-weekends)
+- [Sticky Popup](https://github.com/YU000jp/logseq-plugin-sticky-popup)
+- [SomeMenuExtender](https://github.com/YU000jp/logseq-plugin-some-menu-extender)
+- [Panel Coloring](https://github.com/YU000jp/logseq-plugin-panel-coloring)
+- [Page-tags and Hierarchy](https://github.com/YU000jp/logseq-page-tags-and-hierarchy)
+- [Column Layout](https://github.com/YU000jp/Logseq-column-Layout)
+
+## Prior art & Credit
+
+### Library
+
+- [@logseq/libs](https://logseq.github.io/plugins/)
+- [logseq-L10N](https://github.com/sethyuan/logseq-l10n)
 
 ### Icon
 
 - [IonutNeagu - svgrepo.com](https://www.svgrepo.com/svg/490868/monday)
+
+---
+
+<a href="https://www.buymeacoffee.com/yu000japan" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-violet.png" alt="🍌Buy Me A Coffee" style="height: 42px;width: 152px" ></a>
