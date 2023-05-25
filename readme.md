@@ -13,7 +13,7 @@
 
 ## Like below
 
-![image](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/assets/111847207/bc2a104a-7b30-4e92-815d-a3e9f53cdd0a)
+![image](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/assets/111847207/f955295c-0ef5-4546-af50-71bd73992b6e)
 
 ---
 
@@ -46,8 +46,11 @@
    - `true` default
    - `false`
 - Turn on/off relative time: boolean
-   - `true`
-   - `false` default
+   - `true` default
+   - `false`
+- Select language default(Localize) or en(English): select
+   - `default` default
+   - `en`
 
 ## Contributions
 
