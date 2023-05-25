@@ -51,6 +51,32 @@ function getWeekNumbersOfMonth(date: Date, weekNumberFormat: string): number {
 }
 
 
+function getISOWeekNumber(date: Date): number {
+  const firstDayOfYear = new Date(date.getFullYear(), 0, 1);
+  const daysOffset = (date.getDay() + 6) % 7; // Adjust for week starting on Monday
+  const daysOfYear = Math.floor((date.getTime() - firstDayOfYear.getTime()) / (24 * 60 * 60 * 1000)) + 1;
+  const weekNumber = Math.floor((daysOfYear - daysOffset + 10) / 7);
+
+  return weekNumber;
+}
+
+function getJapaneseWeekNumber(date: Date): number {
+  const firstDayOfYear = new Date(date.getFullYear(), 0, 1);
+  const daysOffset = (date.getDay() + 6) % 7; // Adjust for week starting on Monday
+  const daysOfYear = Math.floor((date.getTime() - firstDayOfYear.getTime()) / (24 * 60 * 60 * 1000)) + 1;
+  const weekNumber = Math.floor((daysOfYear + daysOffset + 5) / 7);
+
+  return weekNumber;
+}
+
+function getUSWeekNumber(date: Date): number {
+  const firstDayOfYear = new Date(date.getFullYear(), 0, 1);
+  const daysOfYear = Math.floor((date.getTime() - firstDayOfYear.getTime()) / (24 * 60 * 60 * 1000)) + 1;
+  const weekNumber = Math.ceil(daysOfYear / 7);
+
+  return weekNumber;
+}
+
 const parseDate = (dateString: string): Date => {
   const dateRegex = /(\d+)(st|nd|rd|th)/;
   const modifiedDateString = dateString.replace(dateRegex, "$1").replace(/年|月|日/g, "/");
@@ -73,19 +99,14 @@ function addExtendedDate(titleElement: HTMLElement) {
     dayOfWeekName = new Intl.DateTimeFormat((logseq.settings?.localizeOrEnglish || "default"), { weekday: "long" }).format(journalDate);
   }
   let weekNumber;
-  // get day of the year
-  const days = Math.ceil((journalDate.getTime() - new Date(journalDate.getFullYear(), 0, 1).getTime()) / 86400000);
-  // get week number of the year
+
   if (logseq.settings?.weekNumberOfTheYearOrMonth === "Year") {
     if (logseq.settings?.weekNumberFormat === "ISO(EU) format") {
-      // ISO format (Monday is the first day of the week)
-      weekNumber = Math.ceil((days + 1 + (journalDate.getDay() || 7)) / 7);
+      weekNumber = getISOWeekNumber(journalDate);
     } else if (logseq.settings?.weekNumberFormat === "Japanese format") {
-      // Japanese format (Monday is the first day of the week, but week numbers start from 1 on January 1st)
-      weekNumber = Math.ceil((days + (journalDate.getDay() || 7)) / 7);
+      weekNumber = getJapaneseWeekNumber(journalDate);
     } else {
-      // US format (Sunday is the first day of the week)
-      weekNumber = Math.ceil((days + 1) / 7);
+      weekNumber = getUSWeekNumber(journalDate);
     }
   } else {
     // get week numbers of the month
