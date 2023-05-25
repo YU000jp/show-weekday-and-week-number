@@ -97,7 +97,7 @@ function addExtendedDate(titleElement: HTMLElement) {
   if (logseq.settings?.booleanRelativeTime === true) {
     const formatString: string = formatRelativeDate(journalDate);
     if (formatString !== "") {
-      relativeTime = ` , ${formatString}`;
+      relativeTime = `<span><small>(${formatString})</small></span>`;
     }
   }
   // apply styles
@@ -105,9 +105,9 @@ function addExtendedDate(titleElement: HTMLElement) {
   dateInfoElement.classList.add("weekday-and-week-number");
   let printWeek;
   if (logseq.settings?.weekNumberOfTheYearOrMonth === "Year") {
-    printWeek = `<span title="week number within the year">week ${weekNumber} /<small>y</small></span>`;
+    printWeek = `<span title="week number within the year">week ${weekNumber}<small>/y</small></span>`;
   } else {
-    printWeek = `<span title="week number within the month">week ${weekNumber} /<small>m</small></span>`;
+    printWeek = `<span title="week number within the month">week ${weekNumber}<small>/m</small></span>`;
   }
   if (logseq.settings?.booleanDayOfWeek === true) {
     if (logseq.settings?.booleanWeekendsColor === true &&
@@ -115,9 +115,9 @@ function addExtendedDate(titleElement: HTMLElement) {
       dayOfWeekName === "Sunday" ||
       dayOfWeekName === "土曜日" ||
       dayOfWeekName === "日曜日") {
-      dateInfoElement.innerHTML = `<span class="weekends">${dayOfWeekName}</span> , ${printWeek}${relativeTime}`;
+      dateInfoElement.innerHTML = `<span class="weekends">${dayOfWeekName}</span>${printWeek}${relativeTime}`;
     } else {
-      dateInfoElement.innerHTML = `${dayOfWeekName} , ${printWeek}${relativeTime}`;//textContent
+      dateInfoElement.innerHTML = `<span>${dayOfWeekName}</span>${printWeek}${relativeTime}`;//textContent
     }
   } else {
     dateInfoElement.innerHTML = `${printWeek}${relativeTime}`;
@@ -150,7 +150,9 @@ const main = () => {
   :is(span.title,h1.title) span.weekday-and-week-number {
     opacity: .7;
     font-size: .6em;
-    margin-left: .8em;
+  }
+  :is(span.title,h1.title) span.weekday-and-week-number>span {
+    margin-left: .75em;
   }
   :is(span.title,h1.title) span.weekday-and-week-number span.weekends {
     color:var(--ls-wb-stroke-color-red);
