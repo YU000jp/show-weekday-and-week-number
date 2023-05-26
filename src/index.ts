@@ -2,6 +2,7 @@ import '@logseq/libs'; //https://plugins-doc.logseq.com/
 import { SettingSchemaDesc } from '@logseq/libs/dist/LSPlugin.user';
 import { setup as l10nSetup, t } from "logseq-l10n"; //https://github.com/sethyuan/logseq-l10n
 import ja from "./translations/ja.json";
+import { getISOWeek, getWeek, startOfMonth, endOfMonth, addWeeks } from 'date-fns';
 
 
 function formatRelativeDate(targetDate: Date): string {
@@ -50,37 +51,6 @@ function getWeekNumbersOfMonth(date: Date, weekNumberFormat: string): number {
   return weekNumber;
 }
 
-function getISOWeekNumber(date: Date): number {
-  const firstDayOfYear = new Date(date.getFullYear(), 0, 1);
-  const daysOffset = (date.getDay() + 6) % 7; // Adjust for week starting on Monday
-  const daysOfYear = Math.floor((date.getTime() - firstDayOfYear.getTime()) / (24 * 60 * 60 * 1000)) + 1;
-  const weekNumber = Math.floor((daysOfYear - daysOffset + 10) / 7);
-
-  return weekNumber;
-}
-
-
-function getJapaneseWeekNumber(date: Date): number {
-  const targetDate = new Date(date.getTime());
-  targetDate.setDate(targetDate.getDate() + 4 - (targetDate.getDay() || 7)); // Adjust for week starting on Sunday
-
-  const firstDayOfYear = new Date(targetDate.getFullYear(), 0, 1);
-  const daysOffset = (firstDayOfYear.getDay() + 6) % 7;
-  const diffDays = Math.floor((targetDate.getTime() - firstDayOfYear.getTime()) / (24 * 60 * 60 * 1000)) + 1;
-
-  const weekNumber = Math.floor((diffDays + daysOffset) / 7) + 1;
-
-  return weekNumber;
-}
-
-function getUSWeekNumber(date: Date): number {
-  const firstDayOfYear = new Date(date.getFullYear(), 0, 1);
-  const daysOfYear = Math.floor((date.getTime() - firstDayOfYear.getTime()) / (24 * 60 * 60 * 1000)) + 1;
-  const weekNumber = Math.ceil(daysOfYear / 7);
-
-  return weekNumber;
-}
-
 const parseDate = (dateString: string): Date => {
   const dateRegex = /(\d+)(st|nd|rd|th)/;
   const modifiedDateString = dateString.replace(dateRegex, "$1").replace(/年|月|日/g, "/");
@@ -106,11 +76,11 @@ function addExtendedDate(titleElement: HTMLElement) {
 
   if (logseq.settings?.weekNumberOfTheYearOrMonth === "Year") {
     if (logseq.settings?.weekNumberFormat === "ISO(EU) format") {
-      weekNumber = getISOWeekNumber(journalDate);
+      weekNumber = getISOWeek(journalDate);
     } else if (logseq.settings?.weekNumberFormat === "Japanese format") {
-      weekNumber = getJapaneseWeekNumber(journalDate);
+      weekNumber = getWeek(journalDate, { weekStartsOn: 1 });
     } else {
-      weekNumber = getUSWeekNumber(journalDate);
+      weekNumber = getWeek(journalDate, { weekStartsOn: 0 });
     }
   } else {
     // get week numbers of the month
