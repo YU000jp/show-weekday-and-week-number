@@ -52,6 +52,9 @@
 - Select language default(Localize) or en(English): select
    - `default` default
    - `en`
+- weekday long or short: select
+   - `long` default
+   - `short`
 
 ## Contributions
 
