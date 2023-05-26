@@ -2,7 +2,7 @@ import '@logseq/libs'; //https://plugins-doc.logseq.com/
 import { SettingSchemaDesc } from '@logseq/libs/dist/LSPlugin.user';
 import { setup as l10nSetup, t } from "logseq-l10n"; //https://github.com/sethyuan/logseq-l10n
 import ja from "./translations/ja.json";
-import { getISOWeek, getWeek, startOfMonth, endOfMonth, addWeeks } from 'date-fns';
+import { getISOWeek, getWeek, getWeekOfMonth } from 'date-fns';
 
 
 function formatRelativeDate(targetDate: Date): string {
@@ -28,27 +28,13 @@ function formatRelativeDate(targetDate: Date): string {
 }
 
 function getWeekNumbersOfMonth(date: Date, weekNumberFormat: string): number {
-  const month = date.getMonth();
-  const year = date.getFullYear();
-  const firstDayOfMonth = new Date(year, month, 1);
-  let weekNumber = 0;
-  let currentDate = firstDayOfMonth;
-  while (currentDate.getMonth() === month) {
-    const dayOfWeek = currentDate.getDay();
-    if (
-      (weekNumberFormat === "ISO(EU) format" && dayOfWeek === 1) ||
-      (weekNumberFormat === "Japanese format" && dayOfWeek === 1) ||
-      (weekNumberFormat !== "ISO(EU) format" && weekNumberFormat !== "Japanese format" && dayOfWeek === 0)
-    ) {
-      weekNumber++;
-    }
-    if (currentDate.getDate() === date.getDate()) {
-      // 指定した日付に到達したらループを終了
-      break;
-    }
-    currentDate.setDate(currentDate.getDate() + 1);
+  if (weekNumberFormat === "ISO(EU) format" || weekNumberFormat === "Japanese format") {
+    //dayOfWeek === 1
+    return getWeekOfMonth(date, { weekStartsOn: 1 })
+  } else {//US式
+    // dayOfWeek === 0
+    return getWeekOfMonth(date, { weekStartsOn: 0 })
   }
-  return weekNumber;
 }
 
 const parseDate = (dateString: string): Date => {
