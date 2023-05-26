@@ -83,6 +83,7 @@
 
 - [@logseq/libs](https://logseq.github.io/plugins/)
 - [logseq-L10N](https://github.com/sethyuan/logseq-l10n)
+- [date-fns](https://date-fns.org/)
 
 ### Icon
 
