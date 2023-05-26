@@ -30,7 +30,7 @@
 
 ### Usage
 
-- When this plugin install, the style be applied to journals.
+- When this plugin install, the style be applied to journals or right sidebar.
 
 #### Plugin Settings
 
