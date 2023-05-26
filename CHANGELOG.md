@@ -1,3 +1,10 @@
+# [1.5.0](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.4.4...v1.5.0) (2023-05-26)
+
+
+### Features
+
+* **refactor:** use `date-fns` library ([7113b34](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/7113b34b62e1ea5b1f8a0390ffa5b160f37faad4))
+
 ## [1.4.4](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.4.3...v1.4.4) (2023-05-25)
 
 
