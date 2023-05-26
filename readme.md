@@ -2,12 +2,10 @@
 
 - Plugin for showing week day and, week-number within the year or month beside journals page titles.
 
-> Development stage 👷🚧
-
 [![latest release version](https://img.shields.io/github/v/release/YU000jp/logseq-plugin-show-weekday-and-week-number)](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/releases)
 [![License](https://img.shields.io/github/license/YU000jp/logseq-plugin-show-weekday-and-week-number?color=blue)](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/LICENSE)
 [![Downloads](https://img.shields.io/github/downloads/YU000jp/logseq-plugin-show-weekday-and-week-number/total.svg)](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/releases)
-<!-- Published 2023 -->
+ Published 2023/05/26
 
 ---
 
@@ -21,7 +19,7 @@
 
 ## Getting Started
 
-### Install from Logseq Marketplace (Coming👷🚧)
+### Install from Logseq Marketplace
 
 - Press [`---`] on the top right toolbar to open [`Plugins`]
 - Select `Marketplace`
