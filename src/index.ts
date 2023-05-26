@@ -56,7 +56,7 @@ function addExtendedDate(titleElement: HTMLElement) {
   // calculate dates
   let dayOfWeekName;
   if (logseq.settings?.booleanDayOfWeek === true) {
-    dayOfWeekName = new Intl.DateTimeFormat((logseq.settings?.localizeOrEnglish || "default"), { weekday: "long" }).format(journalDate);
+    dayOfWeekName = new Intl.DateTimeFormat((logseq.settings?.localizeOrEnglish || "default"), { weekday: logseq.settings?.longOrShort || "long" }).format(journalDate);
   }
   let weekNumber;
 
@@ -84,11 +84,17 @@ function addExtendedDate(titleElement: HTMLElement) {
   // apply styles
   const dateInfoElement = parent.document.createElement("span");
   dateInfoElement.classList.add("weekday-and-week-number");
+  let printWeekString = "";
+  if (logseq.settings?.longOrShort === "long") {
+    printWeekString = "week ";
+  } else {
+    printWeekString = "W";
+  }
   let printWeek;
   if (logseq.settings?.weekNumberOfTheYearOrMonth === "Year") {
-    printWeek = `<span title="week number within the year">week ${weekNumber}<small>/y</small></span>`;
+    printWeek = `<span title="week number within the year">${printWeekString}${weekNumber}<small>/y</small></span>`;
   } else {
-    printWeek = `<span title="week number within the month">week ${weekNumber}<small>/m</small></span>`;
+    printWeek = `<span title="week number within the month">${printWeekString}${weekNumber}<small>/m</small></span>`;
   }
   if (logseq.settings?.booleanDayOfWeek === true) {
     if (logseq.settings?.booleanWeekendsColor === true &&
@@ -221,6 +227,14 @@ function userSettings(ByLanguage) {
       type: "enum",
       default: "default",
       enumChoices: ["default", "en"],
+      description: "",
+    },
+    {
+      key: "longOrShort",
+      title: t("weekday long or short"),
+      type: "enum",
+      default: "long",
+      enumChoices: ["long", "short"],
       description: "",
     },
   ];
