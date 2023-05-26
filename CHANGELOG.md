@@ -1,3 +1,15 @@
+# [1.6.0](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.5.0...v1.6.0) (2023-05-26)
+
+
+### Bug Fixes
+
+* **refactor:** `date-fns` getWeekOfMonth ([f4eb15d](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/f4eb15db23cfa277fe7a6ef9c9b259e94cc5738f))
+
+
+### Features
+
+* **add to settings:** `weekday long or short` ([9946bf7](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/9946bf7bc8770896ab3e5093176bbb3d6f232a39))
+
 # [1.5.0](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.4.4...v1.5.0) (2023-05-26)
 
 
