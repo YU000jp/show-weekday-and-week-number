@@ -28,6 +28,8 @@
 - Select `Marketplace`
 - Type `Show` in the search field, select it from the search results and install
 
+   ![image](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/assets/111847207/5c3a2b34-298b-4790-8e12-01d83e289794)
+
 ### Usage
 
 - When this plugin install, the style be applied to journals or right sidebar.
