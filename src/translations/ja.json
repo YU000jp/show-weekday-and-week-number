@@ -1,10 +1,11 @@
 {
     "Week number format": "週番号フォーマット",
-    "Coloring red to the word of Saturday or Sunday": "土曜日と日曜日の文字を赤色にする",
+    "Coloring to the word of Saturday or Sunday": "土曜日と日曜日の文字を青色、赤色にする",
     "Show week number of the year or month (unit)": "週番号の単位(年または月)を変更する",
     "Turn on/off day of the week": "曜日を表示する",
     "Turn on/off relative time": "相対時間を表示する",
     "like `3 days ago`": "例: 昨日、3日前",
     "Select language default(Localize) or en(English)": "言語を選択する (「default」は日本語ローカライズ、「en」は英語)",
-    "weekday long or short": "曜日の表示形式 (長い形式または短い形式)"
+    "weekday long or short": "曜日の表示形式 (長い形式または短い形式)",
+    "Show the boundaries of 8 days before and after the day on a journal page.": "特定の日をページとして開いたときに、その日の前後8日間のナビゲーションバーを表示します。"
 }
