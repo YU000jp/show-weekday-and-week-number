@@ -1,3 +1,10 @@
+## [1.7.3](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.7.2...v1.7.3) (2023-05-28)
+
+
+### Bug Fixes
+
+* **bug:** [boundaries] Sometimes it disappears ([b1686c1](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/b1686c1bece067ab651525be132c2b1ef94129fa))
+
 ## [1.7.2](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.7.1...v1.7.2) (2023-05-28)
 
 
