@@ -177,9 +177,12 @@ const main = () => {
   });
 
   logseq.App.onRouteChanged(async ({ template }) => {
+    console.log(template);
     if (logseq.settings?.booleanBoundaries === true && template === '/page/:name') { //journal '/'
       //page only
+      setTimeout(() => {
       boundaries();
+      }, 100);
     }
   });
 
