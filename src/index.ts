@@ -1,8 +1,9 @@
 import '@logseq/libs'; //https://plugins-doc.logseq.com/
-import { LSPluginBaseInfo, SettingSchemaDesc } from '@logseq/libs/dist/LSPlugin.user';
+import { LSPluginBaseInfo, PageEntity, SettingSchemaDesc } from '@logseq/libs/dist/LSPlugin.user';
 import { setup as l10nSetup, t } from "logseq-l10n"; //https://github.com/sethyuan/logseq-l10n
 import ja from "./translations/ja.json";
 import { getISOWeek, getWeek, getWeekOfMonth, format, addDays, isBefore, isToday, isSunday, isSaturday } from 'date-fns';
+
 
 function formatRelativeDate(targetDate: Date): string {
   const currentDate = new Date();
@@ -17,13 +18,10 @@ function formatRelativeDate(targetDate: Date): string {
   // }
 
   // 相対的な日付差を計算
-  const diffInDays = Math.floor((targetDateOnly.getTime() - currentDateOnly.getTime()) / (1000 * 60 * 60 * 24));
+  const diffInDays: number = Math.floor((targetDateOnly.getTime() - currentDateOnly.getTime()) / (1000 * 60 * 60 * 24));
 
   // 相対的な日付差をローカライズした文字列に変換
-  const formatter = new Intl.RelativeTimeFormat((logseq.settings?.localizeOrEnglish || "default"), { numeric: 'auto' });
-  const formattedString = formatter.format(diffInDays, 'day');
-
-  return formattedString;
+  return new Intl.RelativeTimeFormat((logseq.settings?.localizeOrEnglish || "default"), { numeric: 'auto' }).format(diffInDays, 'day') as string;
 }
 
 function getWeekNumbersOfMonth(date: Date, weekNumberFormat: string): number {
@@ -53,11 +51,11 @@ function addExtendedDate(titleElement: HTMLElement) {
   if (!isFinite(Number(journalDate))) return;
 
   // calculate dates
-  let dayOfWeekName;
+  let dayOfWeekName: string = "";
   if (logseq.settings?.booleanDayOfWeek === true) {
     dayOfWeekName = new Intl.DateTimeFormat((logseq.settings?.localizeOrEnglish || "default"), { weekday: logseq.settings?.longOrShort || "long" }).format(journalDate);
   }
-  let weekNumber;
+  let weekNumber: number;
 
   if (logseq.settings?.weekNumberOfTheYearOrMonth === "Year") {
     if (logseq.settings?.weekNumberFormat === "ISO(EU) format") {
@@ -73,7 +71,7 @@ function addExtendedDate(titleElement: HTMLElement) {
   }
 
   //relative time
-  let relativeTime = "";
+  let relativeTime: string = "";
   if (logseq.settings?.booleanRelativeTime === true) {
     const formatString: string = formatRelativeDate(journalDate);
     if (formatString !== "") {
@@ -81,9 +79,9 @@ function addExtendedDate(titleElement: HTMLElement) {
     }
   }
   // apply styles
-  const dateInfoElement = parent.document.createElement("span");
+  const dateInfoElement: HTMLSpanElement = parent.document.createElement("span");
   dateInfoElement.classList.add("weekday-and-week-number");
-  let printWeekString = "";
+  let printWeekString: string = "";
   if (logseq.settings?.longOrShort === "long") {
     printWeekString = "week ";
   } else {
@@ -144,9 +142,9 @@ const main = () => {
   }
   div#weekBoundaries {
     display: flex;
-    margin-top: 1.0em;
+    margin-top: 0.3em;
     padding: 0.85em;
-    overflow-x: scroll;
+    overflow-x: auto;
     width: fit-content;
   }
   div#weekBoundaries>span.day {
@@ -158,6 +156,11 @@ const main = () => {
     outline-offset: 2px;
     border-radius: 0.7em;
     background: var(--color-level-1);
+  }
+  div#weekBoundaries>span.day:hover {
+    opacity: 1;
+    background: var(--color-level-2);
+    box-shadow: 0 0 0 1px var(--ls-guideline-color);
   }
   div#weekBoundaries>span.day span.dayOfWeek {
     font-size: .9em;
@@ -181,7 +184,7 @@ const main = () => {
       //page only
       setTimeout(() => {
         boundaries(false);
-      }, 150);
+      }, 160);
     }
   });
 
@@ -196,7 +199,7 @@ const main = () => {
   });
 
   logseq.beforeunload(async () => {
-    const titleElements = parent.document.querySelectorAll("span.weekday-and-week-number");
+    const titleElements = parent.document.querySelectorAll("span.weekday-and-week-number") as NodeListOf<HTMLElement>;
     titleElements.forEach((titleElement) => {
       titleElement.remove();
     });
@@ -208,69 +211,95 @@ const main = () => {
 };/* end_main */
 
 
+const getJournalDayFormat = (journalDayInNumber: number): string => {
+  const journalDay: string = journalDayInNumber.toString();
+  return (
+    journalDay.slice(0, 4) +
+    "-" +
+    journalDay.slice(4, 6) +
+    "-" +
+    journalDay.slice(6)
+  );
+};
+
+
 //boundaries
 async function boundaries(lazy: boolean) {
-  const firstElement = (parent.document.getElementsByClassName('is-journals') as HTMLCollectionOf<HTMLDivElement>)[0];
+
+  const firstElement: HTMLDivElement = (parent.document.getElementsByClassName('is-journals') as HTMLCollectionOf<HTMLDivElement>)[0];
   if (firstElement) {
-    let weekBoundaries = parent.document.getElementById('weekBoundaries');
-    if (weekBoundaries) return;
-    weekBoundaries = parent.document.createElement('div');
+    let checkWeekBoundaries = parent.document.getElementById('weekBoundaries');
+    if (checkWeekBoundaries) checkWeekBoundaries.remove();
+    const weekBoundaries: HTMLDivElement = parent.document.createElement('div');
     weekBoundaries.id = 'weekBoundaries';
     firstElement.insertBefore(weekBoundaries, firstElement.firstChild);
-    const titleElement = parent.document.querySelector("span.title");
-    if (!titleElement) return;
-    const targetDate: Date = parseDate(titleElement.textContent!);
-    if (!isFinite(Number(targetDate))) return;
-    const days = [-5, -4, -3, -2, -1, 0, 1, 2, 3, 4];
+
+    const { journalDay } = await logseq.Editor.getCurrentPage() as PageEntity;
+    if (!journalDay) {
+      console.error('journalDay is undefined');
+      return;
+    }
+    const targetDate: Date = parseDate(getJournalDayFormat(journalDay));
+    const days: number[] = [-5, -4, -3, -2, -1, 0, 1, 2, 3, 4];
     let { preferredDateFormat } = await logseq.App.getUserConfigs();
-    preferredDateFormat = preferredDateFormat.replace(/E{1,3}/, "EEE");//handle same E, EE, or EEE bug
     days.forEach((numDays, index) => {
-      const date: Date = addDays(targetDate, numDays);
-      const dayOfWeek = new Intl.DateTimeFormat((logseq.settings?.localizeOrEnglish || "default"), { weekday: "short" }).format(date);
-      const dayOfMonth = format(date, 'd');
-      const dayElement = parent.document.createElement('span');
-      dayElement.classList.add('day');
-      dayElement.innerHTML = `<span class="dayOfWeek">${dayOfWeek}</span><span class="dayOfMonth">${dayOfMonth}</span>`;
-      if (logseq.settings?.booleanWeekendsColor === true && isSaturday(date) as boolean) {
-        dayElement.style.color = 'var(--ls-wb-stroke-color-blue)';
-      } else
-        if (logseq.settings?.booleanWeekendsColor === true && isSunday(date) as boolean) {
-          dayElement.style.color = 'var(--ls-wb-stroke-color-red)';
-        }
-      if (isToday(date)) {
-        dayElement.style.borderBottom = '3px solid var(--ls-wb-stroke-color-green)';
-        dayElement.style.cursor = 'pointer';
-        dayElement.style.opacity = "1.0";
-        dayElement.title = 'Today';
+      let date: Date;
+      if (numDays === 0) {
+        date = targetDate;
+      } else {
+        date = addDays(targetDate, numDays) as Date;
       }
-      if (isBefore(date, new Date())) {
-        dayElement.style.cursor = 'pointer';
-        dayElement.addEventListener("click", async () => {
-          const journalPageName = format(date, preferredDateFormat);
-          const page = await logseq.Editor.getPage(journalPageName);
-          if (page) {
-            logseq.UI.showMsg('Jumping to the journal page', 'success');
-            logseq.App.pushState('page', { name: journalPageName });
-          } else {
-            logseq.UI.showMsg('No page found', 'warming');
+      const dayOfWeek: string = new Intl.DateTimeFormat((logseq.settings?.localizeOrEnglish as string || "default"), { weekday: "short" }).format(date);
+      const dayOfMonth: string = format(date, 'd');
+      const dayElement: HTMLSpanElement = parent.document.createElement('span');
+      try {
+        dayElement.classList.add('day');
+        dayElement.innerHTML = `<span class="dayOfWeek">${dayOfWeek}</span><span class="dayOfMonth">${dayOfMonth}</span>`;
+        if (logseq.settings?.booleanWeekendsColor === true && isSaturday(date) as boolean) {
+          dayElement.style.color = 'var(--ls-wb-stroke-color-blue)';
+        } else
+          if (logseq.settings?.booleanWeekendsColor === true && isSunday(date) as boolean) {
+            dayElement.style.color = 'var(--ls-wb-stroke-color-red)';
           }
-        });
+        if (isToday(date) as boolean) {
+          dayElement.style.borderBottom = '3px solid var(--ls-wb-stroke-color-green)';
+          dayElement.title = 'Today';
+        } else
+          if (numDays === 0) {
+            dayElement.style.borderBottom = '3px solid var(--ls-wb-stroke-color-yellow)';
+            dayElement.style.cursor = 'pointer';
+            dayElement.style.opacity = "1.0";
+            dayElement.title = 'Selected Day';
+          }
+        if (isBefore(date, new Date()) as boolean) {
+          dayElement.style.cursor = 'pointer';
+          dayElement.addEventListener("click", async () => {
+            const journalPageName: string = format(date, preferredDateFormat);
+            const { journalDay } = await logseq.Editor.getPage(journalPageName) as PageEntity;
+            if (journalDay) {
+              logseq.App.pushState('page', { name: journalPageName });
+            } else {
+              logseq.UI.showMsg('No page found', 'warming');
+            }
+          });
+        }
+      } finally {
+        weekBoundaries!.appendChild(dayElement);
       }
-      weekBoundaries!.appendChild(dayElement);
     });
   } else {
     if (lazy === true) return;
     setTimeout(() => {
       boundaries(true);
     }
-      , 200);
+      , 100);
   }
 }
 
 
 //setCountry
-function setCountry() {
-  let ByLanguage; //language setting
+async function setCountry(): Promise<string> {
+  let ByLanguage: string = ""; //language setting
   if (logseq.settings?.weekNumberFormat === undefined) {
     const convertLanguageCodeToCountryCode = (languageCode: string): string => {
       switch (languageCode) {
@@ -280,12 +309,9 @@ function setCountry() {
           return "ISO(EU) format";
       }
     };
-    logseq.App.getUserConfigs().then((configs) => {
-      if (configs) {
-        ByLanguage = convertLanguageCodeToCountryCode(configs.preferredLanguage);
-        logseq.showSettingsUI();
-      }
-    });
+    const { preferredLanguage } = await logseq.App.getUserConfigs();
+    ByLanguage = convertLanguageCodeToCountryCode(preferredLanguage);
+    logseq.showSettingsUI();
   }
   return ByLanguage;
 }
