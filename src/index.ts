@@ -273,11 +273,15 @@ async function boundaries(lazy: boolean) {
           }
         if (isBefore(date, new Date()) as boolean) {
           dayElement.style.cursor = 'pointer';
-          dayElement.addEventListener("click", async () => {
+          dayElement.addEventListener("click", async (event) => {
             const journalPageName: string = format(date, preferredDateFormat);
-            const { journalDay } = await logseq.Editor.getPage(journalPageName) as PageEntity;
+            const { journalDay, uuid } = await logseq.Editor.getPage(journalPageName) as PageEntity;
             if (journalDay) {
-              logseq.App.pushState('page', { name: journalPageName });
+              if (event.shiftKey) {
+                logseq.Editor.openInRightSidebar(uuid);
+              } else {
+                logseq.App.pushState('page', { name: journalPageName });
+              }
             } else {
               logseq.UI.showMsg('No page found', 'warming');
             }
