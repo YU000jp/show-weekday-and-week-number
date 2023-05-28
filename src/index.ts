@@ -186,6 +186,19 @@ const main = () => {
         boundaries(false);
       }, 160);
     }
+<<<<<<< Updated upstream
+=======
+    setTimeout(() => {
+      titleQuerySelector();
+    }, 200);
+  });
+  logseq.App.onSidebarVisibleChanged(async ({visible}) => {
+    if (visible === true) {
+      setTimeout(() => {
+        titleQuerySelector();
+      }, 300);
+    }
+>>>>>>> Stashed changes
   });
 
   logseq.onSettingsChanged((newSet: LSPluginBaseInfo['settings'], oldSet: LSPluginBaseInfo['settings']) => {
