@@ -1,3 +1,10 @@
+# [1.8.0](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.7.3...v1.8.0) (2023-05-28)
+
+
+### Features
+
+* **boundaries:** localize day of week ([5ea0a28](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/5ea0a289dfdd4d49b021ae41bd2464912870a1c7))
+
 ## [1.7.3](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.7.2...v1.7.3) (2023-05-28)
 
 

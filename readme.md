@@ -64,7 +64,7 @@
 - weekday long or short: select
    - `long` default
    - `short`
-- Show the boundaries of 8 days before and after the day on the single journal page.
+- Show the boundaries of 10 days before and after the day on the single journal page.
    - `true` default
    - `false`
 
