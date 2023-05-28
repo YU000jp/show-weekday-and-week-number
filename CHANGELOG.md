@@ -1,3 +1,10 @@
+# [1.7.0](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.6.0...v1.7.0) (2023-05-28)
+
+
+### Features
+
+* **Add feature:** Journal boundaries on a journal page for seeking journal pages ([51c3c9b](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/51c3c9bd39475d94f42f462edc4f4c5460c012c7))
+
 # [1.6.0](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.5.0...v1.6.0) (2023-05-26)
 
 
