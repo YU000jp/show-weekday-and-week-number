@@ -118,14 +118,13 @@ const observer = new MutationObserver(() => {
 
 /* main */
 const main = () => {
-  //get user config Language >>> Country
-  const ByLanguage = setCountry();
   (async () => {
     try {
       await l10nSetup({ builtinTranslations: { ja } });
     } finally {
       /* user settings */
-      logseq.useSettingsSchema(settingsTemplate(ByLanguage));
+      //get user config Language >>> Country
+      logseq.useSettingsSchema(settingsTemplate(await setCountry()));
     }
   })();
 
@@ -340,7 +339,7 @@ async function setCountry(): Promise<string> {
 
 /* user setting */
 // https://logseq.github.io/plugins/types/SettingSchemaDesc.html
-const settingsTemplate = (ByLanguage): SettingSchemaDesc[] => [
+const settingsTemplate = (ByLanguage: string): SettingSchemaDesc[] => [
   {
     key: "booleanWeekendsColor",
     title: t("Coloring to the word of Saturday or Sunday"),
