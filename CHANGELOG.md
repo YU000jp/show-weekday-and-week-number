@@ -1,3 +1,10 @@
+# [1.9.0](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.8.1...v1.9.0) (2023-05-28)
+
+
+### Features
+
+* **Boundaries:** Open the single journal page on right sidebar by shift click ([db3bb2d](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/db3bb2d035de30f43368a5dfa3fcab6744777894))
+
 ## [1.8.1](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.8.0...v1.8.1) (2023-05-28)
 
 
