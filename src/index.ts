@@ -124,13 +124,21 @@ const main = () => {
     } finally {
       /* user settings */
       //get user config Language >>> Country
-      let ByLanguage;
       if (logseq.settings?.weekNumberFormat === undefined) {
-        ByLanguage = await setCountry();
+        const convertLanguageCodeToCountryCode = (languageCode: string): string => {
+          switch (languageCode) {
+            case "ja":
+              return "Japanese format";
+            default:
+              return "ISO(EU) format";
+          }
+        };
+        const { preferredLanguage } = await logseq.App.getUserConfigs();
+        logseq.useSettingsSchema(settingsTemplate(convertLanguageCodeToCountryCode(preferredLanguage)));
+        logseq.showSettingsUI();
       } else {
-        ByLanguage = "ISO(EU) format";
+        logseq.useSettingsSchema(settingsTemplate("ISO(EU) format"));
       }
-      logseq.useSettingsSchema(settingsTemplate(ByLanguage));
     }
   })();
 
@@ -320,27 +328,6 @@ async function boundaries(lazy: boolean) {
       , 100);
   }
 }
-
-
-//setCountry
-function setCountry(): string {
-  let ByLanguage: string = ""; //language setting
-  const convertLanguageCodeToCountryCode = (languageCode: string): string => {
-    switch (languageCode) {
-      case "ja":
-        return "Japanese format";
-      default:
-        return "ISO(EU) format";
-    }
-  };
-  (async () => {
-    const { preferredLanguage } = await logseq.App.getUserConfigs();
-    ByLanguage = convertLanguageCodeToCountryCode(preferredLanguage);
-  })();
-  logseq.showSettingsUI();
-  return ByLanguage;
-}
-//end
 
 
 /* user setting */
