@@ -177,18 +177,17 @@ const main = () => {
   });
 
   logseq.App.onRouteChanged(async ({ template }) => {
-    console.log(template);
     if (logseq.settings?.booleanBoundaries === true && template === '/page/:name') { //journal '/'
       //page only
       setTimeout(() => {
-      boundaries();
-      }, 100);
+        boundaries(false);
+      }, 150);
     }
   });
 
   logseq.onSettingsChanged((newSet: LSPluginBaseInfo['settings'], oldSet: LSPluginBaseInfo['settings']) => {
     if (oldSet.booleanBoundaries === false && newSet.booleanBoundaries === true) {
-      boundaries();
+      boundaries(false);
     } else
       if (oldSet.booleanBoundaries === true && newSet.booleanBoundaries === false) {
         const weekBoundaries = parent.document.getElementById('weekBoundaries');
@@ -210,7 +209,7 @@ const main = () => {
 
 
 //boundaries
-async function boundaries() {
+async function boundaries(lazy: boolean) {
   const firstElement = (parent.document.getElementsByClassName('is-journals') as HTMLCollectionOf<HTMLDivElement>)[0];
   if (firstElement) {
     let weekBoundaries = parent.document.getElementById('weekBoundaries');
@@ -227,7 +226,7 @@ async function boundaries() {
     preferredDateFormat = preferredDateFormat.replace(/E{1,3}/, "EEE");//handle same E, EE, or EEE bug
     days.forEach((numDays, index) => {
       const date: Date = addDays(targetDate, numDays);
-      const dayOfWeek = format(date, 'EEE');
+      const dayOfWeek = new Intl.DateTimeFormat((logseq.settings?.localizeOrEnglish || "default"), { weekday: "short" }).format(date);
       const dayOfMonth = format(date, 'd');
       const dayElement = parent.document.createElement('span');
       dayElement.classList.add('day');
@@ -259,6 +258,12 @@ async function boundaries() {
       }
       weekBoundaries!.appendChild(dayElement);
     });
+  } else {
+    if (lazy === true) return;
+    setTimeout(() => {
+      boundaries(true);
+    }
+      , 200);
   }
 }
 
