@@ -1,3 +1,11 @@
+## [1.9.2](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.9.1...v1.9.2) (2023-05-28)
+
+
+### Bug Fixes
+
+* **refactor:** Improvement in display speed until... ([8f07350](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/8f0735075ef467aa6edacc9868024cf57d236835))
+* **refactor:** Improvement in display speed until... ([e2845bf](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/e2845bff6df2af992ea6ff59a4ef2659e9ef5393))
+
 ## [1.9.1](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.9.0...v1.9.1) (2023-05-28)
 
 
