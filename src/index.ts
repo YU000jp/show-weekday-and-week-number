@@ -342,7 +342,7 @@ const settingsTemplate = (ByLanguage): SettingSchemaDesc[] => [
   },
   {
     key: "booleanBoundaries",
-    title: t("Show the boundaries of 8 days before and after the day on the single journal page."),
+    title: t("Show the boundaries of 10 days before and after the day on the single journal page."),
     type: "boolean",
     default: true,
     description: "",

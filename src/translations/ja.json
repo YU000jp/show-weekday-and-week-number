@@ -7,5 +7,5 @@
     "like `3 days ago`": "例: 昨日、3日前",
     "Select language default(Localize) or en(English)": "言語を選択する (「default」は日本語ローカライズ、「en」は英語)",
     "weekday long or short": "曜日の表示形式 (長い形式または短い形式)",
-    "Show the boundaries of 8 days before and after the day on the single journal page.": "日付のシングルページを開いたときに、その週の日付にアクセスできるナビゲーションバーを表示する"
+    "Show the boundaries of 10 days before and after the day on the single journal page.": "日付のシングルページを開いたときに、その週の日付にアクセスできるナビゲーションバーを表示する"
 }
