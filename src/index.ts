@@ -112,9 +112,7 @@ function addExtendedDate(titleElement: HTMLElement) {
 }
 
 const observer = new MutationObserver(() => {
-  parent.document.querySelectorAll("span.title, h1.title, a.page-title").forEach((titleElement) => {
-    addExtendedDate(titleElement as HTMLElement);
-  });
+  titleQuerySelector();
 });
 
 
@@ -148,7 +146,7 @@ const main = () => {
     width: fit-content;
   }
   div#weekBoundaries>span.day {
-    opacity: .7;
+    opacity: .5;
     width: 100px;
     padding: 0.4em;
     margin-left: 0.8em;
@@ -186,6 +184,14 @@ const main = () => {
         boundaries(false);
       }, 160);
     }
+    titleQuerySelector();
+  });
+  logseq.App.onSidebarVisibleChanged(async ({visible}) => {
+    if (visible === true) {
+      setTimeout(() => {
+        titleQuerySelector();
+      }, 300);
+    }
   });
 
   logseq.onSettingsChanged((newSet: LSPluginBaseInfo['settings'], oldSet: LSPluginBaseInfo['settings']) => {
@@ -222,6 +228,12 @@ const getJournalDayFormat = (journalDayInNumber: number): string => {
   );
 };
 
+
+function titleQuerySelector() {
+  parent.document.querySelectorAll("span.title, h1.title, a.page-title").forEach((titleElement) => {
+    addExtendedDate(titleElement as HTMLElement);
+  });
+}
 
 //boundaries
 async function boundaries(lazy: boolean) {
@@ -263,6 +275,7 @@ async function boundaries(lazy: boolean) {
           }
         if (isToday(date) as boolean) {
           dayElement.style.borderBottom = '3px solid var(--ls-wb-stroke-color-green)';
+          dayElement.style.opacity = "1.0";
           dayElement.title = 'Today';
         } else
           if (numDays === 0) {
