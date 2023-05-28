@@ -283,24 +283,26 @@ async function boundaries(lazy: boolean) {
       try {
         dayElement.classList.add('day');
         dayElement.innerHTML = `<span class="dayOfWeek">${dayOfWeek}</span><span class="dayOfMonth">${dayOfMonth}</span>`;
+        const booleanToday = isToday(date) as boolean;
+        dayElement.title = format(date, preferredDateFormat);
+        if (booleanToday === true) {
+          dayElement.style.color = 'var(--ls-wb-stroke-color-green)';
+          dayElement.style.borderBottom = '3px solid var(--ls-wb-stroke-color-green)';
+          dayElement.style.opacity = "1.0";
+        } else
+          if (numDays === 0) {
+            dayElement.style.color = 'var(--ls-wb-stroke-color-yellow)';
+            dayElement.style.borderBottom = '3px solid var(--ls-wb-stroke-color-yellow)';
+            dayElement.style.cursor = 'pointer';
+            dayElement.style.opacity = "1.0";
+          }
         if (logseq.settings?.booleanWeekendsColor === true && isSaturday(date) as boolean) {
           dayElement.style.color = 'var(--ls-wb-stroke-color-blue)';
         } else
           if (logseq.settings?.booleanWeekendsColor === true && isSunday(date) as boolean) {
             dayElement.style.color = 'var(--ls-wb-stroke-color-red)';
           }
-        if (isToday(date) as boolean) {
-          dayElement.style.borderBottom = '3px solid var(--ls-wb-stroke-color-green)';
-          dayElement.style.opacity = "1.0";
-          dayElement.title = 'Today';
-        } else
-          if (numDays === 0) {
-            dayElement.style.borderBottom = '3px solid var(--ls-wb-stroke-color-yellow)';
-            dayElement.style.cursor = 'pointer';
-            dayElement.style.opacity = "1.0";
-            dayElement.title = 'Selected Day';
-          }
-        if (isBefore(date, new Date()) as boolean) {
+        if (isBefore(date, new Date()) as boolean || booleanToday === true) {
           dayElement.style.cursor = 'pointer';
           dayElement.addEventListener("click", async (event) => {
             const journalPageName: string = format(date, preferredDateFormat);
