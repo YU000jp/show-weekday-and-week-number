@@ -36,7 +36,7 @@
 
 #### Plugin Settings
 
-- Coloring red to the word of Saturday or Sunday: boolean
+- Coloring to the word of Saturday or Sunday: boolean
    - `true` default
    - `false`
 - Week number format: select
@@ -59,6 +59,9 @@
 - weekday long or short: select
    - `long` default
    - `short`
+- Show the boundaries of 8 days before and after the day on the single journal page.
+   - `true` default
+   - `false`
 
 ## Contributions
 
