@@ -1,3 +1,15 @@
+# [1.10.0](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.9.4...v1.10.0) (2023-05-29)
+
+
+### Bug Fixes
+
+* **refactor:** open the plugin settings ([372f665](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/372f665f6bcb34d755a6aeef599f85c267a94189))
+
+
+### Features
+
+* **Boundaries:** update coloring ([b54ca24](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/b54ca24f8a0928134a13b04fe49dd6bc4f8a87b0))
+
 ## [1.9.4](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.9.3...v1.9.4) (2023-05-28)
 
 
