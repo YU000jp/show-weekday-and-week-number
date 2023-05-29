@@ -21,7 +21,7 @@
 
 ### Show the boundaries on the single journal page
 
-![image](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/assets/111847207/a33444f1-0d0f-485d-908d-be6c86a90e41)
+![someautomaticmarkdownlink (22)](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/assets/111847207/b0377701-de51-4b56-b677-3735bbff0188)
 
 ---
 
