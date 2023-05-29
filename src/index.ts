@@ -135,7 +135,9 @@ const main = () => {
         };
         const { preferredLanguage } = await logseq.App.getUserConfigs();
         logseq.useSettingsSchema(settingsTemplate(convertLanguageCodeToCountryCode(preferredLanguage)));
-        logseq.showSettingsUI();
+        setTimeout(() => {
+          logseq.showSettingsUI();
+        }, 300);
       } else {
         logseq.useSettingsSchema(settingsTemplate("ISO(EU) format"));
       }
