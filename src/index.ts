@@ -67,7 +67,7 @@ function addExtendedDate(titleElement: HTMLElement) {
       printWeek = `<span title="Week number">${weekNumber}</span>`;
     } else {
       // get week numbers of the month
-      if (logseq.settings?.weekNumberFormat === "Japanese format") {
+      if (logseq.settings?.weekNumberFormat === "Japanese format" && logseq.settings?.localizeOrEnglish === "default") {
         printWeek = `<span title="1か月ごとの週番号">第<strong>${getWeekOfMonth(journalDate, { weekStartsOn })}</strong>週</span>`;
       } else {
         printWeek = `<span title="Week number within the month"><strong>W${getWeekOfMonth(journalDate, { weekStartsOn })}</strong><small>/m</small></span>`;
