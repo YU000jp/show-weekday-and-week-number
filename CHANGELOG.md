@@ -1,3 +1,11 @@
+# [1.11.0](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.10.0...v1.11.0) (2023-05-30)
+
+
+### Features
+
+* Display of the week number according to ISO standard 8601 ([1741cad](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/1741cad6f5fd2b6621bdbc7a4b2e90840993791f))
+* **plugin settings:** Toggle for week number ([dbe6113](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/dbe611340e13bb54b4205927ca6b685528dc9a5a))
+
 # [1.10.0](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.9.4...v1.10.0) (2023-05-29)
 
 
