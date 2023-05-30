@@ -2,7 +2,7 @@ import '@logseq/libs'; //https://plugins-doc.logseq.com/
 import { LSPluginBaseInfo, PageEntity, SettingSchemaDesc } from '@logseq/libs/dist/LSPlugin.user';
 import { setup as l10nSetup, t } from "logseq-l10n"; //https://github.com/sethyuan/logseq-l10n
 import ja from "./translations/ja.json";
-import { getISOWeek, getWeek, getWeekOfMonth, format, addDays, isBefore, isToday, isSunday, isSaturday } from 'date-fns';
+import { getISOWeek, getWeek, getWeekOfMonth, format, addDays, isBefore, isToday, isSunday, isSaturday, getISOWeekYear, getWeekYear } from 'date-fns';
 
 
 function formatRelativeDate(targetDate: Date): string {
@@ -24,15 +24,6 @@ function formatRelativeDate(targetDate: Date): string {
   return new Intl.RelativeTimeFormat((logseq.settings?.localizeOrEnglish || "default"), { numeric: 'auto' }).format(diffInDays, 'day') as string;
 }
 
-function getWeekNumbersOfMonth(date: Date, weekNumberFormat: string): number {
-  if (weekNumberFormat === "ISO(EU) format" || weekNumberFormat === "Japanese format") {
-    //dayOfWeek === 1
-    return getWeekOfMonth(date, { weekStartsOn: 1 })
-  } else {//US式
-    // dayOfWeek === 0
-    return getWeekOfMonth(date, { weekStartsOn: 0 })
-  }
-}
 
 const parseDate = (dateString: string): Date => {
   const dateRegex = /(\d+)(st|nd|rd|th)/;
@@ -42,6 +33,17 @@ const parseDate = (dateString: string): Date => {
 
 //Credit: ottodevs  https://discuss.logseq.com/t/show-week-day-and-week-number/12685/18
 function addExtendedDate(titleElement: HTMLElement) {
+  let weekStartsOn;
+  if (logseq.settings?.weekNumberFormat === "ISO(EU) format") {
+    weekStartsOn = 1;
+  }
+  else if (logseq.settings?.weekNumberFormat === "Japanese format") {
+    weekStartsOn = 1;
+  }
+  else {
+    //US式
+    weekStartsOn = 0;
+  }
   // check if element already has date info
   const existingSpan = titleElement.querySelector("span");
   if (existingSpan) return;
@@ -55,19 +57,20 @@ function addExtendedDate(titleElement: HTMLElement) {
   if (logseq.settings?.booleanDayOfWeek === true) {
     dayOfWeekName = new Intl.DateTimeFormat((logseq.settings?.localizeOrEnglish || "default"), { weekday: logseq.settings?.longOrShort || "long" }).format(journalDate);
   }
-  let weekNumber: number;
-
+  let weekNumber: string;
+  let printWeek: string;
   if (logseq.settings?.weekNumberOfTheYearOrMonth === "Year") {
     if (logseq.settings?.weekNumberFormat === "ISO(EU) format") {
-      weekNumber = getISOWeek(journalDate);
-    } else if (logseq.settings?.weekNumberFormat === "Japanese format") {
-      weekNumber = getWeek(journalDate, { weekStartsOn: 1 });
+      weekNumber = `${getISOWeekYear(journalDate)}-W<strong>${getISOWeek(journalDate)}</strong>`;
     } else {
-      weekNumber = getWeek(journalDate, { weekStartsOn: 0 });
+      //NOTE: getWeekYear関数は1月1日がその年の第1週の始まりとなる(デフォルト)
+      //weekStartsOnは先に指定済み
+      weekNumber = `${getWeekYear(journalDate, { weekStartsOn })}-W<strong>${getWeek(journalDate, { weekStartsOn })}</strong>`;
     }
+    printWeek = `<span title="week number within the year">${weekNumber}</span>`;
   } else {
     // get week numbers of the month
-    weekNumber = getWeekNumbersOfMonth(journalDate, logseq.settings?.weekNumberFormat);
+    printWeek = `<span title="week number within the month"><strong>W${getWeekOfMonth(journalDate, { weekStartsOn })}</strong><small>/m</small></span>`;
   }
 
   //relative time
@@ -81,18 +84,6 @@ function addExtendedDate(titleElement: HTMLElement) {
   // apply styles
   const dateInfoElement: HTMLSpanElement = parent.document.createElement("span");
   dateInfoElement.classList.add("weekday-and-week-number");
-  let printWeekString: string = "";
-  if (logseq.settings?.longOrShort === "long") {
-    printWeekString = "week ";
-  } else {
-    printWeekString = "W";
-  }
-  let printWeek;
-  if (logseq.settings?.weekNumberOfTheYearOrMonth === "Year") {
-    printWeek = `<span title="week number within the year">${printWeekString}<strong>${weekNumber}</strong><small>/y</small></span>`;
-  } else {
-    printWeek = `<span title="week number within the month">${printWeekString}<strong>${weekNumber}</strong><small>/m</small></span>`;
-  }
   if (logseq.settings?.booleanDayOfWeek === true) {
     if (logseq.settings?.booleanWeekendsColor === true &&
       isSaturday(journalDate) === true) {
