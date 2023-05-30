@@ -12,8 +12,7 @@
 
 ## Like below
 
-1. ![image](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/assets/111847207/763a3c6b-7368-4491-9da3-47c5e74bb442)
-1. ![image](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/assets/111847207/8b49cf69-306d-4764-a92d-9ceb48745c7b)
+1. ![image](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/assets/111847207/f47b8948-5e7a-4e16-a5ae-6966672742b1)
 1. ![image](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/assets/111847207/9426f20e-60ed-48eb-83dd-55dd2b6d6f6b)
 
 ## Demo
@@ -40,7 +39,22 @@
 
 #### Plugin Settings
 
-- Coloring to the word of Saturday or Sunday: boolean
+- Select language default(Localize) or en(English): select
+   - `default` default
+   - `en`
+- Turn on/off the day of week: toggle
+   - `true` default
+   - `false`
+- weekday long or short: select
+   - `long` default
+   - `short`
+- Turn on/off week number: toggle
+   - `true` default
+   - `false`
+- Show week number of the year or month (unit): select
+   - `Year` default
+   - `Month`
+- Coloring to the word of Saturday or Sunday: toggle
    - `true` default
    - `false`
 - Week number format: select
@@ -48,22 +62,10 @@
    - `ISO(EU) format` default
    - `Japanese format`
 > Week numbers differ between like US format and ISO format(Europe) when transitioning across years.
-- Show week number of the year or month (unit): select
-   - `Year` default
-   - `Month`
-- Turn on/off the day of week: boolean
+- Turn on/off relative time: toggle
    - `true` default
    - `false`
-- Turn on/off relative time: boolean
-   - `true` default
-   - `false`
-- Select language default(Localize) or en(English): select
-   - `default` default
-   - `en`
-- weekday long or short: select
-   - `long` default
-   - `short`
-- Show the boundaries of 10 days before and after the day on the single journal page.
+- Show the boundaries of 10 days before and after the day on the single journal page: toggle
    - `true` default
    - `false`
 
