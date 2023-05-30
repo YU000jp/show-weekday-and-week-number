@@ -33,17 +33,7 @@ const parseDate = (dateString: string): Date => {
 
 //Credit: ottodevs  https://discuss.logseq.com/t/show-week-day-and-week-number/12685/18
 function addExtendedDate(titleElement: HTMLElement) {
-  let weekStartsOn;
-  if (logseq.settings?.weekNumberFormat === "ISO(EU) format") {
-    weekStartsOn = 1;
-  }
-  else if (logseq.settings?.weekNumberFormat === "Japanese format") {
-    weekStartsOn = 1;
-  }
-  else {
-    //US式
-    weekStartsOn = 0;
-  }
+  if (logseq.settings?.booleanWeekNumber === false && logseq.settings?.booleanDayOfWeek === false && logseq.settings?.booleanRelativeTime === false) return;
   // check if element already has date info
   const existingSpan = titleElement.querySelector("span");
   if (existingSpan) return;
@@ -58,19 +48,31 @@ function addExtendedDate(titleElement: HTMLElement) {
     dayOfWeekName = new Intl.DateTimeFormat((logseq.settings?.localizeOrEnglish || "default"), { weekday: logseq.settings?.longOrShort || "long" }).format(journalDate);
   }
   let weekNumber: string;
-  let printWeek: string;
-  if (logseq.settings?.weekNumberOfTheYearOrMonth === "Year") {
-    if (logseq.settings?.weekNumberFormat === "ISO(EU) format") {
-      weekNumber = `${getISOWeekYear(journalDate)}-W<strong>${getISOWeek(journalDate)}</strong>`;
-    } else {
-      //NOTE: getWeekYear関数は1月1日がその年の第1週の始まりとなる(デフォルト)
-      //weekStartsOnは先に指定済み
-      weekNumber = `${getWeekYear(journalDate, { weekStartsOn })}-W<strong>${getWeek(journalDate, { weekStartsOn })}</strong>`;
-    }
-    printWeek = `<span title="week number within the year">${weekNumber}</span>`;
+  let printWeek: string = "";
+  let weekStartsOn;
+  if (logseq.settings?.weekNumberFormat === "US format") {
+    weekStartsOn = 0;
   } else {
-    // get week numbers of the month
-    printWeek = `<span title="week number within the month"><strong>W${getWeekOfMonth(journalDate, { weekStartsOn })}</strong><small>/m</small></span>`;
+    weekStartsOn = 1;
+  }
+  if (logseq.settings?.booleanWeekNumber === true) {
+    if (logseq.settings?.weekNumberOfTheYearOrMonth === "Year") {
+      if (logseq.settings?.weekNumberFormat === "ISO(EU) format") {
+        weekNumber = `${getISOWeekYear(journalDate)}-W<strong>${getISOWeek(journalDate)}</strong>`;
+      } else {
+        //NOTE: getWeekYear関数は1月1日がその年の第1週の始まりとなる(デフォルト)
+        //weekStartsOnは先に指定済み
+        weekNumber = `${getWeekYear(journalDate, { weekStartsOn })}-W<strong>${getWeek(journalDate, { weekStartsOn })}</strong>`;
+      }
+      printWeek = `<span title="Week number">${weekNumber}</span>`;
+    } else {
+      // get week numbers of the month
+      if (logseq.settings?.weekNumberFormat === "Japanese format") {
+        printWeek = `<span title="1か月ごとの週番号">第<strong>${getWeekOfMonth(journalDate, { weekStartsOn })}</strong>週</span>`;
+      } else {
+        printWeek = `<span title="Week number within the month"><strong>W${getWeekOfMonth(journalDate, { weekStartsOn })}</strong><small>/m</small></span>`;
+      }
+    }
   }
 
   //relative time
@@ -329,6 +331,44 @@ async function boundaries(lazy: boolean) {
 // https://logseq.github.io/plugins/types/SettingSchemaDesc.html
 const settingsTemplate = (ByLanguage: string): SettingSchemaDesc[] => [
   {
+    key: "localizeOrEnglish",
+    title: t("Select language default(Localize) or en(English)"),
+    type: "enum",
+    default: "default",
+    enumChoices: ["default", "en"],
+    description: "",
+  },
+  {
+    key: "booleanDayOfWeek",
+    title: t("Turn on/off day of the week"),
+    type: "boolean",
+    default: true,
+    description: "",
+  },
+  {
+    key: "longOrShort",
+    title: t("weekday long or short"),
+    type: "enum",
+    default: "long",
+    enumChoices: ["long", "short"],
+    description: "",
+  },
+  {
+    key: "booleanWeekNumber",
+    title: t("Turn on/off week number"),
+    type: "boolean",
+    default: true,
+    description: "",
+  },
+  {
+    key: "weekNumberOfTheYearOrMonth",
+    title: t("Show week number of the year or month (unit)"),
+    type: "enum",
+    default: "Year",
+    enumChoices: ["Year", "Month"],
+    description: "",
+  },
+  {
     key: "booleanWeekendsColor",
     title: t("Coloring to the word of Saturday or Sunday"),
     type: "boolean",
@@ -344,21 +384,6 @@ const settingsTemplate = (ByLanguage: string): SettingSchemaDesc[] => [
     description: "",
   },
   {
-    key: "weekNumberOfTheYearOrMonth",
-    title: t("Show week number of the year or month (unit)"),
-    type: "enum",
-    default: "Year",
-    enumChoices: ["Year", "Month"],
-    description: "",
-  },
-  {
-    key: "booleanDayOfWeek",
-    title: t("Turn on/off day of the week"),
-    type: "boolean",
-    default: true,
-    description: "",
-  },
-  {
     key: "booleanRelativeTime",
     title: t("Turn on/off relative time"),
     type: "boolean",
@@ -366,24 +391,8 @@ const settingsTemplate = (ByLanguage: string): SettingSchemaDesc[] => [
     description: t("like `3 days ago`"),
   },
   {
-    key: "localizeOrEnglish",
-    title: t("Select language default(Localize) or en(English)"),
-    type: "enum",
-    default: "default",
-    enumChoices: ["default", "en"],
-    description: "",
-  },
-  {
-    key: "longOrShort",
-    title: t("weekday long or short"),
-    type: "enum",
-    default: "long",
-    enumChoices: ["long", "short"],
-    description: "",
-  },
-  {
     key: "booleanBoundaries",
-    title: t("Show the boundaries of 10 days before and after the day on the single journal page."),
+    title: t("Show the boundaries of 10 days before and after the day on the single journal page"),
     type: "boolean",
     default: true,
     description: "",
