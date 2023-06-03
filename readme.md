@@ -41,34 +41,36 @@
 #### Plugin Settings
 
 - Select language default(Localize) or en(English): select
-   - `default` default
-   - `en`
+  - `default` default
+  - `en`
 - Turn on/off the day of week: toggle
-   - `true` default
-   - `false`
+  - `true` default
+  - `false`
 - weekday long or short: select
-   - `long` default
-   - `short`
+  - `long` default
+  - `short`
 - Turn on/off week number: toggle
-   - `true` default
-   - `false`
+  - `true` default
+  - `false`
 - Show week number of the year or month (unit): select
-   - `Year` default
-   - `Month`
+  - `Year` default
+  - `Month`
 - Coloring to the word of Saturday or Sunday: toggle
-   - `true` default
-   - `false`
+  - `true` default
+  - `false`
 - Week number format: select
-   - `US format`
-   - `ISO(EU) format` default
-   - `Japanese format`
+  - `US format`
+  - `ISO(EU) format` default
+  - `Japanese format`
+
 > Week numbers differ between like US format and ISO format(Europe) when transitioning across years.
+
 - Turn on/off relative time: toggle
-   - `true` default
-   - `false`
+  - `true` default
+  - `false`
 - Show the boundaries of 10 days before and after the day on the single journal page: toggle
-   - `true` default
-   - `false`
+  - `true` default
+  - `false`
 
 ## Contributions
 
@@ -83,16 +85,6 @@
 ## Author
 
 - GitHub: [YU000jp](https://github.com/YU000jp)
-
-### My Logseq plugins
-
-- [Show Weekday and Week-number](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number)
-- [Weekdays and Holidays (Templates)](https://github.com/YU000jp/logseq-plugin-weekdays-and-weekends)
-- [Sticky Popup](https://github.com/YU000jp/logseq-plugin-sticky-popup)
-- [SomeMenuExtender](https://github.com/YU000jp/logseq-plugin-some-menu-extender)
-- [Panel Coloring](https://github.com/YU000jp/logseq-plugin-panel-coloring)
-- [Page-tags and Hierarchy](https://github.com/YU000jp/logseq-page-tags-and-hierarchy)
-- [Column Layout](https://github.com/YU000jp/Logseq-column-Layout)
 
 ## Prior art & Credit
 
