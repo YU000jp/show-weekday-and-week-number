@@ -36,7 +36,7 @@
 
 - When this plugin install, the style be applied to journals or the single journal page , the right sidebar.
 
-#### Plugin Settings
+### Plugin Settings
 
 - Select language default(Localize) or en(English): select
   - `default` default
@@ -68,7 +68,12 @@
   - `false`
 - Show the boundaries of 10 days before and after the day on the single journal page: toggle
   - `true` default
+  - `false
+- Use the boundaries also on journals: toggle
+  - `true` default
   - `false`
+
+---
 
 ## Contributions
 
