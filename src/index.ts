@@ -105,9 +105,33 @@ function addExtendedDate(titleElement: HTMLElement) {
   titleElement.appendChild(dateInfoElement);
 }
 
+
 const observer = new MutationObserver(() => {
   titleQuerySelector();
 });
+
+
+function observeElementAppearance(targetElement: HTMLElement, callback: () => void) {
+
+  if (!targetElement) {
+    // 監視対象のDOMエレメントが存在しない場合は終了
+    return;
+  }
+
+  const observer = new MutationObserver((mutationsList, observer) => {
+    for (const mutation of mutationsList) {
+      if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
+        // 特定のDOMエレメントが追加された場合の処理
+        callback();
+
+        // 監視の停止
+        observer.disconnect();
+      }
+    }
+  });
+
+  observer.observe(targetElement, { childList: true, subtree: true });
+}
 
 
 /* main */
@@ -180,11 +204,13 @@ const main = () => {
   }
   ` });
 
+
   observer.observe(parent.document.getElementById("main-content-container") as HTMLDivElement, {
     attributes: true,
     subtree: true,
     attributeFilter: ["class"],
   });
+
 
   logseq.App.onRouteChanged(async ({ template }) => {
     if (logseq.settings?.booleanBoundaries === true && template === '/page/:name') {
@@ -205,13 +231,19 @@ const main = () => {
     }, 200);
   });
 
-  //first load
   if (logseq.settings!.booleanJournalsBoundaries === true) {
-    setTimeout(() => {
+    // 特定の動作を実行するコールバック関数
+    const Callback = () => {
       //div#journals
-      boundaries(false, 'journals');
-    }, 160);
+      setTimeout(() => {
+        boundaries(false, 'journals');
+      }, 200);
+    }
+
+    observeElementAppearance(parent.document.getElementById("main-content-container") as HTMLDivElement, Callback);
   }
+
+
 
   logseq.App.onSidebarVisibleChanged(async ({ visible }) => {
     if (visible === true) {
