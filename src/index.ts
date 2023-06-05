@@ -468,7 +468,7 @@ const settingsTemplate = (ByLanguage: string): SettingSchemaDesc[] => [
   },
   {
     key: "booleanJournalsBoundaries",
-    title: t("Use the boundaries also on the journals page"),
+    title: t("Use the boundaries also on journals"),
     type: "boolean",
     default: true,
     description: "",
