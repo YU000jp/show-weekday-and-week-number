@@ -1,8 +1,9 @@
 import '@logseq/libs'; //https://plugins-doc.logseq.com/
-import { LSPluginBaseInfo, PageEntity, SettingSchemaDesc } from '@logseq/libs/dist/LSPlugin.user';
+import { AppUserConfigs, LSPluginBaseInfo, PageEntity, SettingSchemaDesc } from '@logseq/libs/dist/LSPlugin.user';
 import { setup as l10nSetup, t } from "logseq-l10n"; //https://github.com/sethyuan/logseq-l10n
 import ja from "./translations/ja.json";
 import { getISOWeek, getWeek, getWeekOfMonth, format, addDays, isBefore, isToday, isSunday, isSaturday, getISOWeekYear, getWeekYear } from 'date-fns';
+import { ta } from 'date-fns/locale';
 
 
 function formatRelativeDate(targetDate: Date): string {
@@ -186,16 +187,31 @@ const main = () => {
   });
 
   logseq.App.onRouteChanged(async ({ template }) => {
-    if (logseq.settings?.booleanBoundaries === true && template === '/page/:name') { //journal '/'
+    if (logseq.settings?.booleanBoundaries === true && template === '/page/:name') {
       //page only
       setTimeout(() => {
-        boundaries(false);
+        //div.is-journals
+        boundaries(false, 'is-journals');
+      }, 160);
+    } else if (logseq.settings!.booleanJournalsBoundaries === true && template === '/') {
+      //journals only
+      setTimeout(() => {
+        //div#journals
+        boundaries(false, 'journals');
       }, 160);
     }
     setTimeout(() => {
       titleQuerySelector();
     }, 200);
   });
+
+  //first load
+  if (logseq.settings!.booleanJournalsBoundaries === true) {
+    setTimeout(() => {
+      //div#journals
+      boundaries(false, 'journals');
+    }, 160);
+  }
 
   logseq.App.onSidebarVisibleChanged(async ({ visible }) => {
     if (visible === true) {
@@ -207,11 +223,21 @@ const main = () => {
 
   logseq.onSettingsChanged((newSet: LSPluginBaseInfo['settings'], oldSet: LSPluginBaseInfo['settings']) => {
     if (oldSet.booleanBoundaries === false && newSet.booleanBoundaries === true) {
-      boundaries(false);
+      boundaries(false, 'is-journals');
     } else
       if (oldSet.booleanBoundaries === true && newSet.booleanBoundaries === false) {
         const weekBoundaries = parent.document.getElementById('weekBoundaries');
         if (weekBoundaries) weekBoundaries.remove();
+      }
+    if (oldSet.booleanJournalsBoundaries === false && newSet.booleanJournalsBoundaries === true) {
+      boundaries(false, 'journals');
+    }
+    else
+      if (oldSet.booleanJournalsBoundaries === true && newSet.booleanJournalsBoundaries === false) {
+        if (parent.document.getElementById("journals")) {
+          const weekBoundaries = parent.document.getElementById('weekBoundaries');
+          if (weekBoundaries) weekBoundaries.remove();
+        }
       }
   });
 
@@ -247,24 +273,35 @@ function titleQuerySelector() {
 }
 
 //boundaries
-async function boundaries(lazy: boolean) {
+async function boundaries(lazy: boolean, targetElementName: string) {
 
-  const firstElement: HTMLDivElement = (parent.document.getElementsByClassName('is-journals') as HTMLCollectionOf<HTMLDivElement>)[0];
+  let firstElement: HTMLDivElement;
+  if (targetElementName === 'is-journals') {
+    firstElement = parent.document.getElementsByClassName(targetElementName)[0] as HTMLDivElement;
+  } else if (targetElementName === 'journals') {
+    firstElement = parent.document.getElementById(targetElementName) as HTMLDivElement;
+  } else {
+    return;
+  }
   if (firstElement) {
     let checkWeekBoundaries = parent.document.getElementById('weekBoundaries');
     if (checkWeekBoundaries) checkWeekBoundaries.remove();
     const weekBoundaries: HTMLDivElement = parent.document.createElement('div');
     weekBoundaries.id = 'weekBoundaries';
     firstElement.insertBefore(weekBoundaries, firstElement.firstChild);
-
-    const { journalDay } = await logseq.Editor.getCurrentPage() as PageEntity;
-    if (!journalDay) {
-      console.error('journalDay is undefined');
-      return;
+    let targetDate: Date;
+    if (targetElementName === 'journals') {
+      targetDate = new Date();
+    } else {
+      const { journalDay } = await logseq.Editor.getCurrentPage() as PageEntity;
+      if (!journalDay) {
+        console.error('journalDay is undefined');
+        return;
+      }
+      targetDate = parseDate(getJournalDayFormat(journalDay)) as Date;
     }
-    const targetDate: Date = parseDate(getJournalDayFormat(journalDay));
     const days: number[] = [-5, -4, -3, -2, -1, 0, 1, 2, 3, 4];
-    let { preferredDateFormat } = await logseq.App.getUserConfigs();
+    let { preferredDateFormat } = await logseq.App.getUserConfigs() as AppUserConfigs;
     days.forEach((numDays, index) => {
       let date: Date;
       if (numDays === 0) {
@@ -320,7 +357,7 @@ async function boundaries(lazy: boolean) {
   } else {
     if (lazy === true) return;
     setTimeout(() => {
-      boundaries(true);
+      boundaries(true, targetElementName);
     }
       , 100);
   }
@@ -393,6 +430,13 @@ const settingsTemplate = (ByLanguage: string): SettingSchemaDesc[] => [
   {
     key: "booleanBoundaries",
     title: t("Show the boundaries of 10 days before and after the day on the single journal page"),
+    type: "boolean",
+    default: true,
+    description: "",
+  },
+  {
+    key: "booleanJournalsBoundaries",
+    title: t("Use the boundaries also on the journals page"),
     type: "boolean",
     default: true,
     description: "",
