@@ -8,6 +8,6 @@
     "Select language default(Localize) or en(English)": "言語を選択する (「default」は日本語ローカライズ、「en」は英語)",
     "weekday long or short": "曜日の表示形式 (長い形式または短い形式)",
     "Show the boundaries of 10 days before and after the day on the single journal page": "日付のページを開いたときに、前後の日付にアクセスできるナビゲーションバーを表示する",
-    "Use the boundaries also on the journals page": "日誌(ジャーナル)を開いたときに、前後の日付にアクセスできるナビゲーションバーを表示する",
+    "Use the boundaries also on journals": "日誌(ジャーナル)を開いたときに、前後の日付にアクセスできるナビゲーションバーを表示する",
     "Turn on/off week number": "週番号を表示する"
 }
