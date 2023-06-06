@@ -16,7 +16,7 @@
 
 ## Demo
 
-### Show the boundaries on the single journal page
+### Show the boundaries on the single journal page (or journals)
 
 ![image](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/assets/111847207/b0377701-de51-4b56-b677-3735bbff0188)
 
@@ -68,7 +68,7 @@
   - `false`
 - Show the boundaries of 10 days before and after the day on the single journal page: toggle
   - `true` default
-  - `false
+  - `false`
 - Use the boundaries also on journals: toggle
   - `true` default
   - `false`
