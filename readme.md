@@ -72,7 +72,7 @@
 - Use the boundaries also on journals: toggle
   - `true` default
   - `false`
-- On the journal boundaries if no page found, create the journal page
+- On the journal boundaries if no page found, create the journal page: toggle
   - `true`
   - `false` default
 
