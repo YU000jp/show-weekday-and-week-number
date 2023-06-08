@@ -1,3 +1,15 @@
+# [1.13.0](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.12.1...v1.13.0) (2023-06-08)
+
+
+### Bug Fixes
+
+* **refactor:** [journal boundaries] select day by the journal date ([#41](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/41)) ([f8751af](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/f8751afa1fca459f82ad3d7091deca93ca25a1f5))
+
+
+### Features
+
+* **Add plugin settings:** no page found ([81e6dba](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/81e6dba1ca227641604ee318569a9105a088806f))
+
 ## [1.12.1](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.12.0...v1.12.1) (2023-06-05)
 
 
