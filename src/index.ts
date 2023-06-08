@@ -351,7 +351,7 @@ async function boundaries(lazy: boolean, targetElementName: string) {
         console.error('journalDay is undefined');
         return;
       }
-      targetDate = parseDate(getJournalDayFormat(journalDay)) as Date;
+      targetDate = new Date(getJournalDayFormat(journalDay));
     }
     const days: number[] = [-5, -4, -3, -2, -1, 0, 1, 2, 3, 4];
     let { preferredDateFormat } = await logseq.App.getUserConfigs() as AppUserConfigs;
