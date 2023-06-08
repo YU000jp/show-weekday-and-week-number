@@ -231,6 +231,7 @@ const main = () => {
   });
 
 
+//日付更新時に実行(Journal boundariesのセレクト更新のため)
   logseq.App.onTodayJournalCreated(async () => {
     if (logseq.settings?.booleanBoundaries === true) {
       const weekBoundaries = parent.document.getElementById('weekBoundaries');
@@ -264,7 +265,6 @@ const main = () => {
   }
 
 
-
   logseq.App.onSidebarVisibleChanged(({ visible }) => {
     if (visible === true) {
       setTimeout(() => {
@@ -272,6 +272,7 @@ const main = () => {
       }, 300);
     }
   });
+
 
   logseq.onSettingsChanged((newSet: LSPluginBaseInfo['settings'], oldSet: LSPluginBaseInfo['settings']) => {
     if (oldSet.booleanBoundaries === false && newSet.booleanBoundaries === true) {
