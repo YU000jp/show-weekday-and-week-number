@@ -2,8 +2,7 @@ import '@logseq/libs'; //https://plugins-doc.logseq.com/
 import { AppUserConfigs, LSPluginBaseInfo, PageEntity, SettingSchemaDesc } from '@logseq/libs/dist/LSPlugin.user';
 import { setup as l10nSetup, t } from "logseq-l10n"; //https://github.com/sethyuan/logseq-l10n
 import ja from "./translations/ja.json";
-import { getISOWeek, getWeek, getWeekOfMonth, format, addDays, isBefore, isToday, isSunday, isSaturday, getISOWeekYear, getWeekYear } from 'date-fns';
-import { ta } from 'date-fns/locale';
+import { getISOWeek, getWeek, getWeekOfMonth, format, addDays, isBefore, isToday, isSunday, isSaturday, getISOWeekYear, getWeekYear } from 'date-fns';//https://date-fns.org/
 
 
 function formatRelativeDate(targetDate: Date): string {
@@ -212,7 +211,7 @@ const main = () => {
   });
 
 
-  logseq.App.onRouteChanged(async ({ template }) => {
+  logseq.App.onRouteChanged(({ template }) => {
     if (logseq.settings?.booleanBoundaries === true && template === '/page/:name') {
       //page only
       setTimeout(() => {
@@ -231,6 +230,27 @@ const main = () => {
     }, 200);
   });
 
+
+  logseq.App.onTodayJournalCreated(async () => {
+    if (logseq.settings?.booleanBoundaries === true) {
+      const weekBoundaries = parent.document.getElementById('weekBoundaries');
+      if (weekBoundaries) weekBoundaries.remove();
+      if ((await logseq.Editor.getCurrentPage() as PageEntity | null) !== null) {
+        //page only
+        setTimeout(() => {
+          //div.is-journals
+          boundaries(false, 'is-journals');
+        }, 160);
+      } else {
+        //journals only
+        setTimeout(() => {
+          //div#journals
+          boundaries(false, 'journals');
+        }, 160);
+      }
+    }
+  });
+
   if (logseq.settings!.booleanJournalsBoundaries === true) {
     // 特定の動作を実行するコールバック関数
     const Callback = () => {
@@ -245,7 +265,7 @@ const main = () => {
 
 
 
-  logseq.App.onSidebarVisibleChanged(async ({ visible }) => {
+  logseq.App.onSidebarVisibleChanged(({ visible }) => {
     if (visible === true) {
       setTimeout(() => {
         titleQuerySelector();
@@ -370,15 +390,19 @@ async function boundaries(lazy: boolean, targetElementName: string) {
           dayElement.style.cursor = 'pointer';
           dayElement.addEventListener("click", async (event) => {
             const journalPageName: string = format(date, preferredDateFormat);
-            const { journalDay, uuid } = await logseq.Editor.getPage(journalPageName) as PageEntity;
-            if (journalDay) {
+            const page = await logseq.Editor.getPage(journalPageName) as PageEntity | null;
+            if (page && page.journalDay) {
               if (event.shiftKey) {
-                logseq.Editor.openInRightSidebar(uuid);
+                logseq.Editor.openInRightSidebar(page.uuid);
               } else {
                 logseq.App.pushState('page', { name: journalPageName });
               }
             } else {
-              logseq.UI.showMsg('No page found', 'warming');
+              if (logseq.settings!.noPageFoundCreatePage === true) {
+                logseq.Editor.createPage(journalPageName, undefined, { redirect: true, journal: true });
+              } else {
+                logseq.UI.showMsg('No page found', 'warming');
+              }
             }
           });
         }
@@ -471,6 +495,13 @@ const settingsTemplate = (ByLanguage: string): SettingSchemaDesc[] => [
     title: t("Use the boundaries also on journals"),
     type: "boolean",
     default: true,
+    description: "",
+  },
+  {
+    key: "noPageFoundCreatePage",
+    title: t("On the journal boundaries if no page found, create the journal page"),
+    type: "boolean",
+    default: false,
     description: "",
   },
 ];
