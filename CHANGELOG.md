@@ -1,3 +1,10 @@
+## [1.13.1](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.13.0...v1.13.1) (2023-06-10)
+
+
+### Bug Fixes
+
+* **bug:**  time zone info in the date of current page ([bd8a11d](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/bd8a11dec4bafc135cf3912314075f945f9fc993))
+
 # [1.13.0](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.12.1...v1.13.0) (2023-06-08)
 
 
