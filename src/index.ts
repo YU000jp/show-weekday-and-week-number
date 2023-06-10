@@ -352,6 +352,8 @@ async function boundaries(lazy: boolean, targetElementName: string) {
         return;
       }
       targetDate = new Date(getJournalDayFormat(journalDay));
+      targetDate.setHours(0, 0, 0, 0);//FIX: 0時にセットする。タイムゾーン情報を使わないため
+      console.log(targetDate);
     }
     const days: number[] = [-5, -4, -3, -2, -1, 0, 1, 2, 3, 4];
     let { preferredDateFormat } = await logseq.App.getUserConfigs() as AppUserConfigs;
