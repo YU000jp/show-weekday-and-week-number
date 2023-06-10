@@ -1,4 +1,4 @@
-# Logseq Plugin: Show Weekday and Week-number
+# Logseq Plugin: Show Weekday and Week-number 📆
 
 - Plugin for showing week day and, week-number within the year or month beside journals page titles.
 
