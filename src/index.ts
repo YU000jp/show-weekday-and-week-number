@@ -25,11 +25,11 @@ function formatRelativeDate(targetDate: Date): string {
 }
 
 
-const parseDate = (dateString: string): Date => {
-  const dateRegex = /(\d+)(st|nd|rd|th)/;
-  const modifiedDateString = dateString.replace(dateRegex, "$1").replace(/年|月|日/g, "/");
-  return new Date(modifiedDateString);
-};
+const parseDate = (dateString: string): Date => new Date(dateString.replace(/(\d+)(st|nd|rd|th)/, "$1").replace(/年|月|日/g, "/"));
+
+// 日付オブジェクトが "Invalid Date" でないかを確認します
+// また、日付の値がNaN（非数）でないかも確認します
+const isValidDate = (date: Date): boolean => !isNaN(date.getTime()) && !isNaN(date.valueOf());
 
 //Credit: ottodevs  https://discuss.logseq.com/t/show-week-day-and-week-number/12685/18
 function addExtendedDate(titleElement: HTMLElement) {
@@ -39,8 +39,12 @@ function addExtendedDate(titleElement: HTMLElement) {
   if (existingSpan) return;
 
   // remove ordinal suffixes from date
-  const journalDate = parseDate(titleElement.textContent!);
-  if (!isFinite(Number(journalDate))) return;
+  let journalDate = parseDate(titleElement.textContent!);
+  journalDate.setHours(0, 0, 0, 0);
+  if (!isValidDate(journalDate)) {
+    throw new Error("Invalid date");
+    return;
+  }
 
   // calculate dates
   let dayOfWeekName: string = "";
@@ -111,19 +115,14 @@ const observer = new MutationObserver(() => {
 
 
 function observeElementAppearance(targetElement: HTMLElement, callback: () => void) {
-
-  if (!targetElement) {
-    // 監視対象のDOMエレメントが存在しない場合は終了
-    return;
-  }
+  // 監視対象のDOMエレメントが存在しない場合は終了
+  if (!targetElement) return;
 
   const observer = new MutationObserver((mutationsList, observer) => {
     for (const mutation of mutationsList) {
       if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
         // 特定のDOMエレメントが追加された場合の処理
         callback();
-
-        // 監視の停止
         observer.disconnect();
       }
     }
@@ -150,7 +149,7 @@ const main = () => {
               return "ISO(EU) format";
           }
         };
-        const { preferredLanguage } = await logseq.App.getUserConfigs();
+        const { preferredLanguage } = await logseq.App.getUserConfigs() as AppUserConfigs;
         logseq.useSettingsSchema(settingsTemplate(convertLanguageCodeToCountryCode(preferredLanguage)));
         setTimeout(() => {
           logseq.showSettingsUI();
@@ -231,7 +230,7 @@ const main = () => {
   });
 
 
-//日付更新時に実行(Journal boundariesのセレクト更新のため)
+  //日付更新時に実行(Journal boundariesのセレクト更新のため)
   logseq.App.onTodayJournalCreated(async () => {
     if (logseq.settings?.booleanBoundaries === true) {
       const weekBoundaries = parent.document.getElementById('weekBoundaries');
@@ -275,32 +274,40 @@ const main = () => {
 
 
   logseq.onSettingsChanged((newSet: LSPluginBaseInfo['settings'], oldSet: LSPluginBaseInfo['settings']) => {
-    if (oldSet.booleanBoundaries === false && newSet.booleanBoundaries === true) {
+    if ((oldSet.booleanBoundaries === true && newSet.booleanBoundaries === false) || oldSet.localizeOrEnglish !== newSet.localizeOrEnglish) {
+      removeBoundaries();
+    }
+
+    if ((oldSet.booleanBoundaries === false && newSet.booleanBoundaries === true) || oldSet.localizeOrEnglish !== newSet.localizeOrEnglish) {
       boundaries(false, 'is-journals');
-    } else
-      if (oldSet.booleanBoundaries === true && newSet.booleanBoundaries === false) {
-        const weekBoundaries = parent.document.getElementById('weekBoundaries');
-        if (weekBoundaries) weekBoundaries.remove();
-      }
-    if (oldSet.booleanJournalsBoundaries === false && newSet.booleanJournalsBoundaries === true) {
+    }
+    if ((oldSet.booleanJournalsBoundaries === false && newSet.booleanJournalsBoundaries === true) || oldSet.localizeOrEnglish !== newSet.localizeOrEnglish) {
       boundaries(false, 'journals');
     }
-    else
-      if (oldSet.booleanJournalsBoundaries === true && newSet.booleanJournalsBoundaries === false) {
-        if (parent.document.getElementById("journals")) {
-          const weekBoundaries = parent.document.getElementById('weekBoundaries');
-          if (weekBoundaries) weekBoundaries.remove();
-        }
+    if (oldSet.booleanJournalsBoundaries === true && newSet.booleanJournalsBoundaries === false) {
+      if (parent.document.getElementById("journals") as HTMLDivElement) {
+        removeBoundaries();
       }
+    }
+    if (oldSet.localizeOrEnglish !== newSet.localizeOrEnglish ||
+      oldSet.booleanDayOfWeek !== newSet.booleanDayOfWeek ||
+      oldSet.longOrShort !== newSet.longOrShort ||
+      oldSet.booleanWeekNumber !== newSet.booleanWeekNumber ||
+      oldSet.weekNumberOfTheYearOrMonth !== newSet.weekNumberOfTheYearOrMonth ||
+      oldSet.booleanWeekendsColor !== newSet.booleanWeekendsColor ||
+      oldSet.weekNumberFormat !== newSet.weekNumberFormat ||
+      oldSet.booleanRelativeTime !== newSet.booleanRelativeTime
+    ) {
+      removeTitleQuery();
+      setTimeout(() => {
+        titleQuerySelector();
+      }, 300);
+    }
   });
 
   logseq.beforeunload(async () => {
-    const titleElements = parent.document.querySelectorAll("span.weekday-and-week-number") as NodeListOf<HTMLElement>;
-    titleElements.forEach((titleElement) => {
-      titleElement.remove();
-    });
-    const weekBoundaries = parent.document.getElementById('weekBoundaries') as HTMLDivElement;
-    if (weekBoundaries) weekBoundaries.remove();
+    removeTitleQuery();
+    removeBoundaries();
     observer.disconnect();
   });
 
@@ -318,6 +325,18 @@ const getJournalDayFormat = (journalDayInNumber: number): string => {
   );
 };
 
+
+function removeBoundaries() {
+  const weekBoundaries = parent.document.getElementById('weekBoundaries') as HTMLDivElement;
+  if (weekBoundaries) weekBoundaries.remove();
+}
+
+function removeTitleQuery() {
+  const titleElements = parent.document.querySelectorAll("span.weekday-and-week-number") as NodeListOf<HTMLElement>;
+  titleElements.forEach((titleElement) => {
+    titleElement.remove();
+  });
+}
 
 function titleQuerySelector() {
   parent.document.querySelectorAll("span.title, h1.title, a.page-title").forEach((titleElement) => {
@@ -345,6 +364,7 @@ async function boundaries(lazy: boolean, targetElementName: string) {
     let targetDate: Date;
     if (targetElementName === 'journals') {
       targetDate = new Date();
+      targetDate.setHours(0, 0, 0, 0);//FIX: 0時にセットする。タイムゾーン情報を使わないため
     } else {
       const { journalDay } = await logseq.Editor.getCurrentPage() as PageEntity;
       if (!journalDay) {
@@ -353,7 +373,6 @@ async function boundaries(lazy: boolean, targetElementName: string) {
       }
       targetDate = new Date(getJournalDayFormat(journalDay));
       targetDate.setHours(0, 0, 0, 0);//FIX: 0時にセットする。タイムゾーン情報を使わないため
-      console.log(targetDate);
     }
     const days: number[] = [-5, -4, -3, -2, -1, 0, 1, 2, 3, 4];
     let { preferredDateFormat } = await logseq.App.getUserConfigs() as AppUserConfigs;
@@ -428,7 +447,7 @@ async function boundaries(lazy: boolean, targetElementName: string) {
 const settingsTemplate = (ByLanguage: string): SettingSchemaDesc[] => [
   {
     key: "localizeOrEnglish",
-    title: t("Select language default(Localize) or en(English)"),
+    title: t("Select language Localize(:default) or English(:en)"),
     type: "enum",
     default: "default",
     enumChoices: ["default", "en"],
