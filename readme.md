@@ -16,9 +16,9 @@
 1. ![image](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/assets/111847207/f47b8948-5e7a-4e16-a5ae-6966672742b1)
 1. ![image](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/assets/111847207/ee97c455-714e-45d2-9f9f-905798e298b4)
 
-### Show the boundaries on the single journal page (or journals)
+### Show journal boundaries
 
-![image](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/assets/111847207/b0377701-de51-4b56-b677-3735bbff0188)
+![boundaries](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/assets/111847207/685d00e7-b67d-4ee3-9f8a-25657447a2ea)
 
 ---
 
