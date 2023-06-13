@@ -1,3 +1,15 @@
+# [1.15.0](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.14.0...v1.15.0) (2023-06-13)
+
+
+### Bug Fixes
+
+* **bug:** remove `throw error` ([3d87cc0](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/3d87cc049d10018861d0e0570dc1b630114ba3cc))
+
+
+### Features
+
+* **plugin settings:** After change any setting & refactor ([#44](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/44)) ([a12a783](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/a12a7834a3c6a9642602593cb31a0f7edc51285a))
+
 # [1.14.0](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.13.1...v1.14.0) (2023-06-12)
 
 
