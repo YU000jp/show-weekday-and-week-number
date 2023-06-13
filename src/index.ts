@@ -41,10 +41,7 @@ function addExtendedDate(titleElement: HTMLElement) {
   // remove ordinal suffixes from date
   let journalDate = parseDate(titleElement.textContent!);
   journalDate.setHours(0, 0, 0, 0);
-  if (!isValidDate(journalDate)) {
-    throw new Error("Invalid date");
-    return;
-  }
+  if (!isValidDate(journalDate)) return;
 
   // calculate dates
   let dayOfWeekName: string = "";
