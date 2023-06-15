@@ -311,16 +311,11 @@ const main = () => {
 };/* end_main */
 
 
-const getJournalDayFormat = (journalDayInNumber: number): string => {
-  const journalDay: string = journalDayInNumber.toString();
-  return (
-    journalDay.slice(0, 4) +
-    "-" +
-    journalDay.slice(4, 6) +
-    "-" +
-    journalDay.slice(6)
-  );
-};
+const getJournalDayDate = (str: string): Date => new Date(
+  Number(str.slice(0, 4)), //year
+  Number(str.slice(4, 6)) - 1, //month 0-11
+  Number(str.slice(6)) //day
+);
 
 
 function removeBoundaries() {
@@ -353,7 +348,7 @@ async function boundaries(lazy: boolean, targetElementName: string) {
     return;
   }
   if (firstElement) {
-    let checkWeekBoundaries = parent.document.getElementById('weekBoundaries');
+    const checkWeekBoundaries = parent.document.getElementById('weekBoundaries') as HTMLDivElement;
     if (checkWeekBoundaries) checkWeekBoundaries.remove();
     const weekBoundaries: HTMLDivElement = parent.document.createElement('div');
     weekBoundaries.id = 'weekBoundaries';
@@ -361,15 +356,13 @@ async function boundaries(lazy: boolean, targetElementName: string) {
     let targetDate: Date;
     if (targetElementName === 'journals') {
       targetDate = new Date();
-      targetDate.setHours(0, 0, 0, 0);//FIX: 0時にセットする。タイムゾーン情報を使わないため
     } else {
       const { journalDay } = await logseq.Editor.getCurrentPage() as PageEntity;
       if (!journalDay) {
         console.error('journalDay is undefined');
         return;
       }
-      targetDate = new Date(getJournalDayFormat(journalDay));
-      targetDate.setHours(0, 0, 0, 0);//FIX: 0時にセットする。タイムゾーン情報を使わないため
+      targetDate = getJournalDayDate(String(journalDay)) as Date;
     }
     const days: number[] = [-5, -4, -3, -2, -1, 0, 1, 2, 3, 4];
     let { preferredDateFormat } = await logseq.App.getUserConfigs() as AppUserConfigs;
