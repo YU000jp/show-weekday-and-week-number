@@ -25,7 +25,7 @@ function formatRelativeDate(targetDate: Date): string {
 }
 
 
-const parseDate = (dateString: string): Date => new Date(dateString.replace(/(\d+)(st|nd|rd|th)/, "$1").replace(/年|月|日/g, "/"));
+const parseDate = (dateString: string): Date => new Date(dateString.replace(/(\d+)(st|nd|rd|th)/, "$1").replace(/年|月|日/g, "/")+ " 00:00:00");
 
 // 日付オブジェクトが "Invalid Date" でないかを確認します
 // また、日付の値がNaN（非数）でないかも確認します
@@ -40,7 +40,6 @@ function addExtendedDate(titleElement: HTMLElement) {
 
   // remove ordinal suffixes from date
   let journalDate = parseDate(titleElement.textContent!);
-  journalDate.setHours(0, 0, 0, 0);
   if (!isValidDate(journalDate)) return;
 
   // calculate dates
