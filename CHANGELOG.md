@@ -1,3 +1,10 @@
+## [1.15.1](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.15.0...v1.15.1) (2023-06-15)
+
+
+### Bug Fixes
+
+* **bug:** At Journal Boundaries, the date on that page did not match ([#45](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/45)) ([62dac0a](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/62dac0a5bca76ed2be01156ae8d75869efdfb225))
+
 # [1.15.0](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.14.0...v1.15.0) (2023-06-13)
 
 
