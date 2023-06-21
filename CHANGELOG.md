@@ -1,3 +1,10 @@
+# [1.16.0](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.15.2...v1.16.0) (2023-06-21)
+
+
+### Features
+
+* **Add:** For Weekly Journaling (test) ([f6258dd](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/f6258dddb705593eb02f0dc6822185359a854e52))
+
 ## [1.15.2](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.15.1...v1.15.2) (2023-06-15)
 
 
