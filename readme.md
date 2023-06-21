@@ -75,6 +75,11 @@
 - On the journal boundaries if no page found, create the journal page: toggle
   - `true`
   - `false` default
+- Use Weekly Journal feature: toggle
+  - `true` default
+  - `false`
+- Weekly Journal template name: input
+   - (default is blank)
 
 ---
 
