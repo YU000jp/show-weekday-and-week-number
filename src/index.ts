@@ -207,15 +207,30 @@ async function weeklyJournal(journalDate: Date, weeklyPageName: string, shiftKey
     weekDaysLinks.unshift(String(year));
     //weekDaysLinksの週番号を追加
     weekDaysLinks.push(`${year}-W${String(nextWeekNumber)}`);
-
-    const create = await logseq.Editor.createPage(weeklyPageName, { tags: weekDaysLinks }, { redirect: true, createFirstBlock: true });
+    if (logseq.settings!.weeklyJournalSetPageTag !== "") weekDaysLinks.push(logseq.settings!.weeklyJournalSetPageTag);
+    const create = await logseq.Editor.createPage(weeklyPageName, { tags: weekDaysLinks }, { redirect: true, createFirstBlock: true }) as PageEntity | null;
     if (create) {
       const { uuid } = await logseq.Editor.prependBlockInPage(create.uuid, "") as BlockEntity;
       if (logseq.settings!.weeklyJournalTemplateName !== "") {
         const exist = await logseq.App.existTemplate(logseq.settings!.weeklyJournalTemplateName) as boolean;
-        if (exist){
+        if (exist) {
           await logseq.App.insertTemplate(uuid, logseq.settings!.weeklyJournalTemplateName);
-        }else{
+          const firstUuid = (await logseq.Editor.getPageBlocksTree(create.uuid) as BlockEntity[])[0]!.uuid;
+          if (firstUuid) {
+            await logseq.Editor.editBlock(firstUuid);
+            setTimeout(async function () {
+              logseq.Editor.insertAtEditingCursor(",");//ページプロパティを配列として読み込ませる処理
+              setTimeout(async function () {
+                const tagsProperty = await logseq.Editor.getBlockProperty(firstUuid, "tags") as string[] | null;
+                if (tagsProperty) {
+                  //tagsPropertyの最後に「,」を追加
+                  await logseq.Editor.upsertBlockProperty(firstUuid, "tags", tagsProperty);
+                  logseq.Editor.insertAtEditingCursor(",");//ページプロパティを配列として読み込ませる処理
+                }
+              }, 200);
+            }, 200);
+          }
+        } else {
           logseq.UI.showMsg(`Template "${logseq.settings!.weeklyJournalTemplateName}" does not exist.`, 'warning', { timeout: 2000 });
         }
       }
@@ -642,6 +657,13 @@ const settingsTemplate = (ByLanguage: string): SettingSchemaDesc[] => [
     type: "string",
     default: "",
     description: t("Input the template name (default is blank)"),
+  },
+  {
+    key: "weeklyJournalSetPageTag",
+    title: t("Weekly Journal set page tag (Add to tags property)"),
+    type: "string",
+    default: "",
+    description: t("Input a page name (default is blank)"),
   },
 ];
 

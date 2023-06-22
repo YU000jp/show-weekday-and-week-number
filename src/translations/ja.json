@@ -13,5 +13,7 @@
     "On the journal boundaries if no page found, create the journal page": "ナビゲーションバーの日付をクリックした際に、その日付のページが存在しない場合、ページを作成する(デフォルト: OFF)",
     "Use Weekly Journal feature": "ウィークリージャーナルを有効にする",
     "Weekly Journal template name": "ウィークリージャーナルのテンプレート名",
-    "Input the template name (default is blank)": "デフォルト: 空白"
+    "Input the template name (default is blank)": "デフォルト: 空白",
+    "Weekly Journal set page tag (Add to tags property)": "ウィークリージャーナルのページに設定するタグ (「tags」プロパティに追加)",
+    "Input a page name (default is blank)": "ページ名を入力(1件のみ)。デフォルト: 空白"
 }
