@@ -291,15 +291,19 @@ const main = () => {
     }
   })();
 
+  if (logseq.settings!.titleAlign === "center") parent.document.body.classList.add('show-center');
   logseq.provideStyle({
     key: "main", style: `
   div.is-journals div.ls-page-title {
     display: flex;
     flex-wrap: nowrap;
-    justify-content: space-around;
     align-items: center;
   }
-  div#journals div.journal>div.flex div.content>div.foldable-title>div.flex.items-center {
+  body.show-center div.is-journals div.ls-page-title {
+    justify-content: space-around;
+  }
+  
+  body.show-center div#journals div.journal>div.flex div.content>div.foldable-title>div.flex.items-center {
   justify-content: space-around;
   }
   div.is-journals div.ls-page-title h1.title {
@@ -403,10 +407,14 @@ const main = () => {
 
 
   logseq.onSettingsChanged((newSet: LSPluginBaseInfo['settings'], oldSet: LSPluginBaseInfo['settings']) => {
+    if(oldSet.titleAlign === "center" && newSet.titleAlign !=="center") {
+      parent.document.body.classList!.remove('show-center');
+    }else if(oldSet.titleAlign !=="center" && newSet.titleAlign ==="center"){
+      parent.document.body.classList!.add('show-center');
+    }
     if ((oldSet.booleanBoundaries === true && newSet.booleanBoundaries === false) || oldSet.localizeOrEnglish !== newSet.localizeOrEnglish) {
       removeBoundaries();
     }
-
     if ((oldSet.booleanBoundaries === false && newSet.booleanBoundaries === true) || oldSet.localizeOrEnglish !== newSet.localizeOrEnglish) {
       boundaries(false, 'is-journals');
     } else
@@ -552,10 +560,7 @@ async function boundaries(lazy: boolean, targetElementName: string) {
     });
   } else {
     if (lazy === true) return;
-    setTimeout(() => {
-      boundaries(true, targetElementName);
-    }
-      , 100);
+    setTimeout(() => boundaries(true, targetElementName), 100);
   }
 }
 
@@ -664,6 +669,14 @@ const settingsTemplate = (ByLanguage: string): SettingSchemaDesc[] => [
     type: "string",
     default: "",
     description: t("Input a page name (default is blank)"),
+  },
+  {
+    key: "titleAlign",
+    title: t("Alignment of journal page title"),
+    type: "enum",
+    default: "left",
+    enumChoices: ["left", "center"],
+    description: "",
   },
 ];
 
