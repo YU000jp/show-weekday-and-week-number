@@ -57,11 +57,10 @@
   - `true` default
   - `false`
 - Week number format: select
+  > Week numbers differ between like US format and ISO format(Europe) when transitioning across years.
   - `US format`
   - `ISO(EU) format` default
   - `Japanese format`
-
-> Week numbers differ between like US format and ISO format(Europe) when transitioning across years.
 
 - Turn on/off relative time: toggle
   - `true` default
@@ -76,8 +75,10 @@
   - `true`
   - `false` default
 - Use Weekly Journal feature: toggle
+  > Enable the link and function. If there is no content available on a page with a week number like 2023-W25, a template will be inserted.
   - `true` default
-  - `false`
+  - `false` 
+
 - Weekly Journal template name: input
    - (default is blank)
 
