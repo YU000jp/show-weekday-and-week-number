@@ -12,8 +12,10 @@
     "Turn on/off week number": "週番号を表示する",
     "On the journal boundaries if no page found, create the journal page": "ナビゲーションバーの日付をクリックした際に、その日付のページが存在しない場合、ページを作成する(デフォルト: OFF)",
     "Use Weekly Journal feature": "ウィークリージャーナルを有効にする",
+    "Enable the link and function. If there is no content available on a page with a week number like 2023-W25, a template will be inserted.": "リンクと機能を有効にします。2023-W25のような週番号のページにコンテンツがない場合、テンプレートが挿入されます。",
     "Weekly Journal template name": "ウィークリージャーナルのテンプレート名",
     "Input the template name (default is blank)": "デフォルト: 空白",
     "Weekly Journal set page tag (Add to tags property)": "ウィークリージャーナルのページに設定するタグ (「tags」プロパティに追加)",
-    "Input a page name (default is blank)": "ページ名を入力(1件のみ)。デフォルト: 空白"
+    "Input a page name (default is blank)": "ページ名を入力(1件のみ)。デフォルト: 空白",
+    "Alignment of journal page title": "日誌や日付ページのタイトルの配置"
 }
