@@ -1,3 +1,17 @@
+# [1.17.0](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.16.0...v1.17.0) (2023-06-23)
+
+
+### Bug Fixes
+
+* **bug:** when open whiteboards ([#49](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/49)) ([35f2e27](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/35f2e2773bcc08e276cdb08a6fadd2d7e53b2e33))
+* **plugin settings:** Add `alignment of journal page title` ([#50](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/50)) ([5c14cc7](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/5c14cc76626ac410817ad2309e27ffdb9f42003e))
+
+
+### Features
+
+* **Plugin Settings:** add `Weekly Journal set page tag` ([b501aca](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/b501acac2806597c402424566627be8f4ba4fcdd))
+* **Weekly Journal:** Auto insert the template on the week number page ([#52](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/52)) ([0decb1e](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/0decb1ef45a3c2a403ab6db9b59ebe412a724d97))
+
 # [1.16.0](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.15.2...v1.16.0) (2023-06-21)
 
 
