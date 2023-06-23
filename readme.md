@@ -61,7 +61,6 @@
   - `US format`
   - `ISO(EU) format` default
   - `Japanese format`
-
 - Turn on/off relative time: toggle
   - `true` default
   - `false`
@@ -78,10 +77,13 @@
   > Enable the link and function. If there is no content available on a page with a week number like 2023-W25, a template will be inserted.
   - `true` default
   - `false` 
-
 - Weekly Journal template name: input
    - (default is blank)
-
+- Weekly Journal set page tag (Add to tags property): input
+   - (default is blank)
+- Alignment of journal page title
+   - `left` default
+   - `space-around`
 ---
 
 ## Contributions
