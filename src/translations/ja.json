@@ -1,4 +1,5 @@
 {
+    "Alignment of journal page title": "日誌や日付ページのタイトルの配置",
     "Week number format": "週番号フォーマット",
     "Coloring to the word of Saturday or Sunday": "土曜日と日曜日の文字を青色、赤色にする",
     "Show week number of the year or month (unit)": "週番号の単位(年または月)を変更する",
@@ -17,5 +18,6 @@
     "Input the template name (default is blank)": "デフォルト: 空白",
     "Weekly Journal set page tag (Add to tags property)": "ウィークリージャーナルのページに設定するタグ (「tags」プロパティに追加)",
     "Input a page name (default is blank)": "ページ名を入力(1件のみ)。デフォルト: 空白",
-    "Alignment of journal page title": "日誌や日付ページのタイトルの配置"
+    "Use `This Week` section of Weekly Journal": "ウィークリージャーナルの「This Week」セクションを使用する",
+    "Convert the day of the week in the `This Week` section of Weekly Journal into links.": "ウィークリージャーナルの「This Week」セクションの曜日をリンクに変換する"
 }

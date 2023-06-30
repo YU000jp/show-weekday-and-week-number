@@ -36,7 +36,7 @@ const isValidDate = (date: Date): boolean => !isNaN(date.getTime()) && !isNaN(da
 //Credit: ottodevs  https://discuss.logseq.com/t/show-week-day-and-week-number/12685/18
 
 function addExtendedDate(titleElement: HTMLElement) {
-
+  if (!titleElement.textContent) return;
   // check if element already has date info
   if (titleElement.nextElementSibling?.className === "weekday-and-week-number") return;
 
@@ -55,8 +55,8 @@ function addExtendedDate(titleElement: HTMLElement) {
   //Weekly Journal
 
   if (processing !== true && logseq.settings!.booleanWeeklyJournal === true && titleElement.dataset!.WeeklyJournalChecked as string !== "true") {
-    const match = (titleElement.textContent!).match(/^(\d{4})-W(\d{2})$/);
-    if (match) {
+    const match = (titleElement.textContent!).match(/^(\d{4})-W(\d{2})$/) as RegExpMatchArray;
+    if (match && match[1] !== "" && match[2] !== "") {
       processing = true;
       (async () => {
         {
@@ -67,14 +67,9 @@ function addExtendedDate(titleElement: HTMLElement) {
             //ページタグを設定する
             const year = Number(match[1]);
             const weekNumber = Number(match[2]);
-            let weekDaysLinks: string[];
+            let weekDaysLinks: string[] = [];
             const { preferredDateFormat } = await logseq.App.getUserConfigs() as AppUserConfigs;
-            let weekStartsOn;
-            if (logseq.settings?.weekNumberFormat === "US format") {
-              weekStartsOn = 0;
-            } else {
-              weekStartsOn = 1;
-            }
+            const weekStartsOn = (logseq.settings?.weekNumberFormat === "US format") ? 0 : 1;
             //その週の日付リンクを作成
             let weekStart: Date;
             if (logseq.settings?.weekNumberFormat === "ISO(EU) format") {
@@ -86,38 +81,63 @@ function addExtendedDate(titleElement: HTMLElement) {
               weekStart = addDays(firstDayOfWeek, (weekNumber - 1) * 7);
             }
             const weekEnd: Date = addDays(weekStart, 6);
+            
+            //曜日リンク
             const weekDays: Date[] = eachDayOfInterval({ start: weekStart, end: weekEnd });
-
-            weekDaysLinks = weekDays.map((weekDay) => format(weekDay, preferredDateFormat) as string);
+            const weekDaysLinkArray: string[] = weekDays.map((weekDay) => format(weekDay, preferredDateFormat) as string);
+            const weekdayArray: string[] = weekDays.map((weekDay) => new Intl.DateTimeFormat((logseq.settings?.localizeOrEnglish || "default"), { weekday: logseq.settings?.longOrShort || "long" }).format(weekDay) as string);
 
             //weekStartの前日から週番号を求める(前の週番号を求める)
             const prevWeekStart = subDays(weekStart, 1);
-            let prevWeekNumber: number;
-            if (logseq.settings?.weekNumberFormat === "ISO(EU) format") {
-              prevWeekNumber = getISOWeek(prevWeekStart);
-            } else {
-              prevWeekNumber = getWeek(prevWeekStart, { weekStartsOn });
-            }
+            const prevWeekNumber: number = (logseq.settings?.weekNumberFormat === "ISO(EU) format")
+              ? getISOWeek(prevWeekStart)
+              : getWeek(prevWeekStart, { weekStartsOn });
+
             //次の週番号を求める
             const nextWeekStart = addDays(weekEnd, 1);
-            let nextWeekNumber: number;
-            if (logseq.settings?.weekNumberFormat === "ISO(EU) format") {
-              nextWeekNumber = getISOWeek(nextWeekStart);
-            } else {
-              nextWeekNumber = getWeek(nextWeekStart, { weekStartsOn });
-            }
+            const nextWeekNumber: number = (logseq.settings?.weekNumberFormat === "ISO(EU) format")
+              ? getISOWeek(nextWeekStart)
+              : getWeek(nextWeekStart, { weekStartsOn });
             //年
-            weekDaysLinks.unshift(`${year}-W${String(prevWeekNumber)}`);
+            weekDaysLinks.unshift(`${year}-W${(prevWeekNumber < 10) ? String("0" + prevWeekNumber) : String(prevWeekNumber)}`);
             weekDaysLinks.unshift(String(year));
             //weekDaysLinksの週番号を追加
-            weekDaysLinks.push(`${year}-W${String(nextWeekNumber)}`);
+            weekDaysLinks.push(`${year}-W${(nextWeekNumber < 10) ? String("0" + nextWeekNumber) : String(nextWeekNumber)}`);
             if (logseq.settings!.weeklyJournalSetPageTag !== "") weekDaysLinks.push(logseq.settings!.weeklyJournalSetPageTag);
-            //ページタグとして挿入する処理
-            logseq.Editor.upsertBlockProperty(current[0].uuid, "tags", weekDaysLinks);
-            //テンプレートを挿入
-            WeeklyJournalInsertTemplate((await logseq.Editor.getCurrentPage() as PageEntity), current[0].uuid);
-          }
 
+            //テンプレートを挿入
+            const page = await logseq.Editor.getCurrentPage() as BlockEntity;
+            if (page) {
+
+              const block = await logseq.Editor.insertBlock(current[0].uuid, "", { sibling: true }) as BlockEntity;
+              if (block) {
+                //空白
+                const blank = await logseq.Editor.insertBlock(block.uuid, "", { sibling: true });
+                if (blank) {
+                  //テンプレート
+                  await WeeklyJournalInsertTemplate(blank.uuid, logseq.settings!.weeklyJournalTemplateName).finally(async () => {
+                    if (logseq.settings!.booleanWeeklyJournalThisWeek === true) {
+                      const newBlank = await logseq.Editor.insertBlock(blank.uuid, "", { sibling: true }) as BlockEntity;
+                      if (newBlank) {
+                        //曜日リンク
+                        const thisWeek = await logseq.Editor.insertBlock(newBlank.uuid, "#### This Week", { sibling: true }) as BlockEntity;
+                        if (thisWeek) {
+                          if (!preferredDateFormat.includes("E")) weekDaysLinkArray.forEach(async (weekDayName, index) => {
+                            await logseq.Editor.insertBlock(thisWeek.uuid, `${(logseq.settings!.booleanWeeklyJournalThisWeekLinkWeekday === true) ? `[[${weekdayArray[index]}]]` : weekdayArray[index]} [[${weekDayName}]]\n`);
+                          });
+                        }
+                        //ページタグとして挿入する処理
+                        await logseq.Editor.upsertBlockProperty(current[0].uuid, "tags", weekDaysLinks);
+                        await logseq.Editor.editBlock(current[0].uuid);
+                        setTimeout(() => logseq.Editor.insertAtEditingCursor(","), 200);
+                      }
+                    }
+                  });
+                }
+
+              }
+            }
+          }
         }
       })();
       processing = false;
@@ -133,12 +153,7 @@ function addExtendedDate(titleElement: HTMLElement) {
   if (logseq.settings?.booleanDayOfWeek === true) dayOfWeekName = new Intl.DateTimeFormat((logseq.settings?.localizeOrEnglish || "default"), { weekday: logseq.settings?.longOrShort || "long" }).format(journalDate);
   let printWeekNumber: string;
   let printWeek: string = "";
-  let weekStartsOn;
-  if (logseq.settings?.weekNumberFormat === "US format") {
-    weekStartsOn = 0;
-  } else {
-    weekStartsOn = 1;
-  }
+  const weekStartsOn = (logseq.settings?.weekNumberFormat === "US format") ? 0 : 1;
   if (logseq.settings?.booleanWeekNumber === true) {
     if (logseq.settings?.weekNumberOfTheYearOrMonth === "Year") {
       let forWeeklyJournal = "";
@@ -147,16 +162,15 @@ function addExtendedDate(titleElement: HTMLElement) {
       if (logseq.settings?.weekNumberFormat === "ISO(EU) format") {
         year = getISOWeekYear(journalDate);
         week = getISOWeek(journalDate);
-        printWeekNumber = `${year}-W<strong>${week}</strong>`;
-        forWeeklyJournal = `${year}-W${week}`;
       } else {
         //NOTE: getWeekYear関数は1月1日がその年の第1週の始まりとなる(デフォルト)
         //weekStartsOnは先に指定済み
         year = getWeekYear(journalDate, { weekStartsOn });
         week = getWeek(journalDate, { weekStartsOn });
-        printWeekNumber = `${year}-W<strong>${week}</strong>`;
-        forWeeklyJournal = `${year}-W${week}`;
       }
+      const weekString: string = (week < 10) ? String("0" + week) : String(week);//weekを2文字にする
+      printWeekNumber = `${year}-W<strong>${weekString}</strong>`;
+      forWeeklyJournal = `${year}-W${weekString}`;
       if (logseq.settings.booleanWeeklyJournal === true) {
         const linkId = "weeklyJournal-" + forWeeklyJournal;
         printWeek = `<span title="Week number"><a id="${linkId}">${printWeekNumber}</a></span>`;
@@ -178,11 +192,9 @@ function addExtendedDate(titleElement: HTMLElement) {
       }
     } else {
       // get week numbers of the month
-      if (logseq.settings?.weekNumberFormat === "Japanese format" && logseq.settings?.localizeOrEnglish === "default") {
-        printWeek = `<span title="1か月ごとの週番号">第<strong>${getWeekOfMonth(journalDate, { weekStartsOn })}</strong>週</span>`;
-      } else {
-        printWeek = `<span title="Week number within the month"><strong>W${getWeekOfMonth(journalDate, { weekStartsOn })}</strong><small>/m</small></span>`;
-      }
+      printWeek = (logseq.settings?.weekNumberFormat === "Japanese format" && logseq.settings?.localizeOrEnglish === "default")
+        ? `<span title="1か月ごとの週番号">第<strong>${getWeekOfMonth(journalDate, { weekStartsOn })}</strong>週</span>`
+        : `<span title="Week number within the month"><strong>W${getWeekOfMonth(journalDate, { weekStartsOn })}</strong><small>/m</small></span>`;
     }
   }
 
@@ -256,29 +268,13 @@ async function weeklyJournal(journalDate: Date, weeklyPageName: string, shiftKey
 const observer = new MutationObserver(() => titleQuerySelector());
 
 
-async function WeeklyJournalInsertTemplate(create: PageEntity, blockFirstUuid?: string) {
-  const { uuid } = await logseq.Editor.prependBlockInPage(create.uuid, "") as BlockEntity;
-  if (logseq.settings!.weeklyJournalTemplateName !== "") {
-    const exist = await logseq.App.existTemplate(logseq.settings!.weeklyJournalTemplateName) as boolean;
+async function WeeklyJournalInsertTemplate(uuid: string, templateName: string): Promise<void> {
+  if (templateName !== "") {
+    const exist = await logseq.App.existTemplate(templateName) as boolean;
     if (exist) {
-      await logseq.App.insertTemplate(uuid, logseq.settings!.weeklyJournalTemplateName);
-      const firstUuid = blockFirstUuid || (await logseq.Editor.getPageBlocksTree(create.uuid) as BlockEntity[])[0]!.uuid;
-      if (firstUuid) {
-        await logseq.Editor.editBlock(firstUuid);
-        setTimeout(async function () {
-          logseq.Editor.insertAtEditingCursor(","); //ページプロパティを配列として読み込ませる処理
-          setTimeout(async function () {
-            const tagsProperty = await logseq.Editor.getBlockProperty(firstUuid, "tags") as string | null;
-            if (tagsProperty) {
-              //tagsPropertyの最後に「,」を追加
-              await logseq.Editor.upsertBlockProperty(firstUuid, "tags", tagsProperty);
-              logseq.Editor.insertAtEditingCursor(","); //ページプロパティを配列として読み込ませる処理
-            }
-          }, 200);
-        }, 200);
-      }
+      await logseq.App.insertTemplate(uuid, templateName);
     } else {
-      logseq.UI.showMsg(`Template "${logseq.settings!.weeklyJournalTemplateName}" does not exist.`, 'warning', { timeout: 2000 });
+      logseq.UI.showMsg(`Template "${templateName}" does not exist.`, 'warning', { timeout: 2000 });
     }
   }
   logseq.UI.showMsg('Weekly journal created', 'success', { timeout: 2000 });
@@ -608,6 +604,14 @@ async function boundaries(lazy: boolean, targetElementName: string) {
 // https://logseq.github.io/plugins/types/SettingSchemaDesc.html
 const settingsTemplate = (ByLanguage: string): SettingSchemaDesc[] => [
   {
+    key: "titleAlign",
+    title: t("Alignment of journal page title"),
+    type: "enum",
+    default: "space-around",
+    enumChoices: ["left", "space-around"],
+    description: "",
+  },
+  {
     key: "localizeOrEnglish",
     title: t("Select language Localize(:default) or English(:en)"),
     type: "enum",
@@ -686,7 +690,7 @@ const settingsTemplate = (ByLanguage: string): SettingSchemaDesc[] => [
     title: t("On the journal boundaries if no page found, create the journal page"),
     type: "boolean",
     default: false,
-    description: "",
+    description: "default: `false`",
   },
   {
     key: "booleanWeeklyJournal",
@@ -710,12 +714,18 @@ const settingsTemplate = (ByLanguage: string): SettingSchemaDesc[] => [
     description: t("Input a page name (default is blank)"),
   },
   {
-    key: "titleAlign",
-    title: t("Alignment of journal page title"),
-    type: "enum",
-    default: "left",
-    enumChoices: ["left", "space-around"],
+    key: "booleanWeeklyJournalThisWeek",
+    title: t("Use `This Week` section of Weekly Journal"),
+    type: "boolean",
+    default: true,
     description: "",
+  },
+  {
+    key: "booleanWeeklyJournalThisWeekLinkWeekday",
+    title: t("Convert the day of the week in the `This Week` section of Weekly Journal into links."),
+    type: "boolean",
+    default: false,
+    description: "default: `false`",
   },
 ];
 
