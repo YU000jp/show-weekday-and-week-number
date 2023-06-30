@@ -50,97 +50,14 @@ function addExtendedDate(titleElement: HTMLElement) {
     return;
   }
 
-  //WeeklyJournalのページだった場合
-  let processing: Boolean = false;
-  //Weekly Journal
 
+  let processing: Boolean = false;
+  //Weekly Journalのページだった場合
   if (processing !== true && logseq.settings!.booleanWeeklyJournal === true && titleElement.dataset!.WeeklyJournalChecked as string !== "true") {
     const match = (titleElement.textContent!).match(/^(\d{4})-W(\d{2})$/) as RegExpMatchArray;
     if (match && match[1] !== "" && match[2] !== "") {
       processing = true;
-      (async () => {
-        {
-          titleElement.dataset.WeeklyJournalChecked = "true";
-          const current = await logseq.Editor.getCurrentPageBlocksTree() as BlockEntity[];
-
-          if (current[0].content === "" || !current[1]) {
-            //ページタグを設定する
-            const year = Number(match[1]);
-            const weekNumber = Number(match[2]);
-            let weekDaysLinks: string[] = [];
-            const { preferredDateFormat } = await logseq.App.getUserConfigs() as AppUserConfigs;
-            const weekStartsOn = (logseq.settings?.weekNumberFormat === "US format") ? 0 : 1;
-            //その週の日付リンクを作成
-            let weekStart: Date;
-            if (logseq.settings?.weekNumberFormat === "ISO(EU) format") {
-              const startOfYear = new Date(year, 0, 1, 0, 0, 0, 0);
-              weekStart = startOfISOWeek(addWeeks(startOfYear, weekNumber));
-            } else {
-              const firstDayOfYear = new Date(year, 0, 1, 0, 0, 0, 0);
-              const firstDayOfWeek = startOfWeek(firstDayOfYear, { weekStartsOn });
-              weekStart = addDays(firstDayOfWeek, (weekNumber - 1) * 7);
-            }
-            const weekEnd: Date = addDays(weekStart, 6);
-
-            //曜日リンク
-            const weekDays: Date[] = eachDayOfInterval({ start: weekStart, end: weekEnd });
-            const weekDaysLinkArray: string[] = weekDays.map((weekDay) => format(weekDay, preferredDateFormat) as string);
-            const weekdayArray: string[] = weekDays.map((weekDay) => new Intl.DateTimeFormat((logseq.settings?.localizeOrEnglish || "default"), { weekday: logseq.settings?.longOrShort || "long" }).format(weekDay) as string);
-
-            //weekStartの前日から週番号を求める(前の週番号を求める)
-            const prevWeekStart = subDays(weekStart, 1);
-            const prevWeekNumber: number = (logseq.settings?.weekNumberFormat === "ISO(EU) format")
-              ? getISOWeek(prevWeekStart)
-              : getWeek(prevWeekStart, { weekStartsOn });
-
-            //次の週番号を求める
-            const nextWeekStart = addDays(weekEnd, 1);
-            const nextWeekNumber: number = (logseq.settings?.weekNumberFormat === "ISO(EU) format")
-              ? getISOWeek(nextWeekStart)
-              : getWeek(nextWeekStart, { weekStartsOn });
-            //年
-            weekDaysLinks.unshift(`${year}-W${(prevWeekNumber < 10) ? String("0" + prevWeekNumber) : String(prevWeekNumber)}`);
-            weekDaysLinks.unshift(String(year));
-            //weekDaysLinksの週番号を追加
-            weekDaysLinks.push(`${year}-W${(nextWeekNumber < 10) ? String("0" + nextWeekNumber) : String(nextWeekNumber)}`);
-            if (logseq.settings!.weeklyJournalSetPageTag !== "") weekDaysLinks.push(logseq.settings!.weeklyJournalSetPageTag);
-
-            //テンプレートを挿入
-            const page = await logseq.Editor.getCurrentPage() as BlockEntity;
-            if (page) {
-
-              const block = await logseq.Editor.insertBlock(current[0].uuid, "", { sibling: true }) as BlockEntity;
-              if (block) {
-                //空白
-                const blank = await logseq.Editor.insertBlock(block.uuid, "", { sibling: true });
-                if (blank) {
-                  //テンプレート
-                  await WeeklyJournalInsertTemplate(blank.uuid, logseq.settings!.weeklyJournalTemplateName).finally(async () => {
-
-                    const newBlank = await logseq.Editor.insertBlock(blank.uuid, "", { sibling: true }) as BlockEntity;
-                    if (newBlank) {
-                      if (logseq.settings!.booleanWeeklyJournalThisWeek === true) {
-                        //曜日リンク
-                        const thisWeek = await logseq.Editor.insertBlock(newBlank.uuid, "#### This Week", { sibling: true }) as BlockEntity;
-                        if (thisWeek) {
-                          if (!preferredDateFormat.includes("E")) weekDaysLinkArray.forEach(async (weekDayName, index) => {
-                            await logseq.Editor.insertBlock(thisWeek.uuid, `${(logseq.settings!.booleanWeeklyJournalThisWeekLinkWeekday === true) ? `[[${weekdayArray[index]}]]` : weekdayArray[index]} [[${weekDayName}]]\n`);
-                          });
-                        }
-                      }
-                      //ページタグとして挿入する処理
-                      await logseq.Editor.upsertBlockProperty(current[0].uuid, "tags", weekDaysLinks);
-                      await logseq.Editor.editBlock(current[0].uuid);
-                      setTimeout(() => logseq.Editor.insertAtEditingCursor(","), 200);
-                    }
-                  });
-                }
-
-              }
-            }
-          }
-        }
-      })();
+      currentPageIsWeeklyJournal(titleElement, match);
       processing = false;
     }
   }
@@ -149,7 +66,11 @@ function addExtendedDate(titleElement: HTMLElement) {
   let journalDate = parseDate(titleElement.textContent!);
   if (!isValidDate(journalDate)) return;
 
-  // calculate dates
+  showJournalBoundaries(journalDate, titleElement);
+}
+
+
+function showJournalBoundaries(journalDate: Date, titleElement: HTMLElement) {
   let dayOfWeekName: string = "";
   if (logseq.settings?.booleanDayOfWeek === true) dayOfWeekName = new Intl.DateTimeFormat((logseq.settings?.localizeOrEnglish || "default"), { weekday: logseq.settings?.longOrShort || "long" }).format(journalDate);
   let printWeekNumber: string;
@@ -169,7 +90,7 @@ function addExtendedDate(titleElement: HTMLElement) {
         year = getWeekYear(journalDate, { weekStartsOn });
         week = getWeek(journalDate, { weekStartsOn });
       }
-      const weekString: string = (week < 10) ? String("0" + week) : String(week);//weekを2文字にする
+      const weekString: string = (week < 10) ? String("0" + week) : String(week); //weekを2文字にする
       printWeekNumber = `${year}-W<strong>${weekString}</strong>`;
       forWeeklyJournal = `${year}-W${weekString}`;
       if (logseq.settings.booleanWeeklyJournal === true) {
@@ -182,7 +103,7 @@ function addExtendedDate(titleElement: HTMLElement) {
             element.addEventListener("click", ({ shiftKey }): void => {
               if (processing) return;
               processing = true;
-              weeklyJournal(journalDate, forWeeklyJournal, shiftKey as boolean, weekStartsOn, year, week);
+              weeklyJournal(forWeeklyJournal, shiftKey as boolean);
               processing = false;
               return;
             });
@@ -212,14 +133,14 @@ function addExtendedDate(titleElement: HTMLElement) {
     if (logseq.settings?.booleanWeekendsColor === true &&
       isSaturday(journalDate) === true) {
       dateInfoElement.innerHTML = `<span style="color:var(--ls-wb-stroke-color-blue)">${dayOfWeekName}</span>${printWeek}${relativeTime}`;
-    } else
-      if (logseq.settings?.booleanWeekendsColor === true &&
-        isSunday(journalDate) === true) {
-        dateInfoElement.innerHTML = `<span style="color:var(--ls-wb-stroke-color-red)">${dayOfWeekName}</span>${printWeek}${relativeTime}`;
-      }
-      else {
-        dateInfoElement.innerHTML = `<span>${dayOfWeekName}</span>${printWeek}${relativeTime}`;//textContent
-      }
+    }
+    else if (logseq.settings?.booleanWeekendsColor === true &&
+      isSunday(journalDate) === true) {
+      dateInfoElement.innerHTML = `<span style="color:var(--ls-wb-stroke-color-red)">${dayOfWeekName}</span>${printWeek}${relativeTime}`;
+    }
+    else {
+      dateInfoElement.innerHTML = `<span>${dayOfWeekName}</span>${printWeek}${relativeTime}`; //textContent
+    }
   } else {
     dateInfoElement.innerHTML = `${printWeek}${relativeTime}`;
   }
@@ -251,7 +172,91 @@ function addExtendedDate(titleElement: HTMLElement) {
   }
 }
 
-async function weeklyJournal(journalDate: Date, weeklyPageName: string, shiftKey: boolean, weekStartsOn, year: number, week: number) {
+
+async function currentPageIsWeeklyJournal(titleElement: HTMLElement, match: RegExpMatchArray) {
+  titleElement.dataset.WeeklyJournalChecked = "true";
+  const current = await logseq.Editor.getCurrentPageBlocksTree() as BlockEntity[];
+
+  if (current[0].content === "" || !current[1]) {
+    //ページタグを設定する
+    const year = Number(match[1]);
+    const weekNumber = Number(match[2]);
+    let weekDaysLinks: string[] = [];
+    const { preferredDateFormat } = await logseq.App.getUserConfigs() as AppUserConfigs;
+    const weekStartsOn = (logseq.settings?.weekNumberFormat === "US format") ? 0 : 1;
+    //その週の日付リンクを作成
+    let weekStart: Date;
+    if (logseq.settings?.weekNumberFormat === "ISO(EU) format") {
+      const startOfYear = new Date(year, 0, 1, 0, 0, 0, 0);
+      weekStart = startOfISOWeek(addWeeks(startOfYear, weekNumber));
+    } else {
+      const firstDayOfYear = new Date(year, 0, 1, 0, 0, 0, 0);
+      const firstDayOfWeek = startOfWeek(firstDayOfYear, { weekStartsOn });
+      weekStart = addDays(firstDayOfWeek, (weekNumber - 1) * 7);
+    }
+    const weekEnd: Date = addDays(weekStart, 6);
+
+    //曜日リンク
+    const weekDays: Date[] = eachDayOfInterval({ start: weekStart, end: weekEnd });
+    const weekDaysLinkArray: string[] = weekDays.map((weekDay) => format(weekDay, preferredDateFormat) as string);
+    const weekdayArray: string[] = weekDays.map((weekDay) => new Intl.DateTimeFormat((logseq.settings?.localizeOrEnglish || "default"), { weekday: logseq.settings?.longOrShort || "long" }).format(weekDay) as string);
+
+    //weekStartの前日から週番号を求める(前の週番号を求める)
+    const prevWeekStart = subDays(weekStart, 1);
+    const prevWeekNumber: number = (logseq.settings?.weekNumberFormat === "ISO(EU) format")
+      ? getISOWeek(prevWeekStart)
+      : getWeek(prevWeekStart, { weekStartsOn });
+
+    //次の週番号を求める
+    const nextWeekStart = addDays(weekEnd, 1);
+    const nextWeekNumber: number = (logseq.settings?.weekNumberFormat === "ISO(EU) format")
+      ? getISOWeek(nextWeekStart)
+      : getWeek(nextWeekStart, { weekStartsOn });
+    //年
+    weekDaysLinks.unshift(`${year}-W${(prevWeekNumber < 10) ? String("0" + prevWeekNumber) : String(prevWeekNumber)}`);
+    weekDaysLinks.unshift(String(year));
+    //weekDaysLinksの週番号を追加
+    weekDaysLinks.push(`${year}-W${(nextWeekNumber < 10) ? String("0" + nextWeekNumber) : String(nextWeekNumber)}`);
+    if (logseq.settings!.weeklyJournalSetPageTag !== "") weekDaysLinks.push(logseq.settings!.weeklyJournalSetPageTag);
+
+    //テンプレートを挿入
+    const page = await logseq.Editor.getCurrentPage() as BlockEntity;
+    if (page) {
+
+      const block = await logseq.Editor.insertBlock(current[0].uuid, "", { sibling: true }) as BlockEntity;
+      if (block) {
+        //空白
+        const blank = await logseq.Editor.insertBlock(block.uuid, "", { sibling: true });
+        if (blank) {
+          //テンプレート
+          await weeklyJournalInsertTemplate(blank.uuid, logseq.settings!.weeklyJournalTemplateName).finally(async () => {
+
+            const newBlank = await logseq.Editor.insertBlock(blank.uuid, "", { sibling: true }) as BlockEntity;
+            if (newBlank) {
+              if (logseq.settings!.booleanWeeklyJournalThisWeek === true) {
+                //曜日リンク
+                const thisWeek = await logseq.Editor.insertBlock(newBlank.uuid, "#### This Week", { sibling: true }) as BlockEntity;
+                if (thisWeek) {
+                  if (!preferredDateFormat.includes("E")) weekDaysLinkArray.forEach(async (weekDayName, index) => {
+                    await logseq.Editor.insertBlock(thisWeek.uuid, `${(logseq.settings!.booleanWeeklyJournalThisWeekLinkWeekday === true) ? `[[${weekdayArray[index]}]]` : weekdayArray[index]} [[${weekDayName}]]\n`);
+                  });
+                }
+              }
+              //ページタグとして挿入する処理
+              await logseq.Editor.upsertBlockProperty(current[0].uuid, "tags", weekDaysLinks);
+              await logseq.Editor.editBlock(current[0].uuid);
+              setTimeout(() => logseq.Editor.insertAtEditingCursor(","), 200);
+            }
+          });
+        }
+
+      }
+    }
+  }
+}
+
+
+async function weeklyJournal(weeklyPageName: string, shiftKey: boolean) {
   const page = await logseq.Editor.getPage(weeklyPageName) as PageEntity | null;
   if (page) {
     if (shiftKey) {
@@ -269,7 +274,7 @@ async function weeklyJournal(journalDate: Date, weeklyPageName: string, shiftKey
 const observer = new MutationObserver(() => titleQuerySelector());
 
 
-async function WeeklyJournalInsertTemplate(uuid: string, templateName: string): Promise<void> {
+async function weeklyJournalInsertTemplate(uuid: string, templateName: string): Promise<void> {
   if (templateName !== "") {
     const exist = await logseq.App.existTemplate(templateName) as boolean;
     if (exist) {
