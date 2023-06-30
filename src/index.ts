@@ -81,7 +81,7 @@ function addExtendedDate(titleElement: HTMLElement) {
               weekStart = addDays(firstDayOfWeek, (weekNumber - 1) * 7);
             }
             const weekEnd: Date = addDays(weekStart, 6);
-            
+
             //曜日リンク
             const weekDays: Date[] = eachDayOfInterval({ start: weekStart, end: weekEnd });
             const weekDaysLinkArray: string[] = weekDays.map((weekDay) => format(weekDay, preferredDateFormat) as string);
@@ -116,9 +116,10 @@ function addExtendedDate(titleElement: HTMLElement) {
                 if (blank) {
                   //テンプレート
                   await WeeklyJournalInsertTemplate(blank.uuid, logseq.settings!.weeklyJournalTemplateName).finally(async () => {
-                    if (logseq.settings!.booleanWeeklyJournalThisWeek === true) {
-                      const newBlank = await logseq.Editor.insertBlock(blank.uuid, "", { sibling: true }) as BlockEntity;
-                      if (newBlank) {
+
+                    const newBlank = await logseq.Editor.insertBlock(blank.uuid, "", { sibling: true }) as BlockEntity;
+                    if (newBlank) {
+                      if (logseq.settings!.booleanWeeklyJournalThisWeek === true) {
                         //曜日リンク
                         const thisWeek = await logseq.Editor.insertBlock(newBlank.uuid, "#### This Week", { sibling: true }) as BlockEntity;
                         if (thisWeek) {
@@ -126,11 +127,11 @@ function addExtendedDate(titleElement: HTMLElement) {
                             await logseq.Editor.insertBlock(thisWeek.uuid, `${(logseq.settings!.booleanWeeklyJournalThisWeekLinkWeekday === true) ? `[[${weekdayArray[index]}]]` : weekdayArray[index]} [[${weekDayName}]]\n`);
                           });
                         }
-                        //ページタグとして挿入する処理
-                        await logseq.Editor.upsertBlockProperty(current[0].uuid, "tags", weekDaysLinks);
-                        await logseq.Editor.editBlock(current[0].uuid);
-                        setTimeout(() => logseq.Editor.insertAtEditingCursor(","), 200);
                       }
+                      //ページタグとして挿入する処理
+                      await logseq.Editor.upsertBlockProperty(current[0].uuid, "tags", weekDaysLinks);
+                      await logseq.Editor.editBlock(current[0].uuid);
+                      setTimeout(() => logseq.Editor.insertAtEditingCursor(","), 200);
                     }
                   });
                 }
