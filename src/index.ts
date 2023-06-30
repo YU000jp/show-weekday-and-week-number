@@ -81,10 +81,10 @@ function addExtendedDate(titleElement: HTMLElement) {
               weekStart = addDays(firstDayOfWeek, (weekNumber - 1) * 7);
             }
             const weekEnd: Date = addDays(weekStart, 6);
-            const weekDays: Date[] = eachDayOfInterval({ start: weekStart, end: weekEnd });
+            
             //曜日リンク
+            const weekDays: Date[] = eachDayOfInterval({ start: weekStart, end: weekEnd });
             const weekDaysLinkArray: string[] = weekDays.map((weekDay) => format(weekDay, preferredDateFormat) as string);
-            //曜日名
             const weekdayArray: string[] = weekDays.map((weekDay) => new Intl.DateTimeFormat((logseq.settings?.localizeOrEnglish || "default"), { weekday: logseq.settings?.longOrShort || "long" }).format(weekDay) as string);
 
             //weekStartの前日から週番号を求める(前の週番号を求める)
@@ -116,19 +116,21 @@ function addExtendedDate(titleElement: HTMLElement) {
                 if (blank) {
                   //テンプレート
                   await WeeklyJournalInsertTemplate(blank.uuid, logseq.settings!.weeklyJournalTemplateName).finally(async () => {
-                    const newBlank = await logseq.Editor.insertBlock(blank.uuid, "", { sibling: true }) as BlockEntity;
-                    if (newBlank) {
-                      //曜日リンク
-                      const thisWeek = await logseq.Editor.insertBlock(newBlank.uuid, "#### This Week", { sibling: true }) as BlockEntity;
-                      if (thisWeek) {
-                        if (!preferredDateFormat.includes("E")) weekDaysLinkArray.forEach(async (weekDayName, index) => {
-                          await logseq.Editor.insertBlock(thisWeek.uuid, `${weekdayArray[index]} [[${weekDayName}]]\n`);
-                        });
+                    if (logseq.settings!.booleanWeeklyJournalThisWeek === true) {
+                      const newBlank = await logseq.Editor.insertBlock(blank.uuid, "", { sibling: true }) as BlockEntity;
+                      if (newBlank) {
+                        //曜日リンク
+                        const thisWeek = await logseq.Editor.insertBlock(newBlank.uuid, "#### This Week", { sibling: true }) as BlockEntity;
+                        if (thisWeek) {
+                          if (!preferredDateFormat.includes("E")) weekDaysLinkArray.forEach(async (weekDayName, index) => {
+                            await logseq.Editor.insertBlock(thisWeek.uuid, `${(logseq.settings!.booleanWeeklyJournalThisWeekLinkWeekday === true) ? `[[${weekdayArray[index]}]]` : weekdayArray[index]} [[${weekDayName}]]\n`);
+                          });
+                        }
+                        //ページタグとして挿入する処理
+                        await logseq.Editor.upsertBlockProperty(current[0].uuid, "tags", weekDaysLinks);
+                        await logseq.Editor.editBlock(current[0].uuid);
+                        setTimeout(() => logseq.Editor.insertAtEditingCursor(","), 200);
                       }
-                      //ページタグとして挿入する処理
-                      await logseq.Editor.upsertBlockProperty(current[0].uuid, "tags", weekDaysLinks);
-                      await logseq.Editor.editBlock(current[0].uuid);
-                      setTimeout(() => logseq.Editor.insertAtEditingCursor(","), 200);
                     }
                   });
                 }
@@ -602,6 +604,14 @@ async function boundaries(lazy: boolean, targetElementName: string) {
 // https://logseq.github.io/plugins/types/SettingSchemaDesc.html
 const settingsTemplate = (ByLanguage: string): SettingSchemaDesc[] => [
   {
+    key: "titleAlign",
+    title: t("Alignment of journal page title"),
+    type: "enum",
+    default: "space-around",
+    enumChoices: ["left", "space-around"],
+    description: "",
+  },
+  {
     key: "localizeOrEnglish",
     title: t("Select language Localize(:default) or English(:en)"),
     type: "enum",
@@ -680,7 +690,7 @@ const settingsTemplate = (ByLanguage: string): SettingSchemaDesc[] => [
     title: t("On the journal boundaries if no page found, create the journal page"),
     type: "boolean",
     default: false,
-    description: "",
+    description: "default: `false`",
   },
   {
     key: "booleanWeeklyJournal",
@@ -704,12 +714,18 @@ const settingsTemplate = (ByLanguage: string): SettingSchemaDesc[] => [
     description: t("Input a page name (default is blank)"),
   },
   {
-    key: "titleAlign",
-    title: t("Alignment of journal page title"),
-    type: "enum",
-    default: "left",
-    enumChoices: ["left", "space-around"],
+    key: "booleanWeeklyJournalThisWeek",
+    title: t("Use `This Week` section of Weekly Journal"),
+    type: "boolean",
+    default: true,
     description: "",
+  },
+  {
+    key: "booleanWeeklyJournalThisWeekLinkWeekday",
+    title: t("Convert the day of the week in the `This Week` section of Weekly Journal into links."),
+    type: "boolean",
+    default: false,
+    description: "default: `false`",
   },
 ];
 
