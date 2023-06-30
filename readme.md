@@ -84,10 +84,10 @@
   - default: blank
 - Weekly Journal set page tag (Add to tags property): input
   - default: blank
-- Use `This Week` section of Weekly Journal
+- Use "This Week" section of Weekly Journal
   - `true` default
   - `false`
-- Convert the day of the week in the `This Week` section of Weekly Journal into links.
+- Convert the day of the week in the "This Week" section of Weekly Journal into links.
   - `true`
   - `false` default
 
