@@ -38,6 +38,9 @@
 
 ### Plugin Settings
 
+- Alignment of journal page title
+  - `left` default
+  - `space-around`
 - Select language default(Localize) or en(English): select
   - `default` default
   - `en`
@@ -76,14 +79,18 @@
 - Use Weekly Journal feature: toggle
   > Enable the link and function. If there is no content available on a page with a week number like 2023-W25, a template will be inserted.
   - `true` default
-  - `false` 
+  - `false`
 - Weekly Journal template name: input
-   - (default is blank)
+  - default: blank
 - Weekly Journal set page tag (Add to tags property): input
-   - (default is blank)
-- Alignment of journal page title
-   - `left` default
-   - `space-around`
+  - default: blank
+- Use `This Week` section of Weekly Journal
+  - `true` default
+  - `false`
+- Convert the day of the week in the `This Week` section of Weekly Journal into links.
+  - `true`
+  - `false` default
+
 ---
 
 ## Contributions
