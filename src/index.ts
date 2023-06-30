@@ -2,7 +2,7 @@ import '@logseq/libs'; //https://plugins-doc.logseq.com/
 import { AppUserConfigs, BlockEntity, LSPluginBaseInfo, PageEntity, SettingSchemaDesc } from '@logseq/libs/dist/LSPlugin.user';
 import { setup as l10nSetup, t } from "logseq-l10n"; //https://github.com/sethyuan/logseq-l10n
 import ja from "./translations/ja.json";
-import { getISOWeek, getWeek, getWeekOfMonth, format, addDays, isBefore, isToday, isSunday, isSaturday, getISOWeekYear, getWeekYear, startOfWeek, endOfWeek, eachDayOfInterval, startOfISOWeek, endOfISOWeek, subDays, addWeeks } from 'date-fns';//https://date-fns.org/
+import { getISOWeek, getWeek, getWeekOfMonth, format, addDays, isBefore, isToday, isSunday, isSaturday, getISOWeekYear, getWeekYear, startOfWeek, eachDayOfInterval, startOfISOWeek, endOfISOWeek, subDays, addWeeks } from 'date-fns';//https://date-fns.org/
 
 
 function formatRelativeDate(targetDate: Date): string {
@@ -64,13 +64,27 @@ function addExtendedDate(titleElement: HTMLElement) {
 
   // remove ordinal suffixes from date
   let journalDate = parseDate(titleElement.textContent!);
-  if (!isValidDate(journalDate)) return;
+  if (!isValidDate(journalDate)) {
+    //「2023-06-30 Friday」(曜日名)というタイトルのページがあると、journalDateがInvalid Dateにならない
+    const match = titleElement.textContent!.match(/(\d{4})-(\d{2})-(\d{2})\s(.*)/) as RegExpMatchArray;
+    if (match && match[1] !== "" && match[2] !== "" && match[3] !== "") {
+      const matchDate = match[1] + "-" + match[2] + "-" + match[3];
+      journalDate = parseDate(matchDate);
+      if (isValidDate(journalDate)) {
+        titleElement.textContent = matchDate;
+      } else {
+        return;
+      }
+    } else {
+      return;
+    }
+  }
 
-  showJournalBoundaries(journalDate, titleElement);
+  showAtJournal(journalDate, titleElement);
 }
 
 
-function showJournalBoundaries(journalDate: Date, titleElement: HTMLElement) {
+function showAtJournal(journalDate: Date, titleElement: HTMLElement) {
   let dayOfWeekName: string = "";
   if (logseq.settings?.booleanDayOfWeek === true) dayOfWeekName = new Intl.DateTimeFormat((logseq.settings?.localizeOrEnglish || "default"), { weekday: logseq.settings?.longOrShort || "long" }).format(journalDate);
   let printWeekNumber: string;
@@ -103,7 +117,7 @@ function showJournalBoundaries(journalDate: Date, titleElement: HTMLElement) {
             element.addEventListener("click", ({ shiftKey }): void => {
               if (processing) return;
               processing = true;
-              weeklyJournal(forWeeklyJournal, shiftKey as boolean);
+              openPageWeeklyJournal(forWeeklyJournal, shiftKey as boolean);
               processing = false;
               return;
             });
@@ -256,7 +270,7 @@ async function currentPageIsWeeklyJournal(titleElement: HTMLElement, match: RegE
 }
 
 
-async function weeklyJournal(weeklyPageName: string, shiftKey: boolean) {
+async function openPageWeeklyJournal(weeklyPageName: string, shiftKey: boolean) {
   const page = await logseq.Editor.getPage(weeklyPageName) as PageEntity | null;
   if (page) {
     if (shiftKey) {
