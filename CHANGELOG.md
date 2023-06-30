@@ -1,3 +1,10 @@
+# [1.18.0](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.17.0...v1.18.0) (2023-06-30)
+
+
+### Features
+
+* **Weekly Journal:** This Week (link to journal) ([#56](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/56)) ([2168019](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/2168019a839eec847637be65f6fb64d0914ecbff))
+
 # [1.17.0](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.16.0...v1.17.0) (2023-06-23)
 
 
