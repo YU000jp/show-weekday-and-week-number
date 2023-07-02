@@ -41,7 +41,7 @@
 - Alignment of journal page title
   - `left` default
   - `space-around`
-- Select language default(Localize) or en(English): select
+- Select language Localize(:default) or English(:en): select
   - `default` default
   - `en`
 - Turn on/off the day of week: toggle
@@ -67,13 +67,29 @@
 - Turn on/off relative time: toggle
   - `true` default
   - `false`
-- Show the boundaries of 10 days before and after the day on the single journal page: toggle
+- Show the boundaries of days before and after the day on the single journal page: toggle
   - `true` default
   - `false`
 - Use the boundaries also on journals: toggle
   - `true` default
   - `false`
-- On the journal boundaries if no page found, create the journal page: toggle
+- The boundaries 2 week mode (only journals) [#58](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/58)
+  - `true`
+  - `false` default
+- The boundaries custom day range: before today (Excludes 2 week mode)  [#58](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/58)
+  - `11`
+  - `10`
+  - `9`
+  - `8`
+  - `7`
+  - `6` default
+  - `5`
+- The boundaries custom day range: after today (Excludes 2 week mode)  [#58](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/58)
+  - `3`
+  - `4` default
+  - `5`
+  - `6`
+- On the boundaries if no page found, create the journal page: toggle
   - `true`
   - `false` default
 - Use Weekly Journal feature: toggle
@@ -96,8 +112,8 @@
 ## Contributions
 
 - [Show week day and week number - discuss.logseq.com](https://discuss.logseq.com/t/show-week-day-and-week-number/12685/18)
-   - [danilofaria](https://discuss.logseq.com/u/danilofaria/)
-   - [ottodevs](https://discuss.logseq.com/u/ottodevs/)
+  - [danilofaria](https://discuss.logseq.com/u/danilofaria/)
+  - [ottodevs](https://discuss.logseq.com/u/ottodevs/)
 
 ## Showcase / Questions / Ideas / Help
 

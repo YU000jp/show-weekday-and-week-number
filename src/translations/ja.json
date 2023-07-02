@@ -6,12 +6,12 @@
     "Turn on/off day of the week": "曜日を表示する",
     "Turn on/off relative time": "相対時間を表示する",
     "like `3 days ago`": "例: 昨日、3日前",
-    "Select language Localize(:default) or English(en)": "言語を選択する (「default」は日本語ローカライズ、「en」は英語)",
+    "Select language Localize(:default) or English(:en)": "言語を選択する (「default」は日本語ローカライズ、「en」は英語)",
     "weekday long or short": "曜日の表示形式 (長い形式または短い形式)",
-    "Show the boundaries of 10 days before and after the day on the single journal page": "日付のページを開いたときに、前後の日付にアクセスできるナビゲーションバーを表示する",
+    "Show the boundaries of days before and after the day on the single journal page": "日付のページを開いたときに、前後の日付にアクセスできるナビゲーションバーを表示する",
     "Use the boundaries also on journals": "日誌(ジャーナル)を開いたときに、前後の日付にアクセスできるナビゲーションバーを表示する",
     "Turn on/off week number": "週番号を表示する",
-    "On the journal boundaries if no page found, create the journal page": "ナビゲーションバーの日付をクリックした際に、その日付のページが存在しない場合、ページを作成する(デフォルト: OFF)",
+    "On the boundaries if no page found, create the journal page": "ナビゲーションバーの日付をクリックした際に、その日付のページが存在しない場合、ページを作成する(デフォルト: OFF)",
     "Use Weekly Journal feature": "ウィークリージャーナルを有効にする",
     "Enable the link and function. If there is no content available on a page with a week number like 2023-W25, a template will be inserted.": "リンクと機能を有効にします。2023-W25のような週番号のページにコンテンツがない場合、テンプレートが挿入されます。",
     "Weekly Journal template name": "ウィークリージャーナルのテンプレート名",
@@ -19,5 +19,8 @@
     "Weekly Journal set page tag (Add to tags property)": "ウィークリージャーナルのページに設定するタグ (「tags」プロパティに追加)",
     "Input a page name (default is blank)": "ページ名を入力(1件のみ)。デフォルト: 空白",
     "Use `This Week` section of Weekly Journal": "ウィークリージャーナルの「This Week」セクションを使用する",
-    "Convert the day of the week in the `This Week` section of Weekly Journal into links.": "ウィークリージャーナルの「This Week」セクションの曜日をリンクに変換する"
+    "Convert the day of the week in the `This Week` section of Weekly Journal into links.": "ウィークリージャーナルの「This Week」セクションの曜日をリンクに変換する",
+    "The boundaries 2 week mode (only journals)": "ナビゲーションバーの日付範囲: 2週間モード",
+    "The boundaries custom day range: after today (Excludes 2 week mode)": "ナビゲーションバーの日付範囲: 今日より前の後の日数",
+    "The boundaries custom day range: before today (Excludes 2 week mode)": "ナビゲーションバーの日付範囲: 今日より前の日数"
 }
