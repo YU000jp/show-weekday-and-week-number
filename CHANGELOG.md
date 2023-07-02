@@ -1,3 +1,11 @@
+## [1.19.2](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.19.1...v1.19.2) (2023-07-02)
+
+
+### Bug Fixes
+
+* **bug:** Revised formula for calculating week numbers across years in the Weekly Journal. ([31d5464](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/31d5464292b6dbe2ef5bef160a836beba7fa673d))
+* **bug:** Revised formula for calculating week numbers across years in the Weekly Journal. ([0171b65](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/0171b65962dcbe09055efb985edfe97838554db7))
+
 ## [1.19.1](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.19.0...v1.19.1) (2023-07-02)
 
 
