@@ -2,7 +2,7 @@ import '@logseq/libs'; //https://plugins-doc.logseq.com/
 import { AppUserConfigs, BlockEntity, LSPluginBaseInfo, PageEntity, SettingSchemaDesc } from '@logseq/libs/dist/LSPlugin.user';
 import { setup as l10nSetup, t } from "logseq-l10n"; //https://github.com/sethyuan/logseq-l10n
 import ja from "./translations/ja.json";
-import { getISOWeek, getWeek, getWeekOfMonth, format, addDays, isBefore, isToday, isSunday, isSaturday, getISOWeekYear, getWeekYear, startOfWeek, eachDayOfInterval, startOfISOWeek, subDays, addWeeks, isThisWeek, isThisISOWeek } from 'date-fns';//https://date-fns.org/
+import { getISOWeek, getWeek, getWeekOfMonth, format, addDays, isBefore, isToday, isSunday, isSaturday, getISOWeekYear, getWeekYear, startOfWeek, eachDayOfInterval, startOfISOWeek, subDays, addWeeks, isThisWeek, isThisISOWeek, subWeeks } from 'date-fns';//https://date-fns.org/
 import { is } from 'date-fns/locale';
 
 
@@ -408,8 +408,9 @@ async function currentPageIsWeeklyJournal(titleElement: HTMLElement, match: RegE
     //その週の日付リンクを作成
     let weekStart: Date;
     if (logseq.settings?.weekNumberFormat === "ISO(EU) format") {
-      const startOfYear = new Date(year, 0, 1, 0, 0, 0, 0);
-      weekStart = startOfISOWeek(addWeeks(startOfYear, weekNumber));
+      const firstDayOfYear = new Date(year, 0, 1, 0, 0, 0, 0);
+      const firstDayOfWeek = startOfISOWeek(firstDayOfYear);
+      weekStart = addDays(firstDayOfWeek, (weekNumber - 1) * 7);
     } else {
       const firstDayOfYear = new Date(year, 0, 1, 0, 0, 0, 0);
       const firstDayOfWeek = startOfWeek(firstDayOfYear, { weekStartsOn });
@@ -423,21 +424,23 @@ async function currentPageIsWeeklyJournal(titleElement: HTMLElement, match: RegE
     const weekdayArray: string[] = weekDays.map((weekDay) => new Intl.DateTimeFormat((logseq.settings?.localizeOrEnglish || "default"), { weekday: logseq.settings?.longOrShort || "long" }).format(weekDay) as string);
 
     //weekStartの前日から週番号を求める(前の週番号を求める)
-    const prevWeekStart = subDays(weekStart, 1);
+    const prevWeekStart = subWeeks(weekStart, 1);
     const prevWeekNumber: number = (logseq.settings?.weekNumberFormat === "ISO(EU) format")
       ? getISOWeek(prevWeekStart)
       : getWeek(prevWeekStart, { weekStartsOn });
 
     //次の週番号を求める
-    const nextWeekStart = addDays(weekEnd, 1);
+    const nextWeekStart = addWeeks(weekEnd, 1);
     const nextWeekNumber: number = (logseq.settings?.weekNumberFormat === "ISO(EU) format")
       ? getISOWeek(nextWeekStart)
       : getWeek(nextWeekStart, { weekStartsOn });
     //年
-    weekDaysLinks.unshift(`${year}-W${(prevWeekNumber < 10) ? String("0" + prevWeekNumber) : String(prevWeekNumber)}`);
+    const printPrevYear = (logseq.settings?.weekNumberFormat === "ISO(EU) format") ? getISOWeekYear(prevWeekStart) : getWeekYear(prevWeekStart, { weekStartsOn });
+    weekDaysLinks.unshift(`${printPrevYear}-W${(prevWeekNumber < 10) ? String("0" + prevWeekNumber) : String(prevWeekNumber)}`);
     weekDaysLinks.unshift(String(year));
     //weekDaysLinksの週番号を追加
-    weekDaysLinks.push(`${year}-W${(nextWeekNumber < 10) ? String("0" + nextWeekNumber) : String(nextWeekNumber)}`);
+    const printNextYear = (logseq.settings?.weekNumberFormat === "ISO(EU) format") ? getISOWeekYear(nextWeekStart) : getWeekYear(nextWeekStart, { weekStartsOn });
+    weekDaysLinks.push(`${printNextYear}-W${(nextWeekNumber < 10) ? String("0" + nextWeekNumber) : String(nextWeekNumber)}`);
     if (logseq.settings!.weeklyJournalSetPageTag !== "") weekDaysLinks.push(logseq.settings!.weeklyJournalSetPageTag);
 
     //テンプレートを挿入
@@ -763,7 +766,7 @@ const settingsTemplate = (ByLanguage: string): SettingSchemaDesc[] => [
     default: true,
     description: "",
   },
-  
+
   {
     //Journal Boundaries 当日より前の日付を決める
     key: "journalBoundariesBeforeToday",
