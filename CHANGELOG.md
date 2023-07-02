@@ -1,3 +1,10 @@
+# [1.19.0](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.18.1...v1.19.0) (2023-07-02)
+
+
+### Features
+
+* **Update:** Journal Boundaries date range and 2week mode ([#59](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/59)) ([15e447c](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/15e447ceb3c1288c125a031ed6e3e5afe7f573c9))
+
 ## [1.18.1](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.18.0...v1.18.1) (2023-06-30)
 
 
