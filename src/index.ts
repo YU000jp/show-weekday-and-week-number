@@ -4,6 +4,7 @@ import { setup as l10nSetup, t } from "logseq-l10n"; //https://github.com/sethyu
 import ja from "./translations/ja.json";
 import { getISOWeek, getWeek, getWeekOfMonth, format, addDays, isBefore, isToday, isSunday, isSaturday, getISOWeekYear, getWeekYear, startOfWeek, eachDayOfInterval, startOfISOWeek, subDays, addWeeks, isThisWeek, isThisISOWeek, subWeeks } from 'date-fns';//https://date-fns.org/
 import { is } from 'date-fns/locale';
+import { start } from 'repl';
 
 
 /* main */
@@ -408,9 +409,13 @@ async function currentPageIsWeeklyJournal(titleElement: HTMLElement, match: RegE
     //その週の日付リンクを作成
     let weekStart: Date;
     if (logseq.settings?.weekNumberFormat === "ISO(EU) format") {
-      const firstDayOfYear = new Date(year, 0, 1, 0, 0, 0, 0);
-      const firstDayOfWeek = startOfISOWeek(firstDayOfYear);
-      weekStart = addDays(firstDayOfWeek, (weekNumber - 1) * 7);
+      const firstDayOfWeek = startOfISOWeek(new Date(year, 0, 1, 0, 0, 0, 0));
+      const yearOfFirstDay = getISOWeekYear(firstDayOfWeek);
+      weekStart = (weekNumber === 1)
+        ? firstDayOfWeek
+        : (yearOfFirstDay === year)
+          ? addDays(firstDayOfWeek, (weekNumber - 1) * 7)
+          : addDays(firstDayOfWeek, weekNumber * 7);
     } else {
       const firstDayOfYear = new Date(year, 0, 1, 0, 0, 0, 0);
       const firstDayOfWeek = startOfWeek(firstDayOfYear, { weekStartsOn });
@@ -424,13 +429,13 @@ async function currentPageIsWeeklyJournal(titleElement: HTMLElement, match: RegE
     const weekdayArray: string[] = weekDays.map((weekDay) => new Intl.DateTimeFormat((logseq.settings?.localizeOrEnglish || "default"), { weekday: logseq.settings?.longOrShort || "long" }).format(weekDay) as string);
 
     //weekStartの前日から週番号を求める(前の週番号を求める)
-    const prevWeekStart = subWeeks(weekStart, 1);
+    const prevWeekStart = subDays(weekStart, 1);
     const prevWeekNumber: number = (logseq.settings?.weekNumberFormat === "ISO(EU) format")
       ? getISOWeek(prevWeekStart)
       : getWeek(prevWeekStart, { weekStartsOn });
 
     //次の週番号を求める
-    const nextWeekStart = addWeeks(weekEnd, 1);
+    const nextWeekStart = addDays(weekEnd, 1);
     const nextWeekNumber: number = (logseq.settings?.weekNumberFormat === "ISO(EU) format")
       ? getISOWeek(nextWeekStart)
       : getWeek(nextWeekStart, { weekStartsOn });
