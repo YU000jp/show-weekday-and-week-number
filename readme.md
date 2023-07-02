@@ -74,8 +74,8 @@
   - `true` default
   - `false`
 - The boundaries 2 week mode (only journals) [#58](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/58)
-  - `true`
-  - `false` default
+  - `true` default
+  - `false`
 - The boundaries custom day range: before today (Excludes 2 week mode) [#58](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/58)
   - `11`
   - `10`

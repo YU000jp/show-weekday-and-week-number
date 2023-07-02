@@ -72,11 +72,11 @@ const main = () => {
   }
   div#weekBoundaries>span.day {
     width: 100px;
-    padding: 0.3em;
-    margin-left: 0.6em;
+    padding: 0.25em;
+    margin-left: 0.55em;
     outline: 1px solid var(--ls-guideline-color);
     outline-offset: 2px;
-    border-radius: 0.7em;
+    border-radius: 0.75em;
     background: var(--color-level-1);
   }
   div#weekBoundaries>span.day:not(.thisWeek) {
@@ -93,12 +93,12 @@ const main = () => {
     box-shadow: 0 0 0 1px var(--ls-guideline-color);
   }
   div#weekBoundaries>span.day span.dayOfWeek {
-    font-size: .9em;
+    font-size: .88em;
     font-weight: 600;
   }
   div#weekBoundaries>span.day span.dayOfMonth {
     margin-left: .4em;
-    font-size: 1.5em;
+    font-size: 1.25em;
     font-weight: 900;
   }
   ` });
@@ -663,10 +663,10 @@ async function boundaries(lazy: boolean, targetElementName: string) {
             && logseq.settings!.journalsBoundariesWeekOnly === true
           )) {
           const element = parent.document.createElement('div') as HTMLDivElement;
-          element.style.width = "100vw";
+          element.style.width = "95%";
           weekBoundaries!.appendChild(element);
           weekBoundaries!.style.flexWrap = "wrap";
-          weekBoundaries!.style.marginLeft = "3vw";
+          weekBoundaries!.style.marginLeft = "3em";
         }
         weekBoundaries!.appendChild(dayElement);
       }
@@ -783,12 +783,12 @@ const settingsTemplate = (ByLanguage: string): SettingSchemaDesc[] => [
     description: t("default: `4`"),
   },
   {
-    //Journalsの場合、一週間のみ表示する
+    //Journalsの場合
     key: "journalsBoundariesWeekOnly",
     title: t("The boundaries 2 week mode (only journals)"),
     type: "boolean",
-    default: false,
-    description: t("default: `false`"),
+    default: true,
+    description: t("default: `true`"),
   },
   {
     key: "noPageFoundCreatePage",
