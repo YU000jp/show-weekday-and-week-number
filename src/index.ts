@@ -487,14 +487,14 @@ async function currentPageIsWeeklyJournal(titleElement: HTMLElement, match: RegE
 }
 
 
-function getWeekStartFromWeekNumber(year: number, weekNumber: number, weekStartsOn: 0 | 1 | 2 | 3 | 4 | 5 | 6 | undefined, ISO: boolean):Date {
+function getWeekStartFromWeekNumber(year: number, weekNumber: number, weekStartsOn: 0 | 1 | 2 | 3 | 4 | 5 | 6 | undefined, ISO: boolean): Date {
   let weekStart: Date;
   if (ISO === true) {
     const includeDay = new Date(year, 0, 4, 0, 0, 0, 0); //1/4を含む週
     const firstDayOfWeek = startOfISOWeek(includeDay);
     weekStart = (getISOWeekYear(firstDayOfWeek) === year)
-        ? addDays(firstDayOfWeek, (weekNumber - 1) * 7)
-        : addWeeks(firstDayOfWeek, weekNumber);
+      ? addDays(firstDayOfWeek, (weekNumber - 1) * 7)
+      : addWeeks(firstDayOfWeek, weekNumber);
   } else {
     const firstDay = new Date(year, 0, 1, 0, 0, 0, 0);
     const firstDayOfWeek = startOfWeek(firstDay, { weekStartsOn });
@@ -797,7 +797,7 @@ const settingsTemplate = (ByLanguage: string): SettingSchemaDesc[] => [
     title: t("The boundaries custom day range: before today (Excludes 2 week mode)"),
     type: "enum",
     default: "6",
-    enumChoices: ["11", "10", "9", "8", "7", "6", "5"],
+    enumChoices: ["11", "10", "9", "8", "7", "6", "5", "4", "3"],
     description: t("default: `6`"),
   },
   {
@@ -806,7 +806,7 @@ const settingsTemplate = (ByLanguage: string): SettingSchemaDesc[] => [
     title: t("The boundaries custom day range: after today (Excludes 2 week mode)"),
     type: "enum",
     default: "4",
-    enumChoices: ["3", "4", "5", "6"],
+    enumChoices: ["1", "2", "3", "4", "5", "6"],
     description: t("default: `4`"),
   },
   {
