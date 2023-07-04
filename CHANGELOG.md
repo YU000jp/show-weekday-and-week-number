@@ -1,3 +1,11 @@
+## [1.19.3](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.19.2...v1.19.3) (2023-07-04)
+
+
+### Bug Fixes
+
+* **bug:** Formula for calculating week numbers ([44e6539](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/44e653918cf658377b634f07526085a8507a2d1b))
+* **Update:** `The boundaries custom day range: before today` settings ([#63](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/63)) ([0ebd2e3](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/0ebd2e3c6513b7451967e95d77d186b8225618ea))
+
 ## [1.19.2](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.19.1...v1.19.2) (2023-07-02)
 
 
