@@ -448,6 +448,20 @@ async function currentPageIsWeeklyJournal(titleElement: HTMLElement, match: RegE
     weekDaysLinks.push(`${printNextYear}-W${(nextWeekNumber < 10)
       ? String("0" + nextWeekNumber)
       : String(nextWeekNumber)}`);
+
+    if (preferredDateFormat === "yyyy-MM-dd" || preferredDateFormat === "yyyy/MM/dd") {
+      //weekStartをもとに年と月を求め、リンクをつくる
+      const printYear = format(weekStart, "yyyy");
+      const printMonth = format(weekStart, "MM");
+      const printMonthLink = (preferredDateFormat === "yyyy-MM-dd") ? `${printYear}-${printMonth}` : `${printYear}/${printMonth}`;
+      weekDaysLinks.unshift(printMonthLink);
+      //weekEndをもとに年と月を求め、リンクをつくる
+      const printYear2 = format(weekEnd, "yyyy");
+      const printMonth2 = format(weekEnd, "MM");
+      const printMonthLink2 = (preferredDateFormat === "yyyy-MM-dd") ? `${printYear2}-${printMonth2}` : `${printYear2}/${printMonth2}`;
+      if (printMonthLink !== printMonthLink2) weekDaysLinks.push(printMonthLink2);
+    }
+    //ユーザー設定のページタグを追加
     if (logseq.settings!.weeklyJournalSetPageTag !== "") weekDaysLinks.push(logseq.settings!.weeklyJournalSetPageTag);
 
     //テンプレートを挿入
