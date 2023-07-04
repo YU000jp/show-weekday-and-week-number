@@ -1,3 +1,10 @@
+# [1.20.0](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.19.3...v1.20.0) (2023-07-04)
+
+
+### Features
+
+* **Weekly Journal:** Add the previous and following months to page-tag property if date format `yyyy-MM-dd` or `yyyy/MM/dd` ([#66](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/66)) ([2fa3866](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/2fa38665b77667893996408191062895267f9907))
+
 ## [1.19.3](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.19.2...v1.19.3) (2023-07-04)
 
 
