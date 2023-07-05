@@ -96,7 +96,7 @@
 - On the boundaries if no page found, create the journal page: toggle
   - `true`
   - `false` default
-- Use Weekly Journal feature: toggle
+- Use Weekly Journal feature: toggle [#65](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/65)
   > Enable the link and function. If there is no content available on a page with a week number like 2023-W25, a template will be inserted.
   - `true` default
   - `false`
