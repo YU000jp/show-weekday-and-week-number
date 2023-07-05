@@ -39,8 +39,8 @@
 ### Plugin Settings
 
 - Alignment of journal page title
-  - `left` default
-  - `space-around`
+  - `left`
+  - `space-around` default
 - Select language Localize(:default) or English(:en): select
   - `default` default
   - `en`
