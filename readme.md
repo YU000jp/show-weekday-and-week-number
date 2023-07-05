@@ -60,7 +60,7 @@
   - `true` default
   - `false`
 - Week number format: select
-  > Week numbers differ between like US format(America) and ISO format(Europe) when transitioning across years.
+  > Week numbers differ between like `US format`(America) and `ISO format`(Europe) when transitioning across years.
   - `US format`
   - `ISO(EU) format` default
   - `Japanese format`
@@ -97,7 +97,7 @@
   - `true`
   - `false` default
 - Use Weekly Journal feature: toggle [#65](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/65)
-  > Enable the link and function. If there is no content available on a page with a week number like 2023-W25, a template will be inserted.
+  > Enable the link and function. If there is no content available on a page with a week number like `2023-W25`, a template will be inserted.
   - `true` default
   - `false`
 - Weekly Journal template name: input
