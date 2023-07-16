@@ -120,7 +120,7 @@ const main = () => {
       //div#journals
       setTimeout(() => boundaries(false, 'journals'), 160);
     }
-    setTimeout(() => titleQuerySelector(), 200);
+    setTimeout(() => titleQuerySelector(), 180);
   });
 
 
@@ -579,12 +579,12 @@ function removeBoundaries() {
 }
 
 function removeTitleQuery() {
-  const titleElements = parent.document.querySelectorAll("div#main-content-container div:is(.journal,.page) h1.title+span.weekday-and-week-number") as NodeListOf<HTMLElement>;
+  const titleElements = parent.document.querySelectorAll("div#main-content-container div:is(.journal,.is-journals) h1.title+span.weekday-and-week-number") as NodeListOf<HTMLElement>;
   titleElements.forEach((titleElement) => titleElement.remove());
 }
 
 function titleQuerySelector() {
-  parent.document.querySelectorAll("div#main-content-container div:is(.journal,.page) h1.title").forEach((titleElement) => addExtendedDate(titleElement as HTMLElement));
+  parent.document.querySelectorAll("div#main-content-container div:is(.journal,.is-journals) h1.title").forEach((titleElement) => addExtendedDate(titleElement as HTMLElement));
 }
 
 //boundaries
