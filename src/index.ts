@@ -241,12 +241,14 @@ const isValidDate = (date: Date): boolean => !isNaN(date.getTime()) && !isNaN(da
 
 
 //Credit: ottodevs  https://discuss.logseq.com/t/show-week-day-and-week-number/12685/18
+let processing: Boolean = false;
+async function addExtendedDate(titleElement: HTMLElement) {
 
-function addExtendedDate(titleElement: HTMLElement) {
   if (!titleElement.textContent) return;
   // check if element already has date info
   if (titleElement.nextElementSibling?.className === "weekday-and-week-number") return;
-
+  if (processing === true) return;
+  processing = true;
   if (logseq.settings?.booleanWeekNumber === false && logseq.settings?.booleanDayOfWeek === false && logseq.settings?.booleanRelativeTime === false) {
     const dateInfoElement: HTMLSpanElement = parent.document.createElement("span");
     dateInfoElement.classList.add("weekday-and-week-number");
@@ -254,39 +256,25 @@ function addExtendedDate(titleElement: HTMLElement) {
     const secondElement: HTMLSpanElement = parent.document.createElement("span");
     secondElement.style.width = "50%";
     titleElement.parentElement!.insertAdjacentElement('afterend', secondElement);
+    processing = false;
     return;
   }
 
-  let processing: Boolean = false;
+
   //Weekly Journalのページだった場合
   if (processing !== true && logseq.settings!.booleanWeeklyJournal === true && titleElement.dataset!.WeeklyJournalChecked as string !== "true") {
     const match = (titleElement.textContent!).match(/^(\d{4})-W(\d{2})$/) as RegExpMatchArray;
     if (match && match[1] !== "" && match[2] !== "") {
-      processing = true;
-      currentPageIsWeeklyJournal(titleElement, match);
-      processing = false;
+      await currentPageIsWeeklyJournal(titleElement, match);
     }
   }
 
-  // remove ordinal suffixes from date
-  let journalDate = parseDate(titleElement.textContent!);
-  if (!isValidDate(journalDate)) {
-    //「2023-06-30 Friday」(曜日名)というタイトルのページがあると、journalDateがInvalid Dateにならない
-    const match = titleElement.textContent!.match(/(\d{4})-(\d{2})-(\d{2})\s(.*)/) as RegExpMatchArray;
-    if (match && match[1] !== "" && match[2] !== "" && match[3] !== "") {
-      const matchDate = match[1] + "-" + match[2] + "-" + match[3];
-      journalDate = parseDate(matchDate);
-      if (isValidDate(journalDate)) {
-        titleElement.textContent = matchDate;
-      } else {
-        return;
-      }
-    } else {
-      return;
-    }
+  const page = await logseq.Editor.getPage(titleElement.textContent!) as PageEntity | null;
+  if (page && page.journalDay) {
+    const journalDate: Date = getJournalDayDate(String(page.journalDay));
+    showAtJournal(journalDate, titleElement);
   }
-
-  showAtJournal(journalDate, titleElement);
+  processing = false;
 }
 
 
