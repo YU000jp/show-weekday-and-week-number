@@ -256,16 +256,18 @@ async function addExtendedDate(titleElement: HTMLElement) {
     const secondElement: HTMLSpanElement = parent.document.createElement("span");
     secondElement.style.width = "50%";
     titleElement.parentElement!.insertAdjacentElement('afterend', secondElement);
-    processing = false;
     return;
   }
 
 
   //Weekly Journalのページだった場合
-  if (processing !== true && logseq.settings!.booleanWeeklyJournal === true && titleElement.dataset!.WeeklyJournalChecked as string !== "true") {
-    const match = (titleElement.textContent!).match(/^(\d{4})-W(\d{2})$/) as RegExpMatchArray;
+  if (logseq.settings!.booleanWeeklyJournal === true && titleElement.dataset!.WeeklyJournalChecked as string !== "true") {
+    const match = titleElement.textContent.match(/^(\d{4})-W(\d{2})$/) as RegExpMatchArray;
     if (match && match[1] !== "" && match[2] !== "") {
+      console.log("Weekly Journal");
       await currentPageIsWeeklyJournal(titleElement, match);
+      processing = false;
+      return;
     }
   }
 
@@ -572,7 +574,7 @@ function removeTitleQuery() {
 }
 
 function titleQuerySelector() {
-  parent.document.querySelectorAll("div#main-content-container div:is(.journal,.is-journals) h1.title").forEach((titleElement) => addExtendedDate(titleElement as HTMLElement));
+  parent.document.querySelectorAll("div#main-content-container div:is(.journal,.is-journals,.page) h1.title").forEach((titleElement) => addExtendedDate(titleElement as HTMLElement));
 }
 
 //boundaries
