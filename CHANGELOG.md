@@ -1,3 +1,10 @@
+# [1.21.0](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.20.2...v1.21.0) (2023-07-21)
+
+
+### Features
+
+* **Localize journal link:** Localize the day of the week in journal title and link ([#75](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/75)) BREAKING CHANGE ([0d8d5a1](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/0d8d5a1599f3bcb483e9e7629d4dd7794d3a4e98))
+
 ## [1.20.2](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.20.1...v1.20.2) (2023-07-21)
 
 
