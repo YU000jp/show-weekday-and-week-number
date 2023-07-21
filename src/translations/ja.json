@@ -19,8 +19,11 @@
     "Weekly Journal set page tag (Add to tags property)": "ウィークリージャーナルのページに設定するタグ (「tags」プロパティに追加)",
     "Input a page name (default is blank)": "ページ名を入力(1件のみ)。デフォルト: 空白",
     "Use `This Week` section of Weekly Journal": "ウィークリージャーナルの「This Week」セクションを使用する",
-    "Convert the day of the week in the `This Week` section of Weekly Journal into links.": "ウィークリージャーナルの「This Week」セクションの曜日をリンクに変換する",
+    "Weekly Journal, Convert the day of the week in the `This Week` section into links.": "ウィークリージャーナルの「This Week」セクションの曜日をリンクに変換する",
+    "Weekly Journal, Enable the day of the week in the `This Week` section": "ウィークリージャーナルの「This Week」セクションの曜日を有効にする",
     "The boundaries 2 week mode (only journals)": "ナビゲーションバーの日付範囲: 2週間モード",
     "The boundaries custom day range: after today (Excludes 2 week mode)": "ナビゲーションバーの日付範囲: 今日より前の後の日数",
-    "The boundaries custom day range: before today (Excludes 2 week mode)": "ナビゲーションバーの日付範囲: 今日より前の日数"
+    "The boundaries custom day range: before today (Excludes 2 week mode)": "ナビゲーションバーの日付範囲: 今日より前の日数",
+    "Localize journal link: If the day of the week is included in user date format, localize the day of the week in the date link": "ユーザーの日付フォーマットに曜日が含まれている場合、日付リンクの曜日をローカライズする",
+    "Localize journal link: If the day of the week is not included in user date format, add the localized day of the week to the date link": "ユーザーの日付フォーマットに曜日が含まれていない場合、日付リンクにローカライズされた曜日を追加する"
 }
