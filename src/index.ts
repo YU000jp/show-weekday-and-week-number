@@ -264,7 +264,6 @@ async function addExtendedDate(titleElement: HTMLElement) {
   if (logseq.settings!.booleanWeeklyJournal === true && titleElement.dataset!.WeeklyJournalChecked as string !== "true") {
     const match = titleElement.textContent.match(/^(\d{4})-W(\d{2})$/) as RegExpMatchArray;
     if (match && match[1] !== "" && match[2] !== "") {
-      console.log("Weekly Journal");
       await currentPageIsWeeklyJournal(titleElement, match);
       processing = false;
       return;
