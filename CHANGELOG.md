@@ -1,3 +1,10 @@
+## [1.20.2](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.20.1...v1.20.2) (2023-07-21)
+
+
+### Bug Fixes
+
+* **bug:** Support all date format ([#71](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/71)) ([fd5fb04](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/fd5fb040281bcf5e225b21d03aa4ab9f6bd9c95a))
+
 ## [1.20.2](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.20.1...v1.20.2) (2023-07-20)
 
 
