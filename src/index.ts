@@ -253,8 +253,10 @@ async function addExtendedDate(titleElement: HTMLElement) {
     || titleElement.nextElementSibling?.className === "weekday-and-week-number") return;  // check if element already has date info
   processing = true;
 
-  //設定小目ですべてのトグルがオフの場合の処理
-  if (logseq.settings?.booleanWeekNumber === false && logseq.settings?.booleanDayOfWeek === false && logseq.settings?.booleanRelativeTime === false) {
+  //設定項目ですべてのトグルがオフの場合の処理
+  if (logseq.settings?.booleanWeekNumber === false
+    && logseq.settings?.booleanDayOfWeek === false
+    && logseq.settings?.booleanRelativeTime === false) {
     const dateInfoElement: HTMLSpanElement = parent.document.createElement("span");
     dateInfoElement.classList.add("weekday-and-week-number");
     titleElement.insertAdjacentElement('afterend', dateInfoElement);
@@ -265,7 +267,9 @@ async function addExtendedDate(titleElement: HTMLElement) {
   }
 
   //Weekly Journalのページだった場合
-  if (titleElement.classList.contains("journal-title") === false && logseq.settings!.booleanWeeklyJournal === true && titleElement.dataset!.WeeklyJournalChecked as string !== "true") {
+  if (titleElement.classList.contains("journal-title") === false
+    && logseq.settings!.booleanWeeklyJournal === true
+    && titleElement.dataset!.WeeklyJournalChecked as string !== "true") {
     const match = titleElement.textContent.match(/^(\d{4})-W(\d{2})$/) as RegExpMatchArray;
     if (match && match[1] !== "" && match[2] !== "") {
       await currentPageIsWeeklyJournal(titleElement, match);
@@ -282,7 +286,8 @@ async function addExtendedDate(titleElement: HTMLElement) {
 
     //日付フォーマットに曜日が含まれている場合
     if (dateFormatIncludeDayOfWeek === true
-      && logseq.settings!.booleanJournalLinkLocalizeDayOfWeek as boolean === true && titleElement.dataset.localize === undefined) titleElementReplaceLocalizeDayOfWeek(journalDate, titleElement);
+      && logseq.settings!.booleanJournalLinkLocalizeDayOfWeek as boolean === true
+      && titleElement.dataset.localize === undefined) titleElementReplaceLocalizeDayOfWeek(journalDate, titleElement);
   }
 
   processing = false;
@@ -527,7 +532,7 @@ async function currentPageIsWeeklyJournal(titleElement: HTMLElement, match: RegE
                       thisWeek.uuid,
                       `${logseq.settings!.booleanWeeklyJournalThisWeekWeekday === true ?
                         (logseq.settings!.booleanWeeklyJournalThisWeekLinkWeekday === true ?
-                          `[[${weekdayArray[index]}]] `: weekdayArray[index])
+                          `[[${weekdayArray[index]}]] ` : weekdayArray[index])
                         : ""} [[${weekDayName}]]\n`);
                   });
                 }
