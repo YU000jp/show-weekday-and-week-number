@@ -107,7 +107,11 @@ const main = () => {
     subtree: true,
     attributeFilter: ["class"],
   });
-
+  observer.observe(parent.document.getElementById("right-sidebar") as HTMLDivElement, {
+    attributes: true,
+    subtree: true,
+    attributeFilter: ["class"],
+  });
 
   logseq.App.onRouteChanged(({ template }) => {
     if (logseq.settings?.booleanBoundaries === true && template === '/page/:name') {
@@ -135,20 +139,15 @@ const main = () => {
       } else {
         //journals only
         //div#journals
-        setTimeout(() => boundaries(false, 'journals'), 160);
+        setTimeout(() => boundaries(false, 'journals'), 10);
       }
     }
   });
 
-  if (logseq.settings!.booleanJournalsBoundaries === true) {
-    // 特定の動作を実行するコールバック関数
-    const Callback = () => {
-      //div#journals
-      setTimeout(() => boundaries(false, 'journals'), 200);
-    }
-
-    observeElementAppearance(parent.document.getElementById("main-content-container") as HTMLDivElement, Callback);
-  }
+  if (logseq.settings!.booleanJournalsBoundaries === true) observeElementAppearance(
+    parent.document.getElementById("main-content-container") as HTMLDivElement,
+    () => setTimeout(() => boundaries(false, 'journals'), 10)
+  );
 
   logseq.App.onSidebarVisibleChanged(({ visible }) => {
     if (visible === true) setTimeout(() => titleQuerySelector(), 300);
