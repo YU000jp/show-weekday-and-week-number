@@ -3,9 +3,6 @@ import { AppUserConfigs, BlockEntity, LSPluginBaseInfo, PageEntity, SettingSchem
 import { setup as l10nSetup, t } from "logseq-l10n"; //https://github.com/sethyuan/logseq-l10n
 import ja from "./translations/ja.json";
 import { getISOWeek, getWeek, getWeekOfMonth, format, addDays, isBefore, isToday, isSunday, isSaturday, getISOWeekYear, getWeekYear, startOfWeek, eachDayOfInterval, startOfISOWeek, subDays, addWeeks, isThisWeek, isThisISOWeek, subWeeks } from 'date-fns';//https://date-fns.org/
-let dateFormatIncludeDayOfWeek: boolean = false;
-let userDateFormat = "";
-
 
 /* main */
 const main = () => {
@@ -33,18 +30,7 @@ const main = () => {
         logseq.useSettingsSchema(settingsTemplate("ISO(EU) format"));
       }
     }
-    const { preferredDateFormat } = await logseq.App.getUserConfigs() as AppUserConfigs;
-    dateFormatIncludeDayOfWeek = (preferredDateFormat.includes("E")) ? true : false;
-    userDateFormat = preferredDateFormat;
-
   })();
-
-  //TODO: コールバックを待っている間に、ほかの処理が反映されてしまう(最初のページのみなので・・)
-  logseq.App.onCurrentGraphChanged(async () => {
-    const { preferredDateFormat } = await logseq.App.getUserConfigs() as AppUserConfigs;
-    dateFormatIncludeDayOfWeek = (preferredDateFormat.includes("E")) ? true : false;
-    userDateFormat = preferredDateFormat;
-  });
 
   if (logseq.settings!.titleAlign === "space-around") parent.document.body.classList.add('show-justify');
   logseq.provideStyle({
@@ -268,6 +254,7 @@ async function addExtendedDate(titleElement: HTMLElement) {
 
   //Weekly Journalのページだった場合
   if (titleElement.classList.contains("journal-title") === false
+    && titleElement.classList.contains("title") === true
     && logseq.settings!.booleanWeeklyJournal === true
     && titleElement.dataset!.WeeklyJournalChecked as string !== "true") {
     const match = titleElement.textContent.match(/^(\d{4})-W(\d{2})$/) as RegExpMatchArray;
@@ -279,13 +266,14 @@ async function addExtendedDate(titleElement: HTMLElement) {
   }
 
   //ジャーナルタイトルから日付を取得し、右側に情報を表示する
-  const page = await logseq.Editor.getPage(titleElement.textContent!) as PageEntity | null;
+  const page = await logseq.Editor.getPage(titleElement.textContent) as PageEntity | null;
   if (page && page.journalDay) {
     const journalDate: Date = getJournalDayDate(String(page.journalDay));
     behindJournalTitle(journalDate, titleElement);
+    const { preferredDateFormat } = await logseq.App.getUserConfigs() as AppUserConfigs;
 
     //日付フォーマットに曜日が含まれている場合
-    if (dateFormatIncludeDayOfWeek === true
+    if (preferredDateFormat.includes("E") === true
       && logseq.settings!.booleanJournalLinkLocalizeDayOfWeek as boolean === true
       && titleElement.dataset.localize === undefined) titleElementReplaceLocalizeDayOfWeek(journalDate, titleElement);
   }
@@ -442,7 +430,7 @@ function behindJournalTitle(journalDate: Date, titleElement: HTMLElement) {
 async function currentPageIsWeeklyJournal(titleElement: HTMLElement, match: RegExpMatchArray) {
   titleElement.dataset.WeeklyJournalChecked = "true";
   const current = await logseq.Editor.getCurrentPageBlocksTree() as BlockEntity[];
-
+  const { preferredDateFormat } = await logseq.App.getUserConfigs() as AppUserConfigs;
   if (current[0].content === "" || !current[1]) {
 
     //ページタグを設定する
@@ -458,7 +446,7 @@ async function currentPageIsWeeklyJournal(titleElement: HTMLElement, match: RegE
     const weekEnd: Date = addDays(weekStart, 6);
     //曜日リンク
     const weekDays: Date[] = eachDayOfInterval({ start: weekStart, end: weekEnd });
-    const weekDaysLinkArray: string[] = weekDays.map((weekDay) => format(weekDay, userDateFormat) as string);
+    const weekDaysLinkArray: string[] = weekDays.map((weekDay) => format(weekDay, preferredDateFormat) as string);
     const weekdayArray: string[] = weekDays.map((weekDay) => new Intl.DateTimeFormat((logseq.settings?.localizeOrEnglish || "default"), { weekday: logseq.settings?.longOrShort || "long" }).format(weekDay) as string);
 
     //weekStartの前日から週番号を求める(前の週番号を求める)
@@ -494,16 +482,16 @@ async function currentPageIsWeeklyJournal(titleElement: HTMLElement, match: RegE
       ? String("0" + nextWeekNumber)
       : String(nextWeekNumber)}`);
 
-    if (userDateFormat === "yyyy-MM-dd" || userDateFormat === "yyyy/MM/dd") {
+    if (preferredDateFormat === "yyyy-MM-dd" || preferredDateFormat === "yyyy/MM/dd") {
       //weekStartをもとに年と月を求め、リンクをつくる
       const printYear = format(weekStart, "yyyy");
       const printMonth = format(weekStart, "MM");
-      const printMonthLink = (userDateFormat === "yyyy-MM-dd") ? `${printYear}-${printMonth}` : `${printYear}/${printMonth}`;
+      const printMonthLink = (preferredDateFormat === "yyyy-MM-dd") ? `${printYear}-${printMonth}` : `${printYear}/${printMonth}`;
       weekDaysLinks.unshift(printMonthLink);
       //weekEndをもとに年と月を求め、リンクをつくる
       const printYear2 = format(weekEnd, "yyyy");
       const printMonth2 = format(weekEnd, "MM");
-      const printMonthLink2 = (userDateFormat === "yyyy-MM-dd") ? `${printYear2}-${printMonth2}` : `${printYear2}/${printMonth2}`;
+      const printMonthLink2 = (preferredDateFormat === "yyyy-MM-dd") ? `${printYear2}-${printMonth2}` : `${printYear2}/${printMonth2}`;
       if (printMonthLink !== printMonthLink2) weekDaysLinks.push(printMonthLink2);
     }
     //ユーザー設定のページタグを追加
@@ -527,7 +515,7 @@ async function currentPageIsWeeklyJournal(titleElement: HTMLElement, match: RegE
                 //曜日リンク
                 const thisWeek = await logseq.Editor.insertBlock(newBlank.uuid, "#### This Week", { sibling: true }) as BlockEntity;
                 if (thisWeek) {
-                  if (!userDateFormat.includes("E")) weekDaysLinkArray.forEach(async (weekDayName, index) => {
+                  if (!preferredDateFormat.includes("E")) weekDaysLinkArray.forEach(async (weekDayName, index) => {
                     await logseq.Editor.insertBlock(
                       thisWeek.uuid,
                       `${logseq.settings!.booleanWeeklyJournalThisWeekWeekday === true ?
@@ -648,7 +636,8 @@ async function journalLink(titleElement: HTMLElement): Promise<void> {
   const page = await logseq.Editor.getPage(titleElement.textContent!) as PageEntity | null;
   if (page && page.journalDay) {
     const journalDate: Date = getJournalDayDate(String(page.journalDay));
-
+    const { preferredDateFormat } = await logseq.App.getUserConfigs() as AppUserConfigs;
+    const dateFormatIncludeDayOfWeek = (preferredDateFormat.includes("E")) ? true : false;
     //日付フォーマットに曜日が含まれている場合、ジャーナルリンクから日付を取得し、曜日を置換する
     if (dateFormatIncludeDayOfWeek === true
       && titleElement.dataset.localize !== "true"
@@ -679,6 +668,7 @@ async function boundaries(lazy: boolean, targetElementName: string) {
   } else {
     return;
   }
+  const { preferredDateFormat } = await logseq.App.getUserConfigs() as AppUserConfigs;
   if (firstElement) {
     const checkWeekBoundaries = parent.document.getElementById('weekBoundaries') as HTMLDivElement;
     if (checkWeekBoundaries) checkWeekBoundaries.remove();
@@ -735,7 +725,7 @@ async function boundaries(lazy: boolean, targetElementName: string) {
         dayElement.classList.add('day');
         dayElement.innerHTML = `<span class="dayOfWeek">${dayOfWeek}</span><span class="dayOfMonth">${dayOfMonth}</span>`;
         const booleanToday = isToday(date) as boolean;
-        dayElement.title = format(date, userDateFormat);
+        dayElement.title = format(date, preferredDateFormat);
         if ((logseq.settings?.weekNumberFormat === "ISO(EU) format" && isThisISOWeek(date))
           || (isThisWeek(date, { weekStartsOn: ((logseq.settings?.weekNumberFormat === "US format") ? 0 : 1) }))
         ) dayElement.classList.add('thisWeek');
@@ -759,7 +749,7 @@ async function boundaries(lazy: boolean, targetElementName: string) {
         if (isBefore(date, today) as boolean || booleanToday === true) {
           dayElement.style.cursor = 'pointer';
           dayElement.addEventListener("click", async (event) => {
-            const journalPageName: string = format(date, userDateFormat);
+            const journalPageName: string = format(date, preferredDateFormat);
             const page = await logseq.Editor.getPage(journalPageName) as PageEntity | null;
             if (page && page.journalDay) {
               if (event.shiftKey) {
