@@ -952,8 +952,8 @@ const settingsTemplate = (ByLanguage: string): SettingSchemaDesc[] => [
     key: "booleanJournalLinkAddLocalizeDayOfWeek",
     title: t("Localize journal link: If the day of the week is not included in user date format, add the localized day of the week to the date link"),
     type: "boolean",
-    default: false,
-    description: "default: `false` *This setting does not affect the graph*",
+    default: true,
+    description: "default: `true` *This setting does not affect the graph*",
   }
 ];
 
