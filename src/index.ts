@@ -206,7 +206,6 @@ const main = () => {
       oldSet.weekNumberFormat !== newSet.weekNumberFormat ||
       oldSet.booleanRelativeTime !== newSet.booleanRelativeTime ||
       oldSet.booleanWeeklyJournal !== newSet.booleanWeeklyJournal ||
-      oldSet.booleanJournalLinkAddLocalizeDayOfWeek !== newSet.booleanJournalLinkAddLocalizeDayOfWeek ||
       oldSet.booleanJournalLinkLocalizeDayOfWeek !== newSet.booleanJournalLinkLocalizeDayOfWeek
     ) {
       removeTitleQuery();
