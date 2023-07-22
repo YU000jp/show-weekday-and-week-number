@@ -1,3 +1,10 @@
+## [1.21.2](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.21.1...v1.21.2) (2023-07-22)
+
+
+### Bug Fixes
+
+* **bug:** Localize journal link, on single journal page ([5e6cc53](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/5e6cc53db452146d65ed3924230e3f085fe0b525))
+
 ## [1.21.1](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.21.0...v1.21.1) (2023-07-22)
 
 
