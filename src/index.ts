@@ -638,7 +638,8 @@ async function journalLink(titleElement: HTMLElement): Promise<void> {
     //日付フォーマットに曜日が含まれていない場合、ジャーナルリンクから日付を取得し、曜日を追加する
     if (dateFormatIncludeDayOfWeek === false
       && titleElement.dataset.localize !== "true"
-      && logseq.settings!.booleanJournalLinkAddLocalizeDayOfWeek as boolean === true) {
+      && logseq.settings!.booleanJournalLinkAddLocalizeDayOfWeek as boolean === true
+      && titleElement.classList.contains("title") === false) {
       titleElement.textContent = `${titleElement.textContent} (${localizeDayOfWeek("long", journalDate,logseq.settings?.localizeOrEnglish)})`;
       if (logseq.settings!.booleanRelativeTime === true) titleElement.title = formatRelativeDate(journalDate);
       titleElement.dataset.localize = "true";
