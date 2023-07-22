@@ -130,9 +130,6 @@
 - **Localize journal link**: If the day of the week is not included in user date format, add the localized day of the week to the date link: toggle [#68](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/68)
   - `true` default
   - `false`
-- **Journal title**, If user date format is yyyy/mm/dd, Enable hierarchy link (split to 3 journal link): toggle [#77](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/77)
-  - `true` default
-  - `false`
  
 ---
 
