@@ -186,7 +186,7 @@ const main = () => {
       if (parent.document.getElementById("journals") as HTMLDivElement) boundaries(false, 'journals');
     }
     if ((oldSet.booleanJournalsBoundaries === true && newSet.booleanJournalsBoundaries === false)) {
-      //JOurnal boundariesを除去
+      //Journal boundariesを除去
       if (parent.document.getElementById("journals") as HTMLDivElement) removeBoundaries();
     }
     if (oldSet.localizeOrEnglish !== newSet.localizeOrEnglish ||
@@ -800,14 +800,14 @@ const settingsTemplate = (ByLanguage: string): SettingSchemaDesc[] => [
   },
   {
     key: "booleanDayOfWeek",
-    title: t("Turn on/off day of the week"),
+    title: t("Behind journal title, Turn on/off day of the week"),
     type: "boolean",
     default: true,
     description: "",
   },
   {
     key: "longOrShort",
-    title: t("weekday long or short"),
+    title: t("Day of the week long or short"),
     type: "enum",
     default: "long",
     enumChoices: ["long", "short"],
@@ -815,14 +815,14 @@ const settingsTemplate = (ByLanguage: string): SettingSchemaDesc[] => [
   },
   {
     key: "booleanWeekNumber",
-    title: t("Turn on/off week number"),
+    title: t("Behind journal title, Turn on/off week number"),
     type: "boolean",
     default: true,
     description: "",
   },
   {
     key: "weekNumberOfTheYearOrMonth",
-    title: t("Show week number of the year or month (unit)"),
+    title: t("Behind journal title, Show week number of the year or month (unit)"),
     type: "enum",
     default: "Year",
     enumChoices: ["Year", "Month"],
@@ -830,7 +830,7 @@ const settingsTemplate = (ByLanguage: string): SettingSchemaDesc[] => [
   },
   {
     key: "booleanWeekendsColor",
-    title: t("Coloring to the word of Saturday or Sunday"),
+    title: t("Behind journal title, Coloring to the word of Saturday or Sunday"),
     type: "boolean",
     default: true,
     description: "",
@@ -845,39 +845,39 @@ const settingsTemplate = (ByLanguage: string): SettingSchemaDesc[] => [
   },
   {
     key: "booleanRelativeTime",
-    title: t("Turn on/off relative time"),
+    title: t("Behind journal title / Localize journal link, Turn on/off relative time"),
     type: "boolean",
     default: true,
     description: t("like `3 days ago`"),
   },
   {
     key: "booleanBoundaries",
-    title: t("Show the boundaries of days before and after the day on the single journal page"),
+    title: t("Journal boundaries, Show the boundaries of days before and after the day on the single journal page"),
     type: "boolean",
     default: true,
     description: "",
   },
   {
     key: "booleanJournalsBoundaries",
-    title: t("Use the boundaries also on journals"),
+    title: t("Journal boundaries, Use also on journals"),
     type: "boolean",
     default: true,
     description: "",
   },
 
   {
-    //Journal Boundaries 当日より前の日付を決める
+    //Journal boundaries 当日より前の日付を決める
     key: "journalBoundariesBeforeToday",
-    title: t("The boundaries custom day range: before today (Excludes 2 week mode)"),
+    title: t("Journal boundaries, custom day range: before today (Excludes 2 week mode)"),
     type: "enum",
     default: "6",
     enumChoices: ["11", "10", "9", "8", "7", "6", "5", "4", "3"],
     description: t("default: `6`"),
   },
   {
-    //Journal Boundaries 当日以降の日付を決める
+    //Journal boundaries 当日以降の日付を決める
     key: "journalBoundariesAfterToday",
-    title: t("The boundaries custom day range: after today (Excludes 2 week mode)"),
+    title: t("Journal boundaries, custom day range: after today (Excludes 2 week mode)"),
     type: "enum",
     default: "4",
     enumChoices: ["1", "2", "3", "4", "5", "6"],
@@ -886,42 +886,42 @@ const settingsTemplate = (ByLanguage: string): SettingSchemaDesc[] => [
   {
     //Journalsの場合
     key: "journalsBoundariesWeekOnly",
-    title: t("The boundaries 2 week mode (only journals)"),
+    title: t("Journal boundaries, 2 week mode (only journals)"),
     type: "boolean",
     default: true,
     description: t("default: `true`"),
   },
   {
     key: "noPageFoundCreatePage",
-    title: t("On the boundaries if no page found, create the journal page"),
+    title: t("On Journal boundaries if no page found, create the journal page"),
     type: "boolean",
     default: false,
     description: "default: `false`",
   },
   {
     key: "booleanWeeklyJournal",
-    title: t("Use Weekly Journal feature"),
+    title: t("Weekly Journal, Enable feature"),
     type: "boolean",
     default: true,
     description: t("Enable the link and function. If there is no content available on a page with a week number like 2023-W25, a template will be inserted."),
   },
   {
     key: "weeklyJournalTemplateName",
-    title: t("Weekly Journal template name"),
+    title: t("Weekly Journal, Template name"),
     type: "string",
     default: "",
     description: t("Input the template name (default is blank)"),
   },
   {
     key: "weeklyJournalSetPageTag",
-    title: t("Weekly Journal set page tag (Add to tags property)"),
+    title: t("Weekly Journal, Set page tag (Add to tags property)"),
     type: "string",
     default: "",
     description: t("Input a page name (default is blank)"),
   },
   {
     key: "booleanWeeklyJournalThisWeek",
-    title: t("Use `This Week` section of Weekly Journal"),
+    title: t("Weekly Journal, Use `This Week` section"),
     type: "boolean",
     default: true,
     description: "",
@@ -952,8 +952,8 @@ const settingsTemplate = (ByLanguage: string): SettingSchemaDesc[] => [
     key: "booleanJournalLinkAddLocalizeDayOfWeek",
     title: t("Localize journal link: If the day of the week is not included in user date format, add the localized day of the week to the date link"),
     type: "boolean",
-    default: false,
-    description: "default: `false` *This setting does not affect the graph*",
+    default: true,
+    description: "default: `true` *This setting does not affect the graph*",
   }
 ];
 
