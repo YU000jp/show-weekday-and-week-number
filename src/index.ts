@@ -36,8 +36,10 @@ const main = () => {
     const { preferredDateFormat } = await logseq.App.getUserConfigs() as AppUserConfigs;
     dateFormatIncludeDayOfWeek = (preferredDateFormat.includes("E")) ? true : false;
     userDateFormat = preferredDateFormat;
+    
   })();
 
+  //TODO: コールバックを待っている間に、ほかの処理が反映されてしまう(最初のページのみなので・・)
   logseq.App.onCurrentGraphChanged(async () => {
     const { preferredDateFormat } = await logseq.App.getUserConfigs() as AppUserConfigs;
     dateFormatIncludeDayOfWeek = (preferredDateFormat.includes("E")) ? true : false;
