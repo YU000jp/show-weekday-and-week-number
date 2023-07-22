@@ -1,3 +1,16 @@
+# [1.22.0](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.21.3...v1.22.0) (2023-07-22)
+
+
+### Bug Fixes
+
+* **bug:** `Weekly Journal, Enable the day of the week in the `This Week` section` ([8140624](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/81406241448d089890530dabb88763124fc90a97))
+* **graph:** When current graph changed ([efd163c](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/efd163cb3a2970fdf17a8726d46769194963c342))
+
+
+### Features
+
+* **Journal link:** Short day of the week ([47ba6fe](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/47ba6fe1bc335797d4a295d69a3c1f869ca1532b))
+
 ## [1.21.3](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.21.2...v1.21.3) (2023-07-22)
 
 
