@@ -31,6 +31,8 @@
 
 ### Weekly Journal
 
+- If there is no content available on a page with a week number like `2023-W25`, a template will be inserted.
+
 ---
 
 ## Getting Started
