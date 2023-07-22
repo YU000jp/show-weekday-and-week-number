@@ -1,6 +1,6 @@
 # Logseq Plugin: *Show Weekday and Week-number* 📆
 
-- Plugin for showing week day and, week-number within the year or month beside journals page titles.
+- Plugin for showing weekday and week number beside journal titles.
 
 [![latest release version](https://img.shields.io/github/v/release/YU000jp/logseq-plugin-show-weekday-and-week-number)](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/releases)
 [![License](https://img.shields.io/github/license/YU000jp/logseq-plugin-show-weekday-and-week-number?color=blue)](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/LICENSE)
@@ -11,14 +11,20 @@
 
 ## Features
 
-### Like below
+### Behind Journal Title
+
+- Like below
 
 1. ![image](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/assets/111847207/f47b8948-5e7a-4e16-a5ae-6966672742b1)
 1. ![image](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/assets/111847207/ee97c455-714e-45d2-9f9f-905798e298b4)
 
-### Show journal boundaries
+### Journal boundaries
 
 ![boundaries](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/assets/111847207/685d00e7-b67d-4ee3-9f8a-25657447a2ea)
+
+### Localize journal link 🆕
+
+### Weekly Journal
 
 ---
 
@@ -38,25 +44,25 @@
 
 ### Plugin Settings
 
-- Alignment of journal page title
+- Alignment of journal page title: select
   - `left`
   - `space-around` default
 - Select language Localize(:default) or English(:en): select
   - `default` default
   - `en`
-- Turn on/off the day of week: toggle
+- Behind journal title, Turn on/off the day of week: toggle
   - `true` default
   - `false`
-- weekday long or short: select
+- Day of the week long or short: select
   - `long` default
   - `short`
-- Turn on/off week number: toggle
+- Behind journal title, Turn on/off week number: toggle
   - `true` default
   - `false`
-- Show week number of the year or month (unit): select
+- Behind journal title, Show week number of the year or month (unit): select
   - `Year` default
   - `Month`
-- Coloring to the word of Saturday or Sunday: toggle
+- Behind journal title, Coloring to the word of Saturday or Sunday: toggle
   - `true` default
   - `false`
 - Week number format: select
@@ -64,19 +70,19 @@
   - `US format`
   - `ISO(EU) format` default
   - `Japanese format`
-- Turn on/off relative time: toggle
+- Behind journal title / Localize journal link, Turn on/off relative time: toggle
   - `true` default
   - `false`
-- Show the boundaries of days before and after the day on the single journal page: toggle
+- Journal boundaries, Show the boundaries of days before and after the day on the single journal page: toggle
   - `true` default
   - `false`
-- Use the boundaries also on journals: toggle
+- Journal boundaries, Use also on journals: toggle
   - `true` default
   - `false`
-- The boundaries 2 week mode (only journals) [#58](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/58)
+- Journal boundaries, 2 week mode (only journals): toggle [#58](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/58)
   - `true` default
   - `false`
-- The boundaries custom day range: before today (Excludes 2 week mode) [#58](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/58) [#60](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/60)
+- Journal boundaries, custom day range: before today (Excludes 2 week mode): select [#58](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/58) [#60](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/60)
   - `11`
   - `10`
   - `9`
@@ -86,17 +92,20 @@
   - `5`
   - `4`
   - `3`
-- The boundaries custom day range: after today (Excludes 2 week mode) [#58](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/58)
+- Journal boundaries, custom day range: after today (Excludes 2 week mode): select [#58](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/58)
   - `1`
   - `2`
   - `3`
   - `4` default
   - `5`
   - `6`
-- On the boundaries if no page found, create the journal page: toggle
+- Journal boundaries, 2 week mode (only journals): toggle
+  - `true` default
+  - `false`
+- On Journal boundaries if no page found, create the journal page: toggle
   - `true`
   - `false` default
-- Use Weekly Journal feature: toggle [#65](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/65)
+- Weekly Journal, Enable feature: toggle [#65](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/65)
   > Enable the link and function. If there is no content available on a page with a week number like `2023-W25`, a template will be inserted.
   - `true` default
   - `false`
@@ -104,10 +113,16 @@
   - default: blank
 - Weekly Journal set page tag (Add to tags property): input
   - default: blank
-- Use "This Week" section of Weekly Journal [#55](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/55)
+- Weekly Journal, Use "This Week" section: toggle [#55](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/55)
   - `true` default
   - `false`
-- Convert the day of the week in the "This Week" section of Weekly Journal into links.
+- Weekly Journal, Convert the day of the week in the "This Week" section into links.: toggle
+  - `true`
+  - `false` default
+- Localize journal link: If the day of the week is included in user date format, localize the day of the week in the date link: toggle [#68](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/68)
+  - `true` default
+  - `false`
+- Localize journal link: If the day of the week is not included in user date format, add the localized day of the week to the date link: toggle [#68](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/68)
   - `true`
   - `false` default
 
