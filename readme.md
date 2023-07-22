@@ -127,8 +127,8 @@
   - `true` default
   - `false`
 - Localize journal link: If the day of the week is not included in user date format, add the localized day of the week to the date link: toggle [#68](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/68)
-  - `true`
-  - `false` default
+  - `true` default
+  - `false`
 
 ---
 
