@@ -56,10 +56,10 @@
   - `US format`
   - `ISO(EU) format` default
   - `Japanese format`
-- Alignment of journal page title: select
+- **Journal Title**, Alignment of journal page title: select
   - `left`
   - `space-around` default
-- Select language Localize(:default) or English(:en): select
+- **Day of the week**, Select language Localize(:default) or English(:en): select
   - `default` default
   - `en`
 - **Behind journal title**, Enable the day of week: toggle
