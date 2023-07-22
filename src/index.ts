@@ -615,7 +615,7 @@ function removeTitleQuery() {
 
 function titleQuerySelector() {
   parent.document.querySelectorAll("div#main-content-container div:is(.journal,.is-journals,.page) h1.title").forEach(async (titleElement) => await addExtendedDate(titleElement as HTMLElement));
-  parent.document.querySelectorAll('div:is(#main-content-container,#right-sidebar) :is(a[data-ref],span[data-ref]),div#left-sidebar li span.page-title').forEach(async (titleElement) => await journalLink(titleElement as HTMLElement));
+  parent.document.querySelectorAll('div:is(#main-content-container,#right-sidebar) a[data-ref],div#left-sidebar li span.page-title').forEach(async (titleElement) => await journalLink(titleElement as HTMLElement));
 }
 
 
