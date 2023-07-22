@@ -36,7 +36,7 @@ const main = () => {
     const { preferredDateFormat } = await logseq.App.getUserConfigs() as AppUserConfigs;
     dateFormatIncludeDayOfWeek = (preferredDateFormat.includes("E")) ? true : false;
     userDateFormat = preferredDateFormat;
-    
+
   })();
 
   //TODO: コールバックを待っている間に、ほかの処理が反映されてしまう(最初のページのみなので・・)
@@ -265,7 +265,7 @@ async function addExtendedDate(titleElement: HTMLElement) {
   }
 
   //Weekly Journalのページだった場合
-  if (logseq.settings!.booleanWeeklyJournal === true && titleElement.dataset!.WeeklyJournalChecked as string !== "true") {
+  if (titleElement.classList.contains("journal-title") === false && logseq.settings!.booleanWeeklyJournal === true && titleElement.dataset!.WeeklyJournalChecked as string !== "true") {
     const match = titleElement.textContent.match(/^(\d{4})-W(\d{2})$/) as RegExpMatchArray;
     if (match && match[1] !== "" && match[2] !== "") {
       await currentPageIsWeeklyJournal(titleElement, match);
@@ -522,8 +522,13 @@ async function currentPageIsWeeklyJournal(titleElement: HTMLElement, match: RegE
                 //曜日リンク
                 const thisWeek = await logseq.Editor.insertBlock(newBlank.uuid, "#### This Week", { sibling: true }) as BlockEntity;
                 if (thisWeek) {
-                  if (logseq.settings!.booleanWeeklyJournalThisWeekWeekday === true && !userDateFormat.includes("E")) weekDaysLinkArray.forEach(async (weekDayName, index) => {
-                    await logseq.Editor.insertBlock(thisWeek.uuid, `${(logseq.settings!.booleanWeeklyJournalThisWeekLinkWeekday === true) ? `[[${weekdayArray[index]}]]` : weekdayArray[index]} [[${weekDayName}]]\n`);
+                  if (!userDateFormat.includes("E")) weekDaysLinkArray.forEach(async (weekDayName, index) => {
+                    await logseq.Editor.insertBlock(
+                      thisWeek.uuid,
+                      `${logseq.settings!.booleanWeeklyJournalThisWeekWeekday === true ?
+                        (logseq.settings!.booleanWeeklyJournalThisWeekLinkWeekday === true ?
+                          `[[${weekdayArray[index]}]] `: weekdayArray[index])
+                        : ""} [[${weekDayName}]]\n`);
                   });
                 }
               }
