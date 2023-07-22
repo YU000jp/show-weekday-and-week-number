@@ -1,3 +1,10 @@
+## [1.22.1](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.22.0...v1.22.1) (2023-07-22)
+
+
+### Bug Fixes
+
+* **bug:** current graph check ([6fb1e4c](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/6fb1e4c772dc60b0bad2747dc97dbfa169d14792))
+
 # [1.22.0](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.21.3...v1.22.0) (2023-07-22)
 
 
