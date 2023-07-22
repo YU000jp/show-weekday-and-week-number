@@ -57,19 +57,19 @@
 - Select language Localize(:default) or English(:en): select
   - `default` default
   - `en`
-- Behind journal title, Turn on/off the day of week: toggle
+- **Behind journal title**, Turn on/off the day of week: toggle
   - `true` default
   - `false`
 - Day of the week long or short: select
   - `long` default
   - `short`
-- Behind journal title, Turn on/off week number: toggle
+- **Behind journal title**, Turn on/off week number: toggle
   - `true` default
   - `false`
-- Behind journal title, Show week number of the year or month (unit): select
+- **Behind journal title**, Show week number of the year or month (unit): select
   - `Year` default
   - `Month`
-- Behind journal title, Coloring to the word of Saturday or Sunday: toggle
+- **Behind journal title**, Coloring to the word of Saturday or Sunday: toggle
   - `true` default
   - `false`
 - Week number format: select
@@ -77,19 +77,19 @@
   - `US format`
   - `ISO(EU) format` default
   - `Japanese format`
-- Behind journal title / Localize journal link, Turn on/off relative time: toggle
+- **Behind journal title** / **Localize journal link**, Turn on/off relative time: toggle
   - `true` default
   - `false`
-- Journal boundaries, Show the boundaries of days before and after the day on the single journal page: toggle
+- J**ournal boundaries**, Show the boundaries of days before and after the day on the single journal page: toggle
   - `true` default
   - `false`
-- Journal boundaries, Use also on journals: toggle
+- **Journal boundaries**, Use also on journals: toggle
   - `true` default
   - `false`
-- Journal boundaries, 2 week mode (only journals): toggle [#58](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/58)
+- **Journal boundaries**, 2 week mode (only journals): toggle [#58](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/58)
   - `true` default
   - `false`
-- Journal boundaries, custom day range: before today (Excludes 2 week mode): select [#58](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/58) [#60](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/60)
+- **Journal boundaries**, custom day range: before today (Excludes 2 week mode): select [#58](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/58) [#60](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/60)
   - `11`
   - `10`
   - `9`
@@ -99,37 +99,37 @@
   - `5`
   - `4`
   - `3`
-- Journal boundaries, custom day range: after today (Excludes 2 week mode): select [#58](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/58)
+- **Journal boundaries**, custom day range: after today (Excludes 2 week mode): select [#58](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/58)
   - `1`
   - `2`
   - `3`
   - `4` default
   - `5`
   - `6`
-- Journal boundaries, 2 week mode (only journals): toggle
+- **Journal boundaries**, 2 week mode (only journals): toggle
   - `true` default
   - `false`
-- On Journal boundaries if no page found, create the journal page: toggle
+- On **Journal boundaries** if no page found, create the journal page: toggle
   - `true`
   - `false` default
-- Weekly Journal, Enable feature: toggle [#65](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/65)
+- **Weekly Journal**, Enable feature: toggle [#65](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/65)
   > Enable the link and function. If there is no content available on a page with a week number like `2023-W25`, a template will be inserted.
   - `true` default
   - `false`
-- Weekly Journal template name: input
+- **Weekly Journal**, Template name: input
   - default: blank
-- Weekly Journal set page tag (Add to tags property): input
+- **Weekly Journal**, Set page tag (Add to tags property): input
   - default: blank
-- Weekly Journal, Use "This Week" section: toggle [#55](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/55)
+- **Weekly Journal**, Use "This Week" section: toggle [#55](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/55)
   - `true` default
   - `false`
-- Weekly Journal, Convert the day of the week in the "This Week" section into links.: toggle
+- **Weekly Journal**, Convert the day of the week in the "This Week" section into links.: toggle
   - `true`
   - `false` default
-- Localize journal link: If the day of the week is included in user date format, localize the day of the week in the date link: toggle [#68](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/68)
+- **Localize journal link**: If the day of the week is included in user date format, localize the day of the week in the date link: toggle [#68](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/68)
   - `true` default
   - `false`
-- Localize journal link: If the day of the week is not included in user date format, add the localized day of the week to the date link: toggle [#68](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/68)
+- **Localize journal link**: If the day of the week is not included in user date format, add the localized day of the week to the date link: toggle [#68](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/68)
   - `true` default
   - `false`
 
