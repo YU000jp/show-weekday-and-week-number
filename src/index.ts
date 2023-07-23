@@ -232,11 +232,13 @@ function formatRelativeDate(targetDate: Date): string {
 
 //Credit: ottodevs  https://discuss.logseq.com/t/show-week-day-and-week-number/12685/18
 let processing: Boolean = false;
-async function addExtendedDate(titleElement: HTMLElement, preferredDateFormat: string) {
+async function JournalPageTitle(titleElement: HTMLElement, preferredDateFormat: string) {
   if (!titleElement.textContent
     || processing === true
     || titleElement.nextElementSibling?.className === "weekday-and-week-number") return;  // check if element already has date info
   processing = true;
+
+  //ジャーナルのページタイトルの場合のみ
 
   //設定項目ですべてのトグルがオフの場合の処理
   if (
@@ -271,13 +273,14 @@ async function addExtendedDate(titleElement: HTMLElement, preferredDateFormat: s
   const page = await logseq.Editor.getPage(titleElement.textContent) as PageEntity | null;
   if (page && page.journalDay) {
     const journalDate: Date = getJournalDayDate(String(page.journalDay));
-    behindJournalTitle(journalDate, titleElement);
+    behindJournalTitle(journalDate, titleElement,preferredDateFormat);
 
     //日付フォーマットに曜日が含まれている場合
     if (preferredDateFormat.includes("E") === true
+      && logseq.settings!.booleanDayOfWeek === false
       && logseq.settings!.booleanJournalLinkLocalizeDayOfWeek === true
       && titleElement.dataset.localize === undefined) titleElementReplaceLocalizeDayOfWeek(journalDate, titleElement);
-    else if (logseq.settings!.booleanDayOfWeek === false) journalLink(titleElement);
+    console.log("journalDate", journalDate);
   }
 
   processing = false;
@@ -326,9 +329,9 @@ function titleElementReplaceLocalizeDayOfWeek(journalDate: Date, titleElement: H
 
 
 //behind journal title
-function behindJournalTitle(journalDate: Date, titleElement: HTMLElement) {
+function behindJournalTitle(journalDate: Date, titleElement: HTMLElement,preferredDateFormat) {
   let dayOfWeekName: string = "";
-  if (logseq.settings?.booleanDayOfWeek === true) dayOfWeekName = new Intl.DateTimeFormat((logseq.settings?.localizeOrEnglish || "default"), { weekday: logseq.settings?.longOrShort || "long" }).format(journalDate);
+  if (preferredDateFormat.includes("E") === false && logseq.settings?.booleanDayOfWeek === true) dayOfWeekName = new Intl.DateTimeFormat((logseq.settings?.localizeOrEnglish || "default"), { weekday: logseq.settings?.longOrShort || "long" }).format(journalDate);
   let printWeekNumber: string;
   let printWeek: string = "";
   const weekStartsOn = (logseq.settings?.weekNumberFormat === "US format") ? 0 : 1;
@@ -625,7 +628,7 @@ function removeTitleQuery() {
 
 async function titleQuerySelector() {
   const { preferredDateFormat } = await logseq.App.getUserConfigs() as AppUserConfigs;
-  parent.document.querySelectorAll("div#main-content-container div:is(.journal,.is-journals,.page) h1.title").forEach(async (titleElement) => await addExtendedDate(titleElement as HTMLElement, preferredDateFormat));
+  parent.document.querySelectorAll("div#main-content-container div:is(.journal,.is-journals,.page) h1.title").forEach(async (titleElement) => await JournalPageTitle(titleElement as HTMLElement, preferredDateFormat));
   parent.document.querySelectorAll('div:is(#main-content-container,#right-sidebar) a[data-ref],div#left-sidebar li span.page-title').forEach(async (titleElement) => await journalLink(titleElement as HTMLElement));
 }
 
@@ -824,7 +827,7 @@ const settingsTemplate = (ByLanguage: string): SettingSchemaDesc[] => [
     title: t("Behind journal title, Enable day of the week"),
     type: "boolean",
     default: true,
-    description: "",
+    description: "If user date format includes day of the week, this setting is ignored.",
   },
   {
     key: "longOrShort",
