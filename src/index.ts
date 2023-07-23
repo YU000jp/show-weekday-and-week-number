@@ -827,7 +827,7 @@ const settingsTemplate = (ByLanguage: string): SettingSchemaDesc[] => [
     title: t("Behind journal title, Enable day of the week"),
     type: "boolean",
     default: true,
-    description: "If user date format includes day of the week, this setting is ignored.",
+    description: t("If user date format includes day of the week, this setting is ignored."),
   },
   {
     key: "longOrShort",
