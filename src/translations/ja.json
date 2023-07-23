@@ -7,7 +7,7 @@
     "Behind journal title / Localize journal link, Enable relative time": "相対時間を表示する",
     "like `3 days ago`": "例: 昨日、3日前",
     "Day of the week, Select language Localize(:default) or English(:en)": "言語を選択する (「default」は日本語ローカライズ、「en」は英語)",
-    "Behind journal title / Localize journal link, Weekday long or short": "曜日の表示形式 (長い形式または短い形式)",
+    "Behind journal title, Day of the week long or short": "曜日の表示形式 (長い形式または短い形式)",
     "Journal boundaries, Enable feature": "日誌のナビゲーションバーを有効にする",
     "Show the boundaries of days before and after the day on the single journal page": "日付のページを開いたときに、前後の日付にアクセスできるナビゲーションバーを表示する",
     "Journal boundaries, Use also on journals": "日誌を開いたときに、前後の日付にアクセスできるナビゲーションバーを表示する",
