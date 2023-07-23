@@ -901,8 +901,8 @@ const settingsTemplate = (ByLanguage: string): SettingSchemaDesc[] => [
     key: "journalsBoundariesWeekOnly",
     title: t("Journal boundaries, Enable 2 week mode (only journals)"),
     type: "boolean",
-    default: true,
-    description: t("default: `true`"),
+    default: false,
+    description: t("default: `false`"),
   },
   {
     key: "noPageFoundCreatePage",
@@ -937,7 +937,7 @@ const settingsTemplate = (ByLanguage: string): SettingSchemaDesc[] => [
     title: t("Weekly Journal, Enable `This Week` section"),
     type: "boolean",
     default: true,
-    description: "",
+    description: "default: `true`",
   },
   {
     key: "booleanWeeklyJournalThisWeekWeekday",
