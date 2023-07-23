@@ -807,7 +807,7 @@ const settingsTemplate = (ByLanguage: string): SettingSchemaDesc[] => [
     key: "titleAlign",
     title: t("Journal title, Alignment of journal page title"),
     type: "enum",
-    default: "space-around",
+    default: "left",
     enumChoices: ["left", "space-around"],
     description: "",
   },
