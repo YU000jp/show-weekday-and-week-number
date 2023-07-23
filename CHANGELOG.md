@@ -1,3 +1,18 @@
+# [1.23.0](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.22.1...v1.23.0) (2023-07-23)
+
+
+### Bug Fixes
+
+* If user date format includes day of the week ([74ca921](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/74ca921f1bd70d96ed83e48eb7dc8966a788f162))
+* If user date format includes day of the week ([79ce340](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/79ce34001497d13d62edfef3c37426f9248a9201))
+* Journal Link, day of the week short only ([6531bf5](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/6531bf51d3b7ba82ff9f76e4d3e898d436541cab))
+* **Journal link:** check right sidebar ([6cae996](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/6cae99645e9fe95e4b3a67134f1a082fa6f8d3b2))
+
+
+### Features
+
+* **Journal title:** `If user date format is yyyy/mm/dd, Enable hierarchy link (split to 3 journal link) on single journal page` ([dfc84b1](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/dfc84b1869893b9e3247fc3e2b7b06bcfafaeb7d))
+
 ## [1.22.1](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.22.0...v1.22.1) (2023-07-22)
 
 
