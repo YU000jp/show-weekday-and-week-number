@@ -3,6 +3,7 @@ import { AppUserConfigs, BlockEntity, LSPluginBaseInfo, PageEntity, SettingSchem
 import { setup as l10nSetup, t } from "logseq-l10n"; //https://github.com/sethyuan/logseq-l10n
 import ja from "./translations/ja.json";
 import { getISOWeek, getWeek, getWeekOfMonth, format, addDays, isBefore, isToday, isSunday, isSaturday, getISOWeekYear, getWeekYear, startOfWeek, eachDayOfInterval, startOfISOWeek, subDays, addWeeks, isThisWeek, isThisISOWeek, subWeeks } from 'date-fns';//https://date-fns.org/
+import { on } from 'events';
 
 /* main */
 const main = () => {
@@ -273,14 +274,13 @@ async function JournalPageTitle(titleElement: HTMLElement, preferredDateFormat: 
   const page = await logseq.Editor.getPage(titleElement.textContent) as PageEntity | null;
   if (page && page.journalDay) {
     const journalDate: Date = getJournalDayDate(String(page.journalDay));
-    behindJournalTitle(journalDate, titleElement,preferredDateFormat);
+    behindJournalTitle(journalDate, titleElement, preferredDateFormat);
 
     //日付フォーマットに曜日が含まれている場合
     if (preferredDateFormat.includes("E") === true
       && logseq.settings!.booleanDayOfWeek === false
       && logseq.settings!.booleanJournalLinkLocalizeDayOfWeek === true
       && titleElement.dataset.localize === undefined) titleElementReplaceLocalizeDayOfWeek(journalDate, titleElement);
-    console.log("journalDate", journalDate);
   }
 
   processing = false;
@@ -329,7 +329,7 @@ function titleElementReplaceLocalizeDayOfWeek(journalDate: Date, titleElement: H
 
 
 //behind journal title
-function behindJournalTitle(journalDate: Date, titleElement: HTMLElement,preferredDateFormat) {
+function behindJournalTitle(journalDate: Date, titleElement: HTMLElement, preferredDateFormat) {
   let dayOfWeekName: string = "";
   if (preferredDateFormat.includes("E") === false && logseq.settings?.booleanDayOfWeek === true) dayOfWeekName = new Intl.DateTimeFormat((logseq.settings?.localizeOrEnglish || "default"), { weekday: logseq.settings?.longOrShort || "long" }).format(journalDate);
   let printWeekNumber: string;
@@ -362,7 +362,7 @@ function behindJournalTitle(journalDate: Date, titleElement: HTMLElement,preferr
             element.addEventListener("click", ({ shiftKey }): void => {
               if (processing) return;
               processing = true;
-              openPageWeeklyJournal(forWeeklyJournal, shiftKey as boolean);
+              openPage(forWeeklyJournal, shiftKey as boolean);
               processing = false;
               return;
             });
@@ -407,16 +407,22 @@ function behindJournalTitle(journalDate: Date, titleElement: HTMLElement,preferr
   //h1から.blockを削除
   if (titleElement.classList.contains("block")) titleElement.classList.remove("block");
 
+
   //h1の中にdateInfoElementを挿入
   const aTag = titleElement.parentElement; // 親要素を取得する
   if (aTag && aTag.tagName.toLowerCase() === 'a') {
+    //For journals
+    //<a><h1>日付タイトル</h1></a>の構造になっているが、<h1><a>日付タイトル</a></h1>にしたい
     const titleElementTextContent = titleElement.textContent;
     //titleElementのテキストコンテンツを削除
     titleElement.textContent = '';
-    //For journals
-    //<a><h1>日付タイトル</h1></a>の構造になっているが、<h1><a>日付タイトル</h1>にしたい
     //aタグと同じ階層にtitleElementを移動する
     aTag.insertAdjacentElement('afterend', titleElement);
+        //TODO: ジャーナルページの場合
+    // if (preferredDateFormat === "yyyy/MM/dd" && logseq.settings!.splitJournalTitle === true) {
+    //   //ジャーナルタイトルを分割する
+
+    // }
     //titleElementの中にaTagを移動する
     titleElement.appendChild(aTag);
     //移動したaタグの中身にtitleElementTextContentを戻す
@@ -426,6 +432,29 @@ function behindJournalTitle(journalDate: Date, titleElement: HTMLElement,preferr
     // titleElementの後ろにdateInfoElementを追加する
     titleElement.insertAdjacentElement('afterend', dateInfoElement);
   } else {
+    if (preferredDateFormat === "yyyy/MM/dd" && logseq.settings!.splitJournalTitle === true) {
+      //シングルジャーナルページの場合
+      //「yyyy/mm/dd」形式のジャーナルタイトルを/で分割する
+      const arrayName = titleElement.textContent;
+      const array = titleElement.textContent?.split("/") as string[];
+      titleElement.textContent = '';
+      titleElement.insertAdjacentHTML('beforeend',
+        `<span class="title block"><a id="${arrayName}-0" data-ref="${array[0]}" title="Year">${array[0]}</a> / <a id="${arrayName}-1" data-ref="${array[0]}/${array[1]}" title="Month">${array[1]}</a> / <a data-ref="${array[0]}/${array[1]}/${array[2]}" title="Day">${array[2]}</a></span>`);
+      setTimeout(() => {
+        const element0 = parent.document.getElementById(`${arrayName}-0`) as HTMLAnchorElement;
+        if (element0) {
+          element0.addEventListener("click", ({ shiftKey }) => {
+            openPage(element0.dataset.ref as string, shiftKey as boolean);
+          }, { once: true });
+        }
+        const element1 = parent.document.getElementById(`${arrayName}-1`) as HTMLAnchorElement;
+        if (element1) {
+          element1.addEventListener("click", ({ shiftKey }) => {
+            openPage(element1.dataset.ref as string, shiftKey as boolean);
+          }, { once: true });
+        }
+      }, 200);
+    }
     //For single journal
     titleElement.insertAdjacentElement('afterend', dateInfoElement);
   }
@@ -561,17 +590,17 @@ function getWeekStartFromWeekNumber(year: number, weekNumber: number, weekStarts
 }
 
 
-async function openPageWeeklyJournal(weeklyPageName: string, shiftKey: boolean) {
-  const page = await logseq.Editor.getPage(weeklyPageName) as PageEntity | null;
+async function openPage(pageName: string, shiftKey: boolean) {
+  const page = await logseq.Editor.getPage(pageName) as PageEntity | null;
   if (page) {
     if (shiftKey) {
       logseq.Editor.openInRightSidebar(page.uuid);
     } else {
-      logseq.App.pushState('page', { name: weeklyPageName });
+      logseq.App.pushState('page', { name: pageName });
     }
   } else {
     //ページ作成のみ実行し、リダイレクトする
-    await logseq.Editor.createPage(weeklyPageName, undefined, { redirect: true, createFirstBlock: true }) as PageEntity | null;
+    await logseq.Editor.createPage(pageName, undefined, { redirect: true, createFirstBlock: true }) as PageEntity | null;
   }
 }
 
@@ -973,7 +1002,7 @@ const settingsTemplate = (ByLanguage: string): SettingSchemaDesc[] => [
   },
   {
     key: "splitJournalTitle",
-    title: t("Journal title, If user date format is yyyy/mm/dd, Enable hierarchy link (split to 3 journal link): toggle"),
+    title: t("Journal title, If user date format is yyyy/mm/dd, Enable hierarchy link (split to 3 journal link) on single journal page: toggle"),
     type: "boolean",
     default: true,
     description: "default: `true`",
