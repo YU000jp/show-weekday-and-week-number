@@ -27,7 +27,7 @@
 - If the day of the week is not included in user date format, add the localized day of the week to the journal link
 - If it is included in the format, localize the day of the week in the journal link
 - 2023/07/22 => 2023/07/22 (Saturday)
-  > (Saturday) is the localized day of the week. 
+  > (Saturday) is the localized day of the week.
 
 ### Weekly Journal
 
@@ -57,15 +57,15 @@
   - `ISO(EU) format` default
   - `Japanese format`
 - **Journal title**, Alignment of journal page title: select
-  - `left`
-  - `space-around` default
+  - `left` default
+  - `space-around`
 - **Day of the week**, Select language Localize(:default) or English(:en): select
   - `default` default
   - `en`
 - **Behind journal title**, Enable the day of week: toggle
   - `true` default
   - `false`
-- **Behind journal title** / **Localize journal link**, Day of the week long or short: select
+- **Behind journal title**, Day of the week long or short: select
   - `long` default
   - `short`
 - **Behind journal title**, Enable week number: toggle
@@ -88,8 +88,8 @@
   - `true` default
   - `false`
 - **Journal boundaries**, Enable 2 week mode (only journals): toggle [#58](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/58)
-  - `true` default
-  - `false`
+  - `true`
+  - `false` default
 - **Journal boundaries**, Custom day range: before today (Excludes 2 week mode): select [#58](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/58) [#60](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/60)
   - `11`
   - `10`
@@ -130,7 +130,10 @@
 - **Localize journal link**: If the day of the week is not included in user date format, add the localized day of the week to the date link: toggle [#68](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/68)
   - `true` default
   - `false`
- 
+- **Journal title**, If user date format is yyyy/mm/dd, Enable hierarchy link (split to 3 journal link) on single journal page: toggle [#77](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/77)
+  - `true` default
+  - `false`
+
 ---
 
 ## Contributions
