@@ -36,40 +36,43 @@ const main = () => {
   if (logseq.settings!.titleAlign === "space-around") parent.document.body.classList.add('show-justify');
   logseq.provideStyle({
     key: "main", style: `
-  div.is-journals div.ls-page-title {
+  div#main-content-container div.is-journals div.ls-page-title {
     display: flex;
     flex-wrap: nowrap;
     align-items: center;
   }
-  body.show-justify div.is-journals div.ls-page-title {
+  body.show-justify div#main-content-container div.is-journals div.ls-page-title {
     justify-content: space-around;
   }
   
-  body.show-justify div#journals div.journal>div.flex div.content>div.foldable-title>div.flex.items-center {
+  body.show-justify div#main-content-container div#journals div.journal>div.flex div.content>div.foldable-title>div.flex.items-center {
     justify-content: space-around;
   }
-  div.is-journals div.ls-page-title h1.title {
+  div#main-content-container div.is-journals div.ls-page-title h1.title {
     margin-top: .8em;
     width: fit-content;
   }
-  h1.title+span.weekday-and-week-number {
+  div#main-content-container div:is(#journals,.is-journals) h1.title :is(a.title,span.title a) {
+    color: inherit;
+  }
+  div#main-content-container h1.title+span.weekday-and-week-number {
     margin-left: 0.75em;
     opacity: .75;
     font-size: 1.3em;
     width: fit-content;
     font-style: italic;
   }
-  h1.title+span.weekday-and-week-number>span {
+  div#main-content-container h1.title+span.weekday-and-week-number>span {
     margin-left: .75em;
   }
-  div#weekBoundaries {
+  div#main-content-container div#weekBoundaries {
     display: flex;
     margin-top: 0.3em;
     overflow-x: auto;
     width: fit-content;
     font-style: italic;
   }
-  div#weekBoundaries>span.day {
+  div#main-content-container div#weekBoundaries>span.day {
     width: 100px;
     padding: 0.25em;
     margin-left: 0.55em;
@@ -78,24 +81,24 @@ const main = () => {
     border-radius: 0.75em;
     background: var(--color-level-1);
   }
-  div#weekBoundaries>span.day:not(.thisWeek) {
+  div#main-content-container div#weekBoundaries>span.day:not(.thisWeek) {
     opacity: .5;
   }
-  div#weekBoundaries>span.day.thisWeek {
+  div#main-content-container div#weekBoundaries>span.day.thisWeek {
     opacity: .7;
     background: var(--color-level-2);
     box-shadow: 0 0 0 1px var(--ls-guideline-color);
   }
-  div#weekBoundaries>span.day:hover {
+  div#main-content-container div#weekBoundaries>span.day:hover {
     opacity: 1;
     background: var(--color-level-2);
     box-shadow: 0 0 0 1px var(--ls-guideline-color);
   }
-  div#weekBoundaries>span.day span.dayOfWeek {
+  div#main-content-container div#weekBoundaries>span.day span.dayOfWeek {
     font-size: .88em;
     font-weight: 600;
   }
-  div#weekBoundaries>span.day span.dayOfMonth {
+  div#main-content-container div#weekBoundaries>span.day span.dayOfMonth {
     margin-left: .4em;
     font-size: 1.25em;
     font-weight: 900;
