@@ -1,0 +1,79 @@
+div#main-content-container div.is-journals div.ls-page-title {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+}
+
+body.show-justify div#main-content-container div.is-journals div.ls-page-title {
+    justify-content: space-around;
+}
+
+body.show-justify div#main-content-container div#journals div.journal>div.flex div.content>div.foldable-title>div.flex.items-center {
+    justify-content: space-around;
+}
+
+div#main-content-container div.is-journals div.ls-page-title h1.title {
+    margin-top: .8em;
+    width: fit-content;
+}
+
+div#main-content-container div:is(#journals, .is-journals) h1.title :is(a.title, span.title a) {
+    color: inherit;
+}
+
+div#main-content-container h1.title+span.weekday-and-week-number {
+    margin-left: 0.75em;
+    opacity: .75;
+    font-size: 1.3em;
+    width: fit-content;
+    font-style: italic;
+}
+
+div#main-content-container h1.title+span.weekday-and-week-number>span {
+    margin-left: .75em;
+}
+
+div#main-content-container div#weekBoundaries {
+    display: flex;
+    margin-top: 0.3em;
+    overflow-x: auto;
+    width: fit-content;
+    font-style: italic;
+}
+
+div#main-content-container div#weekBoundaries>span.day {
+    width: 100px;
+    padding: 0.25em;
+    margin-left: 0.55em;
+    outline: 1px solid var(--ls-guideline-color);
+    outline-offset: 2px;
+    border-radius: 0.75em;
+    background: var(--color-level-1);
+}
+
+div#main-content-container div#weekBoundaries>span.day:not(.thisWeek) {
+    opacity: .5;
+}
+
+div#main-content-container div#weekBoundaries>span.day.thisWeek {
+    opacity: .7;
+    background: var(--color-level-2);
+    box-shadow: 0 0 0 1px var(--ls-guideline-color);
+}
+
+div#main-content-container div#weekBoundaries>span.day:hover {
+    opacity: 1;
+    background: var(--color-level-2);
+    box-shadow: 0 0 0 1px var(--ls-guideline-color);
+}
+
+div#main-content-container div#weekBoundaries>span.day span.dayOfWeek {
+    font-size: .88em;
+    font-weight: 600;
+}
+
+div#main-content-container div#weekBoundaries>span.day span.dayOfMonth {
+    margin-left: .4em;
+    font-size: 1.25em;
+    font-weight: 900;
+}
