@@ -1,3 +1,11 @@
+## [1.23.1](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.23.0...v1.23.1) (2023-07-29)
+
+
+### Bug Fixes
+
+* **bug:** Duplicate process ([3599e58](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/3599e584cb984775148379f400f4ddd7be457874))
+* **bug:** journal title color inherit ([7b28bda](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/7b28bda1a1809bd4cb875ef57408e30d4391dfd3))
+
 # [1.23.0](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.22.1...v1.23.0) (2023-07-23)
 
 
