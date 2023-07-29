@@ -127,7 +127,7 @@ const main = () => {
       //div#journals
       setTimeout(() => boundaries(false, 'journals'), 10);
     }
-    setTimeout(() => titleQuerySelector(), 180);
+    setTimeout(() => titleQuerySelector(), 50);
   });
 
 
@@ -235,12 +235,12 @@ function formatRelativeDate(targetDate: Date): string {
 }
 
 //Credit: ottodevs  https://discuss.logseq.com/t/show-week-day-and-week-number/12685/18
-let processing: Boolean = false;
+let processingJournalTitlePage: Boolean = false;
 async function JournalPageTitle(titleElement: HTMLElement, preferredDateFormat: string) {
   if (!titleElement.textContent
-    || processing === true
+    || processingJournalTitlePage === true
     || titleElement.nextElementSibling?.className === "weekday-and-week-number") return;  // check if element already has date info
-  processing = true;
+  processingJournalTitlePage = true;
 
   //ジャーナルのページタイトルの場合のみ
 
@@ -268,7 +268,7 @@ async function JournalPageTitle(titleElement: HTMLElement, preferredDateFormat: 
     const match = titleElement.textContent.match(/^(\d{4})-W(\d{2})$/) as RegExpMatchArray;
     if (match && match[1] !== "" && match[2] !== "") {
       await currentPageIsWeeklyJournal(titleElement, match);
-      processing = false;
+      processingJournalTitlePage = false;
       return;
     }
   }
@@ -286,7 +286,7 @@ async function JournalPageTitle(titleElement: HTMLElement, preferredDateFormat: 
       && titleElement.dataset.localize === undefined) titleElementReplaceLocalizeDayOfWeek(journalDate, titleElement);
   }
 
-  processing = false;
+  processingJournalTitlePage = false;
 }
 
 
@@ -421,7 +421,7 @@ function behindJournalTitle(journalDate: Date, titleElement: HTMLElement, prefer
     titleElement.textContent = '';
     //aタグと同じ階層にtitleElementを移動する
     aTag.insertAdjacentElement('afterend', titleElement);
-        //TODO: ジャーナルページの場合
+    //TODO: ジャーナルページの場合
     // if (preferredDateFormat === "yyyy/MM/dd" && logseq.settings!.splitJournalTitle === true) {
     //   //ジャーナルタイトルを分割する
 
@@ -658,10 +658,14 @@ function removeTitleQuery() {
   titleElements.forEach((titleElement) => titleElement.remove());
 }
 
+let processingTitleQuery: boolean = false;
 async function titleQuerySelector() {
+  if (processingTitleQuery) return;
+  processingTitleQuery = true;
   const { preferredDateFormat } = await logseq.App.getUserConfigs() as AppUserConfigs;
   parent.document.querySelectorAll("div#main-content-container div:is(.journal,.is-journals,.page) h1.title").forEach(async (titleElement) => await JournalPageTitle(titleElement as HTMLElement, preferredDateFormat));
   parent.document.querySelectorAll('div:is(#main-content-container,#right-sidebar) a[data-ref],div#left-sidebar li span.page-title').forEach(async (titleElement) => await journalLink(titleElement as HTMLElement));
+  processingTitleQuery = false;
 }
 
 
@@ -696,7 +700,16 @@ async function journalLink(titleElement: HTMLElement): Promise<void> {
 }
 
 //boundaries
-async function boundaries(lazy: boolean, targetElementName: string) {
+let processingBoundaries: boolean = false;
+function boundaries(lazy: boolean, targetElementName: string) {
+  if (processingBoundaries) return;
+  processingBoundaries = true;
+  boundariesProcess(lazy, targetElementName);
+  processingBoundaries = false;
+}
+
+
+async function boundariesProcess(lazy: boolean, targetElementName: string) {
   const today = new Date();
   let firstElement: HTMLDivElement;
   if (targetElementName === 'is-journals') {
@@ -825,7 +838,6 @@ async function boundaries(lazy: boolean, targetElementName: string) {
     setTimeout(() => boundaries(true, targetElementName), 100);
   }
 }
-
 
 /* user setting */
 // https://logseq.github.io/plugins/types/SettingSchemaDesc.html
