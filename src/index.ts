@@ -2,8 +2,8 @@ import '@logseq/libs'; //https://plugins-doc.logseq.com/
 import { AppUserConfigs, BlockEntity, LSPluginBaseInfo, PageEntity, SettingSchemaDesc } from '@logseq/libs/dist/LSPlugin.user';
 import { setup as l10nSetup, t } from "logseq-l10n"; //https://github.com/sethyuan/logseq-l10n
 import ja from "./translations/ja.json";
-import { getISOWeek, getWeek, getWeekOfMonth, format, addDays, isBefore, isToday, isSunday, isSaturday, getISOWeekYear, getWeekYear, startOfWeek, eachDayOfInterval, startOfISOWeek, subDays, addWeeks, isThisWeek, isThisISOWeek, subWeeks } from 'date-fns';//https://date-fns.org/
-import { on } from 'events';
+import { getISOWeek, getWeek, getWeekOfMonth, format, addDays, isBefore, isToday, isSunday, isSaturday, getISOWeekYear, getWeekYear, startOfWeek, eachDayOfInterval, startOfISOWeek, subDays, addWeeks, isThisWeek, isThisISOWeek, subWeeks, } from 'date-fns';//https://date-fns.org/
+import fileMainCSS from "./main.css?inline";
 
 /* main */
 const main = () => {
@@ -34,88 +34,12 @@ const main = () => {
   })();
 
   if (logseq.settings!.titleAlign === "space-around") parent.document.body.classList.add('show-justify');
-  logseq.provideStyle({
-    key: "main", style: `
-  div#main-content-container div.is-journals div.ls-page-title {
-    display: flex;
-    flex-wrap: nowrap;
-    align-items: center;
-  }
-  body.show-justify div#main-content-container div.is-journals div.ls-page-title {
-    justify-content: space-around;
-  }
-  
-  body.show-justify div#main-content-container div#journals div.journal>div.flex div.content>div.foldable-title>div.flex.items-center {
-    justify-content: space-around;
-  }
-  div#main-content-container div.is-journals div.ls-page-title h1.title {
-    margin-top: .8em;
-    width: fit-content;
-  }
-  div#main-content-container div:is(#journals,.is-journals) h1.title :is(a.title,span.title a) {
-    color: inherit;
-  }
-  div#main-content-container h1.title+span.weekday-and-week-number {
-    margin-left: 0.75em;
-    opacity: .75;
-    font-size: 1.3em;
-    width: fit-content;
-    font-style: italic;
-  }
-  div#main-content-container h1.title+span.weekday-and-week-number>span {
-    margin-left: .75em;
-  }
-  div#main-content-container div#weekBoundaries {
-    display: flex;
-    margin-top: 0.3em;
-    overflow-x: auto;
-    width: fit-content;
-    font-style: italic;
-  }
-  div#main-content-container div#weekBoundaries>span.day {
-    width: 100px;
-    padding: 0.25em;
-    margin-left: 0.55em;
-    outline: 1px solid var(--ls-guideline-color);
-    outline-offset: 2px;
-    border-radius: 0.75em;
-    background: var(--color-level-1);
-  }
-  div#main-content-container div#weekBoundaries>span.day:not(.thisWeek) {
-    opacity: .5;
-  }
-  div#main-content-container div#weekBoundaries>span.day.thisWeek {
-    opacity: .7;
-    background: var(--color-level-2);
-    box-shadow: 0 0 0 1px var(--ls-guideline-color);
-  }
-  div#main-content-container div#weekBoundaries>span.day:hover {
-    opacity: 1;
-    background: var(--color-level-2);
-    box-shadow: 0 0 0 1px var(--ls-guideline-color);
-  }
-  div#main-content-container div#weekBoundaries>span.day span.dayOfWeek {
-    font-size: .88em;
-    font-weight: 600;
-  }
-  div#main-content-container div#weekBoundaries>span.day span.dayOfMonth {
-    margin-left: .4em;
-    font-size: 1.25em;
-    font-weight: 900;
-  }
-  ` });
+  logseq.provideStyle({ key: "main", style: fileMainCSS });
 
 
-  observer.observe(parent.document.getElementById("main-content-container") as HTMLDivElement, {
-    attributes: true,
-    subtree: true,
-    attributeFilter: ["class"],
-  });
-  observer.observe(parent.document.getElementById("right-sidebar") as HTMLDivElement, {
-    attributes: true,
-    subtree: true,
-    attributeFilter: ["class"],
-  });
+  setTimeout(() => titleQuerySelector(), 150);
+  setTimeout(() => observerMainRight(), 5000);
+
 
   logseq.App.onRouteChanged(({ template }) => {
     if (logseq.settings?.booleanBoundaries === true && template === '/page/:name') {
@@ -214,6 +138,19 @@ const main = () => {
 
 
 
+
+function observerMainRight() {
+  observer.observe(parent.document.getElementById("main-content-container") as HTMLDivElement, {
+    attributes: true,
+    subtree: true,
+    attributeFilter: ["class"],
+  });
+  observer.observe(parent.document.getElementById("right-sidebar") as HTMLDivElement, {
+    attributes: true,
+    subtree: true,
+    attributeFilter: ["class"],
+  });
+}
 
 function formatRelativeDate(targetDate: Date): string {
   const currentDate = new Date();
@@ -608,7 +545,9 @@ async function openPage(pageName: string, shiftKey: boolean) {
 }
 
 
-const observer = new MutationObserver(() => titleQuerySelector());
+const observer = new MutationObserver(async (): Promise<void> => {
+  await titleQuerySelector();
+});
 
 
 async function weeklyJournalInsertTemplate(uuid: string, templateName: string): Promise<void> {
@@ -624,20 +563,20 @@ async function weeklyJournalInsertTemplate(uuid: string, templateName: string): 
 }
 
 function observeElementAppearance(targetElement: HTMLElement, callback: () => void) {
-  // 監視対象のDOMエレメントが存在しない場合は終了
   if (!targetElement) return;
 
   const observer = new MutationObserver((mutationsList, observer) => {
+    observer.disconnect();
     for (const mutation of mutationsList) {
       if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
         // 特定のDOMエレメントが追加された場合の処理
         callback();
-        observer.disconnect();
       }
     }
   });
-
-  observer.observe(targetElement, { childList: true, subtree: true });
+  // setTimeout(() => {
+  //   observer.observe(targetElement, { childList: true, subtree: true, attributeFilter: ["class"], });
+  // }, 3000);
 }
 
 
@@ -659,7 +598,7 @@ function removeTitleQuery() {
 }
 
 let processingTitleQuery: boolean = false;
-async function titleQuerySelector() {
+async function titleQuerySelector(): Promise<void> {
   if (processingTitleQuery) return;
   processingTitleQuery = true;
   const { preferredDateFormat } = await logseq.App.getUserConfigs() as AppUserConfigs;
