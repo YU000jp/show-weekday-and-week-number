@@ -572,9 +572,9 @@ function observeElementAppearance(targetElement: HTMLElement, callback: () => vo
     observer.disconnect();
     callback();
   });
-  // setTimeout(() => {
-  //   observer.observe(targetElement, { childList: true, subtree: true, attributeFilter: ["class"], });
-  // }, 3000);
+  setTimeout(() => {
+    observer.observe(targetElement, { childList: true, subtree: true, attributeFilter: ["class"], });
+  }, 3000);
 }
 
 
@@ -765,7 +765,6 @@ async function boundariesProcess(lazy: boolean, targetElementName: string) {
           element.style.width = "95%";
           weekBoundaries!.appendChild(element);
           weekBoundaries!.style.flexWrap = "wrap";
-          weekBoundaries!.style.marginLeft = "3em";
         }
         weekBoundaries!.appendChild(dayElement);
       }

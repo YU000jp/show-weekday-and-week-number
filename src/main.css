@@ -39,15 +39,15 @@ div#main-content-container div#weekBoundaries {
     overflow-x: auto;
     width: fit-content;
     font-style: italic;
+    font-size: .92em;
+    justify-content: center;
 }
 
 div#main-content-container div#weekBoundaries>span.day {
-    width: 100px;
+    width: 6em;
     padding: 0.25em;
     margin-left: 0.55em;
-    outline: 1px solid var(--ls-guideline-color);
-    outline-offset: 2px;
-    border-radius: 0.75em;
+    border-radius: 0.4em;
     background: var(--color-level-1);
 }
 
@@ -64,7 +64,6 @@ div#main-content-container div#weekBoundaries>span.day.thisWeek {
 div#main-content-container div#weekBoundaries>span.day:hover {
     opacity: 1;
     background: var(--color-level-2);
-    box-shadow: 0 0 0 1px var(--ls-guideline-color);
 }
 
 div#main-content-container div#weekBoundaries>span.day span.dayOfWeek {
