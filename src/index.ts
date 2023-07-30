@@ -39,8 +39,12 @@ const main = () => {
   logseq.provideStyle({ key: "main", style: fileMainCSS });
 
 
-  setTimeout(() => titleQuerySelector(), 150);
-  setTimeout(() => observerMainRight(), 5000);
+  (parent.document.getElementById("main-content-container") as HTMLDivElement).onload = async () => {
+    //Logseqを開いたときに実行
+    if (logseq.settings!.booleanJournalsBoundaries === true) boundaries(false, 'journals');
+    await titleQuerySelector();
+    setTimeout(() => observerMainRight(), 3000);//スクロール用
+  }
 
 
   logseq.App.onRouteChanged(({ template }) => {
@@ -74,10 +78,6 @@ const main = () => {
     }
   });
 
-  if (logseq.settings!.booleanJournalsBoundaries === true) observeElementAppearance(
-    parent.document.getElementById("main-content-container") as HTMLDivElement,
-    () => setTimeout(() => boundaries(false, 'journals'), 10)
-  );
 
   logseq.App.onSidebarVisibleChanged(({ visible }) => {
     if (visible === true) setTimeout(() => titleQuerySelector(), 100);
@@ -141,6 +141,24 @@ const main = () => {
 
 
 
+let processingTitleQuery: boolean = false;
+async function titleQuerySelector(): Promise<void> {
+  if (processingTitleQuery) return;
+  processingTitleQuery = true;
+  const { preferredDateFormat } = await logseq.App.getUserConfigs() as AppUserConfigs;
+  parent.document.querySelectorAll("div#main-content-container div:is(.journal,.is-journals,.page) h1.title:not([data-checked])").forEach(async (titleElement) => await JournalPageTitle(titleElement as HTMLElement, preferredDateFormat));
+  parent.document.querySelectorAll('div:is(#main-content-container,#right-sidebar) a[data-ref]:not([data-localize]), div#left-sidebar li span.page-title:not([data-localize])').forEach(async (titleElement) => await journalLink(titleElement as HTMLElement));
+  processingTitleQuery = false;
+}
+
+
+const observer = new MutationObserver(async (): Promise<void> => {
+  observer.disconnect();
+  await titleQuerySelector();
+  setTimeout(() => observerMainRight(), 2000);
+});
+
+
 function observerMainRight() {
   observer.observe(parent.document.getElementById("main-content-container") as HTMLDivElement, {
     attributes: true,
@@ -153,6 +171,20 @@ function observerMainRight() {
     attributeFilter: ["class"],
   });
 }
+
+
+// function observeElementAppearance(targetElement: HTMLElement, callback: () => void) {
+//   if (!targetElement) return;
+
+//   const observer = new MutationObserver(() => {
+//     observer.disconnect();
+//     callback();
+//   });
+//   setTimeout(() => {
+//     observer.observe(targetElement, { childList: true, subtree: true, attributeFilter: ["class"], });
+//   }, 3000);
+// }
+
 
 function formatRelativeDate(targetDate: Date): string {
   const currentDate = new Date();
@@ -548,11 +580,6 @@ async function openPage(pageName: string, shiftKey: boolean) {
 }
 
 
-const observer = new MutationObserver(async (): Promise<void> => {
-  await titleQuerySelector();
-});
-
-
 async function weeklyJournalInsertTemplate(uuid: string, templateName: string): Promise<void> {
   if (templateName !== "") {
     const exist = await logseq.App.existTemplate(templateName) as boolean;
@@ -563,18 +590,6 @@ async function weeklyJournalInsertTemplate(uuid: string, templateName: string): 
     }
   }
   logseq.UI.showMsg('Weekly journal created', 'success', { timeout: 2000 });
-}
-
-function observeElementAppearance(targetElement: HTMLElement, callback: () => void) {
-  if (!targetElement) return;
-
-  const observer = new MutationObserver(() => {
-    observer.disconnect();
-    callback();
-  });
-  setTimeout(() => {
-    observer.observe(targetElement, { childList: true, subtree: true, attributeFilter: ["class"], });
-  }, 3000);
 }
 
 
@@ -593,16 +608,6 @@ function removeBoundaries() {
 function removeTitleQuery() {
   const titleElements = parent.document.querySelectorAll("div#main-content-container div:is(.journal,.is-journals) h1.title+span.showWeekday") as NodeListOf<HTMLElement>;
   titleElements.forEach((titleElement) => titleElement.remove());
-}
-
-let processingTitleQuery: boolean = false;
-async function titleQuerySelector(): Promise<void> {
-  if (processingTitleQuery) return;
-  processingTitleQuery = true;
-  const { preferredDateFormat } = await logseq.App.getUserConfigs() as AppUserConfigs;
-  parent.document.querySelectorAll("div#main-content-container div:is(.journal,.is-journals,.page) h1.title:not([data-checked])").forEach(async (titleElement) => await JournalPageTitle(titleElement as HTMLElement, preferredDateFormat));
-  parent.document.querySelectorAll('div:is(#main-content-container,#right-sidebar) a[data-ref]:not([data-localize]), div#left-sidebar li span.page-title:not([data-localize])').forEach(async (titleElement) => await journalLink(titleElement as HTMLElement));
-  processingTitleQuery = false;
 }
 
 
