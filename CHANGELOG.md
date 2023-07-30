@@ -1,3 +1,10 @@
+## [1.23.3](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.23.2...v1.23.3) (2023-07-30)
+
+
+### Bug Fixes
+
+* **design:** 2 week mode center ([dc01329](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/dc013293404c3d1401921c8fba7430d603315f03))
+
 ## [1.23.2](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.23.1...v1.23.2) (2023-07-30)
 
 
