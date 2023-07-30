@@ -5,6 +5,8 @@ import ja from "./translations/ja.json";
 import { getISOWeek, getWeek, getWeekOfMonth, format, addDays, isBefore, isToday, isSunday, isSaturday, getISOWeekYear, getWeekYear, startOfWeek, eachDayOfInterval, startOfISOWeek, subDays, addWeeks, isThisWeek, isThisISOWeek, subWeeks, } from 'date-fns';//https://date-fns.org/
 import fileMainCSS from "./main.css?inline";
 
+
+
 /* main */
 const main = () => {
   (async () => {
@@ -176,7 +178,7 @@ let processingJournalTitlePage: Boolean = false;
 async function JournalPageTitle(titleElement: HTMLElement, preferredDateFormat: string) {
   if (!titleElement.textContent
     || processingJournalTitlePage === true
-    || titleElement.nextElementSibling?.className === "weekday-and-week-number") return;  // check if element already has date info
+    || titleElement.nextElementSibling?.className === "showWeekday") return;  // check if element already has date info
   processingJournalTitlePage = true;
 
   //ジャーナルのページタイトルの場合のみ
@@ -189,7 +191,7 @@ async function JournalPageTitle(titleElement: HTMLElement, preferredDateFormat: 
     && (titleElement.classList.contains("journal-title") === true || titleElement.classList.contains("title") === true)
   ) {
     const dateInfoElement: HTMLSpanElement = parent.document.createElement("span");
-    dateInfoElement.classList.add("weekday-and-week-number");
+    dateInfoElement.classList.add("showWeekday");
     titleElement.insertAdjacentElement('afterend', dateInfoElement);
     const secondElement: HTMLSpanElement = parent.document.createElement("span");
     secondElement.style.width = "50%";
@@ -223,6 +225,7 @@ async function JournalPageTitle(titleElement: HTMLElement, preferredDateFormat: 
       && titleElement.dataset.localize === undefined) titleElementReplaceLocalizeDayOfWeek(journalDate, titleElement);
   }
 
+  titleElement.dataset.checked = "true";
   processingJournalTitlePage = false;
 }
 
@@ -327,7 +330,7 @@ function behindJournalTitle(journalDate: Date, titleElement: HTMLElement, prefer
   }
   // apply styles
   const dateInfoElement: HTMLSpanElement = parent.document.createElement("span");
-  dateInfoElement.classList.add("weekday-and-week-number");
+  dateInfoElement.classList.add("showWeekday");
   if (logseq.settings?.booleanDayOfWeek === true) {
     if (logseq.settings?.booleanWeekendsColor === true &&
       isSaturday(journalDate) === true) {
@@ -565,14 +568,9 @@ async function weeklyJournalInsertTemplate(uuid: string, templateName: string): 
 function observeElementAppearance(targetElement: HTMLElement, callback: () => void) {
   if (!targetElement) return;
 
-  const observer = new MutationObserver((mutationsList, observer) => {
+  const observer = new MutationObserver(() => {
     observer.disconnect();
-    for (const mutation of mutationsList) {
-      if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
-        // 特定のDOMエレメントが追加された場合の処理
-        callback();
-      }
-    }
+    callback();
   });
   // setTimeout(() => {
   //   observer.observe(targetElement, { childList: true, subtree: true, attributeFilter: ["class"], });
@@ -593,7 +591,7 @@ function removeBoundaries() {
 }
 
 function removeTitleQuery() {
-  const titleElements = parent.document.querySelectorAll("div#main-content-container div:is(.journal,.is-journals) h1.title+span.weekday-and-week-number") as NodeListOf<HTMLElement>;
+  const titleElements = parent.document.querySelectorAll("div#main-content-container div:is(.journal,.is-journals) h1.title+span.showWeekday") as NodeListOf<HTMLElement>;
   titleElements.forEach((titleElement) => titleElement.remove());
 }
 
@@ -602,8 +600,8 @@ async function titleQuerySelector(): Promise<void> {
   if (processingTitleQuery) return;
   processingTitleQuery = true;
   const { preferredDateFormat } = await logseq.App.getUserConfigs() as AppUserConfigs;
-  parent.document.querySelectorAll("div#main-content-container div:is(.journal,.is-journals,.page) h1.title").forEach(async (titleElement) => await JournalPageTitle(titleElement as HTMLElement, preferredDateFormat));
-  parent.document.querySelectorAll('div:is(#main-content-container,#right-sidebar) a[data-ref],div#left-sidebar li span.page-title').forEach(async (titleElement) => await journalLink(titleElement as HTMLElement));
+  parent.document.querySelectorAll("div#main-content-container div:is(.journal,.is-journals,.page) h1.title:not([data-checked])").forEach(async (titleElement) => await JournalPageTitle(titleElement as HTMLElement, preferredDateFormat));
+  parent.document.querySelectorAll('div:is(#main-content-container,#right-sidebar) a[data-ref]:not([data-localize]), div#left-sidebar li span.page-title:not([data-localize])').forEach(async (titleElement) => await journalLink(titleElement as HTMLElement));
   processingTitleQuery = false;
 }
 

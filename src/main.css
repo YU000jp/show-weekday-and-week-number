@@ -21,15 +21,15 @@ div#main-content-container div:is(#journals, .is-journals) h1.title :is(a.title,
     color: inherit;
 }
 
-div#main-content-container h1.title+span.weekday-and-week-number {
+div#main-content-container h1.title+span.showWeekday {
     margin-left: 0.75em;
     opacity: .75;
-    font-size: 1.3em;
+    font-size: 1.15em;
     width: fit-content;
     font-style: italic;
 }
 
-div#main-content-container h1.title+span.weekday-and-week-number>span {
+div#main-content-container h1.title+span.showWeekday>span {
     margin-left: .75em;
 }
 
