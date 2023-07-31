@@ -177,11 +177,4 @@ export const settingsTemplate = (ByLanguage: string): SettingSchemaDesc[] => [
     default: true,
     description: "default: `true` *This setting does not affect the graph*",
   },
-  {
-    key: "splitJournalTitle",
-    title: t("Journal title, If user date format is yyyy/mm/dd, Enable hierarchy link (split to 3 journal link) on single journal page: toggle"),
-    type: "boolean",
-    default: true,
-    description: "default: `true`",
-  },
 ];
