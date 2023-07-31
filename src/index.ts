@@ -40,7 +40,6 @@ const main = () => {
     }
   })();
 
-  if (logseq.settings!.titleAlign === "space-around") parent.document.body.classList.add('show-justify');
   logseq.provideStyle({ key: "main", style: fileMainCSS });
 
 
@@ -90,11 +89,7 @@ const main = () => {
 
 
   logseq.onSettingsChanged((newSet: LSPluginBaseInfo['settings'], oldSet: LSPluginBaseInfo['settings']) => {
-    if (oldSet.titleAlign === "space-around" && newSet.titleAlign !== "space-around") {
-      parent.document.body.classList!.remove('show-justify');
-    } else if (oldSet.titleAlign !== "space-around" && newSet.titleAlign === "space-around") {
-      parent.document.body.classList!.add('show-justify');
-    }
+
     const changeBoundaries = (oldSet.localizeOrEnglish !== newSet.localizeOrEnglish
       || oldSet.journalBoundariesBeforeToday !== newSet.journalBoundariesBeforeToday
       || oldSet.journalBoundariesAfterToday !== newSet.journalBoundariesAfterToday

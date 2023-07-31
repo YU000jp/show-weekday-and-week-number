@@ -13,14 +13,6 @@ export const settingsTemplate = (ByLanguage: string): SettingSchemaDesc[] => [
     description: "",
   },
   {
-    key: "titleAlign",
-    title: t("Journal title, Alignment of journal page title"),
-    type: "enum",
-    default: "left",
-    enumChoices: ["left", "space-around"],
-    description: "",
-  },
-  {
     key: "localizeOrEnglish",
     title: t("Day of the week, Select language Localize(:default) or English(:en)"),
     type: "enum",
