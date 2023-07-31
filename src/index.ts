@@ -14,7 +14,31 @@ import { settingsTemplate } from './settings';
 /* main */
 const main = () => {
 
-  loadSettings();
+  (async () => {
+    try {
+      await l10nSetup({ builtinTranslations: { ja } });
+    } finally {
+      /* user settings */
+      //get user config Language >>> Country
+      if (logseq.settings?.weekNumberFormat === undefined) {
+        const convertLanguageCodeToCountryCode = (languageCode: string): string => {
+          switch (languageCode) {
+            case "ja":
+              return "Japanese format";
+            default:
+              return "ISO(EU) format";
+          }
+        };
+        const { preferredLanguage } = await logseq.App.getUserConfigs() as AppUserConfigs;
+        logseq.useSettingsSchema(settingsTemplate(convertLanguageCodeToCountryCode(preferredLanguage)));
+        setTimeout(() => {
+          logseq.showSettingsUI();
+        }, 300);
+      } else {
+        logseq.useSettingsSchema(settingsTemplate("ISO(EU) format"));
+      }
+    }
+  })();
 
   if (logseq.settings!.titleAlign === "space-around") parent.document.body.classList.add('show-justify');
   logseq.provideStyle({ key: "main", style: fileMainCSS });
@@ -22,10 +46,10 @@ const main = () => {
 
   //Logseqを開いたときに実行
   setTimeout(() => {
-  if (logseq.settings!.booleanJournalsBoundaries === true) boundaries('journals');
+    if (logseq.settings!.booleanJournalsBoundaries === true) boundaries('journals');
     titleQuerySelector();
   }, 200);
-    setTimeout(() => observerMainRight(), 2000);//スクロール用
+  setTimeout(() => observerMainRight(), 2000);//スクロール用
 
 
   logseq.App.onRouteChanged(({ template }) => {
@@ -64,7 +88,52 @@ const main = () => {
     if (visible === true) setTimeout(() => titleQuerySelector(), 100);
   });
 
-  onSettingChanged();
+
+  logseq.onSettingsChanged((newSet: LSPluginBaseInfo['settings'], oldSet: LSPluginBaseInfo['settings']) => {
+    if (oldSet.titleAlign === "space-around" && newSet.titleAlign !== "space-around") {
+      parent.document.body.classList!.remove('show-justify');
+    } else if (oldSet.titleAlign !== "space-around" && newSet.titleAlign === "space-around") {
+      parent.document.body.classList!.add('show-justify');
+    }
+    const changeBoundaries = (oldSet.localizeOrEnglish !== newSet.localizeOrEnglish
+      || oldSet.journalBoundariesBeforeToday !== newSet.journalBoundariesBeforeToday
+      || oldSet.journalBoundariesAfterToday !== newSet.journalBoundariesAfterToday
+      || oldSet.journalsBoundariesWeekOnly !== newSet.journalsBoundariesWeekOnly
+      || (
+        oldSet.weekNumberFormat !== newSet.weekNumberFormat
+        && newSet.journalsBoundariesWeekOnly === true
+      )
+    ) ? true : false;
+    if (changeBoundaries ||
+      (oldSet.booleanBoundaries === true && newSet.booleanBoundaries === false)) {
+      removeBoundaries();
+    }
+    if (changeBoundaries ||
+      (oldSet.booleanBoundaries === false && newSet.booleanBoundaries === true)) {
+      if (parent.document.getElementById("is-journals") as HTMLDivElement) boundaries('is-journals');
+    }
+    if ((changeBoundaries || oldSet.booleanJournalsBoundaries === false && newSet.booleanJournalsBoundaries === true)) {
+      if (parent.document.getElementById("journals") as HTMLDivElement) boundaries('journals');
+    }
+    if ((oldSet.booleanJournalsBoundaries === true && newSet.booleanJournalsBoundaries === false)) {
+      //JOurnal boundariesを除去
+      if (parent.document.getElementById("journals") as HTMLDivElement) removeBoundaries();
+    }
+    if (oldSet.localizeOrEnglish !== newSet.localizeOrEnglish ||
+      oldSet.booleanDayOfWeek !== newSet.booleanDayOfWeek ||
+      oldSet.longOrShort !== newSet.longOrShort ||
+      oldSet.booleanWeekNumber !== newSet.booleanWeekNumber ||
+      oldSet.weekNumberOfTheYearOrMonth !== newSet.weekNumberOfTheYearOrMonth ||
+      oldSet.booleanWeekendsColor !== newSet.booleanWeekendsColor ||
+      oldSet.weekNumberFormat !== newSet.weekNumberFormat ||
+      oldSet.booleanRelativeTime !== newSet.booleanRelativeTime ||
+      oldSet.booleanWeeklyJournal !== newSet.booleanWeeklyJournal ||
+      oldSet.booleanJournalLinkLocalizeDayOfWeek !== newSet.booleanJournalLinkLocalizeDayOfWeek) {
+      removeTitleQuery();
+      setTimeout(() => titleQuerySelector(), 300);
+    }
+  });
+
 
   logseq.beforeunload(async () => {
     removeTitleQuery();
@@ -73,34 +142,6 @@ const main = () => {
   });
 
 };/* end_main */
-
-
-
-const loadSettings = async () => {
-  try {
-    await l10nSetup({ builtinTranslations: { ja } });
-  } finally {
-    /* user settings */
-    //get user config Language >>> Country
-    if (logseq.settings?.weekNumberFormat === undefined) {
-      const convertLanguageCodeToCountryCode = (languageCode: string): string => {
-        switch (languageCode) {
-          case "ja":
-            return "Japanese format";
-          default:
-            return "ISO(EU) format";
-        }
-      };
-      const { preferredLanguage } = await logseq.App.getUserConfigs() as AppUserConfigs;
-      logseq.useSettingsSchema(settingsTemplate(convertLanguageCodeToCountryCode(preferredLanguage)));
-      setTimeout(() => {
-        logseq.showSettingsUI();
-      }, 300);
-    } else {
-      logseq.useSettingsSchema(settingsTemplate("ISO(EU) format"));
-    }
-  }
-};
 
 
 let processingTitleQuery: boolean = false;
@@ -205,52 +246,6 @@ async function JournalPageTitle(titleElement: HTMLElement, preferredDateFormat: 
   titleElement.dataset.checked = "true";
   processingJournalTitlePage = false;
 }
-
-
-const onSettingChanged = logseq.onSettingsChanged((newSet: LSPluginBaseInfo['settings'], oldSet: LSPluginBaseInfo['settings']) => {
-  if (oldSet.titleAlign === "space-around" && newSet.titleAlign !== "space-around") {
-    parent.document.body.classList!.remove('show-justify');
-  } else if (oldSet.titleAlign !== "space-around" && newSet.titleAlign === "space-around") {
-    parent.document.body.classList!.add('show-justify');
-  }
-  const changeBoundaries = (oldSet.localizeOrEnglish !== newSet.localizeOrEnglish
-    || oldSet.journalBoundariesBeforeToday !== newSet.journalBoundariesBeforeToday
-    || oldSet.journalBoundariesAfterToday !== newSet.journalBoundariesAfterToday
-    || oldSet.journalsBoundariesWeekOnly !== newSet.journalsBoundariesWeekOnly
-    || (
-      oldSet.weekNumberFormat !== newSet.weekNumberFormat
-      && newSet.journalsBoundariesWeekOnly === true
-    )
-  ) ? true : false;
-  if (changeBoundaries ||
-    (oldSet.booleanBoundaries === true && newSet.booleanBoundaries === false)) {
-    removeBoundaries();
-  }
-  if (changeBoundaries ||
-    (oldSet.booleanBoundaries === false && newSet.booleanBoundaries === true)) {
-    if (parent.document.getElementById("is-journals") as HTMLDivElement) boundaries('is-journals');
-  }
-  if ((changeBoundaries || oldSet.booleanJournalsBoundaries === false && newSet.booleanJournalsBoundaries === true)) {
-    if (parent.document.getElementById("journals") as HTMLDivElement) boundaries('journals');
-  }
-  if ((oldSet.booleanJournalsBoundaries === true && newSet.booleanJournalsBoundaries === false)) {
-    //JOurnal boundariesを除去
-    if (parent.document.getElementById("journals") as HTMLDivElement) removeBoundaries();
-  }
-  if (oldSet.localizeOrEnglish !== newSet.localizeOrEnglish ||
-    oldSet.booleanDayOfWeek !== newSet.booleanDayOfWeek ||
-    oldSet.longOrShort !== newSet.longOrShort ||
-    oldSet.booleanWeekNumber !== newSet.booleanWeekNumber ||
-    oldSet.weekNumberOfTheYearOrMonth !== newSet.weekNumberOfTheYearOrMonth ||
-    oldSet.booleanWeekendsColor !== newSet.booleanWeekendsColor ||
-    oldSet.weekNumberFormat !== newSet.weekNumberFormat ||
-    oldSet.booleanRelativeTime !== newSet.booleanRelativeTime ||
-    oldSet.booleanWeeklyJournal !== newSet.booleanWeeklyJournal ||
-    oldSet.booleanJournalLinkLocalizeDayOfWeek !== newSet.booleanJournalLinkLocalizeDayOfWeek) {
-    removeTitleQuery();
-    setTimeout(() => titleQuerySelector(), 300);
-  }
-});
 
 
 function removeBoundaries() {
