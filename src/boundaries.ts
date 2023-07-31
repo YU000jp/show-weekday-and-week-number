@@ -9,12 +9,12 @@ let processingBoundaries: boolean = false;
 export function boundaries(targetElementName: string, remove?: boolean) {
   if (processingBoundaries) return;
   processingBoundaries = true;
-  boundariesProcess(false, targetElementName, remove);
+  boundariesProcess(targetElementName, remove);
   processingBoundaries = false;
 }
 
 
-async function boundariesProcess(lazy: boolean, targetElementName: string, remove?: boolean) {
+async function boundariesProcess(targetElementName: string, remove?: boolean) {
   const checkWeekBoundaries = parent.document.getElementById('weekBoundaries') as HTMLDivElement;
   if (checkWeekBoundaries) {
     if (remove === true) checkWeekBoundaries.remove();
@@ -141,7 +141,6 @@ async function boundariesProcess(lazy: boolean, targetElementName: string, remov
       }
     });
   } else {
-    if (lazy === true) return;
-    setTimeout(() => boundariesProcess(true, targetElementName), 100);
+    setTimeout(() => boundariesProcess(targetElementName), 300);
   }
 }
