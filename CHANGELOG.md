@@ -1,3 +1,11 @@
+## [1.23.7](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.23.6...v1.23.7) (2023-07-31)
+
+
+### Bug Fixes
+
+* **bug:** plugin settings after ([8aa0fed](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/8aa0fed96113b80a264ff97a91be5d92d6acb7d6))
+* **Delete:** Enable hierarchy link (Journal link) ([25de428](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/25de428c1a337fd8a090a13f22732485a3ad4376))
+
 ## [1.23.6](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.23.5...v1.23.6) (2023-07-31)
 
 
