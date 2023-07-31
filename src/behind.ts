@@ -3,7 +3,9 @@ import { formatRelativeDate, openPage } from "./lib";
 
 
 //behind journal title
+let processingBehind: boolean = false;
 export function behindJournalTitle(journalDate: Date, titleElement: HTMLElement, preferredDateFormat) {
+  if (processingBehind === true) return;
   let dayOfWeekName: string = "";
   if (preferredDateFormat.includes("E") === false && logseq.settings?.booleanDayOfWeek === true) dayOfWeekName = new Intl.DateTimeFormat((logseq.settings?.localizeOrEnglish || "default"), { weekday: logseq.settings?.longOrShort || "long" }).format(journalDate);
   let printWeekNumber: string;
@@ -104,4 +106,5 @@ export function behindJournalTitle(journalDate: Date, titleElement: HTMLElement,
     //For single journal
     titleElement.insertAdjacentElement('afterend', dateInfoElement);
   }
+  processingBehind = false;
 }

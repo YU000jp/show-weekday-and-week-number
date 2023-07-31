@@ -3,34 +3,26 @@ import { format, addDays, isBefore, isToday, isSunday, isSaturday, startOfWeek, 
 import { getJournalDayDate } from './lib';
 
 
-
-//boundaries
-let processingBoundaries: boolean = false;
-export function boundaries(targetElementName: string, remove?: boolean) {
-  if (processingBoundaries) return;
-  processingBoundaries = true;
-  boundariesProcess(targetElementName, remove);
-  processingBoundaries = false;
-}
-
-
-async function boundariesProcess(targetElementName: string, remove?: boolean) {
-  const checkWeekBoundaries = parent.document.getElementById('weekBoundaries') as HTMLDivElement;
+let processingFoundBoundaries: boolean = false;
+export async function boundariesProcess(targetElementName: string, remove: boolean, repeat: number) {
+  if (repeat >= 20 || processingFoundBoundaries === true) return;
+  const checkWeekBoundaries = parent.document.getElementById('weekBoundaries') as HTMLDivElement | null;
   if (checkWeekBoundaries) {
     if (remove === true) checkWeekBoundaries.remove();
     else return;
   }
-  const today = new Date();
-  let firstElement: HTMLDivElement;
-  if (targetElementName === 'is-journals') {
-    firstElement = parent.document.getElementsByClassName(targetElementName)[0] as HTMLDivElement;
-  } else if (targetElementName === 'journals') {
-    firstElement = parent.document.getElementById(targetElementName) as HTMLDivElement;
-  } else {
-    return;
+
+  const firstElement = (targetElementName === 'is-journals')
+    ? parent.document.getElementsByClassName(targetElementName)[0] as HTMLDivElement
+    : (targetElementName === 'journals') ? parent.document.getElementById(targetElementName) as HTMLDivElement : null;
+  if (firstElement === null) {
+    setTimeout(() => boundariesProcess(targetElementName, false, repeat + 1), 300);
   }
+  processingFoundBoundaries = true;
+
   const { preferredDateFormat } = await logseq.App.getUserConfigs() as AppUserConfigs;
   if (firstElement) {
+    const today = new Date();
     const weekBoundaries: HTMLDivElement = parent.document.createElement('div');
     weekBoundaries.id = 'weekBoundaries';
     firstElement.insertBefore(weekBoundaries, firstElement.firstChild);
@@ -50,6 +42,7 @@ async function boundariesProcess(targetElementName: string, remove?: boolean) {
       const { journalDay } = await logseq.Editor.getCurrentPage() as PageEntity;
       if (!journalDay) {
         console.error('journalDay is undefined');
+        processingFoundBoundaries = false;
         return;
       }
       targetDate = getJournalDayDate(String(journalDay)) as Date;
@@ -140,7 +133,6 @@ async function boundariesProcess(targetElementName: string, remove?: boolean) {
         weekBoundaries!.appendChild(dayElement);
       }
     });
-  } else {
-    setTimeout(() => boundariesProcess(targetElementName), 300);
   }
+  processingFoundBoundaries = false;
 }

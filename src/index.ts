@@ -6,9 +6,9 @@ import fileMainCSS from "./main.css?inline";
 import { behindJournalTitle } from "./behind";
 import { getJournalDayDate, titleElementReplaceLocalizeDayOfWeek, } from "./lib";
 import { currentPageIsWeeklyJournal } from "./weeklyJournal";
-import { boundaries } from "./boundaries";
 import { journalLink } from './journalLink';
 import { settingsTemplate } from './settings';
+import { boundariesProcess } from './boundaries';
 
 
 /* main */
@@ -251,6 +251,15 @@ function removeBoundaries() {
 function removeTitleQuery() {
   const titleElements = parent.document.querySelectorAll("div#main-content-container div:is(.journal,.is-journals) h1.title+span.showWeekday") as NodeListOf<HTMLElement>;
   titleElements.forEach((titleElement) => titleElement.remove());
+}
+
+//boundaries
+let processingBoundaries: boolean = false;
+export function boundaries(targetElementName: string, remove?: boolean) {
+  if (processingBoundaries) return;
+  processingBoundaries = true;
+  boundariesProcess(targetElementName, remove);
+  processingBoundaries = false;
 }
 
 
