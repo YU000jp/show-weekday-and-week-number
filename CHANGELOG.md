@@ -1,3 +1,10 @@
+## [1.23.8](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.23.7...v1.23.8) (2023-07-31)
+
+
+### Bug Fixes
+
+* **Remove:** align title config for hierarchy links ([1038ef7](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/1038ef7501d7984a3ba8b7a823fa97a4c0047477))
+
 ## [1.23.7](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.23.6...v1.23.7) (2023-07-31)
 
 
