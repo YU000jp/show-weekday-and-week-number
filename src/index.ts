@@ -258,7 +258,7 @@ let processingBoundaries: boolean = false;
 export function boundaries(targetElementName: string, remove?: boolean) {
   if (processingBoundaries) return;
   processingBoundaries = true;
-  boundariesProcess(targetElementName, remove);
+  boundariesProcess(targetElementName, remove ? remove : false, 0);
   processingBoundaries = false;
 }
 
