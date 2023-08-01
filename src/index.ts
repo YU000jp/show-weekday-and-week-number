@@ -4,7 +4,7 @@ import { setup as l10nSetup } from "logseq-l10n"; //https://github.com/sethyuan/
 import ja from "./translations/ja.json";
 import fileMainCSS from "./main.css?inline";
 import { behindJournalTitle } from "./behind";
-import { getJournalDayDate, } from "./lib";
+import { getJournalDayDate, getWeeklyNumberFromDate, } from "./lib";
 import { titleElementReplaceLocalizeDayOfWeek } from "./journalLink";
 import { currentPageIsWeeklyJournal } from "./weeklyJournal";
 import { journalLink } from './journalLink';
@@ -51,6 +51,14 @@ const main = () => {
   }, 200);
   setTimeout(() => observerMainRight(), 2000);//スクロール用
 
+
+    //Week number linkのスラッシュコマンド
+    logseq.Editor.registerSlashCommand("Insert week number link", async () => {
+      const { year, weekString }: { year: number; weekString: string; } = getWeeklyNumberFromDate(new Date(), (logseq.settings?.weekNumberFormat === "US format") ? 0 : 1);
+      logseq.Editor.insertAtEditingCursor(`[[${year}-W${weekString}]]`);
+    });
+  
+  
 
   logseq.App.onRouteChanged(({ template }) => {
     if (logseq.settings?.booleanBoundaries === true && template === '/page/:name') {
