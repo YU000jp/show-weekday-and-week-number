@@ -120,6 +120,17 @@ export const settingsTemplate = (ByLanguage: string): SettingSchemaDesc[] => [
     description: t("Enable the link and function. If there is no content available on a page with a week number like 2023-W25, a template will be inserted."),
   },
   {
+    key: "descriptionWeeklyJournalSlashCommand",
+    //Weekly Journalのリンクを作成する
+    title: t("Weekly Journal, the slash command to create a link to the weekly journal page"),
+    type: "heading",
+    default: "",
+    description: `
+    Slash command: " /Insert week number link "
+    like [[2023-W32]]
+    `,
+  },
+  {
     key: "weeklyJournalTemplateName",
     title: t("Weekly Journal, Template name"),
     type: "string",
