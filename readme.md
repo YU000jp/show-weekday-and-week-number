@@ -32,6 +32,9 @@
 ### Weekly Journal
 
 - If there is no content available on a page with a week number like `2023-W25`, a template will be inserted.
+- To create a link to the weekly journal page
+  - Slash command: `/Insert week number link` [#79](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/79) 🆙
+  - like `[[2023-W32]]`
 
 ---
 
@@ -56,9 +59,9 @@
   - `US format`
   - `ISO(EU) format` default
   - `Japanese format`
-- **Journal title**, Alignment of journal page title: select
-  - `left` default
-  - `space-around`
+- ~~**Journal title**, Alignment of journal page title: select~~ delete🆙
+  - ~~`left` default~~
+  - ~~`space-around`~~
 - **Day of the week**, Select language Localize(:default) or English(:en): select
   - `default` default
   - `en`
@@ -130,9 +133,10 @@
 - **Localize journal link**: If the day of the week is not included in user date format, add the localized day of the week to the date link: toggle [#68](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/68)
   - `true` default
   - `false`
-- **Journal title**, If user date format is yyyy/mm/dd, Enable hierarchy link (split to 3 journal link) on single journal page: toggle [#77](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/77)
-  - `true` default
-  - `false`
+- ~~**Journal title**, If user date format is yyyy/mm/dd, Enable hierarchy link (split to 3 journal link) on single journal page: toggle [#77](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/77)~~
+  - ~~`true` default~~
+  - ~~`false`~~
+  > delete🆙 split to [Page-tags and Hierarchy plugin](https://github.com/YU000jp/logseq-page-tags-and-hierarchy#show-hierarchy-links-to-page-title-22-)
 
 ---
 
