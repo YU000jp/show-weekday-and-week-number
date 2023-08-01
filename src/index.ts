@@ -4,7 +4,8 @@ import { setup as l10nSetup } from "logseq-l10n"; //https://github.com/sethyuan/
 import ja from "./translations/ja.json";
 import fileMainCSS from "./main.css?inline";
 import { behindJournalTitle } from "./behind";
-import { getJournalDayDate, titleElementReplaceLocalizeDayOfWeek, } from "./lib";
+import { getJournalDayDate, } from "./lib";
+import { titleElementReplaceLocalizeDayOfWeek } from "./journalLink";
 import { currentPageIsWeeklyJournal } from "./weeklyJournal";
 import { journalLink } from './journalLink';
 import { settingsTemplate } from './settings';
@@ -55,11 +56,11 @@ const main = () => {
     if (logseq.settings?.booleanBoundaries === true && template === '/page/:name') {
       //page only
       //div.is-journals
-      setTimeout(() => boundaries('is-journals'), 10);
+      setTimeout(() => boundaries('is-journals'), 20);
     } else if (logseq.settings!.booleanJournalsBoundaries === true && template === '/') {
       //journals only
       //div#journals
-      setTimeout(() => boundaries('journals'), 10);
+      setTimeout(() => boundaries('journals'), 20);
     }
     setTimeout(() => titleQuerySelector(), 50);
   });
@@ -94,25 +95,21 @@ const main = () => {
       || oldSet.journalBoundariesBeforeToday !== newSet.journalBoundariesBeforeToday
       || oldSet.journalBoundariesAfterToday !== newSet.journalBoundariesAfterToday
       || oldSet.journalsBoundariesWeekOnly !== newSet.journalsBoundariesWeekOnly
-      || (
-        oldSet.weekNumberFormat !== newSet.weekNumberFormat
-        && newSet.journalsBoundariesWeekOnly === true
-      )
+      || (oldSet.weekNumberFormat !== newSet.weekNumberFormat
+        && newSet.journalsBoundariesWeekOnly === true)
     ) ? true : false;
-    if (changeBoundaries ||
-      (oldSet.booleanBoundaries === true && newSet.booleanBoundaries === false)) {
+    if (changeBoundaries
+      || (oldSet.booleanBoundaries === true && newSet.booleanBoundaries === false)
+      || (oldSet.booleanJournalsBoundaries === true && newSet.booleanJournalsBoundaries === false)) {
       removeBoundaries();
     }
     if (changeBoundaries ||
       (oldSet.booleanBoundaries === false && newSet.booleanBoundaries === true)) {
       if (parent.document.getElementById("is-journals") as HTMLDivElement) boundaries('is-journals');
+      if (parent.document.getElementById("journals") as HTMLDivElement) boundaries('journals');
     }
     if ((changeBoundaries || oldSet.booleanJournalsBoundaries === false && newSet.booleanJournalsBoundaries === true)) {
       if (parent.document.getElementById("journals") as HTMLDivElement) boundaries('journals');
-    }
-    if ((oldSet.booleanJournalsBoundaries === true && newSet.booleanJournalsBoundaries === false)) {
-      //JOurnal boundariesを除去
-      if (parent.document.getElementById("journals") as HTMLDivElement) removeBoundaries();
     }
     if (oldSet.localizeOrEnglish !== newSet.localizeOrEnglish ||
       oldSet.booleanDayOfWeek !== newSet.booleanDayOfWeek ||
@@ -125,7 +122,7 @@ const main = () => {
       oldSet.booleanWeeklyJournal !== newSet.booleanWeeklyJournal ||
       oldSet.booleanJournalLinkLocalizeDayOfWeek !== newSet.booleanJournalLinkLocalizeDayOfWeek) {
       removeTitleQuery();
-      setTimeout(() => titleQuerySelector(), 300);
+      setTimeout(() => titleQuerySelector(), 500);
     }
   });
 
@@ -249,8 +246,10 @@ function removeBoundaries() {
 }
 
 function removeTitleQuery() {
-  const titleElements = parent.document.querySelectorAll("div#main-content-container div:is(.journal,.is-journals) h1.title+span.showWeekday") as NodeListOf<HTMLElement>;
-  titleElements.forEach((titleElement) => titleElement.remove());
+  const titleBehindElements = parent.document.querySelectorAll("div#main-content-container div:is(.journal,.is-journals) h1.title+span.showWeekday") as NodeListOf<HTMLElement>;
+  titleBehindElements.forEach((titleElement) => titleElement.remove());
+  const titleElements = parent.document.querySelectorAll("div#main-content-container div:is(.journal,.is-journals) h1.title[data-checked]") as NodeListOf<HTMLElement>;
+  titleElements.forEach((titleElement) => titleElement.removeAttribute("data-checked"));
 }
 
 //boundaries

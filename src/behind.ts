@@ -1,5 +1,5 @@
-import { getISOWeek, getISOWeekYear, getWeek, getWeekOfMonth, getWeekYear, isSaturday, isSunday } from "date-fns";
-import { formatRelativeDate, openPage } from "./lib";
+import { getWeekOfMonth, isSaturday, isSunday } from "date-fns";
+import { formatRelativeDate, openPage, getWeeklyNumberFromDate } from "./lib";
 
 
 //behind journal title
@@ -8,26 +8,13 @@ export function behindJournalTitle(journalDate: Date, titleElement: HTMLElement,
   if (processingBehind === true) return;
   let dayOfWeekName: string = "";
   if (preferredDateFormat.includes("E") === false && logseq.settings?.booleanDayOfWeek === true) dayOfWeekName = new Intl.DateTimeFormat((logseq.settings?.localizeOrEnglish || "default"), { weekday: logseq.settings?.longOrShort || "long" }).format(journalDate);
-  let printWeekNumber: string;
   let printWeek: string = "";
-  const weekStartsOn = (logseq.settings?.weekNumberFormat === "US format") ? 0 : 1;
+  const weekStartsOn: 0 | 1 = (logseq.settings?.weekNumberFormat === "US format") ? 0 : 1;
   if (logseq.settings?.booleanWeekNumber === true) {
     if (logseq.settings?.weekNumberOfTheYearOrMonth === "Year") {
-      let forWeeklyJournal = "";
-      let year: number;
-      let week: number;
-      if (logseq.settings?.weekNumberFormat === "ISO(EU) format") {
-        year = getISOWeekYear(journalDate);
-        week = getISOWeek(journalDate);
-      } else {
-        //NOTE: getWeekYear関数は1月1日がその年の第1週の始まりとなる(デフォルト)
-        //weekStartsOnは先に指定済み
-        year = getWeekYear(journalDate, { weekStartsOn });
-        week = getWeek(journalDate, { weekStartsOn });
-      }
-      const weekString: string = (week < 10) ? String("0" + week) : String(week); //weekを2文字にする
-      printWeekNumber = `${year}-W<strong>${weekString}</strong>`;
-      forWeeklyJournal = `${year}-W${weekString}`;
+      var { year, weekString }: { year: number; weekString: string; } = getWeeklyNumberFromDate(journalDate, weekStartsOn);
+      const printWeekNumber = `${year}-W<strong>${weekString}</strong>`;
+      const forWeeklyJournal = `${year}-W${weekString}`;
       if (logseq.settings.booleanWeeklyJournal === true) {
         const linkId = "weeklyJournal-" + forWeeklyJournal;
         printWeek = `<span title="Week number"><a id="${linkId}">${printWeekNumber}</a></span>`;
