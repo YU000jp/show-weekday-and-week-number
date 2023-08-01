@@ -5,6 +5,13 @@
 
 * **bugs:** duplicate processing ([fbeeba3](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/fbeeba309b3a88723418d43273f40e3c7c33bde8))
 
+## [1.23.9](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.23.8...v1.23.9) (2023-07-31)
+
+
+### Bug Fixes
+
+* **bugs:** duplicate processing ([fbeeba3](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/fbeeba309b3a88723418d43273f40e3c7c33bde8))
+
 ## [1.23.8](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.23.7...v1.23.8) (2023-07-31)
 
 
