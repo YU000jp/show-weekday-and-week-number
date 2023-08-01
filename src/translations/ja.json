@@ -28,5 +28,5 @@
     "Journal boundaries, Custom day range: before today (Excludes 2 week mode)": "ナビゲーションバーの日付範囲: 今日より前の日数",
     "Localize journal link: If the day of the week is included in user date format, localize the day of the week in the date link": "ユーザーの日付フォーマットに曜日が含まれている場合、日付リンクの曜日をローカライズする",
     "Localize journal link: If the day of the week is not included in user date format, add the localized day of the week to the date link": "ユーザーの日付フォーマットに曜日が含まれていない場合、日付リンクにローカライズされた曜日を追加する",
-    "Weekly Journal, the slash command to create a link to the weekly journal page" : "ウィークリージャーナルのページへのリンクを作成するスラッシュコマンド",
+    "Weekly Journal, the slash command to create a link to the weekly journal page" : "ウィークリージャーナルのページへのリンクを作成するスラッシュコマンド"
 }
