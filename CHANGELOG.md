@@ -1,3 +1,15 @@
+# [1.24.0](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.23.9...v1.24.0) (2023-08-01)
+
+
+### Bug Fixes
+
+* **bug:** When change configs on plugin settings ([c37b288](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/c37b2886fe4bf3978307cb51881dcaa2e4637a18))
+
+
+### Features
+
+* **Add:** New WorkFlow, Add slash command `Insert week number link` ([#80](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/80)) ([4a15e5f](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/4a15e5f3d3741276a6754f80a2f167b29239e7a1))
+
 ## [1.23.9](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.23.8...v1.23.9) (2023-07-31)
 
 
