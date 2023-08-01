@@ -12,7 +12,7 @@ export function behindJournalTitle(journalDate: Date, titleElement: HTMLElement,
   const weekStartsOn: 0 | 1 = (logseq.settings?.weekNumberFormat === "US format") ? 0 : 1;
   if (logseq.settings?.booleanWeekNumber === true) {
     if (logseq.settings?.weekNumberOfTheYearOrMonth === "Year") {
-      var { year, weekString }: { year: number; weekString: string; } = getWeeklyNumberFromDate(journalDate, weekStartsOn);
+      const { year, weekString }: { year: number; weekString: string; } = getWeeklyNumberFromDate(journalDate, weekStartsOn);
       const printWeekNumber = `${year}-W<strong>${weekString}</strong>`;
       const forWeeklyJournal = `${year}-W${weekString}`;
       if (logseq.settings.booleanWeeklyJournal === true) {
