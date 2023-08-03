@@ -76,7 +76,7 @@ div#main-content-container div#weekBoundaries>span.day span.dayOfMonth {
     font-size: 1.25em;
     font-weight: 900;
 }
-div#main-content-container div.is-journals>div.relative div div.ls-page-title:has(h1.page-title[data-checked=true]) span#hierarchyLinks {
+div#main-content-container div.is-journals>div.relative div div.ls-page-title span#hierarchyLinks {
     position: absolute;
     margin-top: -4em;
 }
