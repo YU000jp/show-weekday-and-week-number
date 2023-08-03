@@ -46,7 +46,7 @@ div#main-content-container div#weekBoundaries {
 div#main-content-container div#weekBoundaries>span.day {
     width: 6em;
     padding: 0.25em;
-    margin-left: 0.55em;
+    margin-left: 0.35em;
     border-radius: 0.4em;
     background: var(--color-level-1);
 }
@@ -75,4 +75,8 @@ div#main-content-container div#weekBoundaries>span.day span.dayOfMonth {
     margin-left: .4em;
     font-size: 1.25em;
     font-weight: 900;
+}
+div#main-content-container div.is-journals>div.relative div div.ls-page-title:has(h1.page-title[data-checked=true]) span#hierarchyLinks {
+    position: absolute;
+    margin-top: -4em;
 }

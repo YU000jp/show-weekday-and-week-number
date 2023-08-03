@@ -13,7 +13,7 @@ export async function boundariesProcess(targetElementName: string, remove: boole
   }
 
   const firstElement = (targetElementName === 'is-journals')
-    ? parent.document.getElementsByClassName(targetElementName)[0] as HTMLDivElement
+    ? ((parent.document.getElementsByClassName(targetElementName)[0] as HTMLDivElement).getElementsByClassName("relative") as HTMLCollectionOf<HTMLDivElement>)[0]//Hierarchy linksのために階層を変更
     : (targetElementName === 'journals') ? parent.document.getElementById(targetElementName) as HTMLDivElement : null;
   if (firstElement === null) {
     setTimeout(() => boundariesProcess(targetElementName, false, repeat + 1), 300);
