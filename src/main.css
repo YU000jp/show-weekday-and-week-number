@@ -52,7 +52,7 @@ div#main-content-container div#weekBoundaries>span.day {
 }
 
 div#main-content-container div#weekBoundaries>span.day:not(.thisWeek) {
-    opacity: .4;
+    opacity: .5;
 }
 
 div#main-content-container div#weekBoundaries>span.day.thisWeek {
