@@ -15,7 +15,10 @@ export async function boundariesProcess(targetElementName: string, remove: boole
   const firstElement = (targetElementName === 'is-journals')
     ? (parent.document.getElementsByClassName(targetElementName)[0] as HTMLDivElement)?.getElementsByClassName("relative")[0] as HTMLDivElement//Hierarchy linksのために階層を変更
     : (targetElementName === 'journals') ? parent.document.getElementById(targetElementName) as HTMLDivElement : null;
-  if (firstElement === null) {
+  if (firstElement === null &&
+    ((targetElementName === 'journals' && parent.document.getElementById('journals') === null)
+      || (targetElementName === 'is-journals' && parent.document.getElementsByClassName('is-journals')[0] === null)
+    )) {
     setTimeout(() => boundariesProcess(targetElementName, false, repeat + 1), 300);
   }
   processingFoundBoundaries = true;
