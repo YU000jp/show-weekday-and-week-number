@@ -1,3 +1,10 @@
+## [1.24.3](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.24.2...v1.24.3) (2023-08-04)
+
+
+### Bug Fixes
+
+* **bug:** Remove console error ([a3725bc](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/a3725bc379f4936dc741be4ca5b84f5f2a43a602))
+
 ## [1.24.2](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.24.1...v1.24.2) (2023-08-03)
 
 
