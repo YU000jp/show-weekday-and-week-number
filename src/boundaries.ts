@@ -101,23 +101,17 @@ export async function boundariesProcess(targetElementName: string, remove: boole
           if (logseq.settings?.booleanWeekendsColor === true && isSunday(date) as boolean) {
             dayElement.style.color = 'var(--ls-wb-stroke-color-red)';
           }
-        if (isBefore(date, today) as boolean || booleanToday === true) {
+        if (logseq.settings!.boundariesOpenPageAfterToday === true || (isBefore(date, today) as boolean || booleanToday === true)) {
           dayElement.style.cursor = 'pointer';
-          dayElement.addEventListener("click", async (event) => {
+          dayElement.addEventListener("click", async ({ shiftKey }) => {
             const journalPageName: string = format(date, preferredDateFormat);
             const page = await logseq.Editor.getPage(journalPageName) as PageEntity | null;
             if (page && page.journalDay) {
-              if (event.shiftKey) {
-                logseq.Editor.openInRightSidebar(page.uuid);
-              } else {
-                logseq.App.pushState('page', { name: journalPageName });
-              }
+              if (shiftKey) logseq.Editor.openInRightSidebar(page.uuid);
+              else logseq.App.pushState('page', { name: journalPageName });
             } else {
-              if (logseq.settings!.noPageFoundCreatePage === true) {
-                logseq.Editor.createPage(journalPageName, undefined, { redirect: true, journal: true });
-              } else {
-                logseq.UI.showMsg('No page found', 'warming');
-              }
+              if (logseq.settings!.noPageFoundCreatePage === true) logseq.Editor.createPage(journalPageName, undefined, { redirect: true, journal: true });
+              else logseq.UI.showMsg('No page found', 'warming');
             }
           });
         }
