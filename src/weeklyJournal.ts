@@ -1,5 +1,5 @@
 import { AppUserConfigs, BlockEntity } from '@logseq/libs/dist/LSPlugin.user';
-import { getISOWeek, getWeek, format, addDays,getISOWeekYear, getWeekYear, startOfWeek, eachDayOfInterval, startOfISOWeek, subDays, addWeeks, subWeeks, } from 'date-fns';//https://date-fns.org/
+import { getISOWeek, getWeek, format, addDays, getISOWeekYear, getWeekYear, startOfWeek, eachDayOfInterval, startOfISOWeek, subDays, addWeeks, subWeeks, } from 'date-fns';//https://date-fns.org/
 
 
 export async function currentPageIsWeeklyJournal(titleElement: HTMLElement, match: RegExpMatchArray) {
@@ -73,43 +73,41 @@ export async function currentPageIsWeeklyJournal(titleElement: HTMLElement, matc
         if (logseq.settings!.weeklyJournalSetPageTag !== "") weekDaysLinks.push(logseq.settings!.weeklyJournalSetPageTag);
 
         //テンプレートを挿入
-        const page = await logseq.Editor.getCurrentPage() as BlockEntity;
-        if (page) {
 
-            const block = await logseq.Editor.insertBlock(current[0].uuid, "", { sibling: true }) as BlockEntity;
-            if (block) {
-                //空白
-                const blank = await logseq.Editor.insertBlock(block.uuid, "", { sibling: true });
-                if (blank) {
-                    //テンプレート
-                    await weeklyJournalInsertTemplate(blank.uuid, logseq.settings!.weeklyJournalTemplateName).finally(async () => {
-
-                        const newBlank = await logseq.Editor.insertBlock(blank.uuid, "", { sibling: true }) as BlockEntity;
-                        if (newBlank) {
-                            if (logseq.settings!.booleanWeeklyJournalThisWeek === true) {
-                                //曜日リンク
-                                const thisWeek = await logseq.Editor.insertBlock(newBlank.uuid, "#### This Week", { sibling: true }) as BlockEntity;
-                                if (thisWeek) {
-                                    if (!preferredDateFormat.includes("E")) weekDaysLinkArray.forEach(async (weekDayName, index) => {
-                                        await logseq.Editor.insertBlock(
-                                            thisWeek.uuid,
-                                            `${logseq.settings!.booleanWeeklyJournalThisWeekWeekday === true ?
-                                                (logseq.settings!.booleanWeeklyJournalThisWeekLinkWeekday === true ?
-                                                    `[[${weekdayArray[index]}]] ` : weekdayArray[index])
-                                                : ""} [[${weekDayName}]]\n`);
-                                    });
-                                }
-                            }
-                            //ページタグとして挿入する処理
-                            await logseq.Editor.upsertBlockProperty(current[0].uuid, "tags", weekDaysLinks);
-                            await logseq.Editor.editBlock(current[0].uuid);
-                            setTimeout(() => logseq.Editor.insertAtEditingCursor(","), 200);
-                        }
-                    });
+        const block = await logseq.Editor.insertBlock(current[0].uuid, "", { sibling: true }) as BlockEntity;
+        if (block) {
+            const newBlank = await logseq.Editor.insertBlock(block.uuid, "", { sibling: true, before: false }) as BlockEntity;
+            const newBlank2 = await logseq.Editor.insertBlock(block.uuid, "", { sibling: true, before: false }) as BlockEntity;
+            if (newBlank) {
+                if (logseq.settings!.booleanWeeklyJournalThisWeek === true) {
+                    //曜日リンク (This Week section)
+                    const thisWeek = await logseq.Editor.insertBlock(newBlank.uuid, "#### This Week", { sibling: true, before: false }) as BlockEntity;
+                    if (thisWeek) {
+                        if (!preferredDateFormat.includes("E")) weekDaysLinkArray.forEach(async (weekDayName, index) => {
+                            await logseq.Editor.insertBlock(
+                                thisWeek.uuid,
+                                `${logseq.settings!.booleanWeeklyJournalThisWeekWeekday === true ?
+                                    (logseq.settings!.booleanWeeklyJournalThisWeekLinkWeekday === true ?
+                                        `[[${weekdayArray[index]}]] ` : weekdayArray[index])
+                                    : ""} [[${weekDayName}]]\n`);
+                        });
+                    }
                 }
-
+                if (newBlank2) {
+                    await logseq.Editor.insertBlock(newBlank2.uuid, "", { sibling: true, before: false });
+                    await logseq.Editor.insertBlock(newBlank2.uuid, "", { sibling: true, before: false });
+                    await weeklyJournalInsertTemplate(newBlank2.uuid, logseq.settings!.weeklyJournalTemplateName);//テンプレート挿入
+                    await logseq.Editor.insertBlock(newBlank2.uuid, "", { sibling: true, before: false });
+                }
             }
+
+
+
         }
+        //ページタグとして挿入する処理
+        await logseq.Editor.upsertBlockProperty(current[0].uuid, "tags", weekDaysLinks);
+        await logseq.Editor.editBlock(current[0].uuid);
+        setTimeout(() => logseq.Editor.insertAtEditingCursor(","), 200);
     }
 }
 
