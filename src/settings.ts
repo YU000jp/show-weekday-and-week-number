@@ -112,14 +112,6 @@ export const settingsTemplate = (ByLanguage: string): SettingSchemaDesc[] => [
     default: false,
     description: "default: `false`",
   },
-  {//今日より後の日付も開くようにする
-    key : "boundariesOpenPageAfterToday",
-    title: t("On Journal boundaries, Open the next day or later page"),
-    type: "boolean",
-    default: true,
-    //ジャーナルテンプレートが反映されなくなる
-    description: "default: `true` *If create the page, journal template will not be applied.",
-  },
   {
     key: "booleanWeeklyJournal",
     title: t("Weekly Journal, Enable feature"),
