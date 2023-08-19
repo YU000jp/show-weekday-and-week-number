@@ -1,3 +1,10 @@
+# [1.25.0](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.24.5...v1.25.0) (2023-08-19)
+
+
+### Features
+
+* **plugin settings:** Add `Hide year of week number` ([#85](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/85)) ([72f93e6](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/72f93e6f1ee8a5ad759d979f53c953fbe30c14f0))
+
 ## [1.24.5](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.24.4...v1.24.5) (2023-08-08)
 
 
