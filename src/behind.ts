@@ -1,25 +1,43 @@
 import { getWeekOfMonth, isSaturday, isSunday } from "date-fns";
 import { formatRelativeDate, openPage, getWeeklyNumberFromDate } from "./lib";
 
-
 //behind journal title
 let processingBehind: boolean = false;
-export function behindJournalTitle(journalDate: Date, titleElement: HTMLElement, preferredDateFormat) {
+export function behindJournalTitle(
+  journalDate: Date,
+  titleElement: HTMLElement,
+  preferredDateFormat
+) {
   if (processingBehind === true) return;
   let dayOfWeekName: string = "";
-  if (preferredDateFormat.includes("E") === false && logseq.settings?.booleanDayOfWeek === true) dayOfWeekName = new Intl.DateTimeFormat((logseq.settings?.localizeOrEnglish || "default"), { weekday: logseq.settings?.longOrShort || "long" }).format(journalDate);
+  if (
+    preferredDateFormat.includes("E") === false &&
+    logseq.settings?.booleanDayOfWeek === true
+  )
+    dayOfWeekName = new Intl.DateTimeFormat(
+      logseq.settings?.localizeOrEnglish || "default",
+      { weekday: logseq.settings?.longOrShort || "long" }
+    ).format(journalDate);
   let printWeek: string = "";
-  const weekStartsOn: 0 | 1 = (logseq.settings?.weekNumberFormat === "US format") ? 0 : 1;
+  const weekStartsOn: 0 | 1 =
+    logseq.settings?.weekNumberFormat === "US format" ? 0 : 1;
   if (logseq.settings?.booleanWeekNumber === true) {
     if (logseq.settings?.weekNumberOfTheYearOrMonth === "Year") {
-      const { year, weekString }: { year: number; weekString: string; } = getWeeklyNumberFromDate(journalDate, weekStartsOn);
-      const printWeekNumber = `${year}-W<strong>${weekString}</strong>`;
+      const { year, weekString }: { year: number; weekString: string } =
+        getWeeklyNumberFromDate(journalDate, weekStartsOn);
+      const printWeekNumber =
+        logseq.settings!.booleanWeekNumberHideYear === true &&
+        weekString !== "53"
+          ? `W<strong>${weekString}</strong>`
+          : `${year}-W<strong>${weekString}</strong>`;
       const forWeeklyJournal = `${year}-W${weekString}`;
       if (logseq.settings.booleanWeeklyJournal === true) {
         const linkId = "weeklyJournal-" + forWeeklyJournal;
         printWeek = `<span title="Week number"><a id="${linkId}">${printWeekNumber}</a></span>`;
         setTimeout(() => {
-          const element = parent.document.getElementById(linkId) as HTMLSpanElement;
+          const element = parent.document.getElementById(
+            linkId
+          ) as HTMLSpanElement;
           if (element) {
             let processing: Boolean = false;
             element.addEventListener("click", ({ shiftKey }): void => {
@@ -36,9 +54,17 @@ export function behindJournalTitle(journalDate: Date, titleElement: HTMLElement,
       }
     } else {
       // get week numbers of the month
-      printWeek = (logseq.settings?.weekNumberFormat === "Japanese format" && logseq.settings?.localizeOrEnglish === "default")
-        ? `<span title="1か月ごとの週番号">第<strong>${getWeekOfMonth(journalDate, { weekStartsOn })}</strong>週</span>`
-        : `<span title="Week number within the month"><strong>W${getWeekOfMonth(journalDate, { weekStartsOn })}</strong><small>/m</small></span>`;
+      printWeek =
+        logseq.settings?.weekNumberFormat === "Japanese format" &&
+        logseq.settings?.localizeOrEnglish === "default"
+          ? `<span title="1か月ごとの週番号">第<strong>${getWeekOfMonth(
+              journalDate,
+              { weekStartsOn }
+            )}</strong>週</span>`
+          : `<span title="Week number within the month"><strong>W${getWeekOfMonth(
+              journalDate,
+              { weekStartsOn }
+            )}</strong><small>/m</small></span>`;
     }
   }
 
@@ -46,21 +72,25 @@ export function behindJournalTitle(journalDate: Date, titleElement: HTMLElement,
   let relativeTime: string = "";
   if (logseq.settings?.booleanRelativeTime === true) {
     const formatString: string = formatRelativeDate(journalDate);
-    if (formatString !== "") relativeTime = `<span><small>(${formatString})</small></span>`;
+    if (formatString !== "")
+      relativeTime = `<span><small>(${formatString})</small></span>`;
   }
   // apply styles
-  const dateInfoElement: HTMLSpanElement = parent.document.createElement("span");
+  const dateInfoElement: HTMLSpanElement =
+    parent.document.createElement("span");
   dateInfoElement.classList.add("showWeekday");
   if (logseq.settings?.booleanDayOfWeek === true) {
-    if (logseq.settings?.booleanWeekendsColor === true &&
-      isSaturday(journalDate) === true) {
+    if (
+      logseq.settings?.booleanWeekendsColor === true &&
+      isSaturday(journalDate) === true
+    ) {
       dateInfoElement.innerHTML = `<span style="color:var(--ls-wb-stroke-color-blue)">${dayOfWeekName}</span>${printWeek}${relativeTime}`;
-    }
-    else if (logseq.settings?.booleanWeekendsColor === true &&
-      isSunday(journalDate) === true) {
+    } else if (
+      logseq.settings?.booleanWeekendsColor === true &&
+      isSunday(journalDate) === true
+    ) {
       dateInfoElement.innerHTML = `<span style="color:var(--ls-wb-stroke-color-red)">${dayOfWeekName}</span>${printWeek}${relativeTime}`;
-    }
-    else {
+    } else {
       dateInfoElement.innerHTML = `<span>${dayOfWeekName}</span>${printWeek}${relativeTime}`; //textContent
     }
   } else {
@@ -68,30 +98,31 @@ export function behindJournalTitle(journalDate: Date, titleElement: HTMLElement,
   }
 
   //h1から.blockを削除
-  if (titleElement.classList.contains("block")) titleElement.classList.remove("block");
-
+  if (titleElement.classList.contains("block"))
+    titleElement.classList.remove("block");
 
   //h1の中にdateInfoElementを挿入
   const aTag = titleElement.parentElement; // 親要素を取得する
-  if (aTag && aTag.tagName.toLowerCase() === 'a') {
+  if (aTag && aTag.tagName.toLowerCase() === "a") {
     //For journals
     //<a><h1>日付タイトル</h1></a>の構造になっているが、<h1><a>日付タイトル</a></h1>にしたい
     const titleElementTextContent = titleElement.textContent;
     //titleElementのテキストコンテンツを削除
-    titleElement.textContent = '';
+    titleElement.textContent = "";
     //aタグと同じ階層にtitleElementを移動する
-    aTag.insertAdjacentElement('afterend', titleElement);
+    aTag.insertAdjacentElement("afterend", titleElement);
     //titleElementの中にaTagを移動する
     titleElement.appendChild(aTag);
     //移動したaタグの中身にtitleElementTextContentを戻す
     aTag.textContent = titleElementTextContent;
     //aタグから.initial-colorを削除
-    if (aTag.classList.contains("initial-color")) aTag.classList.remove("initial-color");
+    if (aTag.classList.contains("initial-color"))
+      aTag.classList.remove("initial-color");
     // titleElementの後ろにdateInfoElementを追加する
-    titleElement.insertAdjacentElement('afterend', dateInfoElement);
+    titleElement.insertAdjacentElement("afterend", dateInfoElement);
   } else {
     //For single journal
-    titleElement.insertAdjacentElement('afterend', dateInfoElement);
+    titleElement.insertAdjacentElement("afterend", dateInfoElement);
   }
   processingBehind = false;
 }

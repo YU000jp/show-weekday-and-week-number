@@ -28,5 +28,7 @@
     "Journal boundaries, Custom day range: before today (Excludes 2 week mode)": "ナビゲーションバーの日付範囲: 今日より前の日数",
     "Localize journal link: If the day of the week is included in user date format, localize the day of the week in the date link": "ユーザーの日付フォーマットに曜日が含まれている場合、日付リンクの曜日をローカライズする",
     "Localize journal link: If the day of the week is not included in user date format, add the localized day of the week to the date link": "ユーザーの日付フォーマットに曜日が含まれていない場合、日付リンクにローカライズされた曜日を追加する",
-    "Weekly Journal, the slash command to create a link to the weekly journal page" : "ウィークリージャーナルのページへのリンクを作成するスラッシュコマンド"
+    "Weekly Journal, the slash command to create a link to the weekly journal page" : "ウィークリージャーナルのページへのリンクを作成するスラッシュコマンド",
+    "Behind journal title, Hide the year of week number": "週番号の年表記を非表示にする",
+    "Enabling this setting conceals the year representation in the date format. For instance, 2023-W30 displays as W30. Typically, the notation of week numbers follows the rules based on ISO 8601. The reason for distinguishing the year is that the first week of a year might be included in the last week of the previous year. Only in such cases does it display as 2023-W53.": "この設定を有効にすると、日付の形式で年の表記が隠されます。例えば、2023-W30はW30と表示されます。通常、週番号の表記はISO 8601の規則に従います。年を区別する理由は、新年の最初の週が前年の最後の週に含まれる可能性があるためです。そのような場合にのみ、2023-W53として表示されます。"
 }
