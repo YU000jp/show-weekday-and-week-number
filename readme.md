@@ -65,75 +65,82 @@
 - **Day of the week**, Select language Localize(:default) or English(:en): select
   - `default` default
   - `en`
-- **Behind journal title**, Enable the day of week: toggle
+
+#### Behind journal title
+
+- Enable the day of week: toggle
   - `true` default
   - `false`
-- **Behind journal title**, Day of the week long or short: select
+- Day of the week long or short: select
   - `long` default
   - `short`
-- **Behind journal title**, Enable week number: toggle
+- Enable week number: toggle
   - `true` default
   - `false`
-- **Behind journal title**, Show week number of the year or month (unit): select
+- Hide the year of week number: toggle [#84](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/84) 🆕
+  - `true`
+  - `false` default
+  > Enabling this setting conceals the year representation in the date format. For instance, 2023-W30 displays as W30. Typically, the notation of week numbers follows the rules based on ISO 8601. The reason for distinguishing the year is that the first week of a year might be included in the last week of the previous year. Only in such cases does it display as 2023-W53.
+- Show week number of the year or month (unit): select
   - `Year` default
   - `Month`
-- **Behind journal title**, Coloring to the word of Saturday or Sunday: toggle
+- Coloring to the word of Saturday or Sunday: toggle
   - `true` default
   - `false`
-- **Behind journal title** / **Localize journal link**, Enable relative time: toggle
+
+#### Behind journal title / Localize journal link
+
+- Enable relative time: toggle
   - `true` default
   - `false`
-- **Journal boundaries**, Enable feature: toggle
+ 
+#### Journal boundaries
+
+- Enable feature: toggle
   > Show the boundaries of days before and after the day on the single journal page
   - `true` default
   - `false`
-- **Journal boundaries**, Use also on journals: toggle
+- Use also on journals: toggle
   - `true` default
   - `false`
-- **Journal boundaries**, Enable 2 week mode (only journals): toggle [#58](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/58)
+- Enable 2 week mode (only journals): toggle [#58](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/58)
   - `true`
   - `false` default
-- **Journal boundaries**, Custom day range: before today (Excludes 2 week mode): select [#58](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/58) [#60](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/60)
-  - `11`
-  - `10`
-  - `9`
-  - `8`
-  - `7`
-  - `6` default
-  - `5`
-  - `4`
-  - `3`
-- **Journal boundaries**, Custom day range: after today (Excludes 2 week mode): select [#58](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/58)
-  - `1`
-  - `2`
-  - `3`
-  - `4` default
-  - `5`
-  - `6`
-- On **Journal boundaries** if no page found, create the journal page: toggle
+- Custom day range: before today (Excludes 2 week mode): select [#58](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/58) [#60](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/60)
+  - `11`,`10`,`9`,`8`,`7`,`6` default ,`5`,`4`,`3`
+- Custom day range: after today (Excludes 2 week mode): select [#58](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/58)
+  - `1`,`2`,`3`,`4` default ,`5`,`6`
+- If no page found, create the journal page: toggle
   - `true`
   - `false` default
-- **Weekly Journal**, Enable feature: toggle [#65](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/65)
+
+ #### Weekly Journal
+ 
+- Enable feature: toggle [#65](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/65)
   > Enable the link and function. If there is no content available on a page with a week number like `2023-W25`, a template will be inserted.
   - `true` default
   - `false`
-- **Weekly Journal**, Template name: input
+- Template name: input
   - default: blank
-- **Weekly Journal**, Set page tag (Add to tags property): input
+- Set page tag (Add to tags property): input
   - default: blank
-- **Weekly Journal**, Enable "This Week" section: toggle [#55](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/55)
+- Enable "This Week" section: toggle [#55](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/55)
   - `true` default
   - `false`
-- **Weekly Journal**, Convert the day of the week in the "This Week" section into links.: toggle
+- Convert the day of the week in the "This Week" section into links.: toggle
   - `true`
   - `false` default
-- **Localize journal link**: If the day of the week is included in user date format, localize the day of the week in the date link: toggle [#68](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/68)
+
+#### Localize journal link
+- If the day of the week is included in user date format, localize the day of the week in the date link: toggle [#68](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/68)
   - `true` default
   - `false`
-- **Localize journal link**: If the day of the week is not included in user date format, add the localized day of the week to the date link: toggle [#68](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/68)
+- If the day of the week is not included in user date format, add the localized day of the week to the date link: toggle [#68](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/68)
   - `true` default
   - `false`
-- ~~**Journal title**, If user date format is yyyy/mm/dd, Enable hierarchy link (split to 3 journal link) on single journal page: toggle [#77](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/77)~~
+ 
+#### ~~Journal title~~
+- ~~If user date format is yyyy/mm/dd, Enable hierarchy link (split to 3 journal link) on single journal page: toggle [#77](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/77)~~
   - ~~`true` default~~
   - ~~`false`~~
   > delete🆙 split to [Page-tags and Hierarchy plugin](https://github.com/YU000jp/logseq-page-tags-and-hierarchy#show-hierarchy-links-to-page-title-22-)
