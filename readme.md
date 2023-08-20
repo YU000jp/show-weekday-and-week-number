@@ -143,7 +143,7 @@
 - ~~If user date format is yyyy/mm/dd, Enable hierarchy link (split to 3 journal link) on single journal page: toggle [#77](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/77)~~
   - ~~`true` default~~
   - ~~`false`~~
-  > delete🆙 split to [Page-tags and Hierarchy plugin](https://github.com/YU000jp/logseq-page-tags-and-hierarchy#show-hierarchy-links-to-page-title-22-)
+  > delete🆙 (split to [Page-tags and Hierarchy plugin](https://github.com/YU000jp/logseq-page-tags-and-hierarchy#show-hierarchy-links-to-page-title-22-))
 
 ---
 
