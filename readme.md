@@ -153,7 +153,7 @@
   - [danilofaria](https://discuss.logseq.com/u/danilofaria/)
   - [ottodevs](https://discuss.logseq.com/u/ottodevs/)
 
-## Recommend
+## Relation
 
 - [Legacy date format plugin](https://github.com/YU000jp/logseq-plugin-legacy-date-format)
 
