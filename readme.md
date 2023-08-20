@@ -153,6 +153,10 @@
   - [danilofaria](https://discuss.logseq.com/u/danilofaria/)
   - [ottodevs](https://discuss.logseq.com/u/ottodevs/)
 
+## Recommend
+
+- [Legacy date format plugin](https://github.com/YU000jp/logseq-plugin-legacy-date-format)
+
 ## Showcase / Questions / Ideas / Help
 
 > Go to the [discussion](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/discussions) tab to ask and find this kind of things.
