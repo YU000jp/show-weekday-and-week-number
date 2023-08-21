@@ -1,5 +1,6 @@
 import { getWeekOfMonth, isSaturday, isSunday } from "date-fns";
-import { formatRelativeDate, openPage, getWeeklyNumberFromDate } from "./lib";
+import { openPage, getWeeklyNumberFromDate } from "./lib";
+import { formatRelativeDate } from "./journalLink";
 
 //behind journal title
 let processingBehind: boolean = false;
@@ -27,7 +28,7 @@ export function behindJournalTitle(
         getWeeklyNumberFromDate(journalDate, weekStartsOn);
       const printWeekNumber =
         logseq.settings!.booleanWeekNumberHideYear === true &&
-        weekString !== "53"
+          weekString !== "53"
           ? `W<strong>${weekString}</strong>`
           : `${year}-W<strong>${weekString}</strong>`;
       const forWeeklyJournal = `${year}-W${weekString}`;
@@ -56,15 +57,15 @@ export function behindJournalTitle(
       // get week numbers of the month
       printWeek =
         logseq.settings?.weekNumberFormat === "Japanese format" &&
-        logseq.settings?.localizeOrEnglish === "default"
+          logseq.settings?.localizeOrEnglish === "default"
           ? `<span title="1か月ごとの週番号">第<strong>${getWeekOfMonth(
-              journalDate,
-              { weekStartsOn }
-            )}</strong>週</span>`
+            journalDate,
+            { weekStartsOn }
+          )}</strong>週</span>`
           : `<span title="Week number within the month"><strong>W${getWeekOfMonth(
-              journalDate,
-              { weekStartsOn }
-            )}</strong><small>/m</small></span>`;
+            journalDate,
+            { weekStartsOn }
+          )}</strong><small>/m</small></span>`;
     }
   }
 

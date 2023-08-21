@@ -9,7 +9,7 @@ import ja from "./translations/ja.json";
 import fileMainCSS from "./main.css?inline";
 import { behindJournalTitle } from "./behind";
 import { getJournalDayDate, getWeeklyNumberFromDate } from "./lib";
-import { titleElementReplaceLocalizeDayOfWeek } from "./journalLink";
+import { titleElementReplaceLocalizeDayOfWeek } from "./lib";
 import { currentPageIsWeeklyJournal } from "./weeklyJournal";
 import { journalLink } from "./journalLink";
 import { settingsTemplate } from "./settings";
@@ -54,7 +54,7 @@ const main = () => {
   setTimeout(() => {
     if (logseq.settings!.booleanJournalsBoundaries === true)
       boundaries("journals");
-    titleQuerySelector();
+    querySelectorAllTitleAndLinks();
   }, 200);
   setTimeout(() => observerMainRight(), 2000); //スクロール用
 
@@ -84,7 +84,7 @@ const main = () => {
       //div#journals
       setTimeout(() => boundaries("journals"), 20);
     }
-    setTimeout(() => titleQuerySelector(), 50);
+    setTimeout(() => querySelectorAllTitleAndLinks(), 50);
   });
 
   //日付更新時に実行(Journal boundariesのセレクト更新のため)
@@ -109,7 +109,7 @@ const main = () => {
   });
 
   logseq.App.onSidebarVisibleChanged(({ visible }) => {
-    if (visible === true) setTimeout(() => titleQuerySelector(), 100);
+    if (visible === true) setTimeout(() => querySelectorAllTitleAndLinks(), 100);
   });
 
   onSettingsChanged();
@@ -171,14 +171,14 @@ const onSettingsChanged = () => logseq.onSettingsChanged((newSet: LSPluginBaseIn
     newSet.booleanJournalLinkLocalizeDayOfWeek ||
     oldSet.booleanWeekNumberHideYear !== newSet.booleanWeekNumberHideYear) {
     removeTitleQuery();
-    setTimeout(() => titleQuerySelector(), 500);
+    setTimeout(() => querySelectorAllTitleAndLinks(), 500);
   }
 }
 );
 
 
 let processingTitleQuery: boolean = false;
-async function titleQuerySelector(): Promise<void> {
+async function querySelectorAllTitleAndLinks(): Promise<void> {
   if (processingTitleQuery) return;
   processingTitleQuery = true;
   const { preferredDateFormat } =
@@ -206,7 +206,7 @@ async function titleQuerySelector(): Promise<void> {
 
 const observer = new MutationObserver(async (): Promise<void> => {
   observer.disconnect();
-  await titleQuerySelector();
+  await querySelectorAllTitleAndLinks();
   setTimeout(() => observerMainRight(), 800);
 });
 
