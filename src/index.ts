@@ -207,7 +207,7 @@ async function titleQuerySelector(): Promise<void> {
 const observer = new MutationObserver(async (): Promise<void> => {
   observer.disconnect();
   await titleQuerySelector();
-  setTimeout(() => observerMainRight(), 2000);
+  setTimeout(() => observerMainRight(), 800);
 });
 
 function observerMainRight() {
