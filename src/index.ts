@@ -112,70 +112,7 @@ const main = () => {
     if (visible === true) setTimeout(() => titleQuerySelector(), 100);
   });
 
-  logseq.onSettingsChanged(
-    (
-      newSet: LSPluginBaseInfo["settings"],
-      oldSet: LSPluginBaseInfo["settings"]
-    ) => {
-      const changeBoundaries =
-        oldSet.localizeOrEnglish !== newSet.localizeOrEnglish ||
-        oldSet.journalBoundariesBeforeToday !==
-          newSet.journalBoundariesBeforeToday ||
-        oldSet.journalBoundariesAfterToday !==
-          newSet.journalBoundariesAfterToday ||
-        oldSet.journalsBoundariesWeekOnly !==
-          newSet.journalsBoundariesWeekOnly ||
-        (oldSet.weekNumberFormat !== newSet.weekNumberFormat &&
-          newSet.journalsBoundariesWeekOnly === true)
-          ? true
-          : false;
-      if (
-        changeBoundaries ||
-        (oldSet.booleanBoundaries === true &&
-          newSet.booleanBoundaries === false) ||
-        (oldSet.booleanJournalsBoundaries === true &&
-          newSet.booleanJournalsBoundaries === false)
-      ) {
-        removeBoundaries();
-      }
-      if (
-        changeBoundaries ||
-        (oldSet.booleanBoundaries === false &&
-          newSet.booleanBoundaries === true)
-      ) {
-        if (parent.document.getElementById("is-journals") as HTMLDivElement)
-          boundaries("is-journals");
-        if (parent.document.getElementById("journals") as HTMLDivElement)
-          boundaries("journals");
-      }
-      if (
-        changeBoundaries ||
-        (oldSet.booleanJournalsBoundaries === false &&
-          newSet.booleanJournalsBoundaries === true)
-      ) {
-        if (parent.document.getElementById("journals") as HTMLDivElement)
-          boundaries("journals");
-      }
-      if (
-        oldSet.localizeOrEnglish !== newSet.localizeOrEnglish ||
-        oldSet.booleanDayOfWeek !== newSet.booleanDayOfWeek ||
-        oldSet.longOrShort !== newSet.longOrShort ||
-        oldSet.booleanWeekNumber !== newSet.booleanWeekNumber ||
-        oldSet.weekNumberOfTheYearOrMonth !==
-          newSet.weekNumberOfTheYearOrMonth ||
-        oldSet.booleanWeekendsColor !== newSet.booleanWeekendsColor ||
-        oldSet.weekNumberFormat !== newSet.weekNumberFormat ||
-        oldSet.booleanRelativeTime !== newSet.booleanRelativeTime ||
-        oldSet.booleanWeeklyJournal !== newSet.booleanWeeklyJournal ||
-        oldSet.booleanJournalLinkLocalizeDayOfWeek !==
-          newSet.booleanJournalLinkLocalizeDayOfWeek ||
-        oldSet.booleanWeekNumberHideYear !== newSet.booleanWeekNumberHideYear
-      ) {
-        removeTitleQuery();
-        setTimeout(() => titleQuerySelector(), 500);
-      }
-    }
-  );
+  onSettingsChanged();
 
   logseq.beforeunload(async () => {
     removeTitleQuery();
@@ -183,6 +120,62 @@ const main = () => {
     observer.disconnect();
   });
 }; /* end_main */
+
+
+
+
+const onSettingsChanged = () => logseq.onSettingsChanged((newSet: LSPluginBaseInfo["settings"], oldSet: LSPluginBaseInfo["settings"]) => {
+  const changeBoundaries = oldSet.localizeOrEnglish !== newSet.localizeOrEnglish ||
+    oldSet.journalBoundariesBeforeToday !==
+    newSet.journalBoundariesBeforeToday ||
+    oldSet.journalBoundariesAfterToday !==
+    newSet.journalBoundariesAfterToday ||
+    oldSet.journalsBoundariesWeekOnly !==
+    newSet.journalsBoundariesWeekOnly ||
+    (oldSet.weekNumberFormat !== newSet.weekNumberFormat &&
+      newSet.journalsBoundariesWeekOnly === true)
+    ? true
+    : false;
+  if (changeBoundaries ||
+    (oldSet.booleanBoundaries === true &&
+      newSet.booleanBoundaries === false) ||
+    (oldSet.booleanJournalsBoundaries === true &&
+      newSet.booleanJournalsBoundaries === false)) {
+    removeBoundaries();
+  }
+  if (changeBoundaries ||
+    (oldSet.booleanBoundaries === false &&
+      newSet.booleanBoundaries === true)) {
+    if (parent.document.getElementById("is-journals") as HTMLDivElement)
+      boundaries("is-journals");
+    if (parent.document.getElementById("journals") as HTMLDivElement)
+      boundaries("journals");
+  }
+  if (changeBoundaries ||
+    (oldSet.booleanJournalsBoundaries === false &&
+      newSet.booleanJournalsBoundaries === true)) {
+    if (parent.document.getElementById("journals") as HTMLDivElement)
+      boundaries("journals");
+  }
+  if (oldSet.localizeOrEnglish !== newSet.localizeOrEnglish ||
+    oldSet.booleanDayOfWeek !== newSet.booleanDayOfWeek ||
+    oldSet.longOrShort !== newSet.longOrShort ||
+    oldSet.booleanWeekNumber !== newSet.booleanWeekNumber ||
+    oldSet.weekNumberOfTheYearOrMonth !==
+    newSet.weekNumberOfTheYearOrMonth ||
+    oldSet.booleanWeekendsColor !== newSet.booleanWeekendsColor ||
+    oldSet.weekNumberFormat !== newSet.weekNumberFormat ||
+    oldSet.booleanRelativeTime !== newSet.booleanRelativeTime ||
+    oldSet.booleanWeeklyJournal !== newSet.booleanWeeklyJournal ||
+    oldSet.booleanJournalLinkLocalizeDayOfWeek !==
+    newSet.booleanJournalLinkLocalizeDayOfWeek ||
+    oldSet.booleanWeekNumberHideYear !== newSet.booleanWeekNumberHideYear) {
+    removeTitleQuery();
+    setTimeout(() => titleQuerySelector(), 500);
+  }
+}
+);
+
 
 let processingTitleQuery: boolean = false;
 async function titleQuerySelector(): Promise<void> {
