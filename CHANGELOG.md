@@ -1,3 +1,10 @@
+# [1.26.0](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.25.0...v1.26.0) (2023-08-22)
+
+
+### Features
+
+* **Remove:** Localize journal links (Split to `Flex date format` plugin) ([76ca1b5](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/76ca1b5728d4f49250ea4561c55b1f9e5736d85f))
+
 # [1.25.0](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.24.5...v1.25.0) (2023-08-19)
 
 
