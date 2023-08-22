@@ -166,7 +166,7 @@
 
 ## Relation
 
-- [Legacy date format plugin](https://github.com/YU000jp/logseq-plugin-legacy-date-format)
+- [Flex date format plugin](https://github.com/YU000jp/logseq-plugin-flex-date-format)
 
 ## Showcase / Questions / Ideas / Help
 
