@@ -140,6 +140,8 @@
 
 #### ~~Localize journal link~~
 
+> delete🆙 (split to [Flex date format plugin](https://github.com/YU000jp/logseq-plugin-flex-date-format))
+
 - ~~If the day of the week is included in user date format, localize the day of the week in the date link: toggle [#68](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/68)~~
   - ~~`true` default~~
   - ~~`false`~~
