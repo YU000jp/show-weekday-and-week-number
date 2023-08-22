@@ -44,37 +44,54 @@ export const localizeDayOfWeek = (weekday, journalDate: Date, locales?: string) 
 
 //titleElementの日付をローカライズする(Element書き換え)
 export function titleElementReplaceLocalizeDayOfWeek(journalDate: Date, titleElement: HTMLElement) {
+  const replace = (textContent, long: string, short: string) => {
+    textContent = textContent!.replace(long, localizeDayOfWeek("long", journalDate));
+    textContent = textContent!.replace(short, localizeDayOfWeek("short", journalDate));
+  }
   const dayOfWeek = journalDate.getDay(); //journalDateで曜日を取得する
   switch (dayOfWeek) {
     case 0:
-      titleElement.textContent = titleElement.textContent!.replace("Sunday", localizeDayOfWeek("long", journalDate));
-      titleElement.textContent = titleElement.textContent!.replace("Sun", localizeDayOfWeek("short", journalDate));
+      replace(titleElement.textContent, "Sunday", "Sun");
       break;
     case 1:
-      titleElement.textContent = titleElement.textContent!.replace("Monday", localizeDayOfWeek("long", journalDate));
-      titleElement.textContent = titleElement.textContent!.replace("Mon", localizeDayOfWeek("short", journalDate));
+      replace(titleElement.textContent, "Monday", "Mon");
       break;
     case 2:
-      titleElement.textContent = titleElement.textContent!.replace("Tuesday", localizeDayOfWeek("long", journalDate));
-      titleElement.textContent = titleElement.textContent!.replace("Tue", localizeDayOfWeek("short", journalDate));
+      replace(titleElement.textContent, "Tuesday", "Tue");
       break;
     case 3:
-      titleElement.textContent = titleElement.textContent!.replace("Wednesday", localizeDayOfWeek("long", journalDate));
-      titleElement.textContent = titleElement.textContent!.replace("Wed", localizeDayOfWeek("short", journalDate));
+      replace(titleElement.textContent, "Wednesday", "Wed");
       break;
     case 4:
-      titleElement.textContent = titleElement.textContent!.replace("Thursday", localizeDayOfWeek("long", journalDate));
-      titleElement.textContent = titleElement.textContent!.replace("Thu", localizeDayOfWeek("short", journalDate));
+      replace(titleElement.textContent, "Thursday", "Thu");
       break;
     case 5:
-      titleElement.textContent = titleElement.textContent!.replace("Friday", localizeDayOfWeek("long", journalDate));
-      titleElement.textContent = titleElement.textContent!.replace("Fri", localizeDayOfWeek("short", journalDate));
+      replace(titleElement.textContent, "Friday", "Fri");
       break;
     case 6:
-      titleElement.textContent = titleElement.textContent!.replace("Saturday", localizeDayOfWeek("long", journalDate));
-      titleElement.textContent = titleElement.textContent!.replace("Sat", localizeDayOfWeek("short", journalDate));
+      replace(titleElement.textContent, "Saturday", "Sat");
       break;
   }
 }
+
+
+//相対時間表示
+export const formatRelativeDate = (targetDate: Date): string => {
+  const currentDate = new Date();
+
+  // 日付を比較するために年月日の部分だけを取得
+  const targetDateOnly = new Date(targetDate.getFullYear(), targetDate.getMonth(), targetDate.getDate());
+  const currentDateOnly = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate());
+
+  // 比較した結果、同じ日付だった場合は空文字を返す
+  // if (targetDateOnly.getTime() === currentDateOnly.getTime()) {
+  //   return '';
+  // }
+  // 相対的な日付差を計算
+  const diffInDays: number = Math.floor((targetDateOnly.getTime() - currentDateOnly.getTime()) / (1000 * 60 * 60 * 24));
+
+  // 相対的な日付差をローカライズした文字列に変換
+  return new Intl.RelativeTimeFormat(("default"), { numeric: 'auto' }).format(diffInDays, 'day') as string;
+}; //formatRelativeDate end
 
 

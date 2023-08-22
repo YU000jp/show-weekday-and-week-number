@@ -201,79 +201,11 @@ export const settingsTemplate = (ByLanguage: string): SettingSchemaDesc[] => [
   {
     key: "booleanJournalLinkLocalizeDayOfWeek",
     title: t(
-      "Localize journal link: If the day of the week is included in user date format, localize the day of the week in the date link"
+      "Localize journal title: If the day of the week is included in user date format, localize the day of the week in the date link"
     ),
     type: "boolean",
     default: true,
     //グラフには影響を与えない
     description: "default: `true` *This setting does not affect the graph*",
   },
-  {
-    key: "booleanJournalLinkAddLocalizeDayOfWeek",
-    title: t(
-      "Localize journal link: If the day of the week is not included in user date format, add the localized day of the week to the date link"
-    ),
-    type: "boolean",
-    default: true,
-    description: "default: `true` *This setting does not affect the graph*",
-  },
-  {
-    key: "booleanJournalLinkLocalizeDayOfWeek",
-    title: t(
-      "Localize journal link: If the day of the week is included in user date format, localize the day of the week in the date link"
-    ),
-    type: "boolean",
-    default: true,
-    //グラフには影響を与えない
-    description: "default: `true` *This setting does not affect the graph*",
-  },
-  {
-    key: "booleanJournalLinkAddLocalizeDayOfWeek",
-    title: t(
-      "Localize journal link: If the day of the week is not included in user date format, add the localized day of the week to the date link"
-    ),
-    type: "boolean",
-    default: true,
-    description: "default: `true` *This setting does not affect the graph*",
-  },
-  {//Journal links date format
-    key: "booleanJournalLinkDateFormat",
-    title: t(//強制的に日付フォーマットを変更する
-      "Journal link: Force display of date format"
-    ),
-    type: "boolean",
-    default: false,
-    description: "default: `false`",
-  },
-  {//date format
-    key: "dateFormat",
-    title: t(
-      "JOurnal link: Select date format  (if the above option is enabled)"
-    ),
-    type: "enum",
-    //<option>E, MM/dd/yyyy</option><option>E, dd-MM-yyyy</option><option>E, dd.MM.yyyy</option><option>E, yyyy/MM/dd</option><option>EEE, MM/dd/yyyy</option><option>EEE, dd-MM-yyyy</option><option>EEE, dd.MM.yyyy</option><option>EEE, yyyy/MM/dd</option><option>EEEE, MM/dd/yyyy</option><option>EEEE, dd-MM-yyyy</option><option>EEEE, dd.MM.yyyy</option><option>EEEE, yyyy/MM/dd</option><option>MM-dd-yyyy</option><option>MM/dd/yyyy</option><option>MMM do, yyyy</option><option>MMMM do, yyyy</option><option>MM_dd_yyyy</option><option>dd-MM-yyyy</option><option>do MMM yyyy</option><option>do MMMM yyyy</option><option>yyyy-MM-dd</option><option>yyyy-MM-dd EEEE</option><option>yyyy/MM/dd</option><option>yyyyMMdd</option><option>yyyy_MM_dd</option><option>yyyy年MM月dd日</option><
-    enumChoices: [
-      "Localize",
-      "MM/dd/yyyy",
-      "dd-MM-yyyy",
-      "dd.MM.yyyy",
-      "yyyy/MM/dd",
-      "MM-dd-yyyy",
-      "MM/dd/yyyy",
-      "MMM do, yyyy",
-      "MMMM do, yyyy",
-      "MM_dd_yyyy",
-      "dd-MM-yyyy",
-      "do MMM yyyy",
-      "do MMMM yyyy",
-      "yyyy-MM-dd",
-      "yyyy-MM-dd EEEE",
-      "yyyy/MM/dd",
-      "yyyyMMdd",
-      "yyyy_MM_dd",
-      "yyyy年MM月dd日",
-    ],
-    default: "Localize",
-    description: "",
-  }
 ];

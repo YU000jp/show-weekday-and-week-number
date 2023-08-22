@@ -24,10 +24,11 @@
 
 ### Localize day of the week in journal links 🆕
 
-- If the day of the week is not included in user date format, add the localized day of the week to the journal link
-- If it is included in the format, localize the day of the week in the journal link
-- 2023/07/22 => 2023/07/22 (Sat)
-  > `(Sat)` is the localized day of the week.
+- Split to [Flex date format plugin](https://github.com/YU000jp/logseq-plugin-flex-date-format)
+- ~~If the day of the week is not included in user date format, add the localized day of the week to the journal link~~
+- ~~If it is included in the format, localize the day of the week in the journal link~~
+- ~~2023/07/22 => 2023/07/22 (Sat)~~
+  > ~~`(Sat)` is the localized day of the week.~~
 
 ### Weekly Journal
 
@@ -88,7 +89,7 @@
   - `true` default
   - `false`
 
-#### Behind journal title / Localize journal link
+#### Behind journal title ~~/ Localize journal link~~
 
 - Enable relative time: toggle
   - `true` default
@@ -131,15 +132,23 @@
   - `true`
   - `false` default
 
-#### Localize journal link
+#### Localize journal title 🆙
+
 - If the day of the week is included in user date format, localize the day of the week in the date link: toggle [#68](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/68)
   - `true` default
   - `false`
-- If the day of the week is not included in user date format, add the localized day of the week to the date link: toggle [#68](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/68)
-  - `true` default
-  - `false`
+
+#### ~~Localize journal link~~
+
+- ~~If the day of the week is included in user date format, localize the day of the week in the date link: toggle [#68](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/68)~~
+  - ~~`true` default~~
+  - ~~`false`~~
+- ~~If the day of the week is not included in user date format, add the localized day of the week to the date link: toggle [#68](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/68)~~
+  - ~~`true` default~~
+  - ~~`false`~~
  
 #### ~~Journal title~~
+
 - ~~If user date format is yyyy/mm/dd, Enable hierarchy link (split to 3 journal link) on single journal page: toggle [#77](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/77)~~
   - ~~`true` default~~
   - ~~`false`~~

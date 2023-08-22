@@ -11,7 +11,6 @@ import { behindJournalTitle } from "./behind";
 import { getJournalDayDate, getWeeklyNumberFromDate } from "./lib";
 import { titleElementReplaceLocalizeDayOfWeek } from "./lib";
 import { currentPageIsWeeklyJournal } from "./weeklyJournal";
-import { journalLink } from "./journalLink";
 import { settingsTemplate } from "./settings";
 import { boundariesProcess } from "./boundaries";
 
@@ -48,15 +47,21 @@ const main = () => {
     }
   })();
 
+  if (logseq.settings!.notice !== "20230822no01") {
+    logseq.UI.showMsg("Remove `localize journal link` feature. Split to `Flex date format` plugin.", "info", { timeout: 4000 });
+    logseq.updateSettings({ notice: "20230822no01" });
+  }
+
+
   logseq.provideStyle({ key: "main", style: fileMainCSS });
 
   //Logseqを開いたときに実行
   setTimeout(() => {
     if (logseq.settings!.booleanJournalsBoundaries === true)
       boundaries("journals");
-    querySelectorAllTitleAndLinks();
+    querySelectorAllTitle();
   }, 200);
-  setTimeout(() => observerMainRight(), 2000); //スクロール用
+  setTimeout(() => observerMain(), 2000); //スクロール用
 
   //Week number linkのスラッシュコマンド
   logseq.Editor.registerSlashCommand("Insert week number link", async () => {
@@ -84,7 +89,7 @@ const main = () => {
       //div#journals
       setTimeout(() => boundaries("journals"), 20);
     }
-    setTimeout(() => querySelectorAllTitleAndLinks(), 50);
+    setTimeout(() => querySelectorAllTitle(), 50);
   });
 
   //日付更新時に実行(Journal boundariesのセレクト更新のため)
@@ -109,7 +114,7 @@ const main = () => {
   });
 
   logseq.App.onSidebarVisibleChanged(({ visible }) => {
-    if (visible === true) setTimeout(() => querySelectorAllTitleAndLinks(), 100);
+    if (visible === true) setTimeout(() => querySelectorAllTitle(), 100);
   });
 
   onSettingsChanged();
@@ -167,23 +172,22 @@ const onSettingsChanged = () => logseq.onSettingsChanged((newSet: LSPluginBaseIn
     oldSet.weekNumberFormat !== newSet.weekNumberFormat ||
     oldSet.booleanRelativeTime !== newSet.booleanRelativeTime ||
     oldSet.booleanWeeklyJournal !== newSet.booleanWeeklyJournal ||
-    oldSet.booleanJournalLinkLocalizeDayOfWeek !==
-    newSet.booleanJournalLinkLocalizeDayOfWeek ||
     oldSet.booleanWeekNumberHideYear !== newSet.booleanWeekNumberHideYear) {
     removeTitleQuery();
-    setTimeout(() => querySelectorAllTitleAndLinks(), 500);
+    setTimeout(() => querySelectorAllTitle(), 500);
   }
 }
 );
 
 
 let processingTitleQuery: boolean = false;
-async function querySelectorAllTitleAndLinks(): Promise<void> {
+async function querySelectorAllTitle(): Promise<void> {
   if (processingTitleQuery) return;
   processingTitleQuery = true;
   const { preferredDateFormat } =
     (await logseq.App.getUserConfigs()) as AppUserConfigs;
 
+  //Journalsの場合は複数
   parent.document
     .querySelectorAll(
       "div#main-content-container div:is(.journal,.is-journals,.page) h1.title:not([data-checked])"
@@ -192,42 +196,23 @@ async function querySelectorAllTitleAndLinks(): Promise<void> {
       async (titleElement) =>
         await JournalPageTitle(titleElement as HTMLElement, preferredDateFormat)
     );
-
-  parent.document
-    .querySelectorAll(
-      "div:is(#main-content-container,#right-sidebar) a[data-ref]:not([data-localize]), div#left-sidebar li span.page-title:not([data-localize])"
-    )
-    .forEach(
-      async (titleElement) => await journalLink(titleElement as HTMLElement)
-    );
-
   processingTitleQuery = false;
 }
 
 const observer = new MutationObserver(async (): Promise<void> => {
   observer.disconnect();
-  await querySelectorAllTitleAndLinks();
-  setTimeout(() => observerMainRight(), 800);
+  await querySelectorAllTitle();
+  setTimeout(() => observerMain(), 800);
 });
 
-function observerMainRight() {
-  observer.observe(
-    parent.document.getElementById("main-content-container") as HTMLDivElement,
-    {
-      attributes: true,
-      subtree: true,
-      attributeFilter: ["class"],
-    }
-  );
-  observer.observe(
-    parent.document.getElementById("right-sidebar") as HTMLDivElement,
-    {
-      attributes: true,
-      subtree: true,
-      attributeFilter: ["class"],
-    }
-  );
-}
+const observerMain = () => observer.observe(
+  parent.document.getElementById("main-content-container") as HTMLDivElement,
+  {
+    attributes: true,
+    subtree: true,
+    attributeFilter: ["class"],
+  }
+);
 
 // function observeElementAppearance(targetElement: HTMLElement, callback: () => void) {
 //   if (!targetElement) return;
@@ -297,9 +282,8 @@ async function JournalPageTitle(
   }
 
   //ジャーナルタイトルから日付を取得し、右側に情報を表示する
-  const page = (await logseq.Editor.getPage(
-    titleElement.textContent
-  )) as PageEntity | null;
+  const title: string = titleElement.dataset.localize === "true" ? titleElement.dataset.ref || "" : titleElement.textContent;
+  const page = (await logseq.Editor.getPage(title)) as PageEntity | null;
   if (page && page.journalDay) {
     const journalDate: Date = getJournalDayDate(String(page.journalDay));
     behindJournalTitle(journalDate, titleElement, preferredDateFormat);
