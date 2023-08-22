@@ -1,6 +1,5 @@
 import { getWeekOfMonth, isSaturday, isSunday } from "date-fns";
-import { openPage, getWeeklyNumberFromDate } from "./lib";
-import { formatRelativeDate } from "./journalLink";
+import { openPage, getWeeklyNumberFromDate, formatRelativeDate } from "./lib";
 
 //behind journal title
 let processingBehind: boolean = false;
