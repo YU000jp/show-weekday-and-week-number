@@ -1,3 +1,10 @@
+# [1.27.0](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.26.0...v1.27.0) (2023-08-23)
+
+
+### Features
+
+* **Add:** slash command ([520efe0](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/520efe0c839b5fd17b2a184d9b8028f3535093dc))
+
 # [1.26.0](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.25.0...v1.26.0) (2023-08-22)
 
 
