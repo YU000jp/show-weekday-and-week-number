@@ -22,9 +22,9 @@
 
 ![boundaries](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/assets/111847207/685d00e7-b67d-4ee3-9f8a-25657447a2ea)
 
-### Localize day of the week in journal links 🆕
+### ~~Localize day of the week in journal links~~
 
-- Split to [Flex date format plugin](https://github.com/YU000jp/logseq-plugin-flex-date-format)
+- Split to [Flex date format plugin](https://github.com/YU000jp/logseq-plugin-flex-date-format) 🆙
 - ~~If the day of the week is not included in user date format, add the localized day of the week to the journal link~~
 - ~~If it is included in the format, localize the day of the week in the journal link~~
 - ~~2023/07/22 => 2023/07/22 (Sat)~~
