@@ -155,7 +155,7 @@ export const settingsTemplate = (ByLanguage: string): SettingSchemaDesc[] => [
     type: "heading",
     default: "",
     description: `
-    Slash command: " /Insert week number link "
+    Slash command: " /current week number link "
     like [[2023-W32]]
     `,
   },

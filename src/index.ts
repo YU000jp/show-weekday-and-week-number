@@ -13,6 +13,7 @@ import { titleElementReplaceLocalizeDayOfWeek } from "./lib";
 import { currentPageIsWeeklyJournal } from "./weeklyJournal";
 import { settingsTemplate } from "./settings";
 import { boundariesProcess } from "./boundaries";
+import { loadShortcutItems, } from "./shortcutItems";
 
 /* main */
 const main = () => {
@@ -63,15 +64,6 @@ const main = () => {
   }, 200);
   setTimeout(() => observerMain(), 2000); //スクロール用
 
-  //Week number linkのスラッシュコマンド
-  logseq.Editor.registerSlashCommand("Insert week number link", async () => {
-    const { year, weekString }: { year: number; weekString: string } =
-      getWeeklyNumberFromDate(
-        new Date(),
-        logseq.settings?.weekNumberFormat === "US format" ? 0 : 1
-      );
-    logseq.Editor.insertAtEditingCursor(`[[${year}-W${weekString}]]`);
-  });
 
   logseq.App.onRouteChanged(({ template }) => {
     if (
@@ -124,8 +116,10 @@ const main = () => {
     removeBoundaries();
     observer.disconnect();
   });
-}; /* end_main */
 
+  loadShortcutItems();
+
+}; /* end_main */
 
 
 
