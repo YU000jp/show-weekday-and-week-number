@@ -13,10 +13,14 @@ export const loadShortcutItems = () => {
     currentDateAndTime();
 
     currentDayOfWeek();
+
+    currentMonth();
+
+    currentYear();
 };
 
 
-const currentWeekNumberLink = () => logseq.Editor.registerSlashCommand("Current week number link", async () => {
+const currentWeekNumberLink = () => logseq.Editor.registerSlashCommand("Current week number link: [[yyyy/Ww]]", async () => {
     //Week number linkのスラッシュコマンド
     const { year, weekString }: { year: number; weekString: string } =
         getWeeklyNumberFromDate(
@@ -73,7 +77,21 @@ const currentDateAndTime = () => logseq.Editor.registerSlashCommand("Current dat
     logseq.Editor.insertAtEditingCursor(`[[${journalLink}]] *${time}*`);
 });
 
-const currentDayOfWeek = () => logseq.Editor.registerSlashCommand("Current day of week", async () => {
+const currentDayOfWeek = () => logseq.Editor.registerSlashCommand("Current day of week (Localize)", async () => {
     const dayOfWeek = new Intl.DateTimeFormat("default", { weekday: "long" }).format(new Date());
     logseq.Editor.insertAtEditingCursor(`*${dayOfWeek}*`);
+});
+
+
+const currentMonth = () => logseq.Editor.registerSlashCommand("Current month: [[yyyy/MM]]", async () => {
+    //今日の日付から年と月を取得
+    const date = new Date();
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, "0");
+    logseq.Editor.insertAtEditingCursor(`[[${year}/${month}]]`);
+});
+
+const currentYear = () => logseq.Editor.registerSlashCommand("Current year: [[yyyy]]", async () => {
+    const year = new Date().getFullYear();
+    logseq.Editor.insertAtEditingCursor(`[[${year}]]`);
 });
