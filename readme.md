@@ -37,6 +37,8 @@
   - Slash command: `/Current week number link` [#79](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/79) 🆙
   - like `[[2023-W32]]`
 
+### [Slash Command](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/wiki/Document#slash-command)
+
 ---
 
 ## Getting Started
