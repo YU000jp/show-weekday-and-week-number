@@ -34,7 +34,7 @@
 
 - If there is no content available on a page with a week number like `2023-W25`, a template will be inserted.
 - To create a link to the weekly journal page
-  - Slash command: `/Insert week number link` [#79](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/79) 🆙
+  - Slash command: `/Current week number link` [#79](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/79) 🆙
   - like `[[2023-W32]]`
 
 ---
