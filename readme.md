@@ -33,12 +33,11 @@
 ### Weekly Journal
 
 - If there is no content available on a page with a week number like `2023-W25`, a template will be inserted.
+
+### [Slash Command for link or input](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/wiki/Document#slash-command) 🆕
+
 - To create a link to the weekly journal page
-  - Slash command: `/Current week number link: [[yyyy/Ww]]` [#79](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/79) 🆙
-  - like `[[2023-W32]]`
-
-### [Slash Command](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/wiki/Document#slash-command) 🆕
-
+  - `/Current week number link: [[yyyy/Ww]]` [#79](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/79) 🆙
 ---
 
 ## Getting Started
