@@ -1,10 +1,12 @@
 import { AppUserConfigs, BlockEntity, IBatchBlock } from "@logseq/libs/dist/LSPlugin";
 import { getWeeklyNumberFromDate } from "./lib";
-import { addMonths, endOfYear, format, startOfMonth, } from "date-fns";
+import { addMonths, addWeeks, addYears, endOfYear, format, startOfMonth, } from "date-fns";
 
 export const loadShortcutItems = () => {
 
     currentWeekNumberLink();
+
+    nextWeekNumberLink();
 
     weekNumberYearAllThisYear();
 
@@ -21,6 +23,8 @@ export const loadShortcutItems = () => {
     currentYear();
 
     nextYear();
+
+    nextYearMOnth();
 };
 
 
@@ -29,6 +33,16 @@ const currentWeekNumberLink = () => logseq.Editor.registerSlashCommand("Current 
     const { year, weekString }: { year: number; weekString: string } =
         getWeeklyNumberFromDate(
             new Date(),
+            logseq.settings?.weekNumberFormat === "US format" ? 0 : 1
+        );
+    logseq.Editor.insertAtEditingCursor(` [[${year}-W${weekString}]] `);
+});
+
+const nextWeekNumberLink = () => logseq.Editor.registerSlashCommand("Next week number link: [[yyyy/Ww]]", async () => {
+    //Week number linkのスラッシュコマンド
+    const { year, weekString }: { year: number; weekString: string } =
+        getWeeklyNumberFromDate(
+            addWeeks(new Date(), 1),
             logseq.settings?.weekNumberFormat === "US format" ? 0 : 1
         );
     logseq.Editor.insertAtEditingCursor(` [[${year}-W${weekString}]] `);
@@ -72,7 +86,7 @@ const weekNumberYearAll = async (selectYear: number, uuid: string) => {
 };
 
 
-const currentDateAndTime = () => logseq.Editor.registerSlashCommand("Current date and time", async () => {
+const currentDateAndTime = () => logseq.Editor.registerSlashCommand("Current date and time: [[(user date format)]] *HH:mm*", async () => {
     const { preferredDateFormat }: { preferredDateFormat: string } = (await logseq.App.getUserConfigs()) as AppUserConfigs;
     const date = new Date();
     const journalLink = format(date, preferredDateFormat);
@@ -89,19 +103,15 @@ const currentDayOfWeek = () => logseq.Editor.registerSlashCommand("Current day o
 const currentMonth = () => logseq.Editor.registerSlashCommand("Current month: [[yyyy/MM]]", async () => {
     //今日の日付から年と月を取得
     const date = new Date();
-    const year = date.getFullYear();
-    const month = (date.getMonth() + 1).toString().padStart(2, "0");
-    logseq.Editor.insertAtEditingCursor(` [[${year}/${month}]] `);
+    logseq.Editor.insertAtEditingCursor(` [[${format(date, "yyyy/MM")}]] `);
 });
 
 const nextMonth = () => logseq.Editor.registerSlashCommand("Next month: [[yyyy/MM]]", async () => {
-    let date = new Date();
     //月初めの日付を取得
-    date = startOfMonth(date);
-    date = addMonths(date, 1);
-    const year = date.getFullYear();
-    const month = (date.getMonth() + 1).toString().padStart(2, "0");
-    logseq.Editor.insertAtEditingCursor(` [[${year}/${month}]] `);
+    //1か月を足す
+    const date = addMonths(startOfMonth(new Date()), 1);
+    logseq.Editor.insertAtEditingCursor(` [[${format(date, "yyyy/MM")}]] `);
+
 });
 
 const currentYear = () => logseq.Editor.registerSlashCommand("Current year: [[yyyy]]", async () => {
@@ -110,6 +120,12 @@ const currentYear = () => logseq.Editor.registerSlashCommand("Current year: [[yy
 });
 
 const nextYear = () => logseq.Editor.registerSlashCommand("Next year: [[yyyy]]", async () => {
-    const year = new Date().getFullYear() + 1;
-    logseq.Editor.insertAtEditingCursor(` [[${year}]] `);
+    const year = addYears(new Date(), 1);
+    logseq.Editor.insertAtEditingCursor(` [[${format(year, "yyyy")}]] `);
+});
+
+const nextYearMOnth = () => logseq.Editor.registerSlashCommand("A year later: [[yyyy/MM]]", async () => {
+    //月初めの日付を取得
+    let date = addYears(new Date(), 1);
+    logseq.Editor.insertAtEditingCursor(` [[${format(date, "yyyy/MM")}]] `);
 });
