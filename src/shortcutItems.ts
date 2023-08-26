@@ -1,6 +1,6 @@
 import { AppUserConfigs, BlockEntity, IBatchBlock } from "@logseq/libs/dist/LSPlugin";
 import { getWeeklyNumberFromDate } from "./lib";
-import { endOfYear, format, } from "date-fns";
+import { addMonths, endOfYear, format, startOfMonth, } from "date-fns";
 
 export const loadShortcutItems = () => {
 
@@ -16,7 +16,11 @@ export const loadShortcutItems = () => {
 
     currentMonth();
 
+    nextMonth();
+
     currentYear();
+
+    nextYear();
 };
 
 
@@ -27,7 +31,7 @@ const currentWeekNumberLink = () => logseq.Editor.registerSlashCommand("Current 
             new Date(),
             logseq.settings?.weekNumberFormat === "US format" ? 0 : 1
         );
-    logseq.Editor.insertAtEditingCursor(`[[${year}-W${weekString}]]`);
+    logseq.Editor.insertAtEditingCursor(` [[${year}-W${weekString}]] `);
 });
 
 
@@ -39,7 +43,6 @@ const weekNumberYearAllThisYear = () => logseq.Editor.registerSlashCommand("Crea
 const weekNumberYearAllNextYear = () => logseq.Editor.registerSlashCommand("Create Week number list of next year", async ({ uuid }) => {
     //来年の12月31日のDateオブジェクトを作成
     await weekNumberYearAll(new Date().getFullYear() + 1, uuid);
-
 });
 
 const weekNumberYearAll = async (selectYear: number, uuid: string) => {
@@ -62,9 +65,9 @@ const weekNumberYearAll = async (selectYear: number, uuid: string) => {
     const weekNumberListWithYear = weekNumberList.map((weekNumber) => `${year}-W${weekNumber.toString().padStart(2, "0")}`);
     let batch: IBatchBlock[];
     batch = weekNumberListWithYear.map((weekNumber) => ({
-        content: `[[${weekNumber}]]`,
+        content: `[[${weekNumber}]] `,
     }));
-    const { uuid: yearUuid } = await logseq.Editor.insertBlock(uuid, `[[${year}]]`, { sibling: true }) as BlockEntity as { uuid: string; };
+    const { uuid: yearUuid } = await logseq.Editor.insertBlock(uuid, `[[${year}]] `, { sibling: true }) as BlockEntity as { uuid: string; };
     if (yearUuid) await logseq.Editor.insertBatchBlock(yearUuid, batch, { sibling: false });
 };
 
@@ -74,12 +77,12 @@ const currentDateAndTime = () => logseq.Editor.registerSlashCommand("Current dat
     const date = new Date();
     const journalLink = format(date, preferredDateFormat);
     const time = format(date, "HH:mm");
-    logseq.Editor.insertAtEditingCursor(`[[${journalLink}]] *${time}*`);
+    logseq.Editor.insertAtEditingCursor(` [[${journalLink}]] *${time}* `);
 });
 
 const currentDayOfWeek = () => logseq.Editor.registerSlashCommand("Current day of week (Localize)", async () => {
     const dayOfWeek = new Intl.DateTimeFormat("default", { weekday: "long" }).format(new Date());
-    logseq.Editor.insertAtEditingCursor(`*${dayOfWeek}*`);
+    logseq.Editor.insertAtEditingCursor(` *${dayOfWeek}* `);
 });
 
 
@@ -88,10 +91,25 @@ const currentMonth = () => logseq.Editor.registerSlashCommand("Current month: [[
     const date = new Date();
     const year = date.getFullYear();
     const month = (date.getMonth() + 1).toString().padStart(2, "0");
-    logseq.Editor.insertAtEditingCursor(`[[${year}/${month}]]`);
+    logseq.Editor.insertAtEditingCursor(` [[${year}/${month}]] `);
+});
+
+const nextMonth = () => logseq.Editor.registerSlashCommand("Next month: [[yyyy/MM]]", async () => {
+    let date = new Date();
+    //月初めの日付を取得
+    date = startOfMonth(date);
+    date = addMonths(date, 1);
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, "0");
+    logseq.Editor.insertAtEditingCursor(` [[${year}/${month}]] `);
 });
 
 const currentYear = () => logseq.Editor.registerSlashCommand("Current year: [[yyyy]]", async () => {
     const year = new Date().getFullYear();
-    logseq.Editor.insertAtEditingCursor(`[[${year}]]`);
+    logseq.Editor.insertAtEditingCursor(` [[${year}]] `);
+});
+
+const nextYear = () => logseq.Editor.registerSlashCommand("Next year: [[yyyy]]", async () => {
+    const year = new Date().getFullYear() + 1;
+    logseq.Editor.insertAtEditingCursor(` [[${year}]] `);
 });
