@@ -111,6 +111,7 @@ const nextMonth = () => logseq.Editor.registerSlashCommand("Next month: [[yyyy/M
     //1か月を足す
     const date = addMonths(startOfMonth(new Date()), 1);
     logseq.Editor.insertAtEditingCursor(` [[${format(date, "yyyy/MM")}]] `);
+
 });
 
 const currentYear = () => logseq.Editor.registerSlashCommand("Current year: [[yyyy]]", async () => {
