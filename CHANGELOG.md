@@ -1,3 +1,11 @@
+# [1.29.0](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.28.0...v1.29.0) (2023-08-26)
+
+
+### Features
+
+* **Add:** Slash Command `Next week number` `A year later` ([af622e6](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/af622e673ba1a2180ad22322ba4b9955b8d5258d))
+* **Add:** Slash Command `next year` `next month` ([ca47525](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/ca47525359bba3c63cbd61a3fe656b1739d3b0f1))
+
 # [1.28.0](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.27.0...v1.28.0) (2023-08-26)
 
 
