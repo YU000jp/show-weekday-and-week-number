@@ -6,7 +6,7 @@ export async function currentPageIsWeeklyJournal(titleElement: HTMLElement, matc
     titleElement.dataset.WeeklyJournalChecked = "true";
     const current = await logseq.Editor.getCurrentPageBlocksTree() as BlockEntity[];
     const { preferredDateFormat } = await logseq.App.getUserConfigs() as AppUserConfigs;
-    if (current[0].content === "" || !current[1]) {
+    if (!current[0].content && !current[1]) {
 
         //ページタグを設定する
         const year = Number(match[1]); //2023
