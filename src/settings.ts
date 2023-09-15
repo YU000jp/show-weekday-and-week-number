@@ -180,6 +180,14 @@ export const settingsTemplate = (ByLanguage: string): SettingSchemaDesc[] => [
     default: true,
     description: "default: `true`",
   },
+  {//Weekly Journalのページタグの種類を選択する
+    key: "weeklyJournalPageTag",
+    title: t("Weekly Journal, Page-tags type"),
+    type: "enum",
+    enumChoices: ["yyyy, yyyy/MM, yyyy-Ww, yyyy-Ww", "yyyy, yyyy-Ww, yyyy-Ww", "yyyy-Ww, yyyy-Ww", "unset"],
+    default: "yyyy, yyyy/MM, yyyy-Ww, yyyy-Ww",
+    description: t("default: `yyyy(: year), yyyy/MM(: month), yyyy-Ww(: previous), yyyy-Ww(: next)`"),
+  },
   {
     key: "booleanWeeklyJournalThisWeekWeekday",
     title: t(
