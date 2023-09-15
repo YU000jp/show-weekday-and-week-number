@@ -51,10 +51,10 @@ export async function boundariesProcess(targetElementName: string, remove: boole
       targetDate = getJournalDayDate(String(journalDay)) as Date;
     }
     let days: number[] = [];
-    const weekDoubles: Boolean = ((logseq.settings?.weekNumberFormat === "US format" && isSaturday(today))
+    const weekDoublesUS: Boolean = ((logseq.settings?.weekNumberFormat === "US format" && isSaturday(today))
       || (logseq.settings?.weekNumberFormat !== "US format" && isSunday(today))) ? true : false;
     if (targetElementName === 'journals' && logseq.settings!.journalsBoundariesWeekOnly === true) {
-      if (weekDoubles === true) {
+      if (weekDoublesUS === true) {
         days = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
       } else {
         days = [-7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6];
@@ -85,13 +85,11 @@ export async function boundariesProcess(targetElementName: string, remove: boole
           || (isThisWeek(date, { weekStartsOn: ((logseq.settings?.weekNumberFormat === "US format") ? 0 : 1) }))
         ) dayElement.classList.add('thisWeek');
         if (booleanToday === true) {
-          dayElement.style.color = 'var(--ls-wb-stroke-color-green)';
-          dayElement.style.borderBottom = '3px solid var(--ls-wb-stroke-color-green)';
+          dayElement.style.border = '1px solid var(--ls-wb-stroke-color-green)';
           dayElement.style.opacity = "1.0";
         } else
           if (targetElementName !== 'journals' && numDays === 0) {
-            dayElement.style.color = 'var(--ls-wb-stroke-color-yellow)';
-            dayElement.style.borderBottom = '3px solid var(--ls-wb-stroke-color-yellow)';
+            dayElement.style.border = '1px solid var(--ls-wb-stroke-color-yellow)';
             dayElement.style.cursor = 'pointer';
             dayElement.style.opacity = "1.0";
           }
@@ -123,7 +121,7 @@ export async function boundariesProcess(targetElementName: string, remove: boole
         }
       } finally {
         if (
-          (numDays === 7 && weekDoubles === true)
+          (numDays === 7 && weekDoublesUS === true)
           || (numDays === 0
             && targetElementName === 'journals'
             && logseq.settings!.journalsBoundariesWeekOnly === true
