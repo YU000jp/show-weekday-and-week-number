@@ -24,9 +24,8 @@ div#main-content-container div:is(#journals, .is-journals) h1.title :is(a.title,
 div#main-content-container h1.title+span.showWeekday {
     margin-left: 0.75em;
     opacity: .75;
-    font-size: 1.15em;
+    font-size: 1.1em;
     width: fit-content;
-    font-style: italic;
 }
 
 div#main-content-container h1.title+span.showWeekday>span {
@@ -38,26 +37,25 @@ div#main-content-container div#weekBoundaries {
     margin-top: 0.3em;
     overflow-x: auto;
     width: fit-content;
-    font-style: italic;
-    font-size: .92em;
+    font-size: .88em;
     justify-content: center;
     user-select: none;
 }
 
 div#main-content-container div#weekBoundaries>span.day {
-    width: 6em;
-    padding: 0.25em;
+    width: 4.8em;
+    padding: 0.15em;
     margin-left: 0.35em;
-    border-radius: 0.4em;
+    border-radius: 0.2em;
     background: var(--color-level-1);
+    opacity: .78;
 }
 
 div#main-content-container div#weekBoundaries>span.day:not(.thisWeek) {
-    opacity: .5;
+    opacity: .6;
 }
 
 div#main-content-container div#weekBoundaries>span.day.thisWeek {
-    opacity: .7;
     background: var(--color-level-2);
     box-shadow: 0 0 0 1px var(--ls-guideline-color);
 }
@@ -67,18 +65,23 @@ div#main-content-container div#weekBoundaries>span.day:hover {
     background: var(--color-level-2);
 }
 
-div#main-content-container div#weekBoundaries>span.day span.dayOfWeek {
-    font-size: .88em;
-    font-weight: 600;
-}
-
 div#main-content-container div#weekBoundaries>span.day span.dayOfMonth {
-    margin-left: .4em;
-    font-size: 1.25em;
-    font-weight: 900;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    font-size: 1.2em;
 }
 
 div#main-content-container div.is-journals>div.relative div div.ls-page-title span#hierarchyLinks {
     position: absolute;
     margin-top: -4em;
+}
+
+div#weekBoundaries:has(>div)>span.day:not(.thisWeek)>span.dayOfWeek {
+    display: none;
+}
+
+div#weekBoundaries:has(>div)>span.day:not(.thisWeek)>span.dayOfMonth {
+    height: 2em;
 }
