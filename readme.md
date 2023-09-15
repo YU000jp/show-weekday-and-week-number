@@ -20,7 +20,7 @@
 
 ### Journal boundaries
 
-- A simple calendar is always displayed on journals.
+- Always display a simple calendar on journals.
 
 ![image](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/assets/111847207/126b7d4a-502a-4408-999b-82555bddf6f1)
 
