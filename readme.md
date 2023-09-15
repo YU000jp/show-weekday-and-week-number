@@ -9,7 +9,7 @@
 
 ---
 
-## Features
+## Options
 
 ### Behind Journal Title
 
@@ -20,7 +20,9 @@
 
 ### Journal boundaries
 
-![boundaries](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/assets/111847207/685d00e7-b67d-4ee3-9f8a-25657447a2ea)
+- A simple calendar is always displayed on journals.
+
+![image](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/assets/111847207/126b7d4a-502a-4408-999b-82555bddf6f1)
 
 ### ~~Localize day of the week in journal links~~
 
