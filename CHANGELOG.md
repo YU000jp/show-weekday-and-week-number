@@ -1,3 +1,10 @@
+# [1.30.0](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.29.1...v1.30.0) (2023-09-15)
+
+
+### Features
+
+* **Add:** Weekly Journal, Page-tags type ([20ac575](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/20ac5753f95c562b03b2d8539c83ed754e46b7a3))
+
 ## [1.29.1](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.29.0...v1.29.1) (2023-08-30)
 
 
