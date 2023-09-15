@@ -106,8 +106,8 @@
   - `true` default
   - `false`
 - Enable 2 week mode (only journals): toggle [#58](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/58)
-  - `true`
-  - `false` default
+  - `true` default
+  - `false`
 - Custom day range: before today (Excludes 2 week mode): select [#58](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/58) [#60](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/60)
   - `11`,`10`,`9`,`8`,`7`,`6` default ,`5`,`4`,`3`
 - Custom day range: after today (Excludes 2 week mode): select [#58](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/58)

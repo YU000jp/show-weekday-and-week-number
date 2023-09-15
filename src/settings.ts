@@ -127,8 +127,8 @@ export const settingsTemplate = (ByLanguage: string): SettingSchemaDesc[] => [
     key: "journalsBoundariesWeekOnly",
     title: t("Journal boundaries, Enable 2 week mode (only journals)"),
     type: "boolean",
-    default: false,
-    description: t("default: `false`"),
+    default: true,
+    description: t("default: `true`"),
   },
   {
     key: "noPageFoundCreatePage",
