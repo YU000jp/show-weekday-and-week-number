@@ -18,7 +18,7 @@
 1. ![image](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/assets/111847207/f47b8948-5e7a-4e16-a5ae-6966672742b1)
 1. ![image](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/assets/111847207/ee97c455-714e-45d2-9f9f-905798e298b4)
 
-### Journal boundaries
+### Journal boundaries (mini-calendar)
 
 - Always display a simple calendar on journals.
 
