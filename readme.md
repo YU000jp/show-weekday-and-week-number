@@ -34,7 +34,9 @@
 
 ### Weekly Journal
 
+- Click the week number to open it
 - If there is no content available on a page with a week number like `2023-W25`, a template will be inserted.
+- In plugin settings, it possible to set user template. Inserting Advanced queries into the template increases flexibility.
 
 ### [Slash Command for link or input](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/wiki/Document#slash-command) 🆕
 
