@@ -180,6 +180,14 @@ export const settingsTemplate = (ByLanguage: string): SettingSchemaDesc[] => [
     default: true,
     description: "default: `true`",
   },
+  {//"This Week" セクションの位置を選択する(上か下か)
+    key: "weeklyJournalThisWeekPosition",
+    title: t("Weekly Journal, `This Week` section position"),
+    type: "enum",
+    enumChoices: ["top", "bottom"],
+    default: "top",
+    description: "default: `top`",
+  },
   {//Weekly Journalのページタグの種類を選択する
     key: "weeklyJournalPageTag",
     title: t("Weekly Journal, Page-tags type"),

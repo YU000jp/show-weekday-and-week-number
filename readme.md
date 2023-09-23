@@ -137,6 +137,9 @@
 - Convert the day of the week in the "This Week" section into links.: toggle
   - `true`
   - `false` default
+- Weekly Journal, `This Week` section position 🆕 [#96](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/96)
+  - `top` default
+  - `bottom`
 - Weekly Journal, Page-tags type 🆕 [#93](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/93)
 - `yyyy, yyyy/MM, yyyy-Ww, yyyy-Ww` default
 - `yyyy, yyyy-Ww, yyyy-Ww`
