@@ -1,3 +1,10 @@
+# [1.32.0](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.31.1...v1.32.0) (2023-09-23)
+
+
+### Features
+
+* **Weekly Journal:** Add the config of "This Week" section position to plugin settings ([26efdb1](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/26efdb1215735eed3355ec92825f808abe12b061))
+
 ## [1.31.1](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.31.0...v1.31.1) (2023-09-15)
 
 
