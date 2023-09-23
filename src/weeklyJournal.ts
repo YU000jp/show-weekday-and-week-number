@@ -75,45 +75,56 @@ export async function currentPageIsWeeklyJournal(titleElement: HTMLElement, matc
 
         //ユーザー設定のページタグを追加
         if (logseq.settings!.weeklyJournalSetPageTag !== "") weekDaysLinks.push(logseq.settings!.weeklyJournalSetPageTag);
-
-        //テンプレートを挿入
-        const block = await logseq.Editor.insertBlock(current[0].uuid, "", { sibling: true }) as BlockEntity;
-        if (block) {
-            const newBlank = await logseq.Editor.insertBlock(block.uuid, "", { sibling: true, before: false }) as BlockEntity;
-            const newBlank2 = await logseq.Editor.insertBlock(block.uuid, "", { sibling: true, before: false }) as BlockEntity;
-            if (newBlank) {
-                if (logseq.settings!.booleanWeeklyJournalThisWeek === true) {
-                    //曜日リンク (This Week section)
-                    const thisWeek = await logseq.Editor.insertBlock(newBlank.uuid, "#### This Week", { sibling: true, before: false }) as BlockEntity;
-                    if (thisWeek) {
-                        if (!preferredDateFormat.includes("E")) weekDaysLinkArray.forEach(async (weekDayName, index) => {
-                            await logseq.Editor.insertBlock(
-                                thisWeek.uuid,
-                                `${logseq.settings!.booleanWeeklyJournalThisWeekWeekday === true ?
-                                    (logseq.settings!.booleanWeeklyJournalThisWeekLinkWeekday === true ?
-                                        `[[${weekdayArray[index]}]] ` : weekdayArray[index])
-                                    : ""} [[${weekDayName}]]\n`);
-                        });
-                    }
-                }
-                if (newBlank2) {
-                    await logseq.Editor.insertBlock(newBlank2.uuid, "", { sibling: true, before: false });
-                    await logseq.Editor.insertBlock(newBlank2.uuid, "", { sibling: true, before: false });
-                    await weeklyJournalInsertTemplate(newBlank2.uuid, logseq.settings!.weeklyJournalTemplateName);//テンプレート挿入
-                    await logseq.Editor.insertBlock(newBlank2.uuid, "", { sibling: true, before: false });
-                }
-            }
-
-
-
-        }
         //ページタグとして挿入する処理
         await logseq.Editor.upsertBlockProperty(current[0].uuid, "tags", weekDaysLinks);
         await logseq.Editor.editBlock(current[0].uuid);
-        setTimeout(() => logseq.Editor.insertAtEditingCursor(","), 200);
+        setTimeout(() => {
+            logseq.Editor.insertAtEditingCursor(",");//カーソルの位置にカンマを挿入する(ページタグ更新対策)
+
+            setTimeout(async () => {
+                if (logseq.settings!.weeklyJournalThisWeekPosition === "bottom") {//曜日リンク (This Week section)が下にくるようにする
+
+                    const bottomBlank = await logseq.Editor.insertBlock(current[0].uuid, "", { sibling: true, before: false }) as BlockEntity; //一番下の空白行
+                    if (bottomBlank) {
+                        //曜日リンク (This Week section)
+                        if (logseq.settings!.booleanWeeklyJournalThisWeek === true) await insertThisWeekSection(bottomBlank.uuid, preferredDateFormat, weekDaysLinkArray, weekdayArray); //一番下の空白行へ挿入
+                    }
+                    const secondBottomBlank = await logseq.Editor.insertBlock(current[0].uuid, "", { sibling: true, before: false }) as BlockEntity; //下から二番目の空白行
+                    if (secondBottomBlank) {//下から二番目の空白行へ挿入
+                        await logseq.Editor.insertBlock(secondBottomBlank.uuid, "", { sibling: true, before: false });//空白行を作成
+                        if (logseq.settings!.weeklyJournalTemplateName) await weeklyJournalInsertTemplate(secondBottomBlank.uuid, logseq.settings!.weeklyJournalTemplateName);//テンプレート挿入
+                        await logseq.Editor.insertBlock(secondBottomBlank.uuid, "", { sibling: true, before: false });//空白行を作成
+                    }
+
+                } else if (logseq.settings!.weeklyJournalThisWeekPosition === "top") {//曜日リンク (This Week section)が上にくるようにする
+
+                    if (logseq.settings!.weeklyJournalTemplateName) await weeklyJournalInsertTemplate(current[0].uuid, logseq.settings!.weeklyJournalTemplateName);//テンプレート挿入
+                    setTimeout(async () => {
+                        await logseq.Editor.insertBlock(current[0].uuid, "", { sibling: true, before: false });//空白行を作成
+                        //曜日リンク (This Week section)
+                        if (logseq.settings!.booleanWeeklyJournalThisWeek === true) await insertThisWeekSection(current[0].uuid, preferredDateFormat, weekDaysLinkArray, weekdayArray); //上にくるようにする
+                    }, 50);
+                }
+            }, 100);
+
+        }, 200);
     }
 }
 
+
+async function insertThisWeekSection(uuid: string, preferredDateFormat: string, weekDaysLinkArray: string[], weekdayArray: string[]) {
+    const thisWeek = await logseq.Editor.insertBlock(uuid, "#### This Week", { sibling: true, before: false }) as BlockEntity | null;
+    if (thisWeek) {
+        if (!preferredDateFormat.includes("E")) weekDaysLinkArray.forEach(async (weekDayName, index) => {
+            await logseq.Editor.insertBlock(
+                thisWeek.uuid,
+                `${logseq.settings!.booleanWeeklyJournalThisWeekWeekday === true ?
+                    (logseq.settings!.booleanWeeklyJournalThisWeekLinkWeekday === true ?
+                        `[[${weekdayArray[index]}]] ` : weekdayArray[index])
+                    : ""} [[${weekDayName}]]\n`);
+        });
+    }
+}
 
 function getWeekStartFromWeekNumber(year: number, weekNumber: number, weekStartsOn: 0 | 1 | 2 | 3 | 4 | 5 | 6 | undefined, ISO: boolean): Date {
     let weekStart: Date;
@@ -132,14 +143,13 @@ function getWeekStartFromWeekNumber(year: number, weekNumber: number, weekStarts
 }
 
 
-async function weeklyJournalInsertTemplate(uuid: string, templateName: string): Promise<void> {
-    if (templateName !== "") {
-        const exist = await logseq.App.existTemplate(templateName) as boolean;
-        if (exist) {
-            await logseq.App.insertTemplate(uuid, templateName);
-        } else {
-            logseq.UI.showMsg(`Template "${templateName}" does not exist.`, 'warning', { timeout: 2000 });
-        }
+async function weeklyJournalInsertTemplate(uuid: string, templateName: string) {
+    if (templateName === "") return;
+    if (await logseq.App.existTemplate(templateName) as boolean) {
+        await logseq.App.insertTemplate(uuid, templateName);
+        logseq.UI.showMsg('Weekly journal created', 'success', { timeout: 2000 });
+    } else {
+        logseq.UI.showMsg(`Template "${templateName}" does not exist.`, 'warning', { timeout: 2000 });
     }
-    logseq.UI.showMsg('Weekly journal created', 'success', { timeout: 2000 });
+
 }
