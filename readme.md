@@ -26,14 +26,6 @@
 
 ![image](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/assets/111847207/126b7d4a-502a-4408-999b-82555bddf6f1)
 
-### ~~Localize day of the week in journal links~~
-
-- Split to [Flex date format plugin](https://github.com/YU000jp/logseq-plugin-flex-date-format) 🆙
-- ~~If the day of the week is not included in user date format, add the localized day of the week to the journal link~~
-- ~~If it is included in the format, localize the day of the week in the journal link~~
-- ~~2023/07/22 => 2023/07/22 (Sat)~~
-  > ~~`(Sat)` is the localized day of the week.~~
-
 ### Weekly Journal
 
 - Click the week number link to open it (when Opening, generate a page)
@@ -49,6 +41,15 @@
 
 - To create a link to the weekly journal page
   - `/Current week number link: [[yyyy/Ww]]` [#79](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/79) 🆙
+
+### ~~Localize day of the week in journal links~~
+
+- Split to [Flex date format plugin](https://github.com/YU000jp/logseq-plugin-flex-date-format) 🆙
+- ~~If the day of the week is not included in user date format, add the localized day of the week to the journal link~~
+- ~~If it is included in the format, localize the day of the week in the journal link~~
+- ~~2023/07/22 => 2023/07/22 (Sat)~~
+  > ~~`(Sat)` is the localized day of the week.~~
+
 ---
 
 ## Getting Started
