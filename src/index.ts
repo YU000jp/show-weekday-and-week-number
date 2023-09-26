@@ -8,7 +8,7 @@ import { setup as l10nSetup } from "logseq-l10n"; //https://github.com/sethyuan/
 import ja from "./translations/ja.json";
 import fileMainCSS from "./main.css?inline";
 import { behindJournalTitle } from "./behind";
-import { getJournalDayDate, getWeeklyNumberFromDate } from "./lib";
+import { getJournalDayDate } from "./lib";
 import { titleElementReplaceLocalizeDayOfWeek } from "./lib";
 import { currentPageIsWeeklyJournal } from "./weeklyJournal";
 import { settingsTemplate } from "./settings";
