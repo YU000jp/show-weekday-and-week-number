@@ -99,37 +99,6 @@ export const settingsTemplate = (ByLanguage: string): SettingSchemaDesc[] => [
     default: true,
     description: "",
   },
-
-  {
-    //Journal Boundaries 当日より前の日付を決める
-    key: "journalBoundariesBeforeToday",
-    title: t(
-      "Journal boundaries, Custom day range: before today (Excludes 2 week mode)"
-    ),
-    type: "enum",
-    default: "6",
-    enumChoices: ["11", "10", "9", "8", "7", "6", "5", "4", "3"],
-    description: t("default: `6`"),
-  },
-  {
-    //Journal Boundaries 当日以降の日付を決める
-    key: "journalBoundariesAfterToday",
-    title: t(
-      "Journal boundaries, Custom day range: after today (Excludes 2 week mode)"
-    ),
-    type: "enum",
-    default: "4",
-    enumChoices: ["1", "2", "3", "4", "5", "6"],
-    description: t("default: `4`"),
-  },
-  {
-    //Journalsの場合
-    key: "journalsBoundariesWeekOnly",
-    title: t("Journal boundaries, Enable 2 week mode (only journals)"),
-    type: "boolean",
-    default: true,
-    description: t("default: `true`"),
-  },
   {
     key: "noPageFoundCreatePage",
     title: t("On Journal boundaries if no page found, create the journal page"),
