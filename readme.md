@@ -44,7 +44,7 @@
   - To create a link to the weekly journal page
     > `/Current week number link: [[yyyy/Ww]]` [#79](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/79) 🆙
 
-### ~~Localize day of the week in journal links~~
+### Localize day of the week in journal links
 
 - Split to [Flex date format plugin](https://github.com/YU000jp/logseq-plugin-flex-date-format) 🆙
 - ~~If the day of the week is not included in user date format, add the localized day of the week to the journal link~~
