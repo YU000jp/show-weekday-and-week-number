@@ -20,6 +20,7 @@ const main = async () => {
   await l10nSetup({ builtinTranslations: { ja } });
   /* user settings */
   if (logseq.settings?.weekNumberFormat === undefined) {
+    logseq.UI.showMsg("Select either US format or ISO format", "info", { timeout: 3000 });
     setTimeout(() => logseq.showSettingsUI(), 300);
   }
   logseq.useSettingsSchema(settingsTemplate("ISO(EU) format"));
