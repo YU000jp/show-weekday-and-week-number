@@ -29,7 +29,7 @@
 ### Weekly Journal
 
 - Click the week number link to open it (When opening, generate a page)
-  > If the page was not generated successfully, remove the page from the page title.
+  > If the page was not generated successfully, remove the page from the page title menu.
 - If there is no content available on a page with a week number like `2023-W25`, a template will be inserted.
 - In plugin settings, it possible to set user template. Inserting Advanced queries into the template increases flexibility.
 
