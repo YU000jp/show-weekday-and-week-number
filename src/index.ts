@@ -19,34 +19,16 @@ import { loadShortcutItems, } from "./shortcutItems";
 const main = async () => {
   await l10nSetup({ builtinTranslations: { ja } });
   /* user settings */
-  //get user config Language >>> Country
   if (logseq.settings?.weekNumberFormat === undefined) {
-    const convertLanguageCodeToCountryCode = (
-      languageCode: string
-    ): string => {
-      switch (languageCode) {
-        case "ja":
-          return "Japanese format";
-        default:
-          return "ISO(EU) format";
-      }
-    };
-    const { preferredLanguage } =
-      (await logseq.App.getUserConfigs()) as AppUserConfigs;
-    logseq.useSettingsSchema(
-      settingsTemplate(convertLanguageCodeToCountryCode(preferredLanguage))
-    );
-    setTimeout(() => {
-      logseq.showSettingsUI();
-    }, 300);
-  } else {
-    logseq.useSettingsSchema(settingsTemplate("ISO(EU) format"));
+    setTimeout(() => logseq.showSettingsUI(), 300);
   }
+  logseq.useSettingsSchema(settingsTemplate("ISO(EU) format"));
 
-  if (logseq.settings!.notice !== "20230822no01") {
-    logseq.UI.showMsg("Remove `localize journal link` feature. Split to `Flex date format` plugin.", "info", { timeout: 4000 });
-    logseq.updateSettings({ notice: "20230822no01" });
-  }
+  // メッセージを表示する
+  // if (logseq.settings!.notice !== "20230822no01") {
+  //   logseq.UI.showMsg("Remove `localize journal link` feature. Split to `Flex date format` plugin.", "info", { timeout: 4000 });
+  //   logseq.updateSettings({ notice: "20230822no01" });
+  // }
 
 
   logseq.provideStyle({ key: "main", style: fileMainCSS });
