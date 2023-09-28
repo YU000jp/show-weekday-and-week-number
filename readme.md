@@ -44,7 +44,7 @@
 
 ### Localize day of the week in journal links
 
-- Split to [Flex date format plugin](https://github.com/YU000jp/logseq-plugin-flex-date-format) 🆙
+> Split to [Flex date format plugin](https://github.com/YU000jp/logseq-plugin-flex-date-format) 🆙
 
 ---
 
