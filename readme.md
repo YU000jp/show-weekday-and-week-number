@@ -38,10 +38,11 @@
 
 - It becomes references for the day by nesting it in date links.
 
-### [Slash Command for link or input](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/wiki/Document#slash-command) 🆕
+### Slash Command for link or input 🆕
 
-- To create a link to the weekly journal page
-  - `/Current week number link: [[yyyy/Ww]]` [#79](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/79) 🆙
+> [document](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/wiki/Document#slash-command)
+  - To create a link to the weekly journal page
+    > `/Current week number link: [[yyyy/Ww]]` [#79](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/79) 🆙
 
 ### ~~Localize day of the week in journal links~~
 
@@ -66,6 +67,9 @@
 ### Usage
 
 - When this plugin install, the style be applied to journals or the single journal page , the right sidebar.
+- First, please configure the plugin settings.
+   1. Select either US format or ISO format.
+      > [document](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/wiki/Week-number-format)
 
 ### Plugin Settings
 
