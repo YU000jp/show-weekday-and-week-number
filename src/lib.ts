@@ -4,11 +4,8 @@ import { getISOWeekYear, getISOWeek, getWeekYear, getWeek } from "date-fns";
 export async function openPage(pageName: string, shiftKey: boolean) {
   const page = await logseq.Editor.getPage(pageName) as PageEntity | null;
   if (page) {
-    if (shiftKey) {
-      logseq.Editor.openInRightSidebar(page.uuid);
-    } else {
-      logseq.App.pushState('page', { name: pageName });
-    }
+    if (shiftKey) logseq.Editor.openInRightSidebar(page.uuid);
+    else logseq.App.pushState('page', { name: pageName });
   } else {
     //ページ作成のみ実行し、リダイレクトする
     await logseq.Editor.createPage(pageName, undefined, { redirect: true, createFirstBlock: true }) as PageEntity | null;
