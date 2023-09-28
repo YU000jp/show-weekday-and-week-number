@@ -40,7 +40,7 @@
 
 ### Slash Command for link or input 🆕
 
-> [document]https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/wiki/Slash-Command)
+> [document](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/wiki/Slash-Command)
   - To create a link to the weekly journal page
     > `/Current week number link: [[yyyy/Ww]]` [#79](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/79) 🆙
 
