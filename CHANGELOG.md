@@ -1,3 +1,16 @@
+# [1.35.0](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.34.1...v1.35.0) (2023-09-29)
+
+
+### Bug Fixes
+
+* **bug:** ISO format, not work select start of week ([bfa953d](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/bfa953d80d04a3629018e1d2e0d0ead01b4f20b6))
+
+
+### Features
+
+* **Add:** Settings button ([9d7fc5c](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/9d7fc5c8dbff1cd165de52e2ec063aa2d7017821))
+* **doc:** week number ([daeb287](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/daeb287f4f9d36ee4651a13be8e604f3da1e39b3))
+
 ## [1.34.1](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.34.0...v1.34.1) (2023-09-29)
 
 
