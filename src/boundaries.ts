@@ -48,12 +48,8 @@ export async function boundariesProcess(targetElementName: string, remove: boole
 
     let targetDate: Date;//今日の日付もしくはそのページの日付を求める
     if (targetElementName === 'journals') {
-      if (logseq.settings!.journalsBoundariesWeekOnly === true) {
-        if (logseq.settings?.weekNumberFormat === "ISO(EU) format") targetDate = startOfISOWeek(today);
-        else targetDate = startOfWeek(today, { weekStartsOn });
-      } else {
-        targetDate = today;
-      }
+      if (weekStartsOn === 1 && logseq.settings?.weekNumberFormat === "ISO(EU) format") targetDate = startOfISOWeek(today);
+      else targetDate = startOfWeek(today, { weekStartsOn });
     } else {
       const { journalDay } = await logseq.Editor.getCurrentPage() as PageEntity;
       if (!journalDay) {
@@ -66,7 +62,7 @@ export async function boundariesProcess(targetElementName: string, remove: boole
     let days: number[] = [];
 
     //targetDateを週の初めにする
-    const startDate = logseq.settings?.weekNumberFormat === "ISO(EU) format" ? startOfISOWeek(targetDate) : startOfWeek(targetDate, { weekStartsOn });
+    const startDate = weekStartsOn === 1 && logseq.settings?.weekNumberFormat === "ISO(EU) format" ? startOfISOWeek(targetDate) : startOfWeek(targetDate, { weekStartsOn });
 
     // 次の週を表示するかどうかの判定
     const flagShowNextWeek: Boolean = ((logseq.settings?.weekNumberFormat === "US format" && isSaturday(targetDate)) //US formatかつ土曜日の場合
