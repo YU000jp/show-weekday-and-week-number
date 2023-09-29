@@ -31,7 +31,7 @@
     "Enabling this setting conceals the year representation in the date format. For instance, 2023-W30 displays as W30. Typically, the notation of week numbers follows the rules based on ISO 8601. The reason for distinguishing the year is that the first week of a year might be included in the last week of the previous year. Only in such cases does it display as 2023-W53.": "この設定を有効にすると、日付の形式で年の表記が隠されます。例えば、2023-W30はW30と表示されます。通常、週番号の表記はISO 8601の規則に従います。年を区別する理由は、新年の最初の週が前年の最後の週に含まれる可能性があるためです。そのような場合にのみ、2023-W53として表示されます。",
     "Weekly Journal, Page-tags type": "ウィークリージャーナルのページタグの種類",
     "Localize journal title: If the day of the week is included in user date format, localize the day of the week in the date link": "ジャーナルの日付について。ユーザーの日付フォーマットに曜日が含まれている場合、日付リンクの曜日をローカライズする",
-    "Journal boundaries, week start (Unset: by the selected format)": "週の開始日 (unset: 選択したフォーマットによる) ※Journal Boundariesのみ",
-    "[document](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/wiki/Week-number-format)": "[ドキュメント](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/wiki/Week-number-format)",
+    "Journal boundaries, Week start (Unset: by the selected format)": "週の開始日 (unset: 選択したフォーマットによる) ※ミニカレンダーのみ",
+    "`US format`: Sunday, `ISO(EU) format`: Monday, [>> document here](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/wiki/Week-number-format)": "USフォーマット: 日曜日始まり, ISO(EU向け)フォーマット: 月曜日始まり, [>> ドキュメント](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/wiki/%E9%80%B1%E7%95%AA%E5%8F%B7%E3%83%95%E3%82%A9%E3%83%BC%E3%83%9E%E3%83%83%E3%83%88%E3%81%AE%E9%81%B8%E6%8A%9E%E8%82%A2-(Japanese))",
     "Added the config of week start to the plugin settings": "プラグイン設定に、週の開始日の項目を追加しました"
 }
