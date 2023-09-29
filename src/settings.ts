@@ -10,7 +10,15 @@ export const settingsTemplate = (ByLanguage: string): SettingSchemaDesc[] => [
     type: "enum",
     default: ByLanguage || "ISO(EU) format",
     enumChoices: ["US format", "ISO(EU) format", "Japanese format"],
-    description: "",
+    description: t("[document](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/wiki/Week-number-format)"),
+  },
+  {//Journal Boundaries, week start 通常はformatに従う
+    key: "boundariesWeekStart",
+    title: t("Journal boundaries, week start (Unset: by the selected format)"),
+    type: "enum",
+    enumChoices: ["unset", "Sunday", "Monday", "Saturday"],
+    default: "unset",
+    description: t("default: `unset`"),
   },
   {
     key: "localizeOrEnglish",
@@ -144,14 +152,14 @@ export const settingsTemplate = (ByLanguage: string): SettingSchemaDesc[] => [
   },
   {
     key: "booleanWeeklyJournalThisWeek",
-    title: t("Weekly Journal, Enable `This Week` section"),
+    title: t("Weekly Journal, Enable \"This Week\" section"),
     type: "boolean",
     default: true,
     description: "default: `true`",
   },
   {//"This Week" セクションの位置を選択する(上か下か)
     key: "weeklyJournalThisWeekPosition",
-    title: t("Weekly Journal, `This Week` section position"),
+    title: t("Weekly Journal, \"This Week\" section position"),
     type: "enum",
     enumChoices: ["top", "bottom"],
     default: "top",
@@ -163,7 +171,7 @@ export const settingsTemplate = (ByLanguage: string): SettingSchemaDesc[] => [
     type: "enum",
     enumChoices: ["yyyy, yyyy/MM, yyyy-Ww, yyyy-Ww", "yyyy, yyyy-Ww, yyyy-Ww", "yyyy-Ww, yyyy-Ww", "unset"],
     default: "yyyy, yyyy/MM, yyyy-Ww, yyyy-Ww",
-    description: t("default: `yyyy(: year), yyyy/MM(: month), yyyy-Ww(: previous), yyyy-Ww(: next)`"),
+    description: t("default: `yyyy(: year), yyyy/MM(: month), yyyy-Www(: previous), yyyy-Www(: next)`"),
   },
   {
     key: "booleanWeeklyJournalThisWeekWeekday",
