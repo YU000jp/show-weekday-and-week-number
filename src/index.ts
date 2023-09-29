@@ -23,7 +23,7 @@ const main = async () => {
     logseq.UI.showMsg("Select either US format or ISO format", "info", { timeout: 3000 });
     setTimeout(() => logseq.showSettingsUI(), 300);
   }
-  logseq.useSettingsSchema(settingsTemplate("ISO(EU) format"));
+  logseq.useSettingsSchema(settingsTemplate());
 
   // メッセージを表示する
   if (logseq.settings!.notice !== "20230929no03") {
