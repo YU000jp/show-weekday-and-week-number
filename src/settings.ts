@@ -6,7 +6,7 @@ import { t } from "logseq-l10n";
 export const settingsTemplate = (ByLanguage: string): SettingSchemaDesc[] => [
   {
     key: "weekNumberFormat",
-    title: t("Week number format"),
+    title: t("Week number calculation (across years)"),
     type: "enum",
     default: ByLanguage || "ISO(EU) format",
     enumChoices: ["US format", "ISO(EU) format", "Japanese format"],

@@ -116,8 +116,8 @@ const onSettingsChanged = () => logseq.onSettingsChanged((newSet: LSPluginBaseIn
       || oldSet.boundariesWeekStart !== newSet.boundariesWeekStart
       || oldSet.localizeOrEnglish !== newSet.localizeOrEnglish
       || oldSet.weekNumberFormat !== newSet.weekNumberFormat) {
-      if (newSet.booleanBoundaries === true && parent.document.getElementsByClassName("is-journals")) boundaries("is-journals");
-      else if (newSet.booleanBoundaries === true && newSet.booleanJournalsBoundaries === true && parent.document.getElementById("journals") as HTMLDivElement) boundaries("journals");
+      if (parent.document.getElementById("journals") as HTMLDivElement) boundaries("journals");
+      else boundaries("is-journals");
     }
   if (oldSet.localizeOrEnglish !== newSet.localizeOrEnglish ||
     oldSet.booleanDayOfWeek !== newSet.booleanDayOfWeek ||

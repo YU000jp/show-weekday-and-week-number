@@ -1,6 +1,6 @@
 {
     "Journal title, Alignment of journal page title": "日誌や日付ページのタイトルの配置",
-    "Week number format": "週番号フォーマット",
+    "Week number calculation (across years)": "週番号の計算方法 (年をまたぐ場合)",
     "Behind journal title, Coloring to the word of Saturday or Sunday": "土曜日と日曜日の文字を青色、赤色にする",
     "Behind journal title, Show week number of the year or month (unit)": "週番号の単位(年または月)を変更する",
     "Behind journal title, Enable day of the week": "曜日を表示する",
