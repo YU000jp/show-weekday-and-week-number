@@ -1,5 +1,5 @@
 import { AppUserConfigs, PageEntity } from '@logseq/libs/dist/LSPlugin.user';
-import { format, addDays, isBefore, isToday, isSunday, isSaturday, startOfWeek, startOfISOWeek, isThisISOWeek, isSameDay, } from 'date-fns';//https://date-fns.org/
+import { format, addDays, isBefore, isToday, isSunday, isSaturday, startOfWeek, startOfISOWeek, isThisISOWeek, isSameDay, isFriday, } from 'date-fns';//https://date-fns.org/
 import { getJournalDayDate } from './lib';
 
 
@@ -65,14 +65,18 @@ export async function boundariesProcess(targetElementName: string, remove: boole
     const startDate = weekStartsOn === 1 && logseq.settings?.weekNumberFormat === "ISO(EU) format" ? startOfISOWeek(targetDate) : startOfWeek(targetDate, { weekStartsOn });
 
     // 次の週を表示するかどうかの判定
-    const flagShowNextWeek: Boolean = ((logseq.settings?.weekNumberFormat === "US format" && isSaturday(targetDate)) //US formatかつ土曜日の場合
-      || (logseq.settings?.weekNumberFormat !== "US format" && isSunday(targetDate))) ? true : false; //US format以外かつ日曜日の場合
-
-    if (flagShowNextWeek === true) {//US formatかつ土曜日の場合もしくはUS format以外かつ日曜日の場合
-      days = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
+    const flagShowNextWeek: Boolean =
+      (weekStartsOn === 0 && isSaturday(targetDate)) //日曜日始まり、土曜日がtargetDateの場合
+        || (weekStartsOn === 1 && isSunday(targetDate)) //月曜日始まり、日曜日がtargetDateの場合
+        || (weekStartsOn === 6 && isFriday(targetDate)) //土曜日始まり、金曜日がtargetDateの場合
+        ? true : false;
+    if (flagShowNextWeek === true) {
+      days = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]; //次の週を表示する場合
     } else {
-      days = [-7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6];
+      days = [-7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6]; //次の週を表示しない場合
     }
+
+    //ミニカレンダー作成 1日ずつ処理
     days.forEach((numDays, index) => {
       const date: Date = numDays === 0 ? startDate : addDays(startDate, numDays) as Date;
       const dayOfWeek: string = new Intl.DateTimeFormat((logseq.settings?.localizeOrEnglish as string || "default"), { weekday: "short" }).format(date);
