@@ -3,18 +3,18 @@ import { t } from "logseq-l10n";
 
 /* user setting */
 // https://logseq.github.io/plugins/types/SettingSchemaDesc.html
-export const settingsTemplate = (ByLanguage: string): SettingSchemaDesc[] => [
+export const settingsTemplate = (): SettingSchemaDesc[] => [
   {
     key: "weekNumberFormat",
     title: t("Week number calculation (across years)"),
     type: "enum",
-    default: ByLanguage || "ISO(EU) format",
+    default: "ISO(EU) format",
     enumChoices: ["US format", "ISO(EU) format", "Japanese format"],
-    description: t("[document](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/wiki/Week-number-format)"),
+    description: t("`US format`: Sunday, `ISO(EU) format`: Monday, [>> document here](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/wiki/Week-number-format)"),
   },
   {//Journal Boundaries, week start 通常はformatに従う
     key: "boundariesWeekStart",
-    title: t("Journal boundaries, week start (Unset: by the selected format)"),
+    title: t("Journal boundaries only, Week start (Unset: by the selected format)"),
     type: "enum",
     enumChoices: ["unset", "Sunday", "Monday", "Saturday"],
     default: "unset",
