@@ -22,7 +22,23 @@ export async function boundariesProcess(targetElementName: string, remove: boole
     setTimeout(() => boundariesProcess(targetElementName, false, repeat + 1), 300);
   }
   processingFoundBoundaries = true;
-  const weekStartsOn = (logseq.settings?.weekNumberFormat === "US format") ? 0 : 1;
+  let weekStartsOn: 0 | 1 | 2 | 3 | 4 | 5 | 6;
+  switch (logseq.settings!.boundariesWeekStart) {
+    case "Sunday":
+      weekStartsOn = 0;
+      break;
+    case "Monday":
+      weekStartsOn = 1;
+      break;
+    case "Saturday":
+      weekStartsOn = 6;
+      break;
+    default: //"unset"
+      weekStartsOn = (logseq.settings?.weekNumberFormat === "US format") ? 0 : 1;
+      break;
+  }
+
+
   const { preferredDateFormat } = await logseq.App.getUserConfigs() as AppUserConfigs;
   if (firstElement) {
     const today = new Date();
@@ -74,16 +90,15 @@ export async function boundariesProcess(targetElementName: string, remove: boole
         if ((logseq.settings?.weekNumberFormat === "ISO(EU) format" && isThisISOWeek(date))
           || ((flagShowNextWeek === true && index < 7) || (flagShowNextWeek === false && index > 6))
         ) dayElement.classList.add('thisWeek');
-        if (booleanToday === true) {
-          dayElement.style.border = '1px solid var(--ls-wb-stroke-color-green)';
-          dayElement.style.opacity = "1.0";
-        }
-
         if (targetElementName !== 'journals' && isSameDay(targetDate, date) === true) {
           dayElement.style.border = '1px solid var(--ls-wb-stroke-color-yellow)';
           dayElement.style.cursor = 'pointer';
           dayElement.style.opacity = "1.0";
-        }
+        } else
+          if (booleanToday === true) {
+            dayElement.style.border = '1px solid var(--ls-wb-stroke-color-green)';
+            dayElement.style.opacity = "1.0";
+          }
         if (logseq.settings?.booleanWeekendsColor === true) {
           if (isSaturday(date) as boolean) dayElement.style.color = 'var(--ls-wb-stroke-color-blue)';
           else if (isSunday(date) as boolean) dayElement.style.color = 'var(--ls-wb-stroke-color-red)';

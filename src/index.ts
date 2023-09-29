@@ -4,7 +4,7 @@ import {
   LSPluginBaseInfo,
   PageEntity,
 } from "@logseq/libs/dist/LSPlugin.user";
-import { setup as l10nSetup } from "logseq-l10n"; //https://github.com/sethyuan/logseq-l10n
+import { setup as l10nSetup, t } from "logseq-l10n"; //https://github.com/sethyuan/logseq-l10n
 import ja from "./translations/ja.json";
 import fileMainCSS from "./main.css?inline";
 import { behindJournalTitle } from "./behind";
@@ -26,10 +26,10 @@ const main = async () => {
   logseq.useSettingsSchema(settingsTemplate("ISO(EU) format"));
 
   // メッセージを表示する
-  // if (logseq.settings!.notice !== "20230822no01") {
-  //   logseq.UI.showMsg("Remove `localize journal link` feature. Split to `Flex date format` plugin.", "info", { timeout: 4000 });
-  //   logseq.updateSettings({ notice: "20230822no01" });
-  // }
+  if (logseq.settings!.notice !== "20230929no03") {
+    logseq.UI.showMsg("Show Weekday and Week-number plugin\n\n" + t("Added the config of week start to the plugin settings"), "info", { timeout: 4000 });
+    logseq.updateSettings({ notice: "20230929no03" });
+  }
 
 
   logseq.provideStyle({ key: "main", style: fileMainCSS });
@@ -102,38 +102,23 @@ const main = async () => {
 
 
 const onSettingsChanged = () => logseq.onSettingsChanged((newSet: LSPluginBaseInfo["settings"], oldSet: LSPluginBaseInfo["settings"]) => {
-  const changeBoundaries = oldSet.localizeOrEnglish !== newSet.localizeOrEnglish ||
-    oldSet.journalBoundariesBeforeToday !==
-    newSet.journalBoundariesBeforeToday ||
-    oldSet.journalBoundariesAfterToday !==
-    newSet.journalBoundariesAfterToday ||
-    oldSet.journalsBoundariesWeekOnly !==
-    newSet.journalsBoundariesWeekOnly ||
-    (oldSet.weekNumberFormat !== newSet.weekNumberFormat &&
-      newSet.journalsBoundariesWeekOnly === true)
-    ? true
-    : false;
-  if (changeBoundaries ||
-    (oldSet.booleanBoundaries === true &&
-      newSet.booleanBoundaries === false) ||
-    (oldSet.booleanJournalsBoundaries === true &&
-      newSet.booleanJournalsBoundaries === false)) {
-    removeBoundaries();
-  }
-  if (changeBoundaries ||
-    (oldSet.booleanBoundaries === false &&
-      newSet.booleanBoundaries === true)) {
-    if (parent.document.getElementById("is-journals") as HTMLDivElement)
-      boundaries("is-journals");
-    if (parent.document.getElementById("journals") as HTMLDivElement)
-      boundaries("journals");
-  }
-  if (changeBoundaries ||
-    (oldSet.booleanJournalsBoundaries === false &&
-      newSet.booleanJournalsBoundaries === true)) {
-    if (parent.document.getElementById("journals") as HTMLDivElement)
-      boundaries("journals");
-  }
+
+  if ((oldSet.booleanBoundaries === true && newSet.booleanBoundaries === false)
+    || (oldSet.booleanJournalsBoundaries === true && newSet.booleanJournalsBoundaries === false)
+    || oldSet.boundariesWeekStart !== newSet.boundariesWeekStart
+    || oldSet.localizeOrEnglish !== newSet.localizeOrEnglish
+    || oldSet.weekNumberFormat !== newSet.weekNumberFormat) removeBoundaries(); //boundariesのセレクト更新のため
+
+  if (oldSet.booleanJournalsBoundaries === false && newSet.booleanJournalsBoundaries === true && parent.document.getElementById("journals") as HTMLDivElement) {
+    boundaries("journals");//journals only
+  } else
+    if ((oldSet.booleanBoundaries === false && newSet.booleanBoundaries === true)
+      || oldSet.boundariesWeekStart !== newSet.boundariesWeekStart
+      || oldSet.localizeOrEnglish !== newSet.localizeOrEnglish
+      || oldSet.weekNumberFormat !== newSet.weekNumberFormat) {
+      if (newSet.booleanBoundaries === true && parent.document.getElementsByClassName("is-journals")) boundaries("is-journals");
+      else if (newSet.booleanBoundaries === true && newSet.booleanJournalsBoundaries === true && parent.document.getElementById("journals") as HTMLDivElement) boundaries("journals");
+    }
   if (oldSet.localizeOrEnglish !== newSet.localizeOrEnglish ||
     oldSet.booleanDayOfWeek !== newSet.booleanDayOfWeek ||
     oldSet.longOrShort !== newSet.longOrShort ||
