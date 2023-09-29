@@ -1,8 +1,10 @@
 import { getWeekOfMonth, isSaturday, isSunday } from "date-fns";
 import { openPage, getWeeklyNumberFromDate, formatRelativeDate } from "./lib";
+import { t } from "logseq-l10n";
 
 //behind journal title
 let processingBehind: boolean = false;
+
 export function behindJournalTitle(
   journalDate: Date,
   titleElement: HTMLElement,
@@ -45,7 +47,6 @@ export function behindJournalTitle(
               processing = true;
               openPage(forWeeklyJournal, shiftKey as boolean);
               processing = false;
-              return;
             });
           }
         }, 150);
@@ -124,5 +125,15 @@ export function behindJournalTitle(
     //For single journal
     titleElement.insertAdjacentElement("afterend", dateInfoElement);
   }
+
+  //設定ボタンを設置
+  const settingButton: HTMLButtonElement = document.createElement("button");
+  settingButton.textContent = "⚙";
+  settingButton.title = t("Open plugin setting");
+  settingButton.style.marginLeft = "1em";
+  settingButton.addEventListener("click", () => {
+    logseq.showSettingsUI();
+  });
+  dateInfoElement.appendChild(settingButton);
   processingBehind = false;
 }
