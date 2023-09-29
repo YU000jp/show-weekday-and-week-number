@@ -1,3 +1,16 @@
+# [1.34.0](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.33.0...v1.34.0) (2023-09-29)
+
+
+### Bug Fixes
+
+* **remove:** first select format ([422f705](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/422f70521c16c9283388f15f4e1567ac2ad6d3aa))
+
+
+### Features
+
+* **Add:** "start of the week"  to plugin settings ([10d62ac](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/10d62ace518988497669f23910279ef0539c6814))
+* **doc:** first load message ([0091ea0](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/0091ea0f90d42975e76e61db4e41cfbf864f7983))
+
 # [1.33.0](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.32.0...v1.33.0) (2023-09-26)
 
 
