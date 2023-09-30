@@ -1,3 +1,11 @@
+# [1.36.0](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.35.1...v1.36.0) (2023-09-30)
+
+
+### Features
+
+* **Journal Boundaries:** Enable click to a future date ([cc218d4](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/cc218d49a48703ac64640880235d9f0d106eb5be))
+* **Journal Boundaries:** Show month ([7113b2d](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/7113b2dc1dd9e679534c2757f67c7ac944f6fa07))
+
 ## [1.35.1](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.35.0...v1.35.1) (2023-09-29)
 
 
