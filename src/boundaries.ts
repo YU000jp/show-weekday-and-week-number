@@ -1,7 +1,7 @@
 import { AppUserConfigs, PageEntity } from '@logseq/libs/dist/LSPlugin.user';
 import { format, addDays, isBefore, isToday, isSunday, isSaturday, startOfWeek, startOfISOWeek, isSameDay, isFriday, } from 'date-fns';//https://date-fns.org/
 import { getJournalDayDate } from './lib';
-import { is } from 'date-fns/locale';
+import { getWeekStartOn } from './lib';
 
 
 let processingFoundBoundaries: boolean = false;
@@ -23,21 +23,7 @@ export async function boundariesProcess(targetElementName: string, remove: boole
     setTimeout(() => boundariesProcess(targetElementName, false, repeat + 1), 300);
   }
   processingFoundBoundaries = true;
-  let weekStartsOn: 0 | 1 | 2 | 3 | 4 | 5 | 6;
-  switch (logseq.settings!.boundariesWeekStart) {
-    case "Sunday":
-      weekStartsOn = 0;
-      break;
-    case "Monday":
-      weekStartsOn = 1;
-      break;
-    case "Saturday":
-      weekStartsOn = 6;
-      break;
-    default: //"unset"
-      weekStartsOn = (logseq.settings?.weekNumberFormat === "US format") ? 0 : 1;
-      break;
-  }
+  const weekStartsOn: 0 | 1 | 6 = getWeekStartOn();
 
   const { preferredDateFormat } = await logseq.App.getUserConfigs() as AppUserConfigs;
   if (firstElement) {
@@ -45,6 +31,10 @@ export async function boundariesProcess(targetElementName: string, remove: boole
     const weekBoundaries: HTMLDivElement = parent.document.createElement('div');
     weekBoundaries.id = 'weekBoundaries';
     firstElement.insertBefore(weekBoundaries, firstElement.firstChild);
+    //weekBoundariesにelementを追加する
+    const boundariesInner: HTMLDivElement = parent.document.createElement('div');
+    boundariesInner.id = 'boundariesInner';
+    weekBoundaries.appendChild(boundariesInner);
 
     let targetDate: Date;//今日の日付もしくはそのページの日付を求める
     if (targetElementName === 'journals') {
@@ -117,10 +107,9 @@ export async function boundariesProcess(targetElementName: string, remove: boole
         if (index === 7) {
           const element = parent.document.createElement('div') as HTMLDivElement;
           element.style.width = "95%";
-          weekBoundaries!.appendChild(element);
-          weekBoundaries!.style.flexWrap = "wrap";
+          boundariesInner.appendChild(element);
         }
-        weekBoundaries!.appendChild(dayElement);
+        boundariesInner.appendChild(dayElement);
       }
 
       function openPageToSingleDay(): (this: HTMLSpanElement, ev: MouseEvent) => any {

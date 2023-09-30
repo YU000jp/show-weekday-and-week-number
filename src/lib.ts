@@ -91,4 +91,23 @@ export const formatRelativeDate = (targetDate: Date): string => {
   return new Intl.RelativeTimeFormat(("default"), { numeric: 'auto' }).format(diffInDays, 'day') as string;
 }; //formatRelativeDate end
 
+export const getWeekStartOn = (): 0 | 1 | 6 => {
+  let weekStartsOn: 0 | 1 | 6;
+  switch (logseq.settings!.boundariesWeekStart) {
+    case "Sunday":
+      weekStartsOn = 0;
+      break;
+    case "Monday":
+      weekStartsOn = 1;
+      break;
+    case "Saturday":
+      weekStartsOn = 6;
+      break;
+    default: //"unset"
+      weekStartsOn = (logseq.settings?.weekNumberFormat === "US format") ? 0 : 1;
+      break;
+  }
+  return weekStartsOn;
+};
+
 
