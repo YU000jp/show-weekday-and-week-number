@@ -9,11 +9,11 @@
     "like `3 days ago`": "例: 昨日、3日前",
     "Day of the week, Select language Localize(:default) or English(:en)": "言語を選択する (「default」は日本語、「en」は英語)",
     "Behind journal title, Day of the week long or short": "曜日の表示形式 (長い形式または短い形式)",
-    "Journal boundaries, Enable feature": "Journal Boundaries(ミニカレンダー)を有効にする",
-    "Show the boundaries of days before and after the day on the single journal page": "日付のシングルページを開いたときに、前後の日付にアクセスできるナビゲーションバーを表示",
-    "Journal boundaries, Use also on journals": "日誌を開いたときに、Journal Boundariesを有効にする",
+    "Journal boundaries, Enable feature": "ミニカレンダー(Journal Boundaries)を有効にする",
+    "Show the boundaries of days before and after the day on the single journal page": "日付のシングルページを開いたときに、ミニカレンダーを有効にする",
+    "Journal boundaries, Use also on journals": "日誌を開いたときに、ミニカレンダーを有効にする",
     "Behind journal title, Enable week number": "週番号を表示する",
-    "Journal boundaries, If no page found, create page (before today)": "ページが見つからない場合、ページを作成する (今日より前の日付)",
+    "Journal boundaries, If no page found, not create page (before today)": "ページが見つからない場合、ページを作成しない (今日より前の日付)",
     "Journal boundaries, Open future page": "未来の日付のページを開く",
     "Weekly Journal, Enable feature": "ウィークリージャーナルを有効にする",
     "Enable the link and function. If there is no content available on a page with a week number like 2023-W25, a template will be inserted.": "リンクと機能を有効にします。2023-W25のような週番号のページにコンテンツがない場合、テンプレートが挿入されます。",
@@ -35,5 +35,6 @@
     "Journal boundaries only, Week start (Unset: by the selected format)": "週の開始日 (unset: 選択したフォーマットによる) ※ミニカレンダーのみ",
     "`US format`: Sunday, `ISO(EU) format`: Monday, [>> document here](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/wiki/Week-number-format)": "USフォーマット: 日曜日始まり, ISO(EU向け)フォーマット: 月曜日始まり, [>> ドキュメント](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/wiki/%E9%80%B1%E7%95%AA%E5%8F%B7%E3%83%95%E3%82%A9%E3%83%BC%E3%83%9E%E3%83%83%E3%83%88%E3%81%AE%E9%81%B8%E6%8A%9E%E8%82%A2-(Japanese))",
     "Added the config of week start to the plugin settings": "プラグイン設定に、週の開始日の項目を追加しました",
-    "Open plugin setting": "プラグイン設定を開く"
+    "Open plugin setting": "プラグイン設定を開く",
+    "Journal boundaries, Show month": "ミニカレンダー: 月を表示する"
 }

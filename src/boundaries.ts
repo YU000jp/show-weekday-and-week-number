@@ -79,20 +79,29 @@ export async function boundariesProcess(targetElementName: string, remove: boole
     days.forEach((numDays, index) => {
       const date: Date = numDays === 0 ? startDate : addDays(startDate, numDays) as Date;
       const dayOfWeek: string = new Intl.DateTimeFormat((logseq.settings?.localizeOrEnglish as string || "default"), { weekday: "short" }).format(date);
-      const dayOfMonth: string = format(date, 'd');
+      //日付を取得する
+      const dayOfMonth: number = date.getDate();
       const dayElement: HTMLSpanElement = parent.document.createElement('span');
-      const isDayBeforeToday = isBefore(date, today) as boolean;
+      const isBooleanBeforeToday: boolean = isBefore(date, today);
       try {
+        const isBooleanToday: boolean = isToday(date);
+        const isBooleanTargetSameDay: boolean = isSameDay(targetDate, date);
         dayElement.classList.add('day');
-        dayElement.innerHTML = `<span class="dayOfWeek">${dayOfWeek}</span><span class="dayOfMonth">${dayOfMonth}</span>`;
-        const booleanToday = isToday(date) as boolean;
+        const dayOfWeekElement: HTMLSpanElement = parent.document.createElement('span');
+        dayOfWeekElement.classList.add('dayOfWeek');
+        dayOfWeekElement.innerText = dayOfWeek;
+        dayElement.appendChild(dayOfWeekElement);
+        const dayOfMonthElement: HTMLSpanElement = parent.document.createElement('span');
+        dayOfMonthElement.classList.add('dayOfMonth');
+        dayOfMonthElement.innerText = (dayOfMonth === 1 || isBooleanTargetSameDay === true) && logseq.settings!.booleanBoundariesShowMonth === true ? `${format(date, 'M')}/${dayOfMonth}` : `${dayOfMonth}`;
+        dayElement.appendChild(dayOfMonthElement);
         dayElement.title = format(date, preferredDateFormat);
         if ((flagShowNextWeek === true && index < 7) || (flagShowNextWeek === false && index > 6)) dayElement.classList.add('thisWeek');
 
-        if (targetElementName !== 'journals' && isSameDay(targetDate, date) === true)
+        if (targetElementName !== 'journals' && isBooleanTargetSameDay === true)
           dayElement.style.border = '1px solid var(--ls-wb-stroke-color-yellow)';//シングルページの日付をハイライト
         else
-          if (booleanToday === true) dayElement.style.border = '1px solid var(--ls-wb-stroke-color-green)';//今日をハイライト
+          if (isBooleanToday === true) dayElement.style.border = '1px solid var(--ls-wb-stroke-color-green)';//今日をハイライト
 
         if (logseq.settings?.booleanWeekendsColor === true) {
           if (isSaturday(date) as boolean) dayElement.style.color = 'var(--ls-wb-stroke-color-blue)';
@@ -100,7 +109,7 @@ export async function boundariesProcess(targetElementName: string, remove: boole
         }
 
         if (logseq.settings!.booleanBoundariesFuturePage === true
-          || isDayBeforeToday === true || booleanToday === true)
+          || isBooleanBeforeToday === true || isBooleanToday === true)
           dayElement.addEventListener("click", openPageToSingleDay());
         else
           dayElement.style.cursor = 'unset';
@@ -124,13 +133,13 @@ export async function boundariesProcess(targetElementName: string, remove: boole
           } else {
             //Shiftキーを押さずにクリックした場合は、ページを開く
 
-            if (logseq.settings!.booleanNoPageFoundCreatePage === true && isDayBeforeToday === false) { //今日以前の日付でページが存在しない場合は作成しない
-              logseq.App.pushState('page', { name: journalPageName });//ページが存在しない場合も作成される
-            } else {
+            if (logseq.settings!.booleanNoPageFoundCreatePage === true && isBooleanBeforeToday === true) {//過去の日付の場合はページを作成しない
               //ページが存在しない場合は作成しない
               const page = await logseq.Editor.getPage(journalPageName) as PageEntity | null;
               if (page) logseq.App.pushState('page', { name: journalPageName });//ページが存在する場合は開く
               else logseq.UI.showMsg('Page not found', "warning", { timeout: 3000 });//ページが存在しない場合は警告を表示する
+            } else {
+              logseq.App.pushState('page', { name: journalPageName });//ページが存在しない場合も作成される
             }
           }
         };

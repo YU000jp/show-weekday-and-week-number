@@ -109,7 +109,7 @@ export const settingsTemplate = (): SettingSchemaDesc[] => [
   },
   {
     key: "booleanNoPageFoundCreatePage",//今日以前のページを開こうとして、それが見つからない場合は、ページを作成する
-    title: t("Journal boundaries, If no page found, create page (before today)"),
+    title: t("Journal boundaries, If no page found, not create page (before today)"),
     type: "boolean",
     default: true,
     description: "default: `true`",
@@ -117,6 +117,13 @@ export const settingsTemplate = (): SettingSchemaDesc[] => [
   {//Journal Boundaries, 将来のページも開く
     key: "booleanBoundariesFuturePage",
     title: t("Journal boundaries, Open future page"),
+    type: "boolean",
+    default: true,
+    description: "default: `true`",
+  },
+  {//Journal Boundaries, 一部に月を表示する
+    key: "booleanBoundariesShowMonth",
+    title: t("Journal boundaries, Show month"),
     type: "boolean",
     default: true,
     description: "default: `true`",
