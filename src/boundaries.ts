@@ -1,6 +1,7 @@
 import { AppUserConfigs, PageEntity } from '@logseq/libs/dist/LSPlugin.user';
-import { format, addDays, isBefore, isToday, isSunday, isSaturday, startOfWeek, startOfISOWeek, isThisISOWeek, isSameDay, isFriday, } from 'date-fns';//https://date-fns.org/
+import { format, addDays, isBefore, isToday, isSunday, isSaturday, startOfWeek, startOfISOWeek, isSameDay, isFriday, } from 'date-fns';//https://date-fns.org/
 import { getJournalDayDate } from './lib';
+import { is } from 'date-fns/locale';
 
 
 let processingFoundBoundaries: boolean = false;
@@ -38,7 +39,6 @@ export async function boundariesProcess(targetElementName: string, remove: boole
       break;
   }
 
-
   const { preferredDateFormat } = await logseq.App.getUserConfigs() as AppUserConfigs;
   if (firstElement) {
     const today = new Date();
@@ -48,8 +48,7 @@ export async function boundariesProcess(targetElementName: string, remove: boole
 
     let targetDate: Date;//今日の日付もしくはそのページの日付を求める
     if (targetElementName === 'journals') {
-      if (weekStartsOn === 1 && logseq.settings?.weekNumberFormat === "ISO(EU) format") targetDate = startOfISOWeek(today);
-      else targetDate = startOfWeek(today, { weekStartsOn });
+      targetDate = today;
     } else {
       const { journalDay } = await logseq.Editor.getCurrentPage() as PageEntity;
       if (!journalDay) {
@@ -59,10 +58,12 @@ export async function boundariesProcess(targetElementName: string, remove: boole
       }
       targetDate = getJournalDayDate(String(journalDay)) as Date;
     }
-    let days: number[] = [];
 
     //targetDateを週の初めにする
-    const startDate = weekStartsOn === 1 && logseq.settings?.weekNumberFormat === "ISO(EU) format" ? startOfISOWeek(targetDate) : startOfWeek(targetDate, { weekStartsOn });
+    const startDate: Date =
+      weekStartsOn === 1 && logseq.settings?.weekNumberFormat === "ISO(EU) format"
+        ? startOfISOWeek(targetDate)
+        : startOfWeek(targetDate, { weekStartsOn });
 
     // 次の週を表示するかどうかの判定
     const flagShowNextWeek: Boolean =
@@ -70,11 +71,9 @@ export async function boundariesProcess(targetElementName: string, remove: boole
         || (weekStartsOn === 1 && isSunday(targetDate)) //月曜日始まり、日曜日がtargetDateの場合
         || (weekStartsOn === 6 && isFriday(targetDate)) //土曜日始まり、金曜日がtargetDateの場合
         ? true : false;
-    if (flagShowNextWeek === true) {
-      days = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]; //次の週を表示する場合
-    } else {
-      days = [-7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6]; //次の週を表示しない場合
-    }
+    const days: number[] = flagShowNextWeek === true
+      ? [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13] //次の週を表示する場合
+      : [-7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6]; //次の週を表示しない場合
 
     //ミニカレンダー作成 1日ずつ処理
     days.forEach((numDays, index) => {
@@ -82,31 +81,29 @@ export async function boundariesProcess(targetElementName: string, remove: boole
       const dayOfWeek: string = new Intl.DateTimeFormat((logseq.settings?.localizeOrEnglish as string || "default"), { weekday: "short" }).format(date);
       const dayOfMonth: string = format(date, 'd');
       const dayElement: HTMLSpanElement = parent.document.createElement('span');
+      const isDayBeforeToday = isBefore(date, today) as boolean;
       try {
         dayElement.classList.add('day');
         dayElement.innerHTML = `<span class="dayOfWeek">${dayOfWeek}</span><span class="dayOfMonth">${dayOfMonth}</span>`;
         const booleanToday = isToday(date) as boolean;
         dayElement.title = format(date, preferredDateFormat);
-        if ((logseq.settings?.weekNumberFormat === "ISO(EU) format" && isThisISOWeek(date))
-          || ((flagShowNextWeek === true && index < 7) || (flagShowNextWeek === false && index > 6))
-        ) dayElement.classList.add('thisWeek');
-        if (targetElementName !== 'journals' && isSameDay(targetDate, date) === true) {
-          dayElement.style.border = '1px solid var(--ls-wb-stroke-color-yellow)';
-          dayElement.style.cursor = 'pointer';
-          dayElement.style.opacity = "1.0";
-        } else
-          if (booleanToday === true) {
-            dayElement.style.border = '1px solid var(--ls-wb-stroke-color-green)';
-            dayElement.style.opacity = "1.0";
-          }
+        if ((flagShowNextWeek === true && index < 7) || (flagShowNextWeek === false && index > 6)) dayElement.classList.add('thisWeek');
+
+        if (targetElementName !== 'journals' && isSameDay(targetDate, date) === true)
+          dayElement.style.border = '1px solid var(--ls-wb-stroke-color-yellow)';//シングルページの日付をハイライト
+        else
+          if (booleanToday === true) dayElement.style.border = '1px solid var(--ls-wb-stroke-color-green)';//今日をハイライト
+
         if (logseq.settings?.booleanWeekendsColor === true) {
           if (isSaturday(date) as boolean) dayElement.style.color = 'var(--ls-wb-stroke-color-blue)';
           else if (isSunday(date) as boolean) dayElement.style.color = 'var(--ls-wb-stroke-color-red)';
         }
-        if (isBefore(date, today) as boolean || booleanToday === true) {
-          dayElement.style.cursor = 'pointer';
+
+        if (logseq.settings!.booleanBoundariesFuturePage === true
+          || isDayBeforeToday === true || booleanToday === true)
           dayElement.addEventListener("click", openPageToSingleDay());
-        }
+        else
+          dayElement.style.cursor = 'unset';
       } finally {
         if (index === 7) {
           const element = parent.document.createElement('div') as HTMLDivElement;
@@ -120,13 +117,21 @@ export async function boundariesProcess(targetElementName: string, remove: boole
       function openPageToSingleDay(): (this: HTMLSpanElement, ev: MouseEvent) => any {
         return async (event) => {
           const journalPageName: string = format(date, preferredDateFormat);
-          const page = await logseq.Editor.getPage(journalPageName) as PageEntity | null;
-          if (page && page.journalDay) {
-            if (event.shiftKey) logseq.Editor.openInRightSidebar(page.uuid);
-            else logseq.App.pushState('page', { name: journalPageName });
+
+          if (event.shiftKey) {//Shiftキーを押しながらクリックした場合は、サイドバーでページを開く
+            const page = await logseq.Editor.getPage(journalPageName) as PageEntity | null;
+            if (page) logseq.Editor.openInRightSidebar(page.uuid);//ページが存在しない場合は開かない
           } else {
-            if (logseq.settings!.noPageFoundCreatePage === true) logseq.Editor.createPage(journalPageName, undefined, { redirect: true, journal: true });
-            else logseq.UI.showMsg('No page found', 'warming');
+            //Shiftキーを押さずにクリックした場合は、ページを開く
+
+            if (logseq.settings!.booleanNoPageFoundCreatePage === true && isDayBeforeToday === false) { //今日以前の日付でページが存在しない場合は作成しない
+              logseq.App.pushState('page', { name: journalPageName });//ページが存在しない場合も作成される
+            } else {
+              //ページが存在しない場合は作成しない
+              const page = await logseq.Editor.getPage(journalPageName) as PageEntity | null;
+              if (page) logseq.App.pushState('page', { name: journalPageName });//ページが存在する場合は開く
+              else logseq.UI.showMsg('Page not found', "warning", { timeout: 3000 });//ページが存在しない場合は警告を表示する
+            }
           }
         };
       }

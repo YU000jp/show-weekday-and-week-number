@@ -26,10 +26,10 @@ const main = async () => {
   logseq.useSettingsSchema(settingsTemplate());
 
   // メッセージを表示する
-  if (logseq.settings!.notice !== "20230929no03") {
-    logseq.UI.showMsg("Show Weekday and Week-number plugin\n\n" + t("Added the config of week start to the plugin settings"), "info", { timeout: 4000 });
-    logseq.updateSettings({ notice: "20230929no03" });
-  }
+  // if (logseq.settings!.notice !== "20230929no03") {
+  //   logseq.UI.showMsg("Show Weekday and Week-number plugin\n\n" + t("Added the config of week start to the plugin settings"), "info", { timeout: 4000 });
+  //   logseq.updateSettings({ notice: "20230929no03" });
+  // }
 
 
   logseq.provideStyle({ key: "main", style: fileMainCSS });
@@ -107,7 +107,9 @@ const onSettingsChanged = () => logseq.onSettingsChanged((newSet: LSPluginBaseIn
     || (oldSet.booleanJournalsBoundaries === true && newSet.booleanJournalsBoundaries === false)
     || oldSet.boundariesWeekStart !== newSet.boundariesWeekStart
     || oldSet.localizeOrEnglish !== newSet.localizeOrEnglish
-    || oldSet.weekNumberFormat !== newSet.weekNumberFormat) removeBoundaries(); //boundariesのセレクト更新のため
+    || oldSet.weekNumberFormat !== newSet.weekNumberFormat
+    || oldSet.booleanBoundariesFuturePage !== newSet.booleanBoundariesFuturePage
+  ) removeBoundaries(); //boundariesのセレクト更新のため
 
   if (oldSet.booleanJournalsBoundaries === false && newSet.booleanJournalsBoundaries === true && parent.document.getElementById("journals") as HTMLDivElement) {
     boundaries("journals");//journals only
@@ -115,16 +117,18 @@ const onSettingsChanged = () => logseq.onSettingsChanged((newSet: LSPluginBaseIn
     if ((oldSet.booleanBoundaries === false && newSet.booleanBoundaries === true)
       || oldSet.boundariesWeekStart !== newSet.boundariesWeekStart
       || oldSet.localizeOrEnglish !== newSet.localizeOrEnglish
-      || oldSet.weekNumberFormat !== newSet.weekNumberFormat) {
+      || oldSet.weekNumberFormat !== newSet.weekNumberFormat
+      || oldSet.booleanBoundariesFuturePage !== newSet.booleanBoundariesFuturePage
+    ) {
       if (parent.document.getElementById("journals") as HTMLDivElement) boundaries("journals");
       else boundaries("is-journals");
     }
+
   if (oldSet.localizeOrEnglish !== newSet.localizeOrEnglish ||
     oldSet.booleanDayOfWeek !== newSet.booleanDayOfWeek ||
     oldSet.longOrShort !== newSet.longOrShort ||
     oldSet.booleanWeekNumber !== newSet.booleanWeekNumber ||
-    oldSet.weekNumberOfTheYearOrMonth !==
-    newSet.weekNumberOfTheYearOrMonth ||
+    oldSet.weekNumberOfTheYearOrMonth !== newSet.weekNumberOfTheYearOrMonth ||
     oldSet.booleanWeekendsColor !== newSet.booleanWeekendsColor ||
     oldSet.weekNumberFormat !== newSet.weekNumberFormat ||
     oldSet.booleanRelativeTime !== newSet.booleanRelativeTime ||
@@ -141,8 +145,7 @@ let processingTitleQuery: boolean = false;
 async function querySelectorAllTitle(): Promise<void> {
   if (processingTitleQuery) return;
   processingTitleQuery = true;
-  const { preferredDateFormat } =
-    (await logseq.App.getUserConfigs()) as AppUserConfigs;
+  const { preferredDateFormat } = (await logseq.App.getUserConfigs()) as AppUserConfigs;
 
   //Journalsの場合は複数
   parent.document

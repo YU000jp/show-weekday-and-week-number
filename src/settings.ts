@@ -108,11 +108,18 @@ export const settingsTemplate = (): SettingSchemaDesc[] => [
     description: "",
   },
   {
-    key: "noPageFoundCreatePage",
-    title: t("On Journal boundaries if no page found, create the journal page"),
+    key: "booleanNoPageFoundCreatePage",//今日以前のページを開こうとして、それが見つからない場合は、ページを作成する
+    title: t("Journal boundaries, If no page found, create page (before today)"),
     type: "boolean",
-    default: false,
-    description: "default: `false`",
+    default: true,
+    description: "default: `true`",
+  },
+  {//Journal Boundaries, 将来のページも開く
+    key: "booleanBoundariesFuturePage",
+    title: t("Journal boundaries, Open future page"),
+    type: "boolean",
+    default: true,
+    description: "default: `true`",
   },
   {
     key: "booleanWeeklyJournal",
