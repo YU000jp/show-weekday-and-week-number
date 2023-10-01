@@ -1,5 +1,5 @@
 import { AppUserConfigs, PageEntity } from '@logseq/libs/dist/LSPlugin.user';
-import { format, addDays, isBefore, isToday, isSunday, isSaturday, startOfWeek, startOfISOWeek, isSameDay, isFriday, } from 'date-fns';//https://date-fns.org/
+import { format, addDays, isBefore, isToday, isSunday, isSaturday, startOfWeek, startOfISOWeek, isSameDay, isFriday, isThursday, isWednesday, } from 'date-fns';//https://date-fns.org/
 import { getJournalDayDate } from './lib';
 import { getWeekStartOn } from './lib';
 
@@ -56,10 +56,16 @@ export async function boundariesProcess(targetElementName: string, remove: boole
         : startOfWeek(targetDate, { weekStartsOn });
 
     // 次の週を表示するかどうかの判定
+    const isDayThursday: boolean = isThursday(targetDate);
+    const isDayFriday: boolean = isFriday(targetDate);
+    const isDaySaturday: boolean = isSaturday(targetDate);
     const flagShowNextWeek: Boolean =
-      (weekStartsOn === 0 && isSaturday(targetDate)) //日曜日始まり、土曜日がtargetDateの場合
-        || (weekStartsOn === 1 && isSunday(targetDate)) //月曜日始まり、日曜日がtargetDateの場合
-        || (weekStartsOn === 6 && isFriday(targetDate)) //土曜日始まり、金曜日がtargetDateの場合
+      //日曜日始まり、木曜、金曜、土曜がtargetDateの場合
+      (weekStartsOn === 0 && (isDayThursday || isDayFriday || isDaySaturday))
+        //月曜日始まり、金曜、土曜、日曜がtargetDateの場合
+        || (weekStartsOn === 1 && (isDayFriday || isDaySaturday || isSunday(targetDate)))
+        //土曜日始まり、水曜、木曜、金曜がtargetDateの場合
+        || (weekStartsOn === 6 && (isWednesday(targetDate) || isDayThursday || isDayFriday))
         ? true : false;
     const days: number[] = flagShowNextWeek === true
       ? [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13] //次の週を表示する場合
