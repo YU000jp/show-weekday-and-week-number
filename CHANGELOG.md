@@ -1,3 +1,10 @@
+## [1.36.1](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.36.0...v1.36.1) (2023-10-01)
+
+
+### Bug Fixes
+
+* **Journal Boundaries:** Changed to display the next line 2 days before the last day of the week. ([fc7c166](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/fc7c1666da67e1e9cf4a1716d6c99358acb7b6ee))
+
 # [1.36.0](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.35.1...v1.36.0) (2023-09-30)
 
 
