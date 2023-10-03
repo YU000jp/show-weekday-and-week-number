@@ -122,9 +122,9 @@ export async function boundariesProcess(targetElementName: string, remove: boole
         if ((flagShowNextWeek === true && index < 7) || (flagShowNextWeek === false && index > 6)) dayElement.classList.add('thisWeek');
 
         if (targetElementName !== 'journals' && isBooleanTargetSameDay === true)
-          dayElement.style.border = '1px solid var(--ls-wb-stroke-color-yellow)';//シングルページの日付をハイライト
+          dayElement.style.border = `1px solid ${logseq.settings!.boundariesHighlightColorSinglePage}`;//シングルページの日付をハイライト
         else
-          if (isBooleanToday === true) dayElement.style.border = '1px solid var(--ls-wb-stroke-color-green)';//今日をハイライト
+          if (isBooleanToday === true) dayElement.style.border = `1px solid ${logseq.settings!.boundariesHighlightColorToday}`;//今日をハイライト
 
         if (logseq.settings?.booleanWeekendsColor === true) {
           if (isSaturday(date) as boolean) dayElement.style.color = 'var(--ls-wb-stroke-color-blue)';

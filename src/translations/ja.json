@@ -37,5 +37,7 @@
     "Added the config of week start to the plugin settings": "プラグイン設定に、週の開始日の項目を追加しました",
     "Open plugin setting": "プラグイン設定を開く",
     "Journal boundaries, Show month": "ミニカレンダー: 月を表示する",
-    "Journal boundaries, Show week number (calculate from the date of Monday)": "ミニカレンダー: 週番号を表示する (月曜日から計算する)"
+    "Journal boundaries, Show week number (calculate from the date of Monday)": "ミニカレンダー: 週番号を表示する (月曜日から計算する)",
+    "Journal boundaries, Highlight color (today)": "ミニカレンダー: 枠線の色 (今日の日付)",
+    "Journal boundaries, Highlight color (single page)": "ミニカレンダー: 枠線の色 (開いているページの日付)"
 }
