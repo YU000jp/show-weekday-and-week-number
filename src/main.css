@@ -1,9 +1,7 @@
 body.show-justify div#main-content-container {
-    & div.is-journals div.ls-page-title {
-        justify-content: space-around;
-    }
 
-    & div#journals div.journal>div.flex div.content>div.foldable-title>div.flex.items-center {
+    & div.is-journals div.ls-page-title,
+    div#journals div.journal>div.flex div.content>div.foldable-title>div.flex.items-center {
         justify-content: space-around;
     }
 }
@@ -43,60 +41,82 @@ div#main-content-container {
     }
 
 
+    & div#weekBoundaries {
+        height: 92px;
+        transition: height 0.3s ease-in-out;
 
-    & div#weekBoundaries>div#boundariesInner {
-        display: flex;
-        margin-top: 0.3em;
-        overflow-x: auto;
-        width: fit-content;
-        font-size: .88em;
-        justify-content: center;
-        user-select: none;
-        flex-wrap: wrap;
+        >div#boundariesInner {
+            display: flex;
+            margin-top: 0.3em;
+            overflow-x: auto;
+            width: fit-content;
+            font-size: .88em;
+            justify-content: center;
+            user-select: none;
+            flex-wrap: wrap;
 
-        &:has(>div)>span.day:not(.thisWeek)>span {
-            &.dayOfWeek {
-                display: none;
+            &:has(>div)>span.day:not(.thisWeek)>span {
+                &.dayOfWeek {
+                    display: none;
+                }
+
+                &.dayOfMonth {
+                    height: 2em;
+
+                }
             }
 
-            &.dayOfMonth {
-                height: 2em;
+            &>span {
+                &.daySide {
+                    display: flex;
+                    align-items: center;
+                    padding: .5em;
+                    width: 4em;
 
-            }
-        }
+                    &.daySideScroll {
+                        cursor: pointer;
 
-        &>span.day {
-            width: 4.8em;
-            padding: 0.15em;
-            margin-left: 0.35em;
-            border-radius: 0.2em;
-            background: var(--color-level-1);
-            cursor: pointer;
+                        :hover {
+                            opacity: .7;
+                        }
+                    }
 
-            &:not(.thisWeek) {
-                opacity: .6;
-            }
+                }
 
-            &.thisWeek {
-                background: var(--color-level-2);
-                box-shadow: 0 0 0 1px var(--ls-guideline-color);
-            }
+                &.day {
+                    width: 4.8em;
+                    padding: 0.15em;
+                    margin-left: 0.35em;
+                    border-radius: 0.2em;
+                    background: var(--color-level-1);
+                    cursor: pointer;
 
-            &:not(.thisWeek) {
-                opacity: .78;
-            }
+                    &:not(.thisWeek) {
+                        opacity: .6;
+                    }
 
-            &:hover {
-                opacity: 1;
-                background: var(--color-level-2);
-            }
+                    &.thisWeek {
+                        background: var(--color-level-2);
+                        box-shadow: 0 0 0 1px var(--ls-guideline-color);
+                    }
 
-            & span.dayOfMonth {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                font-weight: bold;
-                font-size: 1.2em;
+                    &:not(.thisWeek) {
+                        opacity: .78;
+                    }
+
+                    &:hover {
+                        opacity: 1;
+                        background: var(--color-level-2);
+                    }
+
+                    & span.dayOfMonth {
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        font-weight: bold;
+                        font-size: 1.2em;
+                    }
+                }
             }
         }
     }
