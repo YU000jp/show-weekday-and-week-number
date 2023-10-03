@@ -1,5 +1,6 @@
 import { PageEntity } from "@logseq/libs/dist/LSPlugin.user";
 import { getISOWeekYear, getISOWeek, getWeekYear, getWeek } from "date-fns";
+import { t } from "logseq-l10n";
 
 export async function openPage(pageName: string, shiftKey: boolean) {
   const page = await logseq.Editor.getPage(pageName) as PageEntity | null;
@@ -108,6 +109,25 @@ export const getWeekStartOn = (): 0 | 1 | 6 => {
       break;
   }
   return weekStartsOn;
+};
+
+export const createSettingButton = (): HTMLButtonElement => {
+  const settingButton: HTMLButtonElement = document.createElement("button");
+  settingButton.textContent = "⚙";
+  settingButton.title = t("Open plugin setting");
+  settingButton.style.marginLeft = "1em";
+  settingButton.addEventListener("click", () => {
+    logseq.showSettingsUI();
+  });
+  return settingButton;
+};
+export const openPageFromPageName = async (pageName: string, { shiftKey }) => {
+  if (shiftKey === true) {
+    const page = await logseq.Editor.getPage(pageName) as PageEntity | null;
+    if (page) logseq.Editor.openInRightSidebar(page.uuid); //ページが存在しない場合は開かない
+  } else {
+    logseq.App.pushState('page', { name: pageName });
+  }
 };
 
 
