@@ -35,7 +35,7 @@ export function behindJournalTitle(
       const forWeeklyJournal = `${year}-W${weekString}`;
       if (logseq.settings.booleanWeeklyJournal === true) {
         const linkId = "weeklyJournal-" + forWeeklyJournal;
-        printWeek = `<span title="Week number"><a id="${linkId}">${printWeekNumber}</a></span>`;
+        printWeek = `<span title="${printWeekNumber}"><a id="${linkId}">${printWeekNumber}</a></span>`;
         setTimeout(() => {
           const element = parent.document.getElementById(
             linkId
@@ -45,7 +45,7 @@ export function behindJournalTitle(
           }
         }, 150);
       } else {
-        printWeek = `<span title="Week number">${printWeekNumber}</span>`;
+        printWeek = `<span title="${printWeekNumber}">${printWeekNumber}</span>`;
       }
     } else {
       // get week numbers of the month
