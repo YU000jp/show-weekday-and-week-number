@@ -117,8 +117,6 @@ export async function boundariesProcess(targetElementName: string, remove: boole
           //daySideElement作成    
           //月を表示する場合
           if (logseq.settings!.booleanBoundariesShowMonth === true) monthDuplicate = daySideMonth(date, boundariesInner, monthDuplicate);//daySideElement作成
-          //週番号を表示する場合
-          if (logseq.settings!.booleanBoundariesShowWeekNumber === true) daySideWeekNumber(date, boundariesInner);//daySideElement作成
         }
         //dayElement作成
         const isBooleanBeforeToday: boolean = isBefore(date, today);
@@ -160,7 +158,13 @@ export async function boundariesProcess(targetElementName: string, remove: boole
           dayElement.style.cursor = 'unset';
       } finally {
         boundariesInner.appendChild(dayElement);
-        if (index === 6 || index === 13) daySideScroll(index, boundariesInner, targetElementName, startDate);//daySideElement作成
+        if (index === 6 || index === 13) {
+          //daySideElement作成    
+          //週番号を表示する場合
+          if (logseq.settings!.booleanBoundariesShowWeekNumber === true) daySideWeekNumber(date, boundariesInner);
+          daySideScroll(index, boundariesInner, targetElementName, startDate);//スクロール
+        }
+
       }
 
     });

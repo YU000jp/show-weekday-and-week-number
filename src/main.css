@@ -73,6 +73,7 @@ div#main-content-container {
                     padding: .5em;
                     width: 4em;
                     cursor: pointer;
+                    opacity: .6;
                     /* &.daySideScroll
                     &.daySideWeekNumber */
                 }
