@@ -2,7 +2,7 @@ import { AppUserConfigs, PageEntity } from '@logseq/libs/dist/LSPlugin.user';
 import { format, addDays, isBefore, isToday, isSunday, isSaturday, startOfWeek, startOfISOWeek, isSameDay, isFriday, isThursday, isWednesday, } from 'date-fns';//https://date-fns.org/
 import { formatRelativeDate, getJournalDayDate, getWeekStartOn, getWeeklyNumberFromDate } from './lib';
 import { openPageFromPageName } from './lib';
-
+import { t } from "logseq-l10n";
 
 let processingFoundBoundaries: boolean = false;
 export async function boundariesProcess(targetElementName: string, remove: boolean, repeat: number, selectStartDate?: Date) {
@@ -184,7 +184,7 @@ const daySideWeekNumber = (date: Date, boundariesInner: HTMLDivElement) => {
   const weekNumberElement: HTMLSpanElement = parent.document.createElement('span');
   weekNumberElement.classList.add('daySide', 'daySideWeekNumber');
   weekNumberElement.innerText = "W" + weekString;
-  weekNumberElement.title = year + "-W" + weekString;
+  weekNumberElement.title = t("Week number: ") + year + "-W" + weekString;
   weekNumberElement.addEventListener("click", ({ shiftKey }) => openPageFromPageName(`${year}-W${weekString}`, shiftKey));
   boundariesInner.appendChild(weekNumberElement);
 };
@@ -218,6 +218,7 @@ const daySideScroll = (index: number, boundariesInner: HTMLDivElement, targetEle
   const sideScrollElement: HTMLSpanElement = parent.document.createElement('span');
   sideScrollElement.classList.add('daySide', 'daySideScroll');
   sideScrollElement.innerText = index === 6 ? '↑' : '↓';
+  sideScrollElement.title = index === 6 ? t("Previous week") : t("Next week");
   boundariesInner.appendChild(sideScrollElement);
   sideScrollElement.addEventListener('click', () => {
     //boundariesInnerを削除する

@@ -35,7 +35,7 @@ export function behindJournalTitle(
       const forWeeklyJournal = `${year}-W${weekString}`;
       if (logseq.settings.booleanWeeklyJournal === true) {
         const linkId = "weeklyJournal-" + forWeeklyJournal;
-        printWeek = `<span title="${forWeeklyJournal}"><a id="${linkId}">${printWeekNumber}</a></span>`;
+        printWeek = `<span title="Week number: ${forWeeklyJournal}"><a id="${linkId}">${printWeekNumber}</a></span>`;
         setTimeout(() => {
           const element = parent.document.getElementById(
             linkId
