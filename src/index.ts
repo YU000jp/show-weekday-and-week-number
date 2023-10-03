@@ -111,6 +111,7 @@ const onSettingsChanged = () => logseq.onSettingsChanged((newSet: LSPluginBaseIn
     || oldSet.booleanBoundariesFuturePage !== newSet.booleanBoundariesFuturePage
     || oldSet.booleanBoundariesShowMonth !== newSet.booleanBoundariesShowMonth
     || oldSet.booleanBoundariesShowWeekNumber !== newSet.booleanBoundariesShowWeekNumber
+    || oldSet.booleanWeekendsColor !== newSet.booleanWeekendsColor
   ) removeBoundaries(); //boundariesのセレクト更新のため
 
   if (oldSet.booleanJournalsBoundaries === false && newSet.booleanJournalsBoundaries === true && parent.document.getElementById("journals") as HTMLDivElement) {
@@ -123,6 +124,7 @@ const onSettingsChanged = () => logseq.onSettingsChanged((newSet: LSPluginBaseIn
       || oldSet.booleanBoundariesFuturePage !== newSet.booleanBoundariesFuturePage
       || oldSet.booleanBoundariesShowMonth !== newSet.booleanBoundariesShowMonth
       || oldSet.booleanBoundariesShowWeekNumber !== newSet.booleanBoundariesShowWeekNumber
+      || oldSet.booleanWeekendsColor !== newSet.booleanWeekendsColor
     ) {
       if (parent.document.getElementById("journals") as HTMLDivElement) boundaries("journals");
       else boundaries("is-journals");
