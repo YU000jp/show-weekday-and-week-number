@@ -159,7 +159,7 @@ const daySideWeekNumber = (date: Date, boundariesInner: HTMLDivElement) => {
   weekNumberElement.classList.add('daySide', 'daySideWeekNumber');
   weekNumberElement.innerText = "W" + weekString;
   weekNumberElement.title = year + "-W" + weekString;
-  weekNumberElement.addEventListener("click", ({ shiftKey }) => openPageFromPageName(`${year}-W${weekString}`, { shiftKey }));
+  weekNumberElement.addEventListener("click", ({ shiftKey }) => openPageFromPageName(`${year}-W${weekString}`, shiftKey));
   boundariesInner.appendChild(weekNumberElement);
 };
 
@@ -182,7 +182,7 @@ const daySideMonth = (date: Date, boundariesInner: HTMLDivElement, monthDuplicat
   } else {
     const monthString: string = format(dateShowMonth, "yyyy/MM");
     sideMonthElement.title = monthString;
-    sideMonthElement.addEventListener("click", ({ shiftKey }) => openPageFromPageName(monthString, { shiftKey }));// 2023/10のようなページを開く
+    sideMonthElement.addEventListener("click", ({ shiftKey }) => openPageFromPageName(monthString, shiftKey));// 2023/10のようなページを開く
   }
   boundariesInner.appendChild(sideMonthElement);
   return dateShowMonth;

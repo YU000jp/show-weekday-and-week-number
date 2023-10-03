@@ -1,5 +1,5 @@
 import { getWeekOfMonth, isSaturday, isSunday } from "date-fns";
-import { openPage, getWeeklyNumberFromDate, formatRelativeDate } from "./lib";
+import { getWeeklyNumberFromDate, formatRelativeDate, openPageFromPageName } from "./lib";
 import { createSettingButton } from "./lib";
 
 //behind journal title
@@ -41,13 +41,7 @@ export function behindJournalTitle(
             linkId
           ) as HTMLSpanElement;
           if (element) {
-            let processing: Boolean = false;
-            element.addEventListener("click", ({ shiftKey }): void => {
-              if (processing) return;
-              processing = true;
-              openPage(forWeeklyJournal, shiftKey as boolean);
-              processing = false;
-            });
+            element.addEventListener("click", ({ shiftKey }) => openPageFromPageName(forWeeklyJournal, shiftKey));
           }
         }, 150);
       } else {
