@@ -121,9 +121,16 @@ export const settingsTemplate = (): SettingSchemaDesc[] => [
     default: true,
     description: "default: `true`",
   },
-  {//Journal Boundaries, 一部に月を表示する
+  {//Journal Boundaries, 月を表示する
     key: "booleanBoundariesShowMonth",
     title: t("Journal boundaries, Show month"),
+    type: "boolean",
+    default: true,
+    description: "default: `true`",
+  },
+  {//Journal Boundaries, 週番号を表示する (月曜日の日付から計算した週番号)
+    key: "booleanBoundariesShowWeekNumber",
+    title: t("Journal boundaries, Show week number (calculate from the date of Monday)"),
     type: "boolean",
     default: true,
     description: "default: `true`",

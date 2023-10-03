@@ -1,8 +1,7 @@
 import { AppUserConfigs, PageEntity } from '@logseq/libs/dist/LSPlugin.user';
 import { format, addDays, isBefore, isToday, isSunday, isSaturday, startOfWeek, startOfISOWeek, isSameDay, isFriday, isThursday, isWednesday, } from 'date-fns';//https://date-fns.org/
-import { getJournalDayDate } from './lib';
-import { getWeekStartOn } from './lib';
-import { start } from 'repl';
+import { formatRelativeDate, getJournalDayDate, getWeekStartOn, getWeeklyNumberFromDate } from './lib';
+import { openPageFromPageName } from './lib';
 
 
 let processingFoundBoundaries: boolean = false;
@@ -92,7 +91,13 @@ export async function boundariesProcess(targetElementName: string, remove: boole
           element.style.width = "100%";
           boundariesInner.append(element);
         }
-        if ((index === 0 || index === 7) && logseq.settings!.booleanBoundariesShowMonth === true) monthDuplicate = daySideMonth(date, boundariesInner, monthDuplicate);//daySideElement作成
+        if (index === 0 || index === 7) {
+          //daySideElement作成    
+          //月を表示する場合
+          if (logseq.settings!.booleanBoundariesShowMonth === true) monthDuplicate = daySideMonth(date, boundariesInner, monthDuplicate);//daySideElement作成
+          //週番号を表示する場合
+          if (logseq.settings!.booleanBoundariesShowWeekNumber === true) daySideWeekNumber(date, boundariesInner);//daySideElement作成
+        }
         //dayElement作成
         const isBooleanBeforeToday: boolean = isBefore(date, today);
         const isBooleanToday: boolean = isToday(date);
@@ -106,7 +111,14 @@ export async function boundariesProcess(targetElementName: string, remove: boole
         dayOfMonthElement.classList.add('dayOfMonth');
         dayOfMonthElement.innerText = `${dayOfMonth}`;
         dayElement.appendChild(dayOfMonthElement);
-        dayElement.title = format(date, preferredDateFormat);
+        //日付と相対時間をtitleに追加する
+        if (logseq.settings?.booleanRelativeTime === true) { //相対時間を表示する場合
+          const formatString: string = formatRelativeDate(date);
+          dayElement.title = format(date, preferredDateFormat) + '\n' + formatString;
+        } else {
+          dayElement.title = format(date, preferredDateFormat);
+        }
+
         if ((flagShowNextWeek === true && index < 7) || (flagShowNextWeek === false && index > 6)) dayElement.classList.add('thisWeek');
 
         if (targetElementName !== 'journals' && isBooleanTargetSameDay === true)
@@ -137,6 +149,20 @@ export async function boundariesProcess(targetElementName: string, remove: boole
 }
 
 
+const daySideWeekNumber = (date: Date, boundariesInner: HTMLDivElement) => {
+  //dateに1日足した日付を取得する
+  const dateAddOneDay: Date = addDays(date, 1) as Date;
+  const weekStartsOn: 0 | 1 = logseq.settings?.weekNumberFormat === "US format" ? 0 : 1;
+  //dateAddOneDayの週番号を取得する
+  const { year, weekString }: { year: number; weekString: string } = getWeeklyNumberFromDate(dateAddOneDay, weekStartsOn);
+  const weekNumberElement: HTMLSpanElement = parent.document.createElement('span');
+  weekNumberElement.classList.add('daySide', 'daySideWeekNumber');
+  weekNumberElement.innerText = "W" + weekString;
+  weekNumberElement.title = year + "-W" + weekString;
+  weekNumberElement.addEventListener("click", ({ shiftKey }) => openPageFromPageName(`${year}-W${weekString}`, { shiftKey }));
+  boundariesInner.appendChild(weekNumberElement);
+};
+
 const daySideMonth = (date: Date, boundariesInner: HTMLDivElement, monthDuplicate: Date): Date => {
   const sideMonthElement: HTMLSpanElement = parent.document.createElement('span');
   sideMonthElement.classList.add('daySide');
@@ -151,7 +177,13 @@ const daySideMonth = (date: Date, boundariesInner: HTMLDivElement, monthDuplicat
     monthDuplicate &&
     dateShowMonth.getMonth() === monthDuplicate.getMonth() &&
     dateShowMonth.getFullYear() === monthDuplicate.getFullYear()
-  ) sideMonthElement.style.visibility = 'hidden';
+  ) {
+    sideMonthElement.style.visibility = 'hidden';
+  } else {
+    const monthString: string = format(dateShowMonth, "yyyy/MM");
+    sideMonthElement.title = monthString;
+    sideMonthElement.addEventListener("click", ({ shiftKey }) => openPageFromPageName(monthString, { shiftKey }));// 2023/10のようなページを開く
+  }
   boundariesInner.appendChild(sideMonthElement);
   return dateShowMonth;
 }
