@@ -75,10 +75,6 @@ div#main-content-container {
 
                     &.daySideScroll {
                         cursor: pointer;
-
-                        :hover {
-                            opacity: .7;
-                        }
                     }
 
                 }

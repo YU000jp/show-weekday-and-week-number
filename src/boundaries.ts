@@ -8,7 +8,7 @@ import { start } from 'repl';
 let processingFoundBoundaries: boolean = false;
 export async function boundariesProcess(targetElementName: string, remove: boolean, repeat: number, selectStartDate?: Date) {
   if (repeat >= 20 || processingFoundBoundaries === true) return;
-  if (!selectStartDate) {
+  if (!selectStartDate) { //selectStartDateがある場合はチェックしない
     const checkWeekBoundaries = parent.document.getElementById('weekBoundaries') as HTMLDivElement | null;
     if (checkWeekBoundaries) {
       if (remove === true) checkWeekBoundaries.remove();
@@ -33,6 +33,7 @@ export async function boundariesProcess(targetElementName: string, remove: boole
 
   if (firstElement) {
     const today = new Date();
+    //スクロールの場合とそうでない場合でweekBoundariesを作成するかどうかを判定する
     const weekBoundaries: HTMLDivElement = selectStartDate ? parent.document.getElementById("weekBoundaries") as HTMLDivElement : parent.document.createElement('div');
     weekBoundaries.id = 'weekBoundaries';
     firstElement.insertBefore(weekBoundaries, firstElement.firstChild);
@@ -65,7 +66,7 @@ export async function boundariesProcess(targetElementName: string, remove: boole
     const isDayThursday: boolean = isThursday(targetDate);
     const isDayFriday: boolean = isFriday(targetDate);
     const isDaySaturday: boolean = isSaturday(targetDate);
-    const flagShowNextWeek: Boolean =
+    const flagShowNextWeek: boolean =
       //日曜日始まり、木曜、金曜、土曜がtargetDateの場合
       (weekStartsOn === 0 && (isDayThursday || isDayFriday || isDaySaturday))
         //月曜日始まり、金曜、土曜、日曜がtargetDateの場合
@@ -77,7 +78,7 @@ export async function boundariesProcess(targetElementName: string, remove: boole
       ? [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13] //次の週を表示する場合
       : [-7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6]; //次の週を表示しない場合
 
-    let monthDuplicate: string;
+    let monthDuplicate: Date;
     //ミニカレンダー作成 1日ずつ処理
     days.forEach((numDays, index) => {
       const date: Date = numDays === 0 ? startDate : addDays(startDate, numDays) as Date;
@@ -136,17 +137,23 @@ export async function boundariesProcess(targetElementName: string, remove: boole
 }
 
 
-const daySideMonth = (date: Date, boundariesInner: HTMLDivElement, monthDuplicate: string): string => {
+const daySideMonth = (date: Date, boundariesInner: HTMLDivElement, monthDuplicate: Date): Date => {
   const sideMonthElement: HTMLSpanElement = parent.document.createElement('span');
   sideMonthElement.classList.add('daySide');
-  //dateから週の最後の日を求め月を表示する
-  const dateShowMonth: Date = addDays(date, 6) as Date;
+  //monthDuplicateが存在したら、dateの6日後を代入する
+  const dateShowMonth: Date = monthDuplicate ? addDays(date, 6) as Date : date;
+
   //ローカライズされた月の名前を取得する
   const monthString: string = new Intl.DateTimeFormat((logseq.settings?.localizeOrEnglish as string || "default"), { month: "short" }).format(dateShowMonth);
   sideMonthElement.innerText = monthString;
-  if (monthDuplicate === monthString) sideMonthElement.style.visibility = 'hidden';
+
+  if (//monthDuplicateとdateShowMonthの月が一致する場合
+    monthDuplicate &&
+    dateShowMonth.getMonth() === monthDuplicate.getMonth() &&
+    dateShowMonth.getFullYear() === monthDuplicate.getFullYear()
+  ) sideMonthElement.style.visibility = 'hidden';
   boundariesInner.appendChild(sideMonthElement);
-  return monthString;
+  return dateShowMonth;
 }
 
 const daySideScroll = (index: number, boundariesInner: HTMLDivElement, targetElementName: string, startDate: Date) => {
