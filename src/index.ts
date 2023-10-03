@@ -238,8 +238,7 @@ async function JournalPageTitle(
   if (
     titleElement.classList.contains("journal-title") === false &&
     titleElement.classList.contains("title") === true &&
-    logseq.settings!.booleanWeeklyJournal === true &&
-    (titleElement.dataset!.WeeklyJournalChecked as string) !== "true"
+    logseq.settings!.booleanWeeklyJournal === true
   ) {
     const match = titleElement.textContent.match(
       /^(\d{4})-W(\d{2})$/

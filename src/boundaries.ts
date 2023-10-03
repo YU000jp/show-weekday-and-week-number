@@ -6,7 +6,8 @@ import { openPageFromPageName } from './lib';
 
 let processingFoundBoundaries: boolean = false;
 export async function boundariesProcess(targetElementName: string, remove: boolean, repeat: number, selectStartDate?: Date) {
-  if (repeat >= 20 || processingFoundBoundaries === true) return;
+  if (repeat >= 5 || processingFoundBoundaries === true) return;
+  //if (targetElementName === 'weeklyJournal' && selectStartDate === undefined) return;//weeklyJournalの場合はselectStartDateが必要
   if (!selectStartDate) { //selectStartDateがある場合はチェックしない
     const checkWeekBoundaries = parent.document.getElementById('weekBoundaries') as HTMLDivElement | null;
     if (checkWeekBoundaries) {
@@ -15,12 +16,25 @@ export async function boundariesProcess(targetElementName: string, remove: boole
     }
   }
 
-  const firstElement = (targetElementName === 'is-journals')
-    ? (parent.document.getElementsByClassName(targetElementName)[0] as HTMLDivElement)?.getElementsByClassName("relative")[0] as HTMLDivElement//Hierarchy linksのために階層を変更
-    : (targetElementName === 'journals') ? parent.document.getElementById(targetElementName) as HTMLDivElement : null;
+  let firstElement: HTMLDivElement | null;
+  switch (targetElementName) {
+    case "is-journals":
+      firstElement = parent.document.querySelector("div#main-content-container div.is-journals.relative>div.relative") as HTMLDivElement
+      break;
+    case "journals":
+      firstElement = parent.document.getElementById("journals") as HTMLDivElement;
+      break;
+    case "weeklyJournal":
+      firstElement = parent.document.querySelector("div#main-content-container div.page.relative>div.relative") as HTMLDivElement;
+      break;
+    default:
+      firstElement = null;
+      break;
+  }
   if (firstElement === null &&
     ((targetElementName === 'journals' && parent.document.getElementById('journals') === null)
       || (targetElementName === 'is-journals' && parent.document.getElementsByClassName('is-journals')[0] === null)
+      || (targetElementName === 'weeklyJournal' && parent.document.getElementsByClassName('page')[0] === null)
     )) {
     setTimeout(() => boundariesProcess(targetElementName, false, repeat + 1), 300);
   }
@@ -33,7 +47,7 @@ export async function boundariesProcess(targetElementName: string, remove: boole
   if (firstElement) {
     const today = new Date();
     //スクロールの場合とそうでない場合でweekBoundariesを作成するかどうかを判定する
-    const weekBoundaries: HTMLDivElement = selectStartDate ? parent.document.getElementById("weekBoundaries") as HTMLDivElement : parent.document.createElement('div');
+    const weekBoundaries: HTMLDivElement = selectStartDate && targetElementName !== "weeklyJournal" ? parent.document.getElementById("weekBoundaries") as HTMLDivElement : parent.document.createElement('div');
     weekBoundaries.id = 'weekBoundaries';
     firstElement.insertBefore(weekBoundaries, firstElement.firstChild);
 
@@ -45,15 +59,23 @@ export async function boundariesProcess(targetElementName: string, remove: boole
     let targetDate: Date;//今日の日付もしくはそのページの日付を求める
     if (targetElementName === 'journals') {
       targetDate = today;
-    } else {
-      const { journalDay } = await logseq.Editor.getCurrentPage() as PageEntity;
-      if (!journalDay) {
-        console.error('journalDay is undefined');
-        processingFoundBoundaries = false;
-        return;
-      }
-      targetDate = getJournalDayDate(String(journalDay)) as Date;
-    }
+    } else
+      if (targetElementName === 'is-journals') {
+        const { journalDay } = await logseq.Editor.getCurrentPage() as PageEntity;
+        if (!journalDay) {
+          console.error('journalDay is undefined');
+          processingFoundBoundaries = false;
+          return;
+        }
+        targetDate = getJournalDayDate(String(journalDay)) as Date;
+      } else
+        if (targetElementName === "weeklyJournal") {
+          targetDate = selectStartDate as Date;
+        } else {
+          console.error('targetElementName is undefined');
+          processingFoundBoundaries = false;
+          return;
+        }
 
     //targetDateを週の初めにする
     const startDate: Date = selectStartDate ? selectStartDate :

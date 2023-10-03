@@ -1,10 +1,29 @@
 import { AppUserConfigs, BlockEntity } from '@logseq/libs/dist/LSPlugin.user';
 import { getISOWeek, getWeek, format, addDays, getISOWeekYear, getWeekYear, startOfWeek, eachDayOfInterval, startOfISOWeek, subDays, addWeeks, subWeeks, } from 'date-fns';//https://date-fns.org/
+import { boundariesProcess } from './boundaries';
+let processingFoundBoundaries: boolean = false;
 
+export const currentPageIsWeeklyJournal = async (titleElement: HTMLElement, match: RegExpMatchArray) => {
 
-export async function currentPageIsWeeklyJournal(titleElement: HTMLElement, match: RegExpMatchArray) {
+    //Journal Boundariesを表示する
+    if (logseq.settings!.booleanBoundariesOnWeeklyJournal === true
+        && !parent.document.getElementById("weekBoundaries")
+        && processingFoundBoundaries === false) {
+        processingFoundBoundaries = true;
+        setTimeout(() => {
+            if (processingFoundBoundaries === false) return;
+            //週番号から週始まりの日付を求める
+            const weeklyJournalStartOfWeek: Date = getWeekStartFromWeekNumber(Number(match[1]), Number(match[2]), (logseq.settings?.weekNumberFormat === "US format") ? 0 : 1, (logseq.settings?.weekNumberFormat === "ISO(EU) format") ? true : false);
+            if (!parent.document.getElementById("weekBoundaries")) boundariesProcess("weeklyJournal", false, 0, weeklyJournalStartOfWeek);
+            processingFoundBoundaries = false;
+        }, 100);
+    }
+
+    if ((titleElement.dataset!.WeeklyJournalChecked as string) !== "true") return;//一度だけ処理を行う
     titleElement.dataset.WeeklyJournalChecked = "true";
-    if ((await logseq.Editor.getCurrentPageBlocksTree() as []).length !== 0) return;
+    const checkBlocksTree = await logseq.Editor.getCurrentPageBlocksTree() as BlockEntity[];
+    if (checkBlocksTree[0] && checkBlocksTree[1] && checkBlocksTree[2]) return;//ページが空でない場合は処理を終了する
+
     const { preferredDateFormat } = await logseq.App.getUserConfigs() as AppUserConfigs;
 
     //ページが空の場合
@@ -113,7 +132,7 @@ export async function currentPageIsWeeklyJournal(titleElement: HTMLElement, matc
 
     }, 200);
 
-}
+};// end of currentPageIsWeeklyJournal
 
 
 async function insertThisWeekSection(uuid: string, preferredDateFormat: string, weekDaysLinkArray: string[], weekdayArray: string[]) {
