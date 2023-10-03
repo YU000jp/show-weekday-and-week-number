@@ -4,6 +4,22 @@
 ### Bug Fixes
 
 * **bug:** Not work Weekly Journal ([e486fa0](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/e486fa006a5849ec1330d609ea4914ca26dcf6c3))
+* **bug:** plugin settings ([a81c487](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/a81c487fd5ed4f60d5ea3a1444d4400fd88b1952))
+
+
+### Features
+
+* **Journal Boundaries:** calendar scroll ([6e0eb4d](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/6e0eb4d987cf8b7027f520d74a29a9e6d5c54468))
+* **Journal Boundaries:** Highlight color (border) ([e88b87c](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/e88b87cc7854fe3dbb651134ab9489263f9fbcbd))
+* **Journal boundaries:** Show week number ([a47d8f9](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/a47d8f9a58bbdcb8c78d2d141087a4c81462df63))
+* **translation:** ja ([9935b57](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/9935b5735e95499fc9194a967ab2da3b689fa5c4))
+
+# [1.37.0](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.36.1...v1.37.0) (2023-10-03)
+
+
+### Bug Fixes
+
+* **bug:** Not work Weekly Journal ([e486fa0](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/e486fa006a5849ec1330d609ea4914ca26dcf6c3))
 
 
 ### Features
