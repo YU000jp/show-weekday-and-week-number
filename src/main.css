@@ -72,11 +72,9 @@ div#main-content-container {
                     align-items: center;
                     padding: .5em;
                     width: 4em;
-
-                    &.daySideScroll {
-                        cursor: pointer;
-                    }
-
+                    cursor: pointer;
+                    /* &.daySideScroll
+                    &.daySideWeekNumber */
                 }
 
                 &.day {
