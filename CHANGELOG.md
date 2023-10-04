@@ -1,3 +1,16 @@
+# [1.38.0](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.37.0...v1.38.0) (2023-10-04)
+
+
+### Bug Fixes
+
+* **bug:** Weekly Journal, not work create page sometimes ([edd1522](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/edd15229ececa53fe9d9d1475d2e4b29fe9f22e7))
+* **Journal Boundaries:** redesign (week number position) ([60a8f05](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/60a8f05ab094fe42a8b07f65b8b4957d407affd4))
+
+
+### Features
+
+* **Journal Boundaries:** For Weekly Journal ([49fd205](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/49fd205fa071879474031795e293ee7dbd198b14))
+
 # [1.37.0](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.36.1...v1.37.0) (2023-10-03)
 
 
