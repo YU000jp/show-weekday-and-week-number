@@ -184,7 +184,8 @@ const daySideWeekNumber = (date: Date, boundariesInner: HTMLDivElement) => {
   weekNumberElement.classList.add('daySide', 'daySideWeekNumber');
   weekNumberElement.innerText = "W" + weekString;
   weekNumberElement.title = t("Week number: ") + year + "-W" + weekString;
-  weekNumberElement.addEventListener("click", ({ shiftKey }) => openPageFromPageName(`${year}-W${weekString}`, shiftKey));
+  if (logseq.settings!.booleanWeeklyJournal === true) weekNumberElement.addEventListener("click", ({ shiftKey }) => openPageFromPageName(`${year}-W${weekString}`, shiftKey));
+  else weekNumberElement.style.cursor = 'unset';
   boundariesInner.appendChild(weekNumberElement);
 };
 
