@@ -7,9 +7,8 @@ import { t } from "logseq-l10n";
 let processingFoundBoundaries: boolean = false;
 export async function boundariesProcess(targetElementName: string, remove: boolean, repeat: number, selectStartDate?: Date) {
   if (repeat >= 5 || processingFoundBoundaries === true) return;
-  //if (targetElementName === 'weeklyJournal' && selectStartDate === undefined) return;//weeklyJournalの場合はselectStartDateが必要
-  if (!selectStartDate) { //selectStartDateがある場合はチェックしない
-    const checkWeekBoundaries = parent.document.getElementById('weekBoundaries') as HTMLDivElement | null;
+  if (!selectStartDate || (targetElementName === "weeklyJournal" && remove === true)) { //selectStartDateがある場合はチェックしない
+    const checkWeekBoundaries = parent.document.getElementById('boundariesInner') as HTMLDivElement | null;
     if (checkWeekBoundaries) {
       if (remove === true) checkWeekBoundaries.remove();
       else return;
@@ -224,7 +223,7 @@ const daySideScroll = (index: number, boundariesInner: HTMLDivElement, targetEle
     //boundariesInnerを削除する
     boundariesInner.remove();
     //startDateを1週間ずらす
-    boundariesProcess(targetElementName, false, 0, addDays(startDate, index === 6 ? -7 : 7) as Date);
+    boundariesProcess(targetElementName, true, 0, addDays(startDate, index === 6 ? -7 : 7) as Date);
   }, { once: true });
 }
 
