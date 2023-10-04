@@ -2,6 +2,7 @@ import { AppUserConfigs, BlockEntity } from '@logseq/libs/dist/LSPlugin.user';
 import { getISOWeek, getWeek, format, addDays, getISOWeekYear, getWeekYear, startOfWeek, eachDayOfInterval, startOfISOWeek, subDays, addWeeks, subWeeks, } from 'date-fns';//https://date-fns.org/
 import { boundariesProcess } from './boundaries';
 let processingFoundBoundaries: boolean = false;
+let processingWeeklyJournal: boolean = false;
 
 export const currentPageIsWeeklyJournal = async (titleElement: HTMLElement, match: RegExpMatchArray) => {
 
@@ -19,10 +20,13 @@ export const currentPageIsWeeklyJournal = async (titleElement: HTMLElement, matc
         }, 100);
     }
 
-    if ((titleElement.dataset!.WeeklyJournalChecked as string) !== "true") return;//一度だけ処理を行う
-    titleElement.dataset.WeeklyJournalChecked = "true";
+    if (processingWeeklyJournal === true) return;
+    processingWeeklyJournal = true;
     const checkBlocksTree = await logseq.Editor.getCurrentPageBlocksTree() as BlockEntity[];
-    if (checkBlocksTree[0] && checkBlocksTree[1] && checkBlocksTree[2]) return;//ページが空でない場合は処理を終了する
+    if (checkBlocksTree && checkBlocksTree[0] && checkBlocksTree[0].content !== "" && checkBlocksTree[1]) {
+        processingWeeklyJournal = false;
+        return;//ページが空でない場合
+    }
 
     const { preferredDateFormat } = await logseq.App.getUserConfigs() as AppUserConfigs;
 
@@ -30,7 +34,10 @@ export const currentPageIsWeeklyJournal = async (titleElement: HTMLElement, matc
     const createPage = await logseq.Editor.createPage(match[0], {}, { createFirstBlock: true });
     if (!createPage) return;
     const firstBlock = await logseq.Editor.insertBlock(createPage.uuid, "", { isPageBlock: true }) as BlockEntity;
-    if (firstBlock.length === 0) return;
+    if (firstBlock.length === 0) {
+        processingWeeklyJournal = false;
+        return;
+    }
     //ページタグを設定する
     const year = Number(match[1]); //2023
     const weekNumber = Number(match[2]); //27
@@ -131,7 +138,7 @@ export const currentPageIsWeeklyJournal = async (titleElement: HTMLElement, matc
         }, 100);
 
     }, 200);
-
+    processingWeeklyJournal = false;
 };// end of currentPageIsWeeklyJournal
 
 
