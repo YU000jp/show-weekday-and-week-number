@@ -46,8 +46,19 @@ export async function boundariesProcess(targetElementName: string, remove: boole
   if (firstElement) {
     const today = new Date();
     //スクロールの場合とそうでない場合でweekBoundariesを作成するかどうかを判定する
-    const weekBoundaries: HTMLDivElement = selectStartDate && targetElementName !== "weeklyJournal" ? parent.document.getElementById("weekBoundaries") as HTMLDivElement : parent.document.createElement('div');
-    weekBoundaries.id = 'weekBoundaries';
+    let weekBoundaries: HTMLDivElement;
+    if (selectStartDate) {
+      if (targetElementName === "weeklyJournal") {
+        weekBoundaries = parent.document.getElementById("weekBoundaries") as HTMLDivElement | null || parent.document.createElement('div');
+        weekBoundaries.id = 'weekBoundaries';
+      } else {
+        weekBoundaries = parent.document.getElementById("weekBoundaries") as HTMLDivElement
+      }
+    } else {
+      weekBoundaries = parent.document.createElement('div');
+      weekBoundaries.id = 'weekBoundaries';
+    }
+
     firstElement.insertBefore(weekBoundaries, firstElement.firstChild);
 
     //weekBoundariesにelementを追加する
@@ -140,7 +151,7 @@ export async function boundariesProcess(targetElementName: string, remove: boole
 
         if ((flagShowNextWeek === true && index < 7) || (flagShowNextWeek === false && index > 6)) dayElement.classList.add('thisWeek');
 
-        if (targetElementName !== 'journals' && isBooleanTargetSameDay === true)
+        if (targetElementName !== 'journals' && targetElementName !== "weeklyJournal" && isBooleanTargetSameDay === true)
           dayElement.style.border = `1px solid ${logseq.settings!.boundariesHighlightColorSinglePage}`;//シングルページの日付をハイライト
         else
           if (isBooleanToday === true) dayElement.style.border = `1px solid ${logseq.settings!.boundariesHighlightColorToday}`;//今日をハイライト
