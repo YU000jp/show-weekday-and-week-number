@@ -1,3 +1,10 @@
+## [1.38.1](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.38.0...v1.38.1) (2023-10-05)
+
+
+### Bug Fixes
+
+* **bug:** Journal Boundaries, show in Weekly Journal ([becb82d](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/becb82d460df4bd0786730985796d8af9e374af8))
+
 # [1.38.0](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.37.0...v1.38.0) (2023-10-04)
 
 
