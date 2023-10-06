@@ -20,8 +20,11 @@ export const currentPageIsWeeklyJournal = async (titleElement: HTMLElement, matc
         }, 100);
     }
 
+
     if (processingWeeklyJournal === true) return;
+    if ((titleElement.dataset!.WeeklyJournalChecked as string) === "true") return;//一度だけ処理を行う  
     processingWeeklyJournal = true;
+    titleElement.dataset.WeeklyJournalChecked = "true";
     const checkBlocksTree = await logseq.Editor.getCurrentPageBlocksTree() as BlockEntity[];
     if (checkBlocksTree && checkBlocksTree[0] && checkBlocksTree[0].content !== "" && checkBlocksTree[1]) {
         processingWeeklyJournal = false;
