@@ -149,8 +149,14 @@ export async function boundariesProcess(targetElementName: string, remove: boole
           dayElement.title = format(date, preferredDateFormat);
         }
 
-        if ((flagShowNextWeek === true && index < 7) || (flagShowNextWeek === false && index > 6)) dayElement.classList.add('thisWeek');
-
+        //indexが0~6
+        if (targetElementName === 'weeklyJournal') {
+          if (index >= 0 && index <= 6) dayElement.classList.add('thisWeek');
+        } else {
+          if ((flagShowNextWeek === true && index < 7)
+            || (flagShowNextWeek === false && index > 6)
+          ) dayElement.classList.add('thisWeek');
+        }
         if (targetElementName !== 'journals' && targetElementName !== "weeklyJournal" && isBooleanTargetSameDay === true)
           dayElement.style.border = `1px solid ${logseq.settings!.boundariesHighlightColorSinglePage}`;//シングルページの日付をハイライト
         else
