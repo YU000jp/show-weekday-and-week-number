@@ -1,3 +1,15 @@
+# [1.39.0](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.38.3...v1.39.0) (2023-10-07)
+
+
+### Bug Fixes
+
+* **bug:** Journal Boundaries, week-number, not match ([de29a7c](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/de29a7c8aa19a834ec72c4592f721ba9a717efb5))
+
+
+### Features
+
+* **Add:** "Show settings button" to plugin settings ([09e8f42](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/09e8f42514473c8e0b9811dfa19cb52059aa5979))
+
 ## [1.38.3](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.38.2...v1.38.3) (2023-10-06)
 
 
