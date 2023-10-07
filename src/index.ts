@@ -194,7 +194,6 @@ const JournalPageTitle = async (titleElement: HTMLElement) => {
     || processingJournalTitlePage === true
     || titleElement.nextElementSibling?.className === "showWeekday") return; // check if element already has date info
   processingJournalTitlePage = true;
-  const { preferredDateFormat } = (await logseq.App.getUserConfigs()) as AppUserConfigs;
 
   //ジャーナルのページタイトルの場合のみ
 
@@ -238,9 +237,11 @@ const JournalPageTitle = async (titleElement: HTMLElement) => {
 
   //ジャーナルタイトルから日付を取得し、右側に情報を表示する
   const title: string = titleElement.dataset.localize === "true" ? titleElement.dataset.ref || "" : titleElement.textContent;
+  if (title === "") return;
   const page = (await logseq.Editor.getPage(title)) as PageEntity | null;
   if (page && page.journalDay) {
     const journalDate: Date = getJournalDayDate(String(page.journalDay));
+    const { preferredDateFormat } = (await logseq.App.getUserConfigs()) as AppUserConfigs;
     behindJournalTitle(journalDate, titleElement, preferredDateFormat);
 
     //日付フォーマットに曜日が含まれている場合
