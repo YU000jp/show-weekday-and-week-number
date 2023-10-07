@@ -151,7 +151,7 @@ export async function boundariesProcess(targetElementName: string, remove: boole
 
         //indexが0~6
         if (targetElementName === 'weeklyJournal') {
-          if (index >= 0 && index <= 6) dayElement.classList.add('thisWeek');
+          if (index >= 7 && index <= 14) dayElement.classList.add('thisWeek');
         } else {
           if ((flagShowNextWeek === true && index < 7)
             || (flagShowNextWeek === false && index > 6)
