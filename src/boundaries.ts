@@ -192,11 +192,9 @@ export async function boundariesProcess(targetElementName: string, remove: boole
 
 
 const daySideWeekNumber = (date: Date, boundariesInner: HTMLDivElement) => {
-  //dateに1日足した日付を取得する
-  const dateAddOneDay: Date = addDays(date, 1) as Date;
   const weekStartsOn: 0 | 1 = logseq.settings?.weekNumberFormat === "US format" ? 0 : 1;
   //dateAddOneDayの週番号を取得する
-  const { year, weekString }: { year: number; weekString: string } = getWeeklyNumberFromDate(dateAddOneDay, weekStartsOn);
+  const { year, weekString }: { year: number; weekString: string } = getWeeklyNumberFromDate(date, weekStartsOn);
   const weekNumberElement: HTMLSpanElement = parent.document.createElement('span');
   weekNumberElement.classList.add('daySide', 'daySideWeekNumber');
   weekNumberElement.innerText = "W" + weekString;
