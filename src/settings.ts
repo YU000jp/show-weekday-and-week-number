@@ -65,7 +65,7 @@ export const settingsTemplate = (): SettingSchemaDesc[] => [
   },
   {//設定ボタンを表示する
     key: "booleanSettingsButton",
-    title: t("Show settings button"),
+    title: t("Behind journal title, Show settings button"),
     type: "boolean",
     default: true,
     description: "",
