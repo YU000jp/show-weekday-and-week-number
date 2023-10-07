@@ -5,7 +5,7 @@
     "Behind journal title, Show week number of the year or month (unit)": "週番号の単位(年または月)を変更する",
     "Behind journal title, Enable day of the week": "曜日を表示する",
     "If user date format includes day of the week, this setting is ignored.": "",
-    "Behind journal title / Localize journal link, Enable relative time": "相対時間を表示する",
+    "Behind journal title, Enable relative time": "相対時間を表示する",
     "like `3 days ago`": "例: 昨日、3日前",
     "Day of the week, Select language Localize(:default) or English(:en)": "言語を選択する (「default」は日本語、「en」は英語)",
     "Behind journal title, Day of the week long or short": "曜日の表示形式 (長い形式または短い形式)",
@@ -43,5 +43,6 @@
     "Journal boundaries, Use also on Weekly Journal": "ミニカレンダー: ウィークリージャーナルでも使用する",
     "Previous week": "前の週",
     "Next week": "次の週",
-    "Week number: ": "週番号: "
+    "Week number: ": "週番号: ",
+    "Show settings button": "設定ボタンを表示する"
 }

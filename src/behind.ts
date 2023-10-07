@@ -121,7 +121,9 @@ export function behindJournalTitle(
   }
 
   //設定ボタンを設置
-  const settingButton: HTMLButtonElement = createSettingButton();
-  dateInfoElement.appendChild(settingButton);
+  if (logseq.settings!.booleanSettingsButton === true) {
+    const settingButton: HTMLButtonElement = createSettingButton();
+    dateInfoElement.appendChild(settingButton);
+  }
   processingBehind = false;
 }

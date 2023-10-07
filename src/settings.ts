@@ -63,13 +63,20 @@ export const settingsTemplate = (): SettingSchemaDesc[] => [
       "Enabling this setting conceals the year representation in the date format. For instance, 2023-W30 displays as W30. Typically, the notation of week numbers follows the rules based on ISO 8601. The reason for distinguishing the year is that the first week of a year might be included in the last week of the previous year. Only in such cases does it display as 2023-W53."
     ),
   },
+  {//設定ボタンを表示する
+    key: "booleanSettingsButton",
+    title: t("Show settings button"),
+    type: "boolean",
+    default: true,
+    description: "",
+  },
   {//Journal Boundaries ハイライトカラーの指定(シングルページ)
     key: "boundariesHighlightColorSinglePage",
     title: t("Journal boundaries, Highlight color (single page)"),
     type: "string",
     inputAs: "color",
     default: "#f59e0b",
-    description: "default: `#f59e0b`",
+    description: "default-color: `#f59e0b`",
   },
   {//Journal Boundaries ハイライトカラーの指定(今日の日付)
     key: "boundariesHighlightColorToday",
@@ -101,7 +108,7 @@ export const settingsTemplate = (): SettingSchemaDesc[] => [
   {
     key: "booleanRelativeTime",
     title: t(
-      "Behind journal title / Localize journal link, Enable relative time"
+      "Behind journal title, Enable relative time"
     ),
     type: "boolean",
     default: true,
