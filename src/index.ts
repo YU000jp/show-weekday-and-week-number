@@ -136,16 +136,18 @@ const onSettingsChanged = () => logseq.onSettingsChanged((newSet: LSPluginBaseIn
       else boundaries("is-journals");
     }
 
-  if (oldSet.localizeOrEnglish !== newSet.localizeOrEnglish ||
-    oldSet.booleanDayOfWeek !== newSet.booleanDayOfWeek ||
-    oldSet.longOrShort !== newSet.longOrShort ||
-    oldSet.booleanWeekNumber !== newSet.booleanWeekNumber ||
-    oldSet.weekNumberOfTheYearOrMonth !== newSet.weekNumberOfTheYearOrMonth ||
-    oldSet.booleanWeekendsColor !== newSet.booleanWeekendsColor ||
-    oldSet.weekNumberFormat !== newSet.weekNumberFormat ||
-    oldSet.booleanRelativeTime !== newSet.booleanRelativeTime ||
-    oldSet.booleanWeeklyJournal !== newSet.booleanWeeklyJournal ||
-    oldSet.booleanWeekNumberHideYear !== newSet.booleanWeekNumberHideYear) {
+  if (oldSet.localizeOrEnglish !== newSet.localizeOrEnglish
+    || oldSet.booleanDayOfWeek !== newSet.booleanDayOfWeek
+    || oldSet.longOrShort !== newSet.longOrShort
+    || oldSet.booleanWeekNumber !== newSet.booleanWeekNumber
+    || oldSet.weekNumberOfTheYearOrMonth !== newSet.weekNumberOfTheYearOrMonth
+    || oldSet.booleanWeekendsColor !== newSet.booleanWeekendsColor
+    || oldSet.weekNumberFormat !== newSet.weekNumberFormat
+    || oldSet.booleanRelativeTime !== newSet.booleanRelativeTime
+    || oldSet.booleanWeeklyJournal !== newSet.booleanWeeklyJournal
+    || oldSet.booleanWeekNumberHideYear !== newSet.booleanWeekNumberHideYear
+    || oldSet.booleanSettingsButton !== newSet.booleanSettingsButton
+  ) {
     removeTitleQuery();
     setTimeout(() => querySelectorAllTitle(), 500);
   }
@@ -154,10 +156,9 @@ const onSettingsChanged = () => logseq.onSettingsChanged((newSet: LSPluginBaseIn
 
 
 let processingTitleQuery: boolean = false;
-async function querySelectorAllTitle(): Promise<void> {
-  if (processingTitleQuery) return;
+async function querySelectorAllTitle(enable?: boolean): Promise<void> {
+  if (processingTitleQuery && !enable) return;
   processingTitleQuery = true;
-  const { preferredDateFormat } = (await logseq.App.getUserConfigs()) as AppUserConfigs;
 
   //Journalsの場合は複数
   parent.document
@@ -166,14 +167,14 @@ async function querySelectorAllTitle(): Promise<void> {
     )
     .forEach(
       async (titleElement) =>
-        await JournalPageTitle(titleElement as HTMLElement, preferredDateFormat)
+        await JournalPageTitle(titleElement as HTMLElement)
     );
   processingTitleQuery = false;
 }
 
 const observer = new MutationObserver(async (): Promise<void> => {
   observer.disconnect();
-  await querySelectorAllTitle();
+  await querySelectorAllTitle(true);
   setTimeout(() => observerMain(), 800);
 });
 
@@ -186,31 +187,14 @@ const observerMain = () => observer.observe(
   }
 );
 
-// function observeElementAppearance(targetElement: HTMLElement, callback: () => void) {
-//   if (!targetElement) return;
-
-//   const observer = new MutationObserver(() => {
-//     observer.disconnect();
-//     callback();
-//   });
-//   setTimeout(() => {
-//     observer.observe(targetElement, { childList: true, subtree: true, attributeFilter: ["class"], });
-//   }, 3000);
-// }
-
 //Credit: ottodevs  https://discuss.logseq.com/t/show-week-day-and-week-number/12685/18
 let processingJournalTitlePage: Boolean = false;
-async function JournalPageTitle(
-  titleElement: HTMLElement,
-  preferredDateFormat: string
-) {
-  if (
-    !titleElement.textContent ||
-    processingJournalTitlePage === true ||
-    titleElement.nextElementSibling?.className === "showWeekday"
-  )
-    return; // check if element already has date info
+const JournalPageTitle = async (titleElement: HTMLElement) => {
+  if (!titleElement.textContent
+    || processingJournalTitlePage === true
+    || titleElement.nextElementSibling?.className === "showWeekday") return; // check if element already has date info
   processingJournalTitlePage = true;
+  const { preferredDateFormat } = (await logseq.App.getUserConfigs()) as AppUserConfigs;
 
   //ジャーナルのページタイトルの場合のみ
 
