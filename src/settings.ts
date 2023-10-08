@@ -84,7 +84,7 @@ export const settingsTemplate = (): SettingSchemaDesc[] => [
     type: "string",
     inputAs: "color",
     default: "#22c55e",
-    description: "default: `#22c55e`",
+    description: "default-color: `#22c55e`",
   },
   {
     key: "weekNumberOfTheYearOrMonth",
