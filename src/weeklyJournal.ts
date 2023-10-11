@@ -1,4 +1,4 @@
-import { AppUserConfigs, BlockEntity } from '@logseq/libs/dist/LSPlugin.user';
+import { AppUserConfigs, BlockEntity, PageEntity } from '@logseq/libs/dist/LSPlugin.user';
 import { getISOWeek, getWeek, format, addDays, getISOWeekYear, getWeekYear, startOfWeek, eachDayOfInterval, startOfISOWeek, subDays, addWeeks, subWeeks, } from 'date-fns';//https://date-fns.org/
 import { boundariesProcess } from './boundaries';
 let processingFoundBoundaries: boolean = false;
@@ -28,7 +28,7 @@ export const currentPageIsWeeklyJournal = async (titleElement: HTMLElement, matc
 
     let pageUuid = "";
     //ページが存在するかどうか
-    const pageExists = await logseq.Editor.getPage(match[0]) as BlockEntity | null;
+    const pageExists = await logseq.Editor.getPage(match[0]) as PageEntity | null;
     if (pageExists) {
         //存在した場合、ページが空かどうか
         const checkBlocksTree = await logseq.Editor.getCurrentPageBlocksTree() as BlockEntity[];
