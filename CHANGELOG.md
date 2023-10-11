@@ -1,3 +1,10 @@
+## [1.39.2](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.39.1...v1.39.2) (2023-10-11)
+
+
+### Bug Fixes
+
+* **bug:** Weekly Journal, the bug of create page ([74be124](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/74be1245ac4531e75f5ca44f1806b4976cb932c4))
+
 ## [1.39.1](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.39.0...v1.39.1) (2023-10-07)
 
 
