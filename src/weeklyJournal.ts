@@ -23,24 +23,27 @@ export const currentPageIsWeeklyJournal = async (titleElement: HTMLElement, matc
 
     if (processingWeeklyJournal === true) return;
     if ((titleElement.dataset!.WeeklyJournalChecked as string) === "true") return;//一度だけ処理を行う  
-    processingWeeklyJournal = true;
+
     titleElement.dataset.WeeklyJournalChecked = "true";
-    const checkBlocksTree = await logseq.Editor.getCurrentPageBlocksTree() as BlockEntity[];
-    if (checkBlocksTree && checkBlocksTree[0] && checkBlocksTree[0].content !== "" && checkBlocksTree[1]) {
-        processingWeeklyJournal = false;
-        return;//ページが空でない場合
-    }
 
-    const { preferredDateFormat } = await logseq.App.getUserConfigs() as AppUserConfigs;
-
-    //ページが空の場合
-    const createPage = await logseq.Editor.createPage(match[0], {}, { createFirstBlock: true });
-    if (!createPage) return;
-    const firstBlock = await logseq.Editor.insertBlock(createPage.uuid, "", { isPageBlock: true }) as BlockEntity;
-    if (firstBlock.length === 0) {
-        processingWeeklyJournal = false;
-        return;
+    let pageUuid = "";
+    //ページが存在するかどうか
+    const pageExists = await logseq.Editor.getPage(match[0]) as BlockEntity | null;
+    if (pageExists) {
+        //存在した場合、ページが空かどうか
+        const checkBlocksTree = await logseq.Editor.getCurrentPageBlocksTree() as BlockEntity[];
+        if (checkBlocksTree && checkBlocksTree[0] && checkBlocksTree[0].content !== "" && checkBlocksTree[1]) return;//ページが空でない場合は処理を終了する
+        pageUuid = pageExists.uuid;
+    } else {
+        //ページが存在しない場合
+        const createPage = await logseq.Editor.createPage(match[0], {});//ページ作成
+        if (!createPage) return;//ページ作成に失敗した場合は処理を終了する
+        pageUuid = createPage.uuid;
     }
+    const firstBlock = await logseq.Editor.insertBlock(pageUuid, "", { isPageBlock: true }) as BlockEntity;
+
+    processingWeeklyJournal = true;//処理中フラグを立てる ここからreturnする場合は必ずfalseにすること
+
     //ページタグを設定する
     const year = Number(match[1]); //2023
     const weekNumber = Number(match[2]); //27
@@ -54,6 +57,7 @@ export const currentPageIsWeeklyJournal = async (titleElement: HTMLElement, matc
     const weekEnd: Date = addDays(weekStart, 6);
     //曜日リンク
     const weekDays: Date[] = eachDayOfInterval({ start: weekStart, end: weekEnd });
+    const { preferredDateFormat } = await logseq.App.getUserConfigs() as AppUserConfigs;
     const weekDaysLinkArray: string[] = weekDays.map((weekDay) => format(weekDay, preferredDateFormat) as string);
     const weekdayArray: string[] = weekDays.map((weekDay) => new Intl.DateTimeFormat((logseq.settings?.localizeOrEnglish || "default"), { weekday: logseq.settings?.longOrShort || "long" }).format(weekDay) as string);
 
