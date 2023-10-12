@@ -1,3 +1,11 @@
+## [1.39.5](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.39.4...v1.39.5) (2023-10-12)
+
+
+### Bug Fixes
+
+* **bug:** plugin settings, "Weekly Journal, Page-tags type" ([9a44cac](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/9a44cacba5407b878baf4f3a517561b82ccd4ebf))
+* **bug:** Weekly Journal, create page content (check blockTree) ([d1f38e0](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/d1f38e04ae73d960918478ebf8a0c4f0a3c11aba))
+
 ## [1.39.4](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.39.3...v1.39.4) (2023-10-12)
 
 
