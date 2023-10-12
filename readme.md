@@ -30,7 +30,6 @@
 
 - Click the week number link to open it (When opening, generate a page)
 - If there is no content available on a page with a week number like `2023-W25`, a template will be inserted.
-  > If the page was not generated successfully, remove the page from the page title menu.
 - In plugin settings, it possible to set user template.
   > Inserting Advanced queries into the template increases flexibility.
 
