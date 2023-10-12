@@ -28,7 +28,8 @@ export const currentPageIsWeeklyJournal = async (titleElement: HTMLElement, matc
     let firstUuid = ""; //1行目のuuidを決める
     if (currentBlockTree) {
         //コンテンツがある場合は処理を中断する
-        if (currentBlockTree[0] && currentBlockTree[0].content && currentBlockTree[1] && currentBlockTree[1].content && (currentBlockTree[0].content !== "" || currentBlockTree[1].content !== "")) return;
+        //block.contentが空ではないブロックがひとつでもあったら処理を中断する
+        if (currentBlockTree.find((block) => block.content !== "")) return;
 
         processingWeeklyJournal = true;//処理中フラグを立てる ここからreturnする場合は必ずfalseにすること
         titleElement.dataset.WeeklyJournalChecked = "true";
