@@ -187,8 +187,10 @@ const observerMain = () => observer.observe(
   }
 );
 
+
 //Credit: ottodevs  https://discuss.logseq.com/t/show-week-day-and-week-number/12685/18
 let processingJournalTitlePage: Boolean = false;
+
 const JournalPageTitle = async (titleElement: HTMLElement) => {
   if (!titleElement.textContent
     || processingJournalTitlePage === true
@@ -258,14 +260,14 @@ const JournalPageTitle = async (titleElement: HTMLElement) => {
   processingJournalTitlePage = false;
 }
 
-function removeBoundaries() {
+const removeBoundaries = () => {
   const weekBoundaries = parent.document.getElementById(
     "weekBoundaries"
   ) as HTMLDivElement;
   if (weekBoundaries) weekBoundaries.remove();
-}
+};
 
-function removeTitleQuery() {
+const removeTitleQuery = () => {
   const titleBehindElements = parent.document.querySelectorAll(
     "div#main-content-container div:is(.journal,.is-journals) h1.title+span.showWeekday"
   ) as NodeListOf<HTMLElement>;
@@ -280,11 +282,11 @@ function removeTitleQuery() {
 
 //boundaries
 let processingBoundaries: boolean = false;
-export function boundaries(targetElementName: string, remove?: boolean) {
+export const boundaries = (targetElementName: string, remove?: boolean) => {
   if (processingBoundaries) return;
   processingBoundaries = true;
   boundariesProcess(targetElementName, remove ? remove : false, 0);
   processingBoundaries = false;
-}
+};
 
 logseq.ready(main).catch(console.error);

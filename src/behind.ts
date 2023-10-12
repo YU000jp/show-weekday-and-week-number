@@ -5,11 +5,11 @@ import { createSettingButton } from "./lib";
 //behind journal title
 let processingBehind: boolean = false;
 
-export function behindJournalTitle(
+export const behindJournalTitle = async (
   journalDate: Date,
   titleElement: HTMLElement,
   preferredDateFormat
-) {
+) => {
   if (processingBehind === true) return;
   let dayOfWeekName: string = "";
   if (
