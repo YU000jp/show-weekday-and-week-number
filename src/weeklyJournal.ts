@@ -21,10 +21,11 @@ export const currentPageIsWeeklyJournal = async (titleElement: HTMLElement, matc
     }
 
 
+    //プロセスロック
     if (processingWeeklyJournal === true || (titleElement.dataset!.WeeklyJournalChecked as string) === "true") return;//一度だけ処理を行う  
     const currentBlockTree = await logseq.Editor.getPageBlocksTree(match[0]) as BlockEntity[];//現在開いているページ
 
-    let firstUuid = "";
+    let firstUuid = ""; //1行目のuuidを決める
     if (currentBlockTree) {
         //コンテンツがある場合は処理を中断する
         if (currentBlockTree[0] && currentBlockTree[0].content && currentBlockTree[1] && currentBlockTree[1].content && (currentBlockTree[0].content !== "" || currentBlockTree[1].content !== "")) return;
@@ -37,8 +38,8 @@ export const currentPageIsWeeklyJournal = async (titleElement: HTMLElement, matc
             firstUuid = currentBlockTree[0].uuid;
         } else {
             //ページを作成する
-            const prepend = await logseq.Editor.prependBlockInPage(match[0], "", {}) as BlockEntity | null;
-            if (prepend) firstUuid = prepend.uuid;
+            const prepend = await logseq.Editor.prependBlockInPage(match[0], "", {}) as BlockEntity | null; //先頭に空のブロックを追加する
+            if (prepend) firstUuid = prepend.uuid; //uuidを取得する
             else {
                 console.log("weeklyJournal.ts: prepend is null");
                 processingWeeklyJournal = false;
