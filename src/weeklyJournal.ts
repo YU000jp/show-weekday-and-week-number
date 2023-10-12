@@ -72,7 +72,7 @@ const weeklyJournalCreateContent = async (match: RegExpMatchArray, firstBlock: B
     const weekdayArray: string[] = weekDays.map((weekDay) => new Intl.DateTimeFormat((logseq.settings?.localizeOrEnglish || "default"), { weekday: logseq.settings?.longOrShort || "long" }).format(weekDay) as string);
 
     //ページタグの設定
-    if (logseq.settings!.WeeklyJournalPageTag === "unset") {
+    if (logseq.settings!.weeklyJournalPageTag === "unset") {
         //追加しない
     } else {
         //weekStartの前日から週番号を求める(前の週番号を求める)
@@ -92,20 +92,22 @@ const weeklyJournalCreateContent = async (match: RegExpMatchArray, firstBlock: B
             : getWeek(nextWeekStart, { weekStartsOn });
 
         //ひとつ前の週番号をページタグに追加
-        const printPrevYear = (ISO === true)
-            ? getISOWeekYear(prevWeekStart)
-            : getWeekYear(prevWeekStart, { weekStartsOn });
-        weekDaysLinks.unshift(`${printPrevYear}-W${(prevWeekNumber < 10)
-            ? String("0" + prevWeekNumber)
-            : String(prevWeekNumber)}`);
+        if (logseq.settings!.weeklyJournalPageTag.includes("yyyy-Ww,"))
+            weekDaysLinks.unshift(`${(ISO === true)
+                ? getISOWeekYear(prevWeekStart)
+                : getWeekYear(prevWeekStart, { weekStartsOn })
+                }-W${(prevWeekNumber < 10)
+                    ? String("0" + prevWeekNumber)
+                    : String(prevWeekNumber)}`);
 
         //ひとつ次の週番号をページタグに追加
-        const printNextYear = (ISO === true)
-            ? getISOWeekYear(nextWeekStart)
-            : getWeekYear(nextWeekStart, { weekStartsOn });
-        weekDaysLinks.push(`${printNextYear}-W${(nextWeekNumber < 10)
-            ? String("0" + nextWeekNumber)
-            : String(nextWeekNumber)}`);
+        if (logseq.settings!.weeklyJournalPageTag.includes("yyyy-Ww,"))
+            weekDaysLinks.push(`${(ISO === true)
+                ? getISOWeekYear(nextWeekStart)
+                : getWeekYear(nextWeekStart, { weekStartsOn })
+                }-W${(nextWeekNumber < 10)
+                    ? String("0" + nextWeekNumber)
+                    : String(nextWeekNumber)}`);
 
         if (logseq.settings!.weeklyJournalPageTag.includes("yyyy/MM,")) {
             //weekStartをもとに年と月を求め、リンクをつくる
@@ -127,7 +129,8 @@ const weeklyJournalCreateContent = async (match: RegExpMatchArray, firstBlock: B
     await logseq.Editor.editBlock(firstBlock.uuid);
     setTimeout(() => {
         logseq.Editor.insertAtEditingCursor(","); //カーソルの位置にカンマを挿入する(ページタグ更新対策)
-        setTimeout(() => thisWeekSection(firstBlock, preferredDateFormat, weekDaysLinkArray, weekdayArray), 100);
+        setTimeout(() => createPageContent(firstBlock, preferredDateFormat, weekDaysLinkArray, weekdayArray), 100);
+        if (weekDaysLinks.length === 0) setTimeout(() => logseq.Editor.removeBlockProperty(firstBlock.uuid, "tags"), 200);
     }, 200);
 };
 
@@ -160,7 +163,7 @@ const weeklyJournalInsertTemplate = async (uuid: string, templateName: string) =
 };
 
 
-const thisWeekSection = async (firstBlock: BlockEntity, preferredDateFormat: string, weekDaysLinkArray: string[], weekdayArray: string[]) => {
+const createPageContent = async (firstBlock: BlockEntity, preferredDateFormat: string, weekDaysLinkArray: string[], weekdayArray: string[]) => {
     if (logseq.settings!.weeklyJournalThisWeekPosition === "bottom") { //曜日リンク (This Week section)が下にくるようにする
 
         const bottomBlank = await logseq.Editor.insertBlock(firstBlock.uuid, "", { sibling: true, before: false }) as BlockEntity; //一番下の空白行

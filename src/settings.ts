@@ -220,7 +220,14 @@ export const settingsTemplate = (): SettingSchemaDesc[] => [
     key: "weeklyJournalPageTag",
     title: t("Weekly Journal, Page-tags type"),
     type: "enum",
-    enumChoices: ["yyyy, yyyy/MM, yyyy-Ww, yyyy-Ww", "yyyy, yyyy-Ww, yyyy-Ww", "yyyy-Ww, yyyy-Ww", "unset"],
+    enumChoices: [
+      "yyyy, yyyy/MM, yyyy-Ww, yyyy-Ww",
+      "yyyy, yyyy-Ww, yyyy-Ww",
+      "yyyy-Ww, yyyy-Ww",
+      "yyyy, yyyy/MM,",
+      "yyyy,",
+      "unset"
+    ],
     default: "yyyy, yyyy/MM, yyyy-Ww, yyyy-Ww",
     description: t("default: `yyyy(: year), yyyy/MM(: month), yyyy-Www(: previous), yyyy-Www(: next)`"),
   },
