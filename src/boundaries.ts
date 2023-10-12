@@ -5,7 +5,7 @@ import { openPageFromPageName } from './lib';
 import { t } from "logseq-l10n";
 
 let processingFoundBoundaries: boolean = false;
-export async function boundariesProcess(targetElementName: string, remove: boolean, repeat: number, selectStartDate?: Date) {
+export const boundariesProcess = async (targetElementName: string, remove: boolean, repeat: number, selectStartDate?: Date) => {
   if (repeat >= 5 || processingFoundBoundaries === true) return;
   if (!selectStartDate || (targetElementName === "weeklyJournal" && remove === true)) { //selectStartDateがある場合はチェックしない
     const checkWeekBoundaries = parent.document.getElementById('boundariesInner') as HTMLDivElement | null;
@@ -37,11 +37,10 @@ export async function boundariesProcess(targetElementName: string, remove: boole
     )) {
     setTimeout(() => boundariesProcess(targetElementName, false, repeat + 1), 300);
   }
-  processingFoundBoundaries = true;
+  processingFoundBoundaries = true;//ここからreturnする場合は必ずfalseにすること
 
 
   const weekStartsOn: 0 | 1 | 6 = getWeekStartOn();
-  const { preferredDateFormat } = await logseq.App.getUserConfigs() as AppUserConfigs;
 
   if (firstElement) {
     const today = new Date();
@@ -109,86 +108,11 @@ export async function boundariesProcess(targetElementName: string, remove: boole
       ? [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13] //次の週を表示する場合
       : [-7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6]; //次の週を表示しない場合
 
-    let monthDuplicate: Date;
-    //ミニカレンダー作成 1日ずつ処理
-    days.forEach((numDays, index) => {
-      const date: Date = numDays === 0 ? startDate : addDays(startDate, numDays) as Date;
-      const dayOfWeek: string = new Intl.DateTimeFormat((logseq.settings?.localizeOrEnglish as string || "default"), { weekday: "short" }).format(date);
-      //日付を取得する
-      const dayOfMonth: number = date.getDate();
-      const dayElement: HTMLSpanElement = parent.document.createElement('span');
-      try {
-        if (index === 7) {
-          const element = parent.document.createElement('div') as HTMLDivElement;
-          element.style.width = "100%";
-          boundariesInner.append(element);
-        }
-        if (index === 0 || index === 7) {
-          //daySideElement作成    
-          //月を表示する場合
-          if (logseq.settings!.booleanBoundariesShowMonth === true) monthDuplicate = daySideMonth(date, boundariesInner, monthDuplicate);//daySideElement作成
-        }
-        //dayElement作成
-        const isBooleanBeforeToday: boolean = isBefore(date, today);
-        const isBooleanToday: boolean = isToday(date);
-        const isBooleanTargetSameDay: boolean = isSameDay(targetDate, date);
-        dayElement.classList.add('day');
-        const dayOfWeekElement: HTMLSpanElement = parent.document.createElement('span');
-        dayOfWeekElement.classList.add('dayOfWeek');
-        dayOfWeekElement.innerText = dayOfWeek;
-        dayElement.appendChild(dayOfWeekElement);
-        const dayOfMonthElement: HTMLSpanElement = parent.document.createElement('span');
-        dayOfMonthElement.classList.add('dayOfMonth');
-        dayOfMonthElement.innerText = `${dayOfMonth}`;
-        dayElement.appendChild(dayOfMonthElement);
-        //日付と相対時間をtitleに追加する
-        if (logseq.settings?.booleanRelativeTime === true) { //相対時間を表示する場合
-          const formatString: string = formatRelativeDate(date);
-          dayElement.title = format(date, preferredDateFormat) + '\n' + formatString;
-        } else {
-          dayElement.title = format(date, preferredDateFormat);
-        }
-
-        //indexが0~6
-        if (targetElementName === 'weeklyJournal') {
-          if (index >= 7 && index <= 14) dayElement.classList.add('thisWeek');
-        } else {
-          if ((flagShowNextWeek === true && index < 7)
-            || (flagShowNextWeek === false && index > 6)
-          ) dayElement.classList.add('thisWeek');
-        }
-        if (targetElementName !== 'journals' && targetElementName !== "weeklyJournal" && isBooleanTargetSameDay === true)
-          dayElement.style.border = `1px solid ${logseq.settings!.boundariesHighlightColorSinglePage}`;//シングルページの日付をハイライト
-        else
-          if (isBooleanToday === true) dayElement.style.border = `1px solid ${logseq.settings!.boundariesHighlightColorToday}`;//今日をハイライト
-
-        if (logseq.settings?.booleanWeekendsColor === true) {
-          if (isSaturday(date) as boolean) dayElement.style.color = 'var(--ls-wb-stroke-color-blue)';
-          else if (isSunday(date) as boolean) dayElement.style.color = 'var(--ls-wb-stroke-color-red)';
-        }
-
-        if (logseq.settings!.booleanBoundariesFuturePage === true
-          || isBooleanBeforeToday === true || isBooleanToday === true)
-          dayElement.addEventListener("click", openPageToSingleDay(date, isBooleanBeforeToday, preferredDateFormat));
-        else
-          dayElement.style.cursor = 'unset';
-      } finally {
-        boundariesInner.appendChild(dayElement);
-        if (index === 6 || index === 13) {
-          //daySideElement作成    
-          //週番号を表示する場合
-          if (logseq.settings!.booleanBoundariesShowWeekNumber === true) daySideWeekNumber(date, boundariesInner);
-          daySideScroll(index, boundariesInner, targetElementName, startDate);//スクロール
-        }
-
-      }
-
-    });
-
+    const { preferredDateFormat } = await logseq.App.getUserConfigs() as AppUserConfigs;
+    daysForEach(days, startDate, boundariesInner, today, targetDate, preferredDateFormat, targetElementName, flagShowNextWeek);
   }
-
   processingFoundBoundaries = false;
-}
+};
 
 
 const daySideWeekNumber = (date: Date, boundariesInner: HTMLDivElement) => {
@@ -242,6 +166,84 @@ const daySideScroll = (index: number, boundariesInner: HTMLDivElement, targetEle
     boundariesProcess(targetElementName, true, 0, addDays(startDate, index === 6 ? -7 : 7) as Date);
   }, { once: true });
 }
+
+
+const daysForEach = (days: number[], startDate: Date, boundariesInner: HTMLDivElement, today: Date, targetDate: Date, preferredDateFormat: string, targetElementName: string, flagShowNextWeek: boolean) => {
+  let monthDuplicate: Date;
+  //ミニカレンダー作成 1日ずつ処理
+  days.forEach((numDays, index) => {
+    const date: Date = numDays === 0 ? startDate : addDays(startDate, numDays) as Date;
+    const dayOfWeek: string = new Intl.DateTimeFormat((logseq.settings?.localizeOrEnglish as string || "default"), { weekday: "short" }).format(date);
+    //日付を取得する
+    const dayOfMonth: number = date.getDate();
+    const dayElement: HTMLSpanElement = parent.document.createElement('span');
+    try {
+      if (index === 7) {
+        const element = parent.document.createElement('div') as HTMLDivElement;
+        element.style.width = "100%";
+        boundariesInner.append(element);
+      }
+      if (index === 0 || index === 7) {
+        //daySideElement作成    
+        //月を表示する場合
+        if (logseq.settings!.booleanBoundariesShowMonth === true) monthDuplicate = daySideMonth(date, boundariesInner, monthDuplicate); //daySideElement作成
+      }
+      //dayElement作成
+      const isBooleanBeforeToday: boolean = isBefore(date, today);
+      const isBooleanToday: boolean = isToday(date);
+      const isBooleanTargetSameDay: boolean = isSameDay(targetDate, date);
+      dayElement.classList.add('day');
+      const dayOfWeekElement: HTMLSpanElement = parent.document.createElement('span');
+      dayOfWeekElement.classList.add('dayOfWeek');
+      dayOfWeekElement.innerText = dayOfWeek;
+      dayElement.appendChild(dayOfWeekElement);
+      const dayOfMonthElement: HTMLSpanElement = parent.document.createElement('span');
+      dayOfMonthElement.classList.add('dayOfMonth');
+      dayOfMonthElement.innerText = `${dayOfMonth}`;
+      dayElement.appendChild(dayOfMonthElement);
+      //日付と相対時間をtitleに追加する
+      if (logseq.settings?.booleanRelativeTime === true) { //相対時間を表示する場合
+        const formatString: string = formatRelativeDate(date);
+        dayElement.title = format(date, preferredDateFormat) + '\n' + formatString;
+      } else {
+        dayElement.title = format(date, preferredDateFormat);
+      }
+
+      //indexが0~6
+      if (targetElementName === 'weeklyJournal') {
+        if (index >= 7 && index <= 14) dayElement.classList.add('thisWeek');
+      } else {
+        if ((flagShowNextWeek === true && index < 7)
+          || (flagShowNextWeek === false && index > 6)) dayElement.classList.add('thisWeek');
+      }
+      if (targetElementName !== 'journals' && targetElementName !== "weeklyJournal" && isBooleanTargetSameDay === true)
+        dayElement.style.border = `1px solid ${logseq.settings!.boundariesHighlightColorSinglePage}`; //シングルページの日付をハイライト
+
+      else if (isBooleanToday === true) dayElement.style.border = `1px solid ${logseq.settings!.boundariesHighlightColorToday}`; //今日をハイライト
+
+      if (logseq.settings?.booleanWeekendsColor === true) {
+        if (isSaturday(date) as boolean) dayElement.style.color = 'var(--ls-wb-stroke-color-blue)';
+        else if (isSunday(date) as boolean) dayElement.style.color = 'var(--ls-wb-stroke-color-red)';
+      }
+
+      if (logseq.settings!.booleanBoundariesFuturePage === true
+        || isBooleanBeforeToday === true || isBooleanToday === true)
+        dayElement.addEventListener("click", openPageToSingleDay(date, isBooleanBeforeToday, preferredDateFormat));
+
+      else
+        dayElement.style.cursor = 'unset';
+    } finally {
+      boundariesInner.appendChild(dayElement);
+      if (index === 6 || index === 13) {
+        //daySideElement作成    
+        //週番号を表示する場合
+        if (logseq.settings!.booleanBoundariesShowWeekNumber === true) daySideWeekNumber(date, boundariesInner);
+        daySideScroll(index, boundariesInner, targetElementName, startDate);
+      }
+    }
+  });
+};
+
 
 function openPageToSingleDay(date: Date, isBooleanBeforeToday: boolean, preferredDateFormat: string): (this: HTMLSpanElement, ev: MouseEvent) => any {
   return async (event) => {
