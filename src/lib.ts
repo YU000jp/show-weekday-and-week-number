@@ -115,7 +115,7 @@ export const openPageFromPageName = async (pageName: string, shiftKey: boolean) 
     const page = await logseq.Editor.getPage(pageName) as PageEntity | null;
     if (page) logseq.Editor.openInRightSidebar(page.uuid); //ページが存在しない場合は開かない
   } else {
-    logseq.App.pushState('page', { name: pageName });
+    logseq.App.replaceState('page', { name: pageName });
   }
 };
 
