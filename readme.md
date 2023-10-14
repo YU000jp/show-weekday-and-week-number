@@ -40,9 +40,9 @@
 - Click the link on the left side of the mini calendar will open a page like `[[2023/10]]`.
 > Currently, there is no page generation feature like Weekly Journal.
 
-### Slash Command for link or input 🆕
+### Slash Command 🆕
 
-> [Document here](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/wiki/Slash-Command)
+> Week-number etc.. [Document here](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/wiki/Slash-Command)
 
 ### Localize day of the week in journal links
 
