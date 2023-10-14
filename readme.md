@@ -24,7 +24,7 @@
 - Always display a simple calendar on journals.
 - Smooth access to previous and subsequent dates on a single date page or journals.
 
-![image](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/assets/111847207/126b7d4a-502a-4408-999b-82555bddf6f1)
+![miniCalendar](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/assets/111847207/3ffc5771-089f-43f5-83a5-01a01117670b)
 
 ### Weekly Journal
 
