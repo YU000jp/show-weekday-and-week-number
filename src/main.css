@@ -45,12 +45,12 @@ div#main-content-container {
         height: 92px;
         transition: height 0.3s ease-in-out;
 
+
         >div#boundariesInner {
             display: flex;
-            margin-top: 0.3em;
-            overflow-x: auto;
-            width: fit-content;
-            font-size: .88em;
+            margin-top: 0.2em;
+            min-width: 50em;
+            font-size: .87em;
             justify-content: center;
             user-select: none;
             flex-wrap: wrap;
