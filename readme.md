@@ -12,20 +12,20 @@
 
 ## Options
 
-### Behind Journal Title
+### Behind Journal Title ➡️
 
-- Using the plugin, the week number for that week will be generated. Like below
+- The week number for that week will be generated. Like below
 
 1. ![image](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/assets/111847207/f47b8948-5e7a-4e16-a5ae-6966672742b1)
 1. ![image](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/assets/111847207/ee97c455-714e-45d2-9f9f-905798e298b4)
 
-### Journal boundaries (mini-calendar)
+### Journal boundaries (mini-calendar 🗓️)
 
 - Display a 2 lines calendar on journals. Smooth access to previous and subsequent dates on a single date page or journals.
 
 ![miniCalendar](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/assets/111847207/3ffc5771-089f-43f5-83a5-01a01117670b)
 
-### Weekly Journal
+### Weekly Journal 🌛
 
 - Click the week number link to open it and generate a page. If there is no content available on a page with a week number like `[[2023-W25]]`, a template will be inserted.
 - In plugin settings, it possible to set user template.
