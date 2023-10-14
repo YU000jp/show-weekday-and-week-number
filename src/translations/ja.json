@@ -22,7 +22,7 @@
     "*This setting does not affect the graph": "*この設定はグラフには影響しません",
     "Journal boundaries": "Journal Boundaries (ジャーナルのミニカレンダー)",
     "Enable feature": "機能を有効にする",
-    "Show the boundaries of days before and after the day on the single journal page": "ジャーナルの単一ページで、日の前後の境界を表示する",
+    "Show the boundaries of days before and after the day on the single journal page": "ジャーナルの単一ページで、その日の前後の境界を表示する",
     "Use also on journals": "ジャーナルでも使用する",
     "Use also on Weekly Journal": "Weekly Journalでも使用する",
     "Mini calendar only, Week start (Unset: by the selected format)": "ミニカレンダーのみ, 週の始まり (未設定: 選択した週番号フォーマットによる)",
