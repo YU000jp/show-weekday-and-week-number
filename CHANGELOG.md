@@ -1,3 +1,10 @@
+## [1.39.6](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.39.5...v1.39.6) (2023-10-14)
+
+
+### Bug Fixes
+
+* **bug:** Calendar not being responsive to journal width ([3917423](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/39174233c5945e440a1b3028d45d163bc8bb7ca6))
+
 ## [1.39.5](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.39.4...v1.39.5) (2023-10-12)
 
 
