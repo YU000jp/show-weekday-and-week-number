@@ -1,4 +1,5 @@
-body.show-justify div#main-content-container {
+/* プラグイン設定の見た目を変える(heading) */
+body.show-justify>div#root>div>main>div#app-container>div#left-container>div#main-container>div#main-content-container {
 
     & div.is-journals div.ls-page-title,
     div#journals div.journal>div.flex div.content>div.foldable-title>div.flex.items-center {
@@ -6,110 +7,118 @@ body.show-justify div#main-content-container {
     }
 }
 
-div#main-content-container {
-    & div.is-journals {
-        & div.ls-page-title {
-            display: flex;
-            flex-wrap: nowrap;
-            align-items: center;
+div#root>div>main {
+    & article>div[data-id="show-weekday-and-week-number"] div.heading-item {
+        margin-top: 3em;
+        border-top-width: 1px;
+        padding-top: 1em;
+    }
 
-            & h1.title {
-                margin-top: .8em;
-                width: fit-content;
+    &>div#app-container>div#left-container>div#main-container>div#main-content-container {
+        & div.is-journals {
+            & div.ls-page-title {
+                display: flex;
+                flex-wrap: nowrap;
+                align-items: center;
+
+                & h1.title {
+                    margin-top: .8em;
+                    width: fit-content;
+                }
+            }
+
+            &>div.relative div div.ls-page-title span#hierarchyLinks {
+                position: absolute;
+                margin-top: -4em;
             }
         }
 
-        &>div.relative div div.ls-page-title span#hierarchyLinks {
-            position: absolute;
-            margin-top: -4em;
+        & div:is(#journals, .is-journals) h1.title :is(a.title, span.title a) {
+            color: inherit;
         }
-    }
 
-    & div:is(#journals, .is-journals) h1.title :is(a.title, span.title a) {
-        color: inherit;
-    }
-
-    & h1.title+span.showWeekday {
-        margin-left: 0.75em;
-        opacity: .75;
-        font-size: 1.1em;
-        width: fit-content;
-
-        &>span {
-            margin-left: .75em;
-        }
-    }
-
-
-    & div#weekBoundaries {
-        height: 92px;
-        transition: height 0.3s ease-in-out;
-
-
-        >div#boundariesInner {
-            display: flex;
-            margin-top: 0.2em;
-            min-width: 50em;
-            font-size: .87em;
-            justify-content: center;
-            user-select: none;
-            flex-wrap: wrap;
-
-            &:has(>div)>span.day:not(.thisWeek)>span {
-                &.dayOfWeek {
-                    display: none;
-                }
-
-                &.dayOfMonth {
-                    height: 2em;
-
-                }
-            }
+        & h1.title+span.showWeekday {
+            margin-left: 0.75em;
+            opacity: .75;
+            font-size: 1.1em;
+            width: fit-content;
 
             &>span {
-                &.daySide {
-                    display: flex;
-                    align-items: center;
-                    padding: .5em;
-                    width: 4em;
-                    cursor: pointer;
-                    opacity: .6;
-                    /* &.daySideScroll
-                    &.daySideWeekNumber */
+                margin-left: .75em;
+            }
+        }
+
+
+        & div#weekBoundaries {
+            height: 92px;
+            transition: height 0.3s ease-in-out;
+
+
+            >div#boundariesInner {
+                display: flex;
+                margin-top: 0.2em;
+                min-width: 50em;
+                font-size: .87em;
+                justify-content: center;
+                user-select: none;
+                flex-wrap: wrap;
+
+                &:has(>div)>span.day:not(.thisWeek)>span {
+                    &.dayOfWeek {
+                        display: none;
+                    }
+
+                    &.dayOfMonth {
+                        height: 2em;
+
+                    }
                 }
 
-                &.day {
-                    width: 4.8em;
-                    padding: 0.15em;
-                    margin-left: 0.35em;
-                    border-radius: 0.2em;
-                    background: var(--color-level-1);
-                    cursor: pointer;
-
-                    &:not(.thisWeek) {
-                        opacity: .6;
-                    }
-
-                    &.thisWeek {
-                        background: var(--color-level-2);
-                        box-shadow: 0 0 0 1px var(--ls-guideline-color);
-                    }
-
-                    &:not(.thisWeek) {
-                        opacity: .78;
-                    }
-
-                    &:hover {
-                        opacity: 1;
-                        background: var(--color-level-2);
-                    }
-
-                    & span.dayOfMonth {
+                &>span {
+                    &.daySide {
                         display: flex;
-                        justify-content: center;
                         align-items: center;
-                        font-weight: bold;
-                        font-size: 1.2em;
+                        padding: .5em;
+                        width: 4em;
+                        cursor: pointer;
+                        opacity: .6;
+                        /* &.daySideScroll
+                    &.daySideWeekNumber */
+                    }
+
+                    &.day {
+                        width: 4.8em;
+                        padding: 0.15em;
+                        margin-left: 0.35em;
+                        border-radius: 0.2em;
+                        background: var(--color-level-1);
+                        cursor: pointer;
+
+                        &:not(.thisWeek) {
+                            opacity: .6;
+                        }
+
+                        &.thisWeek {
+                            background: var(--color-level-2);
+                            box-shadow: 0 0 0 1px var(--ls-guideline-color);
+                        }
+
+                        &:not(.thisWeek) {
+                            opacity: .78;
+                        }
+
+                        &:hover {
+                            opacity: 1;
+                            background: var(--color-level-2);
+                        }
+
+                        & span.dayOfMonth {
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            font-weight: bold;
+                            font-size: 1.2em;
+                        }
                     }
                 }
             }
