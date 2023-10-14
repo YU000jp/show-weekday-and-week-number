@@ -1,6 +1,7 @@
 # Logseq Plugin: *Show Weekday and Week-number* 📆
 
 - Show weekday and week number beside journal titles.
+- Show the mini-calendar that has navigational links on Daily Journal. Provides access to previous and subsequent single journals, and links to weekly Journal and monthly Journal.
 
 [![latest release version](https://img.shields.io/github/v/release/YU000jp/logseq-plugin-show-weekday-and-week-number)](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/releases)
 [![License](https://img.shields.io/github/license/YU000jp/logseq-plugin-show-weekday-and-week-number?color=blue)](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/LICENSE)
@@ -13,23 +14,20 @@
 
 ### Behind Journal Title
 
-- Using the plugin, the week number for that week will be generated.
-- Like below
+- Using the plugin, the week number for that week will be generated. Like below
 
 1. ![image](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/assets/111847207/f47b8948-5e7a-4e16-a5ae-6966672742b1)
 1. ![image](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/assets/111847207/ee97c455-714e-45d2-9f9f-905798e298b4)
 
 ### Journal boundaries (mini-calendar)
 
-- Always display a simple calendar on journals.
-- Smooth access to previous and subsequent dates on a single date page or journals.
+- Display a 2 lines calendar on journals. Smooth access to previous and subsequent dates on a single date page or journals.
 
 ![miniCalendar](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/assets/111847207/3ffc5771-089f-43f5-83a5-01a01117670b)
 
 ### Weekly Journal
 
-- Click the week number link to open it (When opening, generate a page)
-- If there is no content available on a page with a week number like `[[2023-W25]]`, a template will be inserted.
+- Click the week number link to open it and generate a page. If there is no content available on a page with a week number like `[[2023-W25]]`, a template will be inserted.
 - In plugin settings, it possible to set user template.
   > Inserting Advanced queries into the template increases flexibility.
 
@@ -40,6 +38,7 @@
 ### Monthly Journal
 
 - Click the link on the left side of the mini calendar will open a page like `[[2023/10]]`.
+> Currently, there is no page generation feature like Weekly Journal.
 
 ### Slash Command for link or input 🆕
 
