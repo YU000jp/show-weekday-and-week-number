@@ -7,7 +7,7 @@ body.show-justify>div#root>div>main>div#app-container>div#left-container>div#mai
     }
 }
 
-div#root>div>main {
+body>div#root>div>main {
     & article>div[data-id="show-weekday-and-week-number"] div.heading-item {
         margin-top: 3em;
         border-top-width: 1px;
