@@ -1,7 +1,7 @@
 # Logseq Plugin: *Show Weekday and Week-number* 📆
 
-- Show weekday and week number beside journal titles.
-- Show the mini-calendar that has navigational links on Daily Journal. Provides access to previous and subsequent single journals, and links to weekly Journal and monthly Journal.
+1. Show weekday and week number beside journal titles.
+1. Show the mini-calendar that has navigational links on Daily Journal. Provides access to previous and subsequent single journals, and links to weekly Journal and monthly Journal.
 
 [![latest release version](https://img.shields.io/github/v/release/YU000jp/logseq-plugin-show-weekday-and-week-number)](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/releases)
 [![License](https://img.shields.io/github/license/YU000jp/logseq-plugin-show-weekday-and-week-number?color=blue)](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/LICENSE)
@@ -27,8 +27,7 @@
 
 ### Weekly Journal 🌛
 
-- Click the week number link to open it and generate a page. If there is no content available on a page with a week number like `[[2023-W25]]`, a template will be inserted.
-- In plugin settings, it possible to set user template.
+- Click the week number link to open it and generate a page. If there is no content available on a page with a week number like `[[2023-W25]]`, a template will be inserted. In plugin settings, it possible to set user template.
   > Inserting Advanced queries into the template increases flexibility.
 
 #### "This Week" section (collection of those date links)
@@ -54,16 +53,13 @@
 
 ### Install from Logseq Marketplace
 
-- Press [`---`] on the top right toolbar to open [`Plugins`]
-- Select `Marketplace`
-- Type `Show` in the search field, select it from the search results and install
+- Press [`---`] on the top right toolbar to open [`Plugins`]. Select `Marketplace`. Type `Show` in the search field, select it from the search results and install.
 
    ![image](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/assets/111847207/5c3a2b34-298b-4790-8e12-01d83e289794)
 
 ### Usage
 
-- When this plugin install, the style be applied to journals or the single journal page , the right sidebar.
-- First, please configure the plugin settings.
+- When this plugin install, the style be applied to journals or the single journal page , the right sidebar. First, please configure the plugin settings.
    1. Select either US format or ISO format.
       > [Document here](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/wiki/Week-number-format)
 
