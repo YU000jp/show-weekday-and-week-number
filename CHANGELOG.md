@@ -1,3 +1,10 @@
+# [1.41.0](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.40.0...v1.41.0) (2023-10-18)
+
+
+### Features
+
+* **Behind Journal Title:** Plugin settings, create Monthly Journal link button [#115](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/115) ([bd65f26](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/bd65f264c2dd199fb9656a10ea309474ff59525f))
+
 # [1.40.0](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.39.6...v1.40.0) (2023-10-14)
 
 
