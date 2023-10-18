@@ -1,6 +1,7 @@
 import { getWeekOfMonth, isSaturday, isSunday } from "date-fns";
-import { getWeeklyNumberFromDate, formatRelativeDate, openPageFromPageName } from "./lib";
+import { getWeeklyNumberFromDate, formatRelativeDate, openPageFromPageName, createLinkMonthlyLink } from "./lib";
 import { createSettingButton } from "./lib";
+import format from "date-fns/format";
 
 //behind journal title
 let processingBehind: boolean = false;
@@ -11,6 +12,7 @@ export const behindJournalTitle = async (
   preferredDateFormat
 ) => {
   if (processingBehind === true) return;
+
   let dayOfWeekName: string = "";
   if (
     preferredDateFormat.includes("E") === false &&
@@ -119,6 +121,16 @@ export const behindJournalTitle = async (
     //For single journal
     titleElement.insertAdjacentElement("afterend", dateInfoElement);
   }
+
+  //Monthly Journalのリンクを作成する
+  if (logseq.settings!.booleanMonthlyJournalLink === true) {
+    const formatDateString: string = format(journalDate, "yyyy/MM");
+    //ローカライズされた月名を取得する
+    const localizedMonthName: string = new Intl.DateTimeFormat(logseq.settings?.localizeOrEnglish || "default", { month: "short" }).format(journalDate);
+    const monthlyJournalLinkButton = createLinkMonthlyLink(localizedMonthName, formatDateString, "Monthly Journal [[" + formatDateString + "]]");
+    dateInfoElement.appendChild(monthlyJournalLinkButton);
+  }
+
 
   //設定ボタンを設置
   if (logseq.settings!.booleanSettingsButton === true) {

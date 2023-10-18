@@ -89,9 +89,15 @@ export const settingsTemplate = (): SettingSchemaDesc[] => [
     title: t("Enable day of the week"),
     type: "boolean",
     default: true,
-    description: t(
-      "If user date format includes day of the week, this setting is ignored."
-    ),
+    description: t("If user date format includes day of the week, this setting is ignored."),
+  },
+  {//Monthly Journalのリンクを作成する
+    key: "booleanMonthlyJournalLink",
+    title: t("Enable monthly journal link"),
+    type: "boolean",
+    default: false,
+    // [[2023/10]]のような階層のMonthly Journalを開くリンクを設置する
+    description: t("Place a link to open the Monthly Journal of the hierarchy like [[2023/10]]"),
   },
   {
     key: "booleanJournalLinkLocalizeDayOfWeek",
@@ -100,7 +106,7 @@ export const settingsTemplate = (): SettingSchemaDesc[] => [
     ),
     type: "boolean",
     default: true,
-    description: "default: `true` " + t("*This setting does not affect the graph"),
+    description: t("*This setting does not affect the graph"),
   },
 
   //Journal Boundaries
@@ -177,14 +183,14 @@ export const settingsTemplate = (): SettingSchemaDesc[] => [
     title: t("Show month"),
     type: "boolean",
     default: true,
-    description: "default: `true`",
+    description: "",
   },
   {//週番号を表示する (月曜日の日付から計算した週番号)
     key: "booleanBoundariesShowWeekNumber",
     title: t("Show week number (calculate from the date of Monday)"),
     type: "boolean",
     default: true,
-    description: "default: `true`",
+    description: "",
   },
 
   //Weekly Journal
@@ -221,7 +227,7 @@ export const settingsTemplate = (): SettingSchemaDesc[] => [
     title: t("Enable \"This Week\" section"),
     type: "boolean",
     default: true,
-    description: "default: `true`",
+    description: "",
   },
   {//"This Week" セクションの位置を選択する(上か下か)
     key: "weeklyJournalThisWeekPosition",
@@ -229,7 +235,7 @@ export const settingsTemplate = (): SettingSchemaDesc[] => [
     type: "enum",
     enumChoices: ["top", "bottom"],
     default: "top",
-    description: "default: `top`",
+    description: "",
   },
   {//ージタグの種類を選択する
     key: "weeklyJournalPageTag",

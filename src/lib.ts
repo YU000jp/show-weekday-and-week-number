@@ -1,5 +1,6 @@
 import { PageEntity } from "@logseq/libs/dist/LSPlugin.user";
 import { getISOWeekYear, getISOWeek, getWeekYear, getWeek } from "date-fns";
+import { link } from "fs";
 import { t } from "logseq-l10n";
 
 export const getJournalDayDate = (str: string): Date => new Date(
@@ -101,15 +102,25 @@ export const getWeekStartOn = (): 0 | 1 | 6 => {
 };
 
 export const createSettingButton = (): HTMLButtonElement => {
-  const settingButton: HTMLButtonElement = document.createElement("button");
-  settingButton.textContent = "⚙";
-  settingButton.title = t("Open plugin setting");
-  settingButton.style.marginLeft = "1em";
-  settingButton.addEventListener("click", () => {
+  const button: HTMLButtonElement = document.createElement("button");
+  button.textContent = "⚙";
+  button.title = t("Open plugin setting");
+  button.style.marginLeft = "1em";
+  button.addEventListener("click", () => {
     logseq.showSettingsUI();
   });
-  return settingButton;
+  return button;
 };
+
+export const createLinkMonthlyLink = (linkString: string, pageName: string, elementTitle: string): HTMLButtonElement => {
+  const button: HTMLButtonElement = document.createElement("button");
+  button.textContent = linkString;
+  button.title = elementTitle;
+  button.style.marginLeft = "1em";
+  button.addEventListener("click", ({ shiftKey }) => openPageFromPageName(pageName, shiftKey));
+  return button;
+};
+
 export const openPageFromPageName = async (pageName: string, shiftKey: boolean) => {
   if (shiftKey === true) {
     const page = await logseq.Editor.getPage(pageName) as PageEntity | null;

@@ -104,8 +104,15 @@ const main = async () => {
 const onSettingsChanged = () => logseq.onSettingsChanged((newSet: LSPluginBaseInfo["settings"], oldSet: LSPluginBaseInfo["settings"]) => {
 
   if ((oldSet.booleanBoundaries === true && newSet.booleanBoundaries === false)
-    || (oldSet.booleanJournalsBoundaries === true && newSet.booleanJournalsBoundaries === false)
-    || oldSet.boundariesWeekStart !== newSet.boundariesWeekStart
+    || (oldSet.booleanJournalsBoundaries === true && newSet.booleanJournalsBoundaries === false && parent.document.getElementById("journals") as HTMLDivElement)
+  ) removeBoundaries(); //boundariesを削除する
+  else
+    if (oldSet.booleanBoundaries === false && newSet.booleanBoundaries === true) SettingsChangedJournalBoundariesEnable();//Journal boundariesを表示する
+    else
+      if (oldSet.booleanJournalsBoundaries === false && newSet.booleanJournalsBoundaries === true
+        && parent.document.getElementById("journals") as HTMLDivElement) boundaries("journals");//ジャーナルの場合のみ
+
+  if (oldSet.boundariesWeekStart !== newSet.boundariesWeekStart
     || oldSet.localizeOrEnglish !== newSet.localizeOrEnglish
     || oldSet.weekNumberFormat !== newSet.weekNumberFormat
     || oldSet.booleanBoundariesFuturePage !== newSet.booleanBoundariesFuturePage
@@ -115,26 +122,11 @@ const onSettingsChanged = () => logseq.onSettingsChanged((newSet: LSPluginBaseIn
     || oldSet.boundariesHighlightColorSinglePage !== newSet.boundariesHighlightColorSinglePage
     || oldSet.boundariesHighlightColorToday !== newSet.boundariesHighlightColorToday
     || oldSet.booleanWeeklyJournal !== newSet.booleanWeeklyJournal
-  ) removeBoundaries(); //boundariesのセレクト更新のため
-
-  if (oldSet.booleanJournalsBoundaries === false && newSet.booleanJournalsBoundaries === true && parent.document.getElementById("journals") as HTMLDivElement) {
-    boundaries("journals");//journals only
-  } else
-    if ((oldSet.booleanBoundaries === false && newSet.booleanBoundaries === true)
-      || oldSet.boundariesWeekStart !== newSet.boundariesWeekStart
-      || oldSet.localizeOrEnglish !== newSet.localizeOrEnglish
-      || oldSet.weekNumberFormat !== newSet.weekNumberFormat
-      || oldSet.booleanBoundariesFuturePage !== newSet.booleanBoundariesFuturePage
-      || oldSet.booleanBoundariesShowMonth !== newSet.booleanBoundariesShowMonth
-      || oldSet.booleanBoundariesShowWeekNumber !== newSet.booleanBoundariesShowWeekNumber
-      || oldSet.booleanWeekendsColor !== newSet.booleanWeekendsColor
-      || oldSet.boundariesHighlightColorSinglePage !== newSet.boundariesHighlightColorSinglePage
-      || oldSet.boundariesHighlightColorToday !== newSet.boundariesHighlightColorToday
-      || oldSet.booleanWeeklyJournal !== newSet.booleanWeeklyJournal
-    ) {
-      if (parent.document.getElementById("journals") as HTMLDivElement) boundaries("journals");
-      else boundaries("is-journals");
-    }
+  ) {
+    //Journal boundariesを再表示する
+    removeBoundaries();
+    SettingsChangedJournalBoundariesEnable();
+  }
 
   if (oldSet.localizeOrEnglish !== newSet.localizeOrEnglish
     || oldSet.booleanDayOfWeek !== newSet.booleanDayOfWeek
@@ -147,16 +139,24 @@ const onSettingsChanged = () => logseq.onSettingsChanged((newSet: LSPluginBaseIn
     || oldSet.booleanWeeklyJournal !== newSet.booleanWeeklyJournal
     || oldSet.booleanWeekNumberHideYear !== newSet.booleanWeekNumberHideYear
     || oldSet.booleanSettingsButton !== newSet.booleanSettingsButton
+    || oldSet.booleanMonthlyJournalLink !== newSet.booleanMonthlyJournalLink
   ) {
+    //再表示　Behind Journal Title
     removeTitleQuery();
     setTimeout(() => querySelectorAllTitle(), 500);
   }
 }
 );
 
+//Journal boundariesを表示する
+const SettingsChangedJournalBoundariesEnable = () => setTimeout(() => {
+  if (parent.document.getElementById("journals") as HTMLDivElement) boundaries("journals");
+  else boundaries("is-journals");
+}, 100);
+
 
 let processingTitleQuery: boolean = false;
-async function querySelectorAllTitle(enable?: boolean): Promise<void> {
+const querySelectorAllTitle = async (enable?: boolean): Promise<void> => {
   if (processingTitleQuery && !enable) return;
   processingTitleQuery = true;
 
@@ -170,7 +170,7 @@ async function querySelectorAllTitle(enable?: boolean): Promise<void> {
         await JournalPageTitle(titleElement as HTMLElement)
     );
   processingTitleQuery = false;
-}
+};
 
 const observer = new MutationObserver(async (): Promise<void> => {
   observer.disconnect();
@@ -186,7 +186,6 @@ const observerMain = () => observer.observe(
     attributeFilter: ["class"],
   }
 );
-
 
 //Credit: ottodevs  https://discuss.logseq.com/t/show-week-day-and-week-number/12685/18
 let processingJournalTitlePage: Boolean = false;

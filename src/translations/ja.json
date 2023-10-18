@@ -17,6 +17,8 @@
     "Enable relative time": "相対時間を表示する",
     "like `3 days ago`": "`3日前`のように表示する",
     "Enable day of the week": "曜日を表示する",
+    "Enable monthly journal link": "月別ジャーナルへのリンクを有効にする",
+    "Place a link to open the Monthly Journal of the hierarchy like [[2023/10]]": "[[2023/10]]のような階層の月別ジャーナルを開くリンクを配置する",
     "If user date format includes day of the week, this setting is ignored.": "ユーザーの日付フォーマットに曜日が含まれている場合、この設定は無視されます。",
     "If the day of the week is included in user date format, localize the day of the week in the date link": "ユーザーの日付フォーマットに曜日が含まれている場合、日付リンクの曜日をローカライズする",
     "*This setting does not affect the graph": "*この設定はグラフには影響しません",
