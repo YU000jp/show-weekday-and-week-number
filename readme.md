@@ -1,3 +1,5 @@
+[日本語](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/blob/main/readme.ja.md)
+
 # Logseq Plugin: *Show Weekday and Week-number* 📆
 
 1. Show weekday and week number beside journal titles.
@@ -25,7 +27,7 @@
 
 ![miniCalendar](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/assets/111847207/3ffc5771-089f-43f5-83a5-01a01117670b)
 
-### Weekly Journal 🌛
+### Weekly Journal
 
 - Click the week number link to open it and generate a page. If there is no content available on a page with a week number like `[[2023-W25]]`, a template will be inserted. In plugin settings, it possible to set user template.
   > Inserting Advanced queries into the template increases flexibility.
@@ -34,7 +36,7 @@
 
 - It becomes references for the day by nesting it in date links.
 
-### Monthly Journal
+### Monthly Journal 🌛
 
 - Click the link on the left side of the mini calendar will open a page like `[[2023/10]]`.
 > Currently, there is no page generation feature like Weekly Journal.
