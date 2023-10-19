@@ -1,6 +1,6 @@
 [English](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number)
 
-# Logseq プラグイン: *Show Weekday and Week-number* 曜日と週番号を表示する 📆
+# Logseq プラグイン: *Show Weekday and Week-number* 曜日と週番号 📆
 
 1. ジャーナルタイトルの横に曜日と週番号を表示します。
 1. 日誌にそのリンクを持つミニカレンダーを表示します。前後の個別のジャーナルにアクセスしたり、週刊レビューと月刊レビューのページへのリンクが提供されます。
