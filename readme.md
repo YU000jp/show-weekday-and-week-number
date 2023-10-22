@@ -45,17 +45,12 @@
 
 > Week-number etc.. [Document here](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/wiki/Slash-Command)
 
-### Localize day of the week in journal links
-
-> For languages other than English. Split to [Flex date format plugin](https://github.com/YU000jp/logseq-plugin-flex-date-format) 🆙
-
 ---
 
 ## Getting Started
 
-### Install from Logseq Marketplace
-
-- Press [`---`] on the top right toolbar to open [`Plugins`]. Select `Marketplace`. Type `Show` in the search field, select it from the search results and install.
+Install from Logseq Marketplace
+  - Press [`---`] on the top right toolbar to open [`Plugins`]. Select `Marketplace`. Type `Show` in the search field, select it from the search results and install.
 
    ![image](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/assets/111847207/5c3a2b34-298b-4790-8e12-01d83e289794)
 
@@ -65,42 +60,26 @@
    1. Select either US format or ISO format.
       > [Document here](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/wiki/Week-number-format)
 
+
 ### Plugin settings
 
-> [Document here](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/wiki/Plugin-Settings)
+  > [Document here](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/wiki/Plugin-Settings)
+
+### Relation
+
+  1. Localize day of the week in journal links > For languages other than English. Split to [Flex date format plugin](https://github.com/YU000jp/logseq-plugin-flex-date-format)
 
 ---
-
-## Contributions
-
-- [Show week day and week number - discuss.logseq.com](https://discuss.logseq.com/t/show-week-day-and-week-number/12685/18)
-  - [danilofaria](https://discuss.logseq.com/u/danilofaria/)
-  - [ottodevs](https://discuss.logseq.com/u/ottodevs/)
-
-## Relation
-
-- [Flex date format plugin](https://github.com/YU000jp/logseq-plugin-flex-date-format)
 
 ## Showcase / Questions / Ideas / Help
 
 > Go to the [discussion](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/discussions) tab to ask and find this kind of things.
 
-## Author
+## Contribution / Prior art & Credit
 
-- GitHub: [YU000jp](https://github.com/YU000jp)
-
-## Prior art & Credit
-
-### Library
-
-- [@logseq/libs](https://logseq.github.io/plugins/)
-- [logseq-L10N](https://github.com/sethyuan/logseq-l10n)
-- [date-fns](https://date-fns.org/)
-
-### Icon
-
-- [IonutNeagu - svgrepo.com](https://www.svgrepo.com/svg/490868/monday)
-
----
+1. Script > [Show week day and week number - discuss.logseq.com](https://discuss.logseq.com/t/show-week-day-and-week-number/12685/18) @[danilofaria](https://discuss.logseq.com/u/danilofaria/), @[ottodevs](https://discuss.logseq.com/u/ottodevs/)
+1. Library > [date-fns](https://date-fns.org/)
+1. Icon > [IonutNeagu - svgrepo.com](https://www.svgrepo.com/svg/490868/monday)
+1. Author > @[YU000jp](https://github.com/YU000jp)
 
 <a href="https://www.buymeacoffee.com/yu000japan" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-violet.png" alt="🍌Buy Me A Coffee" style="height: 42px;width: 152px" ></a>

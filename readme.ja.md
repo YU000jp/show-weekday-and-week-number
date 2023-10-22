@@ -45,17 +45,12 @@
 
 > 週番号のリンクなど。[ドキュメントはこちら](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/wiki/Slash-Command)
 
-### 日付リンクに含まれる曜日を、日本語表記にする
-
-> [柔軟な日付フォーマットプラグイン](https://github.com/YU000jp/logseq-plugin-flex-date-format)を利用してください。
-
 ---
 
 ## はじめに
 
-### Logseq マーケットプレイスからインストール
-
-- 右上のツールバーで[`---`]を押して [`プラグイン`] を開きます。`マーケットプレイス` を選択します。検索フィールドに `Show` と入力し、検索結果から選択してインストールします。
+Logseq マーケットプレイスからインストール
+  - 右上のツールバーで[`---`]を押して [`プラグイン`] を開きます。`マーケットプレイス` を選択します。検索フィールドに `Show` と入力し、検索結果から選択してインストールします。
 
    ![画像](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/assets/111847207/5c3a2b34-298b-4790-8e12-01d83e289794)
 
@@ -67,40 +62,23 @@
 
 ### プラグイン設定
 
-> [ドキュメントはこちら (英語のみ)](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/wiki/Plugin-Settings)
+> [ドキュメントはこちら (英語)](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/wiki/Plugin-Settings)
+
+### 関連
+
+1. 日付リンクに含まれる曜日を、日本語表記にする > [Flex date format プラグイン](https://github.com/YU000jp/logseq-plugin-flex-date-format)を利用してください。
 
 ---
-
-## 貢献
-
-- [曜日と週番号を表示 - discuss.logseq.com](https://discuss.logseq.com/t/show-week-day-and-week-number/12685/18)
-  - [danilofaria](https://discuss.logseq.com/u/danilofaria/)
-  - [ottodevs](https://discuss.logseq.com/u/ottodevs/)
-
-## 関連
-
-- [柔軟な日付フォーマットプラグイン](https://github.com/YU000jp/logseq-plugin-flex-date-format)
 
 # ショーケース / 質問 / アイデア / ヘルプ
 
 > [ディスカッション](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/discussions) タブに移動して、この種の情報を質問したり見つけたりできます。
 
-## 作者
+## 貢献 / クレジット
 
-- GitHub: [YU000jp](https://github.com/YU000jp)
-
-## 関連情報とクレジット
-
-### ライブラリ
-
-- [@logseq/libs](https://logseq.github.io/plugins/)
-- [logseq-L10N](https://github.com/sethyuan/logseq-l10n)
-- [date-fns](https://date-fns.org/)
-
-### アイコン
-
-- [IonutNeagu - svgrepo.com](https://www.svgrepo.com/svg/490868/monday)
-
----
+1. スクリプト > [曜日と週番号を表示 - discuss.logseq.com](https://discuss.logseq.com/t/show-week-day-and-week-number/12685/18) @[danilofaria](https://discuss.logseq.com/u/danilofaria/), @[ottodevs](https://discuss.logseq.com/u/ottodevs/)
+1. ライブラリ > [date-fns](https://date-fns.org/)
+1. アイコン > [IonutNeagu - svgrepo.com](https://www.svgrepo.com/svg/490868/monday)
+1. 製作者 > @[YU000jp](https://github.com/YU000jp)
 
 <a href="https://www.buymeacoffee.com/yu000japan" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-violet.png" alt="🍌コーヒーをご馳走してください!" style="height: 42px;width: 152px"></a>
