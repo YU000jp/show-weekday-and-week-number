@@ -194,13 +194,18 @@ const createPageContent = async (firstBlock: BlockEntity, preferredDateFormat: s
 
 const insertBlockThisWeekSection = async (uuid: string, preferredDateFormat: string, weekDaysLinkArray: string[], weekdayArray: string[]) => {
     const thisWeek = await logseq.Editor.insertBlock(uuid, "#### This Week", { sibling: true, before: false }) as BlockEntity | null
-    if (thisWeek) weekDaysLinkArray.forEach(async (weekDayName, index) => {
-            await logseq.Editor.insertBlock(
-                thisWeek.uuid,
-                `${!preferredDateFormat.includes("E") //日付フォーマットに曜日がない場合
-                    && logseq.settings!.booleanWeeklyJournalThisWeekWeekday === true ? // 曜日を有効にする
-                    (logseq.settings!.booleanWeeklyJournalThisWeekLinkWeekday === true ? // 曜日リンクを有効にする
-                        `[[${weekdayArray[index]}]] ` : weekdayArray[index])
-                    : ""} [[${weekDayName}]]\n`)
-        })
+    if (thisWeek) weekDaysLinkArray.forEach(async (eachJournal, index) => {
+        const eachDayBlock = await logseq.Editor.insertBlock(
+            thisWeek.uuid,
+            `${!preferredDateFormat.includes("E") //日付フォーマットに曜日がない場合
+                && logseq.settings!.booleanWeeklyJournalThisWeekWeekday === true ? // 曜日を有効にする
+                (logseq.settings!.booleanWeeklyJournalThisWeekLinkWeekday === true ? // 曜日リンクを有効にする
+                    `[[${weekdayArray[index]}]] ` : weekdayArray[index])
+                : ""} [[${eachJournal}]]\n`)
+        // 曜日ごとに、埋込を入れる
+        if (eachDayBlock && logseq.settings!.booleanWeeklyJournalThisWeekEmbedding === true) {
+            await logseq.Editor.insertBlock(eachDayBlock.uuid, `{{embed [[${eachJournal}]]}}`, { sibling: false, focus: false })
+            await logseq.Editor.setBlockCollapsed(eachDayBlock.uuid, true)
+        }
+    })
 }

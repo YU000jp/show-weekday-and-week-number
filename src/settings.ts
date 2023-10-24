@@ -259,6 +259,13 @@ export const settingsTemplate = (): SettingSchemaDesc[] => [
     default: false,
     description: "default: `false`",
   },
+  {//Enable embedding for each journal
+    key: "booleanWeeklyJournalThisWeekEmbedding",
+    title: t("Enable embedding for each journal"),
+    type: "boolean",
+    default: false,
+    description: "default: `false`",
+  },
   {
     key: "booleanWeeklyJournalThisWeekLinkWeekday",
     title: t(
