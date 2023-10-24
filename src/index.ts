@@ -40,6 +40,12 @@ const main = async () => {
     }
   })
 
+  // メッセージを表示する
+  if (logseq.settings && logseq.settings!.notice !== "20231024no01") {
+    logseq.UI.showMsg("Show Weekday and Week-number plugin\n\nUpdated\n\nAdd Feature\n\"Embedding for Weekly Journal\"", "info", { timeout: 4000 });
+    logseq.updateSettings({ notice: "20231024no01" });
+  }
+
   // 初回起動時に設定を促す
   if (logseq.settings?.weekNumberFormat === undefined) {
     logseq.UI.showMsg("Select either US format or ISO format", "info", { timeout: 3000 })
