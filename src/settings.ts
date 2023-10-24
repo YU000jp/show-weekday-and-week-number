@@ -1,5 +1,5 @@
-import { SettingSchemaDesc } from "@logseq/libs/dist/LSPlugin.user";
-import { t } from "logseq-l10n";
+import { SettingSchemaDesc } from "@logseq/libs/dist/LSPlugin.user"
+import { t } from "logseq-l10n"
 
 /* user setting */
 // https://logseq.github.io/plugins/types/SettingSchemaDesc.html
@@ -208,35 +208,6 @@ export const settingsTemplate = (): SettingSchemaDesc[] => [
     default: true,
     description: t("Enable the link and function. If there is no content available on a page with a week number like 2023-W25, a template will be inserted."),
   },
-  {
-    key: "weeklyJournalTemplateName",
-    title: t("Template name"),
-    type: "string",
-    default: "",
-    description: t("Input the template name (default is blank)"),
-  },
-  {
-    key: "weeklyJournalSetPageTag",
-    title: t("Set page tag (Add to tags property)"),
-    type: "string",
-    default: "",
-    description: t("Input a page name (default is blank)"),
-  },
-  {
-    key: "booleanWeeklyJournalThisWeek",
-    title: t("Enable \"This Week\" section"),
-    type: "boolean",
-    default: true,
-    description: "",
-  },
-  {//"This Week" セクションの位置を選択する(上か下か)
-    key: "weeklyJournalThisWeekPosition",
-    title: t("\"This Week\" section position"),
-    type: "enum",
-    enumChoices: ["top", "bottom"],
-    default: "top",
-    description: "",
-  },
   {//ージタグの種類を選択する
     key: "weeklyJournalPageTag",
     title: t("Page-tags type"),
@@ -253,10 +224,37 @@ export const settingsTemplate = (): SettingSchemaDesc[] => [
     description: t("default: `yyyy(: year), yyyy/MM(: month), yyyy-Www(: previous), yyyy-Www(: next)`"),
   },
   {
+    key: "weeklyJournalSetPageTag",
+    title: t("Set page tag (Add to tags property)"),
+    type: "string",
+    default: "",
+    description: t("Input a page name (default is blank)"),
+  },
+  {
+    key: "weeklyJournalTemplateName",
+    title: t("Template name"),
+    type: "string",
+    default: "",
+    description: t("Input the template name (default is blank)"),
+  },
+  {
+    key: "booleanWeeklyJournalThisWeek",
+    title: t("Enable \"This Week\" section"),
+    type: "boolean",
+    default: true,
+    description: "",
+  },
+  {//"This Week" セクションの位置を選択する(上か下か)
+    key: "weeklyJournalThisWeekPosition",
+    title: t("\"This Week\" section position"),
+    type: "enum",
+    enumChoices: ["top", "bottom"],
+    default: "top",
+    description: "",
+  },
+  {
     key: "booleanWeeklyJournalThisWeekWeekday",
-    title: t(
-      "Enable the day of the week in the `This Week` section"
-    ),
+    title: t("Enable the day of the week in the `This Week` section"),
     type: "boolean",
     default: false,
     description: "default: `false`",
@@ -270,4 +268,4 @@ export const settingsTemplate = (): SettingSchemaDesc[] => [
     default: false,
     description: "default: `false`",
   },
-];
+]
