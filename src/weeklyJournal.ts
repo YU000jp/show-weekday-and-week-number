@@ -1,6 +1,7 @@
 import { AppUserConfigs, BlockEntity } from '@logseq/libs/dist/LSPlugin.user'
 import { getISOWeek, getWeek, format, addDays, getISOWeekYear, getWeekYear, startOfWeek, eachDayOfInterval, startOfISOWeek, subDays, addWeeks, subWeeks, } from 'date-fns'//https://date-fns.org/
 import { boundariesProcess } from './boundaries'
+import { t } from 'logseq-l10n'
 let processingFoundBoundaries: boolean = false
 let processingWeeklyJournal: boolean = false
 
@@ -158,7 +159,7 @@ const weeklyJournalInsertTemplate = async (uuid: string, templateName: string) =
     if (templateName === "") return
     if (await logseq.App.existTemplate(templateName) as boolean) {
         await logseq.App.insertTemplate(uuid, templateName)
-        logseq.UI.showMsg('Weekly journal created', 'success', { timeout: 2000 })
+        logseq.UI.showMsg(t("Weekly journal created"), 'success', { timeout: 2000 })
     } else {
         logseq.UI.showMsg(`Template "${templateName}" does not exist.`, 'warning', { timeout: 2000 })
     }
@@ -193,7 +194,7 @@ const createPageContent = async (firstBlock: BlockEntity, preferredDateFormat: s
 
 
 const insertBlockThisWeekSection = async (uuid: string, preferredDateFormat: string, weekDaysLinkArray: string[], weekdayArray: string[]) => {
-    const thisWeek = await logseq.Editor.insertBlock(uuid, "#### This Week", { sibling: true, before: false }) as BlockEntity | null
+    const thisWeek = await logseq.Editor.insertBlock(uuid, `#### ${t("This Week")}`, { sibling: true, before: false }) as BlockEntity | null
     if (thisWeek) weekDaysLinkArray.forEach(async (eachJournal, index) => {
         const eachDayBlock = await logseq.Editor.insertBlock(
             thisWeek.uuid,
