@@ -194,14 +194,13 @@ const createPageContent = async (firstBlock: BlockEntity, preferredDateFormat: s
 
 const insertBlockThisWeekSection = async (uuid: string, preferredDateFormat: string, weekDaysLinkArray: string[], weekdayArray: string[]) => {
     const thisWeek = await logseq.Editor.insertBlock(uuid, "#### This Week", { sibling: true, before: false }) as BlockEntity | null
-    if (thisWeek) {
-        if (!preferredDateFormat.includes("E")) weekDaysLinkArray.forEach(async (weekDayName, index) => {
+    if (thisWeek) weekDaysLinkArray.forEach(async (weekDayName, index) => {
             await logseq.Editor.insertBlock(
                 thisWeek.uuid,
-                `${logseq.settings!.booleanWeeklyJournalThisWeekWeekday === true ?
-                    (logseq.settings!.booleanWeeklyJournalThisWeekLinkWeekday === true ?
+                `${!preferredDateFormat.includes("E") //日付フォーマットに曜日がない場合
+                    && logseq.settings!.booleanWeeklyJournalThisWeekWeekday === true ? // 曜日を有効にする
+                    (logseq.settings!.booleanWeeklyJournalThisWeekLinkWeekday === true ? // 曜日リンクを有効にする
                         `[[${weekdayArray[index]}]] ` : weekdayArray[index])
                     : ""} [[${weekDayName}]]\n`)
         })
-    }
 }
