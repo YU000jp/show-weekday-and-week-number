@@ -1,4 +1,5 @@
 {
+  "\"This Week\" section > Embed feature > Unlink date links for each journal (to avoid duplication of \"Linked References\" if references are not used)": "\"Hierdie week\" afdeling > Inbedding funksie > Ontkoppel datumskakels vir elke joernaal (om duplisering van \"Gekoppelde verwysings\" te voorkom as verwysings nie gebruik word nie)",
   "\"This Week\" section position": "Waar om die afdeling \"Hierdie week\" in te voeg",
   "*This setting does not affect the graph": "* Hierdie instelling beïnvloed nie kaarte nie",
   "`US format`: Sunday, `ISO(EU) format`: Monday, [>> document here](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/wiki/Week-number-format)": "Amerikaanse formaat: Sondag begin, ISO (vir EU) formate: Maandag begin, [>> dokumente](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/wiki/Week-number-format)",
@@ -10,6 +11,7 @@
   "default: `yyyy(: year), yyyy/MM(: month), yyyy-Www(: previous), yyyy-Www(: next)`": "Standaard: 'yyyy(: jaar), yyyy/MM(: jaar/maand), yyyy-www(: jaar - vorige week), yyyy-www(: jaar - volgende week)'",
   "Enable \"This Week\" section": "Aktiveer die afdeling \"Hierdie week\" (skakel na elke dag van die week)",
   "Enable day of the week": "Wys die dag van die week",
+  "Enable embedding for each journal": "Aktiveer inbedding vir elke joernaal",
   "Enable feature": "Aktiveer die funksie",
   "Enable monthly journal link": "Aktiveer 'n skakel na 'n maandelikse joernaal",
   "Enable relative time": "Toon relatiewe tyd",
@@ -41,12 +43,11 @@
   "Show week number (calculate from the date of Monday)": "Vertoon weekgetalle (bereken in dae vanaf Maandag)",
   "Show week number of the year or month (unit)": "Kies die eenheid van die weeknommer in die jaar of maand",
   "Template name": "Sjabloon naam",
+  "This Week": "Hierdie week",
   "Use also on journals": "Word ook in joernale gebruik",
   "Use also on Weekly Journal": "Ook gebruik in die Weeklikse Joernaal",
   "Week number calculation (across years)": "Hoe weekgetalle bereken word (oor jare heen)",
   "Week number: ": "Week nommer: ",
-  "Enable embedding for each journal": "Aktiveer inbedding vir elke joernaal",
   "Weekly Journal": "Weeklikse Joernaal",
-  "This Week": "Hierdie week",
   "Weekly journal created": "Weeklikse joernaal geskep"
 }

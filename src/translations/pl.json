@@ -1,4 +1,5 @@
 {
+  "\"This Week\" section > Embed feature > Unlink date links for each journal (to avoid duplication of \"Linked References\" if references are not used)": "Sekcja \"W tym tygodniu\" > Funkcja osadzania > Odłącz linki daty dla każdego dziennika (aby uniknąć duplikacji \"Powiązanych odwołań\", jeśli odwołania nie są używane)",
   "\"This Week\" section position": "Gdzie wstawić sekcję \"W tym tygodniu\"",
   "*This setting does not affect the graph": "*To ustawienie nie ma wpływu na wykresy",
   "`US format`: Sunday, `ISO(EU) format`: Monday, [>> document here](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/wiki/Week-number-format)": "Format amerykański: niedziela zaczyna, ISO (dla UE) formaty: poniedziałek zaczyna, [>> dokumenty](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/wiki/Week-number-format)",
@@ -10,6 +11,7 @@
   "default: `yyyy(: year), yyyy/MM(: month), yyyy-Www(: previous), yyyy-Www(: next)`": "Wartości domyślne: 'yyyy(: rok), yyyy/MM(: rok/miesiąc), yyyy-www(: rok - poprzedni tydzień), yyyy-www(: rok - następny tydzień)'",
   "Enable \"This Week\" section": "Włącz sekcję \"W tym tygodniu\" (link do każdego dnia tygodnia)",
   "Enable day of the week": "Pokaż dzień tygodnia",
+  "Enable embedding for each journal": "Włącz osadzanie dla każdego arkusza",
   "Enable feature": "Włącz tę funkcję",
   "Enable monthly journal link": "Włączanie łącza do miesięcznika",
   "Enable relative time": "Pokaż czas względny",
@@ -41,12 +43,11 @@
   "Show week number (calculate from the date of Monday)": "Wyświetlanie numerów tygodni (liczonych w dniach rozpoczynających się w poniedziałek)",
   "Show week number of the year or month (unit)": "Wybierz jednostkę numeracji tygodni w roku lub miesiącu",
   "Template name": "Nazwa szablonu",
+  "This Week": "W tym tygodniu",
   "Use also on journals": "Używany również w czasopismach",
   "Use also on Weekly Journal": "Używany również w Weekly Journal",
   "Week number calculation (across years)": "Sposób obliczania liczby tygodni (w różnych latach)",
   "Week number: ": "Numer tygodnia: ",
-  "Enable embedding for each journal": "Włącz osadzanie dla każdego arkusza",
   "Weekly Journal": "Tygodnik",
-  "This Week": "W tym tygodniu",
   "Weekly journal created": "Tygodnik utworzony"
 }

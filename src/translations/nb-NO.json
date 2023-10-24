@@ -1,4 +1,5 @@
 {
+  "\"This Week\" section > Embed feature > Unlink date links for each journal (to avoid duplication of \"Linked References\" if references are not used)": "\"Denne uken\"-delen > Innebyggingsfunksjon > Fjern koblinger til datokoblinger for hver journal (for å unngå duplisering av \"Lenkede referanser\" hvis referanser ikke brukes)",
   "\"This Week\" section position": "Hvor skal du sette inn delen \"Denne uken\"",
   "*This setting does not affect the graph": "*Denne innstillingen påvirker ikke diagrammer",
   "`US format`: Sunday, `ISO(EU) format`: Monday, [>> document here](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/wiki/Week-number-format)": "USA-format: Søndag starter, ISO (for EU) formater: Mandag starter, [>> dokumenter](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/wiki/Week-number-format)",
@@ -10,6 +11,7 @@
   "default: `yyyy(: year), yyyy/MM(: month), yyyy-Www(: previous), yyyy-Www(: next)`": "Standardverdier: 'åååå(: år), åååå/MM(: år/måned), åååå-www(: år - forrige uke), åååå-www(: år - neste uke)'",
   "Enable \"This Week\" section": "Aktiver delen \"Denne uken\" (lenke til hver ukedag)",
   "Enable day of the week": "Vis ukedagen",
+  "Enable embedding for each journal": "Aktivere innebygging for hver journal",
   "Enable feature": "Aktiver funksjonen",
   "Enable monthly journal link": "Aktivere en kobling til en månedlig journal",
   "Enable relative time": "Vis relativ tid",
@@ -41,12 +43,11 @@
   "Show week number (calculate from the date of Monday)": "Vis ukenumre (beregnet i dager som starter mandag)",
   "Show week number of the year or month (unit)": "Velg enheten for ukenummerering i året eller måneden",
   "Template name": "Navn på mal",
+  "This Week": "Denne uken",
   "Use also on journals": "Brukes også i tidsskrifter",
   "Use also on Weekly Journal": "Brukes også i Ukebladet",
   "Week number calculation (across years)": "Hvordan ukenumre beregnes (på tvers av år)",
   "Week number: ": "Ukenummer: ",
-  "Enable embedding for each journal": "Aktivere innebygging for hver journal",
   "Weekly Journal": "Ukentlig Journal",
-  "This Week": "Denne uken",
   "Weekly journal created": "Ukentlig journal opprettet"
 }

@@ -199,10 +199,16 @@ const insertBlockThisWeekSection = async (uuid: string, preferredDateFormat: str
         const eachDayBlock = await logseq.Editor.insertBlock(
             thisWeek.uuid,
             `${!preferredDateFormat.includes("E") //日付フォーマットに曜日がない場合
-                && logseq.settings!.booleanWeeklyJournalThisWeekWeekday === true ? // 曜日を有効にする
-                (logseq.settings!.booleanWeeklyJournalThisWeekLinkWeekday === true ? // 曜日リンクを有効にする
-                    `[[${weekdayArray[index]}]] ` : weekdayArray[index])
-                : ""} [[${eachJournal}]]\n`)
+                && logseq.settings!.booleanWeeklyJournalThisWeekWeekday === true ?
+                // 曜日を有効にする
+                (logseq.settings!.booleanWeeklyJournalThisWeekLinkWeekday === true ?
+                    // 曜日リンクを有効にする
+                    `[[${weekdayArray[index]}]] `
+                    : weekdayArray[index])
+                // 埋め込みの場合に、日付リンクを解除する
+                : ""} ${logseq.settings!.booleanWJThisWeekEmbeddingUnlink === true ?
+                    eachJournal
+                    : `[[${eachJournal}]]`}\n`)
         // 曜日ごとに、埋込を入れる
         if (eachDayBlock && logseq.settings!.booleanWeeklyJournalThisWeekEmbedding === true) {
             await logseq.Editor.insertBlock(eachDayBlock.uuid, `{{embed [[${eachJournal}]]}}`, { sibling: false, focus: false })

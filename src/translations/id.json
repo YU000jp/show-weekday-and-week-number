@@ -1,4 +1,5 @@
 {
+  "\"This Week\" section > Embed feature > Unlink date links for each journal (to avoid duplication of \"Linked References\" if references are not used)": "Bagian \"Minggu Ini\" > Fitur Penyisipan > Hapus tautan tanggal untuk setiap jurnal (untuk menghindari duplikasi \"Referensi Terhubung\" jika referensi tidak digunakan)",
   "\"This Week\" section position": "Tempat menyisipkan bagian \"Minggu Ini\"",
   "*This setting does not affect the graph": "*Pengaturan ini tidak mempengaruhi grafik",
   "`US format`: Sunday, `ISO(EU) format`: Monday, [>> document here](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/wiki/Week-number-format)": "Format AS: Minggu dimulai, ISO (untuk UE) format: Senin dimulai, [>> dokumen](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/wiki/Week-number-format)",
@@ -10,6 +11,7 @@
   "default: `yyyy(: year), yyyy/MM(: month), yyyy-Www(: previous), yyyy-Www(: next)`": "Default: 'yyyy(: tahun), yyyy/MM(: tahun/bulan), yyyy-www(: tahun - minggu sebelumnya), yyyy-www(: tahun - minggu depan)'",
   "Enable \"This Week\" section": "Aktifkan bagian \"Minggu Ini\" (tautan ke setiap hari dalam seminggu)",
   "Enable day of the week": "Memperlihatkan hari dalam seminggu",
+  "Enable embedding for each journal": "Aktifkan penyematan untuk setiap jurnal",
   "Enable feature": "Aktifkan fitur",
   "Enable monthly journal link": "Mengaktifkan link ke jurnal bulanan",
   "Enable relative time": "Perlihatkan waktu relatif",
@@ -41,12 +43,11 @@
   "Show week number (calculate from the date of Monday)": "Menampilkan nomor minggu (dihitung dalam hari mulai Senin)",
   "Show week number of the year or month (unit)": "Pilih satuan penomoran minggu dalam tahun atau bulan",
   "Template name": "Nama templat",
+  "This Week": "Minggu Ini",
   "Use also on journals": "Juga digunakan dalam jurnal",
   "Use also on Weekly Journal": "Juga digunakan dalam Jurnal Mingguan",
   "Week number calculation (across years)": "Bagaimana jumlah minggu dihitung (sepanjang tahun)",
   "Week number: ": "Nomor Minggu: ",
-  "Enable embedding for each journal": "Aktifkan penyematan untuk setiap jurnal",
   "Weekly Journal": "Jurnal Mingguan",
-  "This Week": "Minggu Ini",
   "Weekly journal created": "Jurnal mingguan dibuat"
 }

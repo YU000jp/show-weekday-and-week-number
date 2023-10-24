@@ -1,4 +1,5 @@
 {
+  "\"This Week\" section > Embed feature > Unlink date links for each journal (to avoid duplication of \"Linked References\" if references are not used)": "Розділ «Цей тиждень»> Функція вбудовування> Відключити посилання на дату для кожного журналу (щоб уникнути дублювання «Посилань на посилання», якщо посилання не використовуються)",
   "\"This Week\" section position": "Куди вставити розділ «Цього тижня»",
   "*This setting does not affect the graph": "* Цей параметр не впливає на графіки",
   "`US format`: Sunday, `ISO(EU) format`: Monday, [>> document here](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/wiki/Week-number-format)": "Формат США: початок неділі, формат ISO (для ЄС): початок понеділка, [>> документи](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/wiki/Week-number-format)",
@@ -10,6 +11,7 @@
   "default: `yyyy(: year), yyyy/MM(: month), yyyy-Www(: previous), yyyy-Www(: next)`": "Типове значення: 'yyyy(: year), yyyy/MM(: рік/місяць), yyyy-www(: рік - попередній тиждень), yyyy-www(: рік - наступний тиждень)'",
   "Enable \"This Week\" section": "Увімкніть розділ «Цього тижня» (посилання на кожен день тижня)",
   "Enable day of the week": "Показати день тижня",
+  "Enable embedding for each journal": "Увімкнути вбудовування для кожного журналу",
   "Enable feature": "Увімкніть функцію",
   "Enable monthly journal link": "Увімкнення посилання на щомісячний журнал",
   "Enable relative time": "Показати відносний час",
@@ -41,12 +43,11 @@
   "Show week number (calculate from the date of Monday)": "Відображення номерів тижнів (обчислюється в днях, починаючи з понеділка)",
   "Show week number of the year or month (unit)": "Виберіть одиницю нумерації тижнів у році або місяці",
   "Template name": "Назва шаблону",
+  "This Week": "Цей тиждень",
   "Use also on journals": "Також використовується в журналах",
   "Use also on Weekly Journal": "Також використовується в Weekly Journal",
   "Week number calculation (across years)": "Як обчислюється кількість тижнів (за роками)",
   "Week number: ": "Номер тижня: ",
-  "Enable embedding for each journal": "Увімкнути вбудовування для кожного журналу",
   "Weekly Journal": "Щотижневий журнал",
-  "This Week": "Цей тиждень",
   "Weekly journal created": "Щотижневий журнал створено"
 }

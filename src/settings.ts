@@ -266,6 +266,13 @@ export const settingsTemplate = (): SettingSchemaDesc[] => [
     default: false,
     description: "default: `false`",
   },
+  {//Enable embedding for each journal ("Linked References"が重複するのを防ぐため、日付リンクを解除する。参照を使わない場合)
+    key: "booleanWJThisWeekEmbeddingUnlink",
+    title: t("\"This Week\" section > Embed feature > Unlink date links for each journal (to avoid duplication of \"Linked References\" if references are not used)"),
+    type: "boolean",
+    default: false,
+    description: "default: `false`",
+  },
   {
     key: "booleanWeeklyJournalThisWeekLinkWeekday",
     title: t(

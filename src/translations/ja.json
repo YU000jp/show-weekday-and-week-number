@@ -1,4 +1,5 @@
 {
+    "\"This Week\" section > Embed feature > Unlink date links for each journal (to avoid duplication of \"Linked References\" if references are not used)": "\"This Week\"セクション > 埋込機能 > 各日記の日付リンクを解除する (参照を使用しない場合に\"Linked References\"の重複を避けるため)",
     "\"This Week\" section position": "\"This Week\"セクションの挿入位置",
     "*This setting does not affect the graph": "*この設定はグラフには影響しません",
     "`US format`: Sunday, `ISO(EU) format`: Monday, [>> document here](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/wiki/Week-number-format)": "USフォーマット: 日曜日始まり, ISO(EU向け)フォーマット: 月曜日始まり, [>> ドキュメント](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/wiki/%E9%80%B1%E7%95%AA%E5%8F%B7%E3%83%95%E3%82%A9%E3%83%BC%E3%83%9E%E3%83%83%E3%83%88%E3%81%AE%E9%81%B8%E6%8A%9E%E8%82%A2-(Japanese))",
@@ -10,6 +11,7 @@
     "default: `yyyy(: year), yyyy/MM(: month), yyyy-Www(: previous), yyyy-Www(: next)`": "デフォルト: `yyyy(: 年), yyyy/MM(: 年/月), yyyy-Www(: 年-前の週), yyyy-Www(: 年-次の週)`",
     "Enable \"This Week\" section": "\"This Week\"セクションを有効にする (各曜日へのリンク)",
     "Enable day of the week": "曜日を表示する",
+    "Enable embedding for each journal": "各日記に埋め込みを有効にする",
     "Enable feature": "機能を有効にする",
     "Enable monthly journal link": "月間レビューへのリンクを有効にする",
     "Enable relative time": "相対時間を表示する",
@@ -41,12 +43,11 @@
     "Show week number (calculate from the date of Monday)": "週番号を表示する (月曜日からの日数で計算する)",
     "Show week number of the year or month (unit)": "週番号の単位を年か月か選択する",
     "Template name": "テンプレート名",
+    "This Week": "今週",
     "Use also on journals": "日誌でも使用する",
     "Use also on Weekly Journal": "Weekly Journalでも使用する",
     "Week number calculation (across years)": "週番号の計算方法 (年をまたぐ場合)",
     "Week number: ": "週番号: ",
-    "Enable embedding for each journal": "各日記に埋め込みを有効にする",
     "Weekly Journal": "Weekly Journal (週間レビュー)",
-    "This Week": "今週",
     "Weekly journal created": "Weekly journal が作成されました"
 }

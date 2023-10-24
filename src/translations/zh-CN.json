@@ -1,4 +1,5 @@
 {
+  "\"This Week\" section > Embed feature > Unlink date links for each journal (to avoid duplication of \"Linked References\" if references are not used)": "\"本周\"部分 > 嵌入功能 > 取消每个期刊的日期链接（以避免\"链接引用\"重复，如果不使用引用）",
   "\"This Week\" section position": "在何处插入“本周”部分",
   "*This setting does not affect the graph": "*此设置不影响图表",
   "`US format`: Sunday, `ISO(EU) format`: Monday, [>> document here](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/wiki/Week-number-format)": "美国格式：星期日开始，ISO（欧盟）格式：星期一开始，[>>文档](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/wiki/Week-number-format)",
@@ -10,6 +11,7 @@
   "default: `yyyy(: year), yyyy/MM(: month), yyyy-Www(: previous), yyyy-Www(: next)`": "默认值：“yyyy（：年），yyyy/MM（：年/月），yyyy-www（：年 - 上周），yyyy-www（：年 - 下周）”",
   "Enable \"This Week\" section": "启用“本周”部分（链接到一周中的每一天）",
   "Enable day of the week": "显示星期几",
+  "Enable embedding for each journal": "为每个期刊启用嵌入",
   "Enable feature": "启用该功能",
   "Enable monthly journal link": "启用指向月刊的链接",
   "Enable relative time": "显示相对时间",
@@ -41,12 +43,11 @@
   "Show week number (calculate from the date of Monday)": "显示周数（以从星期一开始的天数计算）",
   "Show week number of the year or month (unit)": "选择以年或月为单位的周编号单位",
   "Template name": "模板名称",
+  "This Week": "本周",
   "Use also on journals": "也用于期刊",
   "Use also on Weekly Journal": "也用于周刊",
   "Week number calculation (across years)": "如何计算周数（跨年）",
   "Week number: ": "周数： ",
-  "Enable embedding for each journal": "为每个期刊启用嵌入",
   "Weekly Journal": "周刊",
-  "This Week": "本周",
   "Weekly journal created": "已创建周刊"
 }

@@ -1,4 +1,5 @@
 {
+  "\"This Week\" section > Embed feature > Unlink date links for each journal (to avoid duplication of \"Linked References\" if references are not used)": "\"Questa settimana\" sezione > Funzione di incorporamento > Scollega i collegamenti alle date per ogni giornale (per evitare la duplicazione di \"Riferimenti collegati\" se non vengono utilizzati riferimenti)",
   "\"This Week\" section position": "Dove inserire la sezione \"Questa settimana\"",
   "*This setting does not affect the graph": "*Questa impostazione non influisce sui grafici",
   "`US format`: Sunday, `ISO(EU) format`: Monday, [>> document here](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/wiki/Week-number-format)": "Formato USA: inizia la domenica, formati ISO (per l'UE): inizia il lunedì, [>> documenti](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/wiki/Week-number-format)",
@@ -10,6 +11,7 @@
   "default: `yyyy(: year), yyyy/MM(: month), yyyy-Www(: previous), yyyy-Www(: next)`": "Impostazioni predefinite: 'yyyy(: anno), yyyy/MM(: anno/mese), yyyy-www(: anno - settimana precedente), yyyy-www(: anno - settimana successiva)'",
   "Enable \"This Week\" section": "Abilita la sezione \"Questa settimana\" (link a ogni giorno della settimana)",
   "Enable day of the week": "Mostra il giorno della settimana",
+  "Enable embedding for each journal": "Abilitare l'incorporamento per ogni journal",
   "Enable feature": "Abilita la funzione",
   "Enable monthly journal link": "Abilitare un collegamento a un giornale mensile",
   "Enable relative time": "Mostra tempo relativo",
@@ -41,12 +43,11 @@
   "Show week number (calculate from the date of Monday)": "Visualizzare i numeri delle settimane (calcolati in giorni a partire da lunedì)",
   "Show week number of the year or month (unit)": "Selezionare l'unità di numerazione delle settimane nell'anno o nel mese",
   "Template name": "Nome del modello",
+  "This Week": "Questa settimana",
   "Use also on journals": "Utilizzato anche nelle riviste",
   "Use also on Weekly Journal": "Utilizzato anche nel Weekly Journal",
   "Week number calculation (across years)": "Come vengono calcolati i numeri delle settimane (tra gli anni)",
   "Week number: ": "Numero della settimana: ",
-  "Enable embedding for each journal": "Abilitare l'incorporamento per ogni journal",
   "Weekly Journal": "Giornale settimanale",
-  "This Week": "Questa settimana",
   "Weekly journal created": "Giornale settimanale creato"
 }

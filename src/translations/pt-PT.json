@@ -1,4 +1,5 @@
 {
+  "\"This Week\" section > Embed feature > Unlink date links for each journal (to avoid duplication of \"Linked References\" if references are not used)": "Seção \"Esta semana\" > Recurso de incorporação > Desvincular links de data para cada jornal (para evitar duplicação de \"Referências vinculadas\" se as referências não forem usadas)",
   "\"This Week\" section position": "Onde inserir a secção \"Esta semana\"",
   "*This setting does not affect the graph": "*Esta definição não afeta os gráficos",
   "`US format`: Sunday, `ISO(EU) format`: Monday, [>> document here](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/wiki/Week-number-format)": "Formato EUA: domingo começa, ISO (para a UE) formatos: segunda-feira começa, [>> documentos](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/wiki/Week-number-format)",
@@ -10,6 +11,7 @@
   "default: `yyyy(: year), yyyy/MM(: month), yyyy-Www(: previous), yyyy-Www(: next)`": "Padrões: 'aaaa(: ano), aaaa/MM(: ano/mês), aaaa-www(: ano - semana anterior), aaaa-www(: ano - próxima semana)'",
   "Enable \"This Week\" section": "Ative a seção \"Esta semana\" (link para cada dia da semana)",
   "Enable day of the week": "Mostrar o dia da semana",
+  "Enable embedding for each journal": "Habilitar a incorporação para cada diário",
   "Enable feature": "Ativar o recurso",
   "Enable monthly journal link": "Habilitar um link para um diário mensal",
   "Enable relative time": "Mostrar tempo relativo",
@@ -41,12 +43,11 @@
   "Show week number (calculate from the date of Monday)": "Exibir números da semana (calculados em dias a partir de segunda-feira)",
   "Show week number of the year or month (unit)": "Selecione a unidade de numeração da semana no ano ou mês",
   "Template name": "Nome do modelo",
+  "This Week": "Esta semana",
   "Use also on journals": "Também utilizado em revistas científicas",
   "Use also on Weekly Journal": "Também utilizado no Jornal Semanal",
   "Week number calculation (across years)": "Como são calculados os números da semana (entre anos)",
   "Week number: ": "Número da semana: ",
-  "Enable embedding for each journal": "Habilitar a incorporação para cada diário",
   "Weekly Journal": "Jornal Semanal",
-  "This Week": "Esta semana",
   "Weekly journal created": "Jornal semanal criado"
 }

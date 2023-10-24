@@ -1,4 +1,5 @@
 {
+  "\"This Week\" section > Embed feature > Unlink date links for each journal (to avoid duplication of \"Linked References\" if references are not used)": "Sekcia \"Tento týždeň\" > Funkcia vkladania > Odpojenie odkazov na dátumy pre každý denník (aby sa zabránilo zdvojeniu \"Prepojených odkazov\", ak sa odkazy nepoužívajú)",
   "\"This Week\" section position": "Kam vložiť sekciu \"Tento týždeň\"",
   "*This setting does not affect the graph": "*Toto nastavenie nemá vplyv na grafy",
   "`US format`: Sunday, `ISO(EU) format`: Monday, [>> document here](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/wiki/Week-number-format)": "Formát USA: začiatok nedele, formáty ISO (pre EÚ): začiatok pondelka, [>> dokumenty](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/wiki/Week-number-format)",
@@ -10,6 +11,7 @@
   "default: `yyyy(: year), yyyy/MM(: month), yyyy-Www(: previous), yyyy-Www(: next)`": "Predvolené hodnoty: rrrr(: rok), rrrr/MM(: rok/mesiac), rrrr-www(: rok - predchádzajúci týždeň), rrrr-www(: rok - budúci týždeň)\"",
   "Enable \"This Week\" section": "Povoľte sekciu Tento týždeň (odkaz na každý deň v týždni)",
   "Enable day of the week": "Zobraziť deň v týždni",
+  "Enable embedding for each journal": "Povoliť vkladanie pre každý denník",
   "Enable feature": "Povoľte túto funkciu",
   "Enable monthly journal link": "Povolenie prepojenia na mesačník",
   "Enable relative time": "Zobraziť relatívny čas",
@@ -41,12 +43,11 @@
   "Show week number (calculate from the date of Monday)": "Zobrazenie čísel týždňov (vypočítané v dňoch začínajúcich od pondelka)",
   "Show week number of the year or month (unit)": "Vyberte jednotku číslovania týždňov v roku alebo mesiaci",
   "Template name": "Názov šablóny",
+  "This Week": "Tento týždeň",
   "Use also on journals": "Používa sa aj v časopisoch",
   "Use also on Weekly Journal": "Používa sa aj v týždenníku",
   "Week number calculation (across years)": "Ako sa počítajú čísla týždňov (naprieč rokmi)",
   "Week number: ": "Číslo týždňa: ",
-  "Enable embedding for each journal": "Povoliť vkladanie pre každý denník",
   "Weekly Journal": "Týždenník",
-  "This Week": "Tento týždeň",
   "Weekly journal created": "Týždenník vytvorený"
 }
