@@ -1,3 +1,10 @@
+# [1.43.0](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.42.0...v1.43.0) (2023-10-24)
+
+
+### Features
+
+* **Add:** [#119](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/119) plugin settngs > Weekly Journal > "This Week" > embed feature ([b3629c6](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/b3629c6f15d1ba9dca21a605d3f59ca990380ebc))
+
 # [1.42.0](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.41.0...v1.42.0) (2023-10-24)
 
 
