@@ -1,6 +1,5 @@
 import { PageEntity } from "@logseq/libs/dist/LSPlugin.user"
 import { getISOWeekYear, getISOWeek, getWeekYear, getWeek } from "date-fns"
-import { link } from "fs"
 import { t } from "logseq-l10n"
 
 export const getJournalDayDate = (str: string): Date => new Date(
