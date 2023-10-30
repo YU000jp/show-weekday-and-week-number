@@ -219,7 +219,7 @@ const JournalPageTitle = async (titleElement: HTMLElement) => {
     || titleElement.nextElementSibling?.className === "showWeekday") return // check if element already has date info
   processingJournalTitlePage = true
 
-  //ジャーナルのページタイトルの場合のみ
+  //ジャーナルのページ名の場合のみ
 
   //設定項目ですべてのトグルがオフの場合の処理
   if (
