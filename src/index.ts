@@ -133,7 +133,7 @@ const onSettingsChanged = () => logseq.onSettingsChanged((newSet: LSPluginBaseIn
     if (oldSet.booleanBoundaries === false && newSet.booleanBoundaries === true) SettingsChangedJournalBoundariesEnable()//Journal boundariesを表示する
     else
       if (oldSet.booleanJournalsBoundaries === false && newSet.booleanJournalsBoundaries === true
-        && parent.document.getElementById("journals") as HTMLDivElement) boundaries("journals")//ジャーナルの場合のみ
+        && parent.document.getElementById("journals") as HTMLDivElement) boundaries("journals")//日誌の場合のみ
 
   if (oldSet.boundariesWeekStart !== newSet.boundariesWeekStart
     || oldSet.localizeOrEnglish !== newSet.localizeOrEnglish
@@ -219,7 +219,7 @@ const JournalPageTitle = async (titleElement: HTMLElement) => {
     || titleElement.nextElementSibling?.className === "showWeekday") return // check if element already has date info
   processingJournalTitlePage = true
 
-  //ジャーナルのページ名の場合のみ
+  //日誌のページ名の場合のみ
 
   //設定項目ですべてのトグルがオフの場合の処理
   if (
@@ -259,7 +259,7 @@ const JournalPageTitle = async (titleElement: HTMLElement) => {
     }
   }
 
-  //ジャーナルタイトルから日付を取得し、右側に情報を表示する
+  //日誌タイトルから日付を取得し、右側に情報を表示する
   const title: string = titleElement.dataset.localize === "true" ? titleElement.dataset.ref || "" : titleElement.textContent
   if (title === "") return
   const page = (await logseq.Editor.getPage(title)) as PageEntity | null
