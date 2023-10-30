@@ -1,125 +1,127 @@
-/* プラグイン設定の見た目を変える(heading) */
-body.show-justify>div#root>div>main>div#app-container>div#left-container>div#main-container>div#main-content-container {
+body {
+    &.show-justify>div#root>div>main>div#app-container>div#left-container>div#main-container>div#main-content-container div {
 
-    & div.is-journals div.ls-page-title,
-    div#journals div.journal>div.flex div.content>div.foldable-title>div.flex.items-center {
-        justify-content: space-around;
-    }
-}
-
-body>div#root>div>main {
-    & article>div[data-id="show-weekday-and-week-number"] div.heading-item {
-        margin-top: 3em;
-        border-top-width: 1px;
-        padding-top: 1em;
+        &.is-journals div.ls-page-title,
+        &#journals div.journal>div.flex div.content>div.foldable-title>div.flex.items-center {
+            justify-content: space-around;
+        }
     }
 
-    &>div#app-container>div#left-container>div#main-container>div#main-content-container {
-        & div.is-journals {
-            & div.ls-page-title {
-                display: flex;
-                flex-wrap: nowrap;
-                align-items: center;
+    &>div#root>div>main {
+        & article>div[data-id="show-weekday-and-week-number"] div.heading-item {
+            /* プラグイン設定の見た目を変える(heading) */
+            margin-top: 3em;
+            border-top-width: 1px;
+            padding-top: 1em;
+        }
 
-                & h1.title {
-                    margin-top: .8em;
-                    width: fit-content;
+        &>div#app-container>div#left-container>div#main-container>div#main-content-container {
+            & div.is-journals {
+                & div.ls-page-title {
+                    display: flex;
+                    flex-wrap: nowrap;
+                    align-items: center;
+
+                    & h1.title {
+                        margin-top: .8em;
+                        width: fit-content;
+                    }
+                }
+
+                &>div.relative div div.ls-page-title span#hierarchyLinks {
+                    position: absolute;
+                    margin-top: -4em;
                 }
             }
 
-            &>div.relative div div.ls-page-title span#hierarchyLinks {
-                position: absolute;
-                margin-top: -4em;
-            }
-        }
+            & div {
+                &:is(#journals, .is-journals) h1.title :is(a.title, span.title a) {
+                    color: inherit;
+                }
 
-        & div:is(#journals, .is-journals) h1.title :is(a.title, span.title a) {
-            color: inherit;
-        }
+                &#weekBoundaries {
+                    height: 92px;
+                    transition: height 0.3s ease-in-out;
 
-        & h1.title+span.showWeekday {
-            margin-left: 0.75em;
-            opacity: .75;
-            font-size: 1.1em;
-            width: fit-content;
+                    &>div#boundariesInner {
+                        display: flex;
+                        margin-top: 0.2em;
+                        min-width: 50em;
+                        font-size: .87em;
+                        justify-content: center;
+                        user-select: none;
+                        flex-wrap: wrap;
 
-            &>span {
-                margin-left: .75em;
-            }
-        }
+                        &:has(>div)>span.day:not(.thisWeek)>span {
+                            &.dayOfWeek {
+                                display: none;
+                            }
 
+                            &.dayOfMonth {
+                                height: 2em;
 
-        & div#weekBoundaries {
-            height: 92px;
-            transition: height 0.3s ease-in-out;
+                            }
+                        }
 
+                        &>span {
+                            &.daySide {
+                                display: flex;
+                                align-items: center;
+                                padding: .5em;
+                                width: 4em;
+                                cursor: pointer;
+                                opacity: .6;
+                                /* &.daySideScroll
+                                    &.daySideWeekNumber */
+                            }
 
-            >div#boundariesInner {
-                display: flex;
-                margin-top: 0.2em;
-                min-width: 50em;
-                font-size: .87em;
-                justify-content: center;
-                user-select: none;
-                flex-wrap: wrap;
+                            &.day {
+                                width: 4.8em;
+                                padding: 0.15em;
+                                margin-left: 0.35em;
+                                border-radius: 0.2em;
+                                background: var(--color-level-1);
+                                cursor: pointer;
 
-                &:has(>div)>span.day:not(.thisWeek)>span {
-                    &.dayOfWeek {
-                        display: none;
-                    }
+                                &:not(.thisWeek) {
+                                    opacity: .6;
+                                }
 
-                    &.dayOfMonth {
-                        height: 2em;
+                                &.thisWeek {
+                                    background: var(--color-level-2);
+                                    box-shadow: 0 0 0 1px var(--ls-guideline-color);
+                                }
 
+                                &:not(.thisWeek) {
+                                    opacity: .78;
+                                }
+
+                                &:hover {
+                                    opacity: 1;
+                                    background: var(--color-level-2);
+                                }
+
+                                & span.dayOfMonth {
+                                    display: flex;
+                                    justify-content: center;
+                                    align-items: center;
+                                    font-weight: bold;
+                                    font-size: 1.2em;
+                                }
+                            }
+                        }
                     }
                 }
+            }
+
+            & h1.title+span.showWeekday {
+                margin-left: 0.75em;
+                opacity: .75;
+                font-size: 1.1em;
+                width: fit-content;
 
                 &>span {
-                    &.daySide {
-                        display: flex;
-                        align-items: center;
-                        padding: .5em;
-                        width: 4em;
-                        cursor: pointer;
-                        opacity: .6;
-                        /* &.daySideScroll
-                    &.daySideWeekNumber */
-                    }
-
-                    &.day {
-                        width: 4.8em;
-                        padding: 0.15em;
-                        margin-left: 0.35em;
-                        border-radius: 0.2em;
-                        background: var(--color-level-1);
-                        cursor: pointer;
-
-                        &:not(.thisWeek) {
-                            opacity: .6;
-                        }
-
-                        &.thisWeek {
-                            background: var(--color-level-2);
-                            box-shadow: 0 0 0 1px var(--ls-guideline-color);
-                        }
-
-                        &:not(.thisWeek) {
-                            opacity: .78;
-                        }
-
-                        &:hover {
-                            opacity: 1;
-                            background: var(--color-level-2);
-                        }
-
-                        & span.dayOfMonth {
-                            display: flex;
-                            justify-content: center;
-                            align-items: center;
-                            font-weight: bold;
-                            font-size: 1.2em;
-                        }
-                    }
+                    margin-left: .75em;
                 }
             }
         }
