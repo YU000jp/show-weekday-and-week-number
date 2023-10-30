@@ -74,7 +74,7 @@ export const behindJournalTitle = async (
   }
   // apply styles
   const dateInfoElement: HTMLSpanElement =
-    parent.document.createElement("span")
+    document.createElement("span")
   dateInfoElement.classList.add("showWeekday")
   if (logseq.settings?.booleanDayOfWeek === true) {
     if (

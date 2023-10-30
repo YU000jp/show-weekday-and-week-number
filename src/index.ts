@@ -230,11 +230,11 @@ const JournalPageTitle = async (titleElement: HTMLElement) => {
       titleElement.classList.contains("title") === true)
   ) {
     const dateInfoElement: HTMLSpanElement =
-      parent.document.createElement("span")
+      document.createElement("span")
     dateInfoElement.classList.add("showWeekday")
     titleElement.insertAdjacentElement("afterend", dateInfoElement)
     const secondElement: HTMLSpanElement =
-      parent.document.createElement("span")
+      document.createElement("span")
     secondElement.style.width = "50%"
     titleElement.parentElement!.insertAdjacentElement(
       "afterend",

@@ -48,20 +48,20 @@ export const boundariesProcess = async (targetElementName: string, remove: boole
     let weekBoundaries: HTMLDivElement
     if (selectStartDate) {
       if (targetElementName === "weeklyJournal") {
-        weekBoundaries = parent.document.getElementById("weekBoundaries") as HTMLDivElement | null || parent.document.createElement('div')
+        weekBoundaries = parent.document.getElementById("weekBoundaries") as HTMLDivElement | null || document.createElement('div')
         weekBoundaries.id = 'weekBoundaries'
       } else {
         weekBoundaries = parent.document.getElementById("weekBoundaries") as HTMLDivElement
       }
     } else {
-      weekBoundaries = parent.document.createElement('div')
+      weekBoundaries = document.createElement('div')
       weekBoundaries.id = 'weekBoundaries'
     }
 
     firstElement.insertBefore(weekBoundaries, firstElement.firstChild)
 
     //weekBoundariesにelementを追加する
-    const boundariesInner: HTMLDivElement = parent.document.createElement('div')
+    const boundariesInner: HTMLDivElement = document.createElement('div')
     boundariesInner.id = 'boundariesInner'
     weekBoundaries.appendChild(boundariesInner)
 
@@ -119,7 +119,7 @@ const daySideWeekNumber = (date: Date, boundariesInner: HTMLDivElement) => {
   const weekStartsOn: 0 | 1 = logseq.settings?.weekNumberFormat === "US format" ? 0 : 1
   //dateAddOneDayの週番号を取得する
   const { year, weekString }: { year: number; weekString: string } = getWeeklyNumberFromDate(date, weekStartsOn)
-  const weekNumberElement: HTMLSpanElement = parent.document.createElement('span')
+  const weekNumberElement: HTMLSpanElement = document.createElement('span')
   weekNumberElement.classList.add('daySide', 'daySideWeekNumber')
   weekNumberElement.innerText = "W" + weekString
   weekNumberElement.title = t("Week number: ") + year + "-W" + weekString
@@ -129,7 +129,7 @@ const daySideWeekNumber = (date: Date, boundariesInner: HTMLDivElement) => {
 }
 
 const daySideMonth = (date: Date, boundariesInner: HTMLDivElement, monthDuplicate: Date): Date => {
-  const sideMonthElement: HTMLSpanElement = parent.document.createElement('span')
+  const sideMonthElement: HTMLSpanElement = document.createElement('span')
   sideMonthElement.classList.add('daySide')
   //monthDuplicateが存在したら、dateの6日後を代入する
   const dateShowMonth: Date = monthDuplicate ? addDays(date, 6) as Date : date
@@ -154,7 +154,7 @@ const daySideMonth = (date: Date, boundariesInner: HTMLDivElement, monthDuplicat
 }
 
 const daySideScroll = (index: number, boundariesInner: HTMLDivElement, targetElementName: string, startDate: Date) => {
-  const sideScrollElement: HTMLSpanElement = parent.document.createElement('span')
+  const sideScrollElement: HTMLSpanElement = document.createElement('span')
   sideScrollElement.classList.add('daySide', 'daySideScroll')
   sideScrollElement.innerText = index === 6 ? '↑' : '↓'
   sideScrollElement.title = index === 6 ? t("Previous week") : t("Next week")
@@ -176,10 +176,10 @@ const daysForEach = (days: number[], startDate: Date, boundariesInner: HTMLDivEl
     const dayOfWeek: string = new Intl.DateTimeFormat((logseq.settings?.localizeOrEnglish as string || "default"), { weekday: "short" }).format(date)
     //日付を取得する
     const dayOfMonth: number = date.getDate()
-    const dayElement: HTMLSpanElement = parent.document.createElement('span')
+    const dayElement: HTMLSpanElement = document.createElement('span')
     try {
       if (index === 7) {
-        const element = parent.document.createElement('div') as HTMLDivElement
+        const element = document.createElement('div') as HTMLDivElement
         element.style.width = "100%"
         boundariesInner.append(element)
       }
@@ -193,11 +193,11 @@ const daysForEach = (days: number[], startDate: Date, boundariesInner: HTMLDivEl
       const isBooleanToday: boolean = isToday(date)
       const isBooleanTargetSameDay: boolean = isSameDay(targetDate, date)
       dayElement.classList.add('day')
-      const dayOfWeekElement: HTMLSpanElement = parent.document.createElement('span')
+      const dayOfWeekElement: HTMLSpanElement = document.createElement('span')
       dayOfWeekElement.classList.add('dayOfWeek')
       dayOfWeekElement.innerText = dayOfWeek
       dayElement.appendChild(dayOfWeekElement)
-      const dayOfMonthElement: HTMLSpanElement = parent.document.createElement('span')
+      const dayOfMonthElement: HTMLSpanElement = document.createElement('span')
       dayOfMonthElement.classList.add('dayOfMonth')
       dayOfMonthElement.innerText = `${dayOfMonth}`
       dayElement.appendChild(dayOfMonthElement)
