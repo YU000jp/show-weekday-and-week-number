@@ -80,7 +80,7 @@ body {
                                 padding: 0.15em;
                                 margin-left: 0.35em;
                                 border-radius: 0.2em;
-                                background: var(--color-level-1);
+                                background-color: var(--color-level-1);
                                 cursor: pointer;
 
                                 &:not(.thisWeek) {
@@ -88,7 +88,7 @@ body {
                                 }
 
                                 &.thisWeek {
-                                    background: var(--color-level-2);
+                                    background-color: var(--color-level-2);
                                     box-shadow: 0 0 0 1px var(--ls-guideline-color);
                                 }
 
@@ -98,7 +98,7 @@ body {
 
                                 &:hover {
                                     opacity: 1;
-                                    background: var(--color-level-2);
+                                    background-color: var(--color-level-2);
                                 }
 
                                 & span.dayOfMonth {
