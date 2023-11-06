@@ -8,7 +8,7 @@ body {
     }
 
     &>div#root>div>main {
-        & article>div[data-id="show-weekday-and-week-number"] div.heading-item {
+        & article>div[data-id="logseq-plugin-show-weekday-and-week-number"] div.heading-item {
             /* プラグイン設定の見た目を変える(heading) */
             margin-top: 3em;
             border-top-width: 1px;
