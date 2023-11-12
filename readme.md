@@ -1,6 +1,6 @@
 [日本語](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/blob/main/readme.ja.md)
 
-# Logseq Plugin: *Show Weekday and Week-number* 📆
+# Logseq Plugin: *Show weekday and week-number* 📆
 
 1. Show weekday and week number beside journal titles.
 1. Show the mini-calendar that has navigational links on Daily Journal. Provides access to previous and subsequent single journals, and links to weekly Journal and monthly Journal.
@@ -21,7 +21,7 @@
 1. ![image](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/assets/111847207/f47b8948-5e7a-4e16-a5ae-6966672742b1)
 1. ![image](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/assets/111847207/ee97c455-714e-45d2-9f9f-905798e298b4)
 
-### Journal boundaries (mini-calendar 🗓️)
+### Mini-calendar 🗓️ (Journal boundaries)
 
 - Display a 2 lines calendar on journals. Smooth access to previous and subsequent dates on a single date page or journals.
 

@@ -6,7 +6,7 @@
     "license": "MIT",
     "logseq": {
         "id": "show-weekday-and-week-number",
-        "title": "Show Weekday and Week-number",
+        "title": "Show weekday and week-number",
         "icon": "./icon.svg",
         "main": "./dist/index.html"
     },
