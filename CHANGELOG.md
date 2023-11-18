@@ -1,3 +1,15 @@
+# [1.44.0](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.43.1...v1.44.0) (2023-11-18)
+
+
+### Bug Fixes
+
+* **bug:** CSS not applied ([3a8425f](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/3a8425f95b6f123dfc0bfe3659a822cc6eec11e6))
+
+
+### Features
+
+* **Add:** Weekly Journal > Pin the “This Week” section to the bottom right (Add to plugin settings) ([0861aba](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/0861aba3508ef5841704e18f8f2fb290ce48c5fb))
+
 ## [1.43.1](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.43.0...v1.43.1) (2023-10-30)
 
 
