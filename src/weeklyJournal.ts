@@ -23,7 +23,9 @@ export const currentPageIsWeeklyJournal = async (titleElement: HTMLElement, matc
 
 
     //プロセスロック
-    if (processingWeeklyJournal === true || (titleElement.dataset!.WeeklyJournalChecked as string) === "true") return//一度だけ処理を行う  
+    if (processingWeeklyJournal === true
+        || (titleElement.dataset!.WeeklyJournalChecked as string) === "true")
+        return//一度だけ処理を行う  
     const currentBlockTree = await logseq.Editor.getPageBlocksTree(match[0]) as BlockEntity[]//現在開いているページ
 
     let firstUuid = "" //1行目のuuidを決める
@@ -216,3 +218,4 @@ const insertBlockThisWeekSection = async (uuid: string, preferredDateFormat: str
         }
     })
 }
+

@@ -16,6 +16,7 @@ body {
         }
 
         &>div#app-container>div#left-container>div#main-container>div#main-content-container {
+
             & div.is-journals {
                 & div.ls-page-title {
                     display: flex;

@@ -1,13 +1,13 @@
-import "@logseq/libs"; //https://plugins-doc.logseq.com/
+import "@logseq/libs" //https://plugins-doc.logseq.com/
 import {
   AppUserConfigs,
   LSPluginBaseInfo,
   PageEntity,
 } from "@logseq/libs/dist/LSPlugin.user"
-import { setup as l10nSetup, t } from "logseq-l10n"; //https://github.com/sethyuan/logseq-l10n
+import { setup as l10nSetup, t } from "logseq-l10n" //https://github.com/sethyuan/logseq-l10n
 import { behindJournalTitle } from "./behind"
 import { boundariesProcess } from "./boundaries"
-import { getJournalDayDate, titleElementReplaceLocalizeDayOfWeek } from "./lib"
+import { getJournalDayDate, titleElementReplaceLocalizeDayOfWeek,removeProvideStyle } from "./lib"
 import fileMainCSS from "./main.css?inline"
 import { settingsTemplate } from "./settings"
 import { loadShortcutItems, } from "./shortcutItems"
@@ -31,6 +31,8 @@ import uk from "./translations/uk.json"
 import zhCN from "./translations/zh-CN.json"
 import zhHant from "./translations/zh-Hant.json"
 import { currentPageIsWeeklyJournal } from "./weeklyJournal"
+import CSSThisWeekPopup from "./thisWeekPopup.css?inline"
+const keyThisWeekPopup = "thisWeekPopup"
 
 /* main */
 const main = async () => {
@@ -42,8 +44,8 @@ const main = async () => {
 
   // メッセージを表示する
   if (logseq.settings && logseq.settings!.notice !== "20231024no01") {
-    logseq.UI.showMsg("Show Weekday and Week-number plugin\n\nUpdated\n\nAdd Feature\n\"Embedding for Weekly Journal\"", "info", { timeout: 4000 });
-    logseq.updateSettings({ notice: "20231024no01" });
+    logseq.UI.showMsg("Show Weekday and Week-number plugin\n\nUpdated\n\nAdd Feature\n\"Embedding for Weekly Journal\"", "info", { timeout: 4000 })
+    logseq.updateSettings({ notice: "20231024no01" })
   }
 
   // 初回起動時に設定を促す
@@ -110,6 +112,8 @@ const main = async () => {
     if (visible === true) setTimeout(() => querySelectorAllTitle(), 100)
   })
 
+  if (logseq.settings!.thisWeekPopup === true) thisWeekPopup()
+
   onSettingsChanged()
 
   logseq.beforeunload(async () => {
@@ -122,6 +126,12 @@ const main = async () => {
 
 } /* end_main */
 
+
+
+const thisWeekPopup = () => logseq.provideStyle({
+  key: keyThisWeekPopup,
+  style: CSSThisWeekPopup
+})
 
 
 const onSettingsChanged = () => logseq.onSettingsChanged((newSet: LSPluginBaseInfo["settings"], oldSet: LSPluginBaseInfo["settings"]) => {
@@ -167,6 +177,12 @@ const onSettingsChanged = () => logseq.onSettingsChanged((newSet: LSPluginBaseIn
     //再表示　Behind Journal Title
     removeTitleQuery()
     setTimeout(() => querySelectorAllTitle(), 500)
+  }
+
+  // thisWeekPopup
+  if (oldSet.thisWeekPopup !== newSet.thisWeekPopup) {
+    if (newSet.thisWeekPopup === true) thisWeekPopup()
+    else removeProvideStyle(keyThisWeekPopup)
   }
 }
 )
@@ -310,5 +326,6 @@ export const boundaries = (targetElementName: string, remove?: boolean) => {
   boundariesProcess(targetElementName, remove ? remove : false, 0)
   processingBoundaries = false
 }
+
 
 logseq.ready(main).catch(console.error)

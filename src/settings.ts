@@ -282,4 +282,11 @@ export const settingsTemplate = (): SettingSchemaDesc[] => [
     default: false,
     description: "default: `false`",
   },
+  {
+    key: "thisWeekPopup",
+    title: t("Pin the “This Week” section to the bottom right"),
+    type: "boolean",
+    default: true, //trueの場合に、ThisWeek セクションにタグが付与されます。そのタグが付与されている場合、ポップアップが表示されます。(過去のセクションにはタグが付与されません。)
+    description: t("default: `true` | The `#.ThisWeek` tag is added to the `This Week` section. If the tag is added, a popup will be displayed. (The tag is not added to the past section.)"),
+  }
 ]
