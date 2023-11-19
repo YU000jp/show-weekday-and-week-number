@@ -67,7 +67,7 @@ Install from Logseq Marketplace
 
 ### Relation
 
-  1. Localize day of the week in journal links > For languages other than English. Split to [Flex date format plugin](https://github.com/YU000jp/logseq-plugin-flex-date-format)
+  1. Localize day of the week in journal links > For languages other than English. Split to [Flexible date format plugin](https://github.com/YU000jp/logseq-plugin-flex-date-format)
 
 ---
 
