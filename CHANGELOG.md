@@ -1,3 +1,10 @@
+## [1.44.1](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.44.0...v1.44.1) (2023-12-31)
+
+
+### Bug Fixes
+
+* **bug:** plugin settings > Not working `Pin the “This Week” section to the bottom right` ([d343808](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/d343808d0257c5aa6a4a6ed8e45b11f62ae69c30))
+
 # [1.44.0](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.43.1...v1.44.0) (2023-11-18)
 
 
