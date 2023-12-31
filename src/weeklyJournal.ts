@@ -196,7 +196,7 @@ const createPageContent = async (firstBlock: BlockEntity, preferredDateFormat: s
 
 
 const insertBlockThisWeekSection = async (uuid: string, preferredDateFormat: string, weekDaysLinkArray: string[], weekdayArray: string[]) => {
-    const thisWeek = await logseq.Editor.insertBlock(uuid, `#### ${t("This Week")}`, { sibling: true, before: false }) as BlockEntity | null
+    const thisWeek = await logseq.Editor.insertBlock(uuid, `#### ${t("This Week")}${logseq.settings!.thisWeekPopup === true ? " #.ThisWeek": ""}`, { sibling: true, before: false }) as BlockEntity | null
     if (thisWeek) weekDaysLinkArray.forEach(async (eachJournal, index) => {
         const eachDayBlock = await logseq.Editor.insertBlock(
             thisWeek.uuid,
