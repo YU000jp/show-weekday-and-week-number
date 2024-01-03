@@ -1,7 +1,7 @@
 import { getWeekOfMonth, isSaturday, isSunday } from "date-fns"
 import { getWeeklyNumberFromDate, formatRelativeDate, openPageFromPageName, createLinkMonthlyLink } from "./lib"
 import { createSettingButton } from "./lib"
-import format from "date-fns/format"
+import { format } from "date-fns"
 
 //behind journal title
 let processingBehind: boolean = false
@@ -19,8 +19,8 @@ export const behindJournalTitle = async (
     logseq.settings?.booleanDayOfWeek === true
   )
     dayOfWeekName = new Intl.DateTimeFormat(
-      logseq.settings?.localizeOrEnglish || "default",
-      { weekday: logseq.settings?.longOrShort || "long" }
+      logseq.settings?.localizeOrEnglish as string || "default",
+      { weekday: logseq.settings?.longOrShort as "short" | "long" || "long" }
     ).format(journalDate)
   let printWeek: string = ""
   const weekStartsOn: 0 | 1 =
@@ -126,7 +126,7 @@ export const behindJournalTitle = async (
   if (logseq.settings!.booleanMonthlyJournalLink === true) {
     const formatDateString: string = format(journalDate, "yyyy/MM")
     //ローカライズされた月名を取得する
-    const localizedMonthName: string = new Intl.DateTimeFormat(logseq.settings?.localizeOrEnglish || "default", { month: "short" }).format(journalDate)
+    const localizedMonthName: string = new Intl.DateTimeFormat(logseq.settings?.localizeOrEnglish as string || "default", { month: "short" }).format(journalDate)
     const monthlyJournalLinkButton = createLinkMonthlyLink(localizedMonthName, formatDateString, "Monthly Journal [[" + formatDateString + "]]")
     dateInfoElement.appendChild(monthlyJournalLinkButton)
   }
