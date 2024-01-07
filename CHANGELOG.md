@@ -1,3 +1,10 @@
+# [1.45.0](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.44.1...v1.45.0) (2024-1-7)
+
+
+### Features
+
+* **Journal Boundaries:** mini calendar > auto size down & left align [#128](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/128) ([c6cc0c6](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/c6cc0c6d0905fbf0a602f7601f949954c4150108))
+
 ## [1.44.1](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.44.0...v1.44.1) (2023-12-31)
 
 
