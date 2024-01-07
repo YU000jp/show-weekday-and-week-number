@@ -64,15 +64,14 @@ Logseq マーケットプレイスからインストール
 
 > [ドキュメントはこちら (英語)](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/wiki/Plugin-Settings)
 
-### 関連
-
-1. 日付リンクに含まれる曜日を、日本語表記にする > [Flex date format プラグイン](https://github.com/YU000jp/logseq-plugin-flex-date-format)を利用してください。
-
 ---
 
 # ショーケース / 質問 / アイデア / ヘルプ
 
 > [ディスカッション](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/discussions) タブに移動して、この種の情報を質問したり見つけたりできます。
+
+- 関連
+  1. 日付リンクに含まれる曜日を、日本語表記にする > [Flex date format プラグイン](https://github.com/YU000jp/logseq-plugin-flex-date-format)を利用してください。
 
 ## 貢献 / クレジット
 
