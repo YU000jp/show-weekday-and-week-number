@@ -68,16 +68,17 @@ body {
                             &.daySide {
                                 display: flex;
                                 align-items: center;
-                                padding: .5em;
-                                width: 4em;
+                                padding: .3em;
+                                width: 3.1em;
                                 cursor: pointer;
                                 opacity: .6;
+                                justify-content: center;
                                 /* &.daySideScroll
                                     &.daySideWeekNumber */
                             }
 
                             &.day {
-                                width: 4.8em;
+                                width: 4em;
                                 padding: 0.15em;
                                 margin-left: 0.35em;
                                 border-radius: 0.2em;
@@ -90,7 +91,7 @@ body {
 
                                 &.thisWeek {
                                     background-color: var(--color-level-2);
-                                    box-shadow: 0 0 0 1px var(--ls-guideline-color);
+                                    opacity: .92;
                                 }
 
                                 &:not(.thisWeek) {
