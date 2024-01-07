@@ -41,15 +41,24 @@ body {
                 }
 
                 &#weekBoundaries {
-                    height: 92px;
+                    height: 88px;
                     transition: height 0.3s ease-in-out;
 
                     &>div#boundariesInner {
                         display: flex;
                         margin-top: 0.2em;
                         min-width: 50em;
-                        font-size: .87em;
-                        justify-content: center;
+
+                        @media (max-width: 1300px) {
+                            font-size: .8em;
+                            justify-content: unset;
+                        }
+
+                        @media (min-width: 1301px) {
+                            font-size: .87em;
+                            justify-content: center;
+                        }
+
                         user-select: none;
                         flex-wrap: wrap;
 
@@ -59,7 +68,7 @@ body {
                             }
 
                             &.dayOfMonth {
-                                height: 2em;
+                                height: 1.4em;
 
                             }
                         }
