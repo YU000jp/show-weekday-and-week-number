@@ -140,6 +140,13 @@ export const settingsTemplate = (): SettingSchemaDesc[] => [
     default: true,
     description: "",
   },
+  {//20240108
+    key: "boundariesBottom",
+    title: t("Show boundaries on bottom"),
+    type: "boolean",
+    default: false,
+    description: "",
+  },
   {//Journal Boundaries, week start 通常はformatに従う
     key: "boundariesWeekStart",
     title: t("Mini calendar only, Week start (Unset: by the selected format)"),
