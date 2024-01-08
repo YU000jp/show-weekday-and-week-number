@@ -7,7 +7,7 @@ import {
 import { setup as l10nSetup, t } from "logseq-l10n" //https://github.com/sethyuan/logseq-l10n
 import { behindJournalTitle } from "./behind"
 import { boundariesProcess } from "./boundaries"
-import { getJournalDayDate, titleElementReplaceLocalizeDayOfWeek,removeProvideStyle } from "./lib"
+import { getJournalDayDate, titleElementReplaceLocalizeDayOfWeek, removeProvideStyle } from "./lib"
 import fileMainCSS from "./main.css?inline"
 import { settingsTemplate } from "./settings"
 import { loadShortcutItems, } from "./shortcutItems"
@@ -113,6 +113,7 @@ const main = async () => {
   })
 
   if (logseq.settings!.thisWeekPopup === true) thisWeekPopup()
+  if(logseq.settings!.boundariesBottom === true) parent.document.body.classList!.add("boundaries-bottom")
 
   onSettingsChanged()
 
@@ -184,8 +185,14 @@ const onSettingsChanged = () => logseq.onSettingsChanged((newSet: LSPluginBaseIn
     if (newSet.thisWeekPopup === true) thisWeekPopup()
     else removeProvideStyle(keyThisWeekPopup)
   }
-}
-)
+
+  //20240108 boundariesを下側に表示する
+  if(oldSet.boundariesBottom !== newSet.boundariesBottom){
+    if(newSet.boundariesBottom === true) parent.document.body.classList!.add("boundaries-bottom")
+    else parent.document.body.classList!.remove("boundaries-bottom")
+  }
+
+})
 
 //Journal boundariesを表示する
 const SettingsChangedJournalBoundariesEnable = () => setTimeout(() => {

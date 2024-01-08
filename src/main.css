@@ -1,6 +1,17 @@
 body {
 
+    &.boundaries-bottom div#weekBoundaries>div#boundariesInner {
+        /* 下部に表示するオプション */
+        position: fixed;
+        bottom: 0.1em;
+        background-color: var(--ls-main-content-background, var(--lx-gray-02, var(--ls-primary-background-color)));
+        z-index: 1;
+    }
 
+    &:not(.boundaries-bottom) div#weekBoundaries {
+        /* 上下スクロール時の変動をなくすために必要 */
+        height: 88px;
+    }
 
     &>div#root>div>main {
         & article>div[data-id="logseq-plugin-show-weekday-and-week-number"] div.heading-item {
@@ -36,13 +47,20 @@ body {
                 }
 
                 &#weekBoundaries {
-                    height: 88px;
+
                     transition: height 0.3s ease-in-out;
 
                     &>div#boundariesInner {
                         display: flex;
-                        margin-top: 0.2em;
-                        min-width: 50em;
+                        margin-top: 0.1em;
+                        min-width: 40em;
+                        width: min-content;
+                        margin-left: auto;
+                        margin-right: auto;
+                        border: 2px solid var(--ls-border-color);
+                        box-shadow: 0 0 7px var(--ls-border-color);
+                        user-select: none;
+                        flex-wrap: wrap;
 
                         @media (max-width: 1300px) {
                             font-size: .8em;
@@ -54,8 +72,13 @@ body {
                             justify-content: center;
                         }
 
-                        user-select: none;
-                        flex-wrap: wrap;
+                        &:hover {
+                            opacity: 1;
+                        }
+
+                        &:not(:hover) {
+                            opacity: .88;
+                        }
 
                         &:has(>div)>span.day:not(.thisWeek)>span {
                             &.dayOfWeek {
@@ -82,24 +105,24 @@ body {
                             }
 
                             &.day {
-                                width: 4em;
+                                width: 3.9em;
                                 padding: 0.15em;
-                                margin-left: 0.35em;
+                                margin-left: 0.25em;
                                 border-radius: 0.2em;
                                 background-color: var(--color-level-1);
                                 cursor: pointer;
 
                                 &:not(.thisWeek) {
-                                    opacity: .6;
+                                    opacity: .5;
                                 }
 
                                 &.thisWeek {
                                     background-color: var(--color-level-2);
-                                    opacity: .92;
+                                    opacity: .86;
                                 }
 
                                 &:not(.thisWeek) {
-                                    opacity: .78;
+                                    opacity: .65;
                                 }
 
                                 &:hover {
@@ -111,8 +134,7 @@ body {
                                     display: flex;
                                     justify-content: center;
                                     align-items: center;
-                                    font-weight: bold;
-                                    font-size: 1.2em;
+                                    font-size: 1.15em;
                                 }
                             }
                         }
