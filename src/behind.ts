@@ -1,7 +1,5 @@
-import { getWeekOfMonth, isSaturday, isSunday } from "date-fns"
-import { getWeeklyNumberFromDate, formatRelativeDate, openPageFromPageName, createLinkMonthlyLink } from "./lib"
-import { createSettingButton } from "./lib"
-import { format } from "date-fns"
+import { format, getWeekOfMonth, isSaturday, isSunday } from "date-fns"
+import { createLinkMonthlyLink, createSettingButton, formatRelativeDate, getWeeklyNumberFromDate, openPageFromPageName } from "./lib"
 
 //behind journal title
 let processingBehind: boolean = false
