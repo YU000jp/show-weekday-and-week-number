@@ -25,7 +25,7 @@
 
 - 日誌や日付ページ、あるいは週間レビューのページに、2行のカレンダーを表示します。前後の日付にすぐにアクセスできます。Shiftキーを押しながらクリックすると、サイドバーで開きます。
 
-![ミニカレンダー](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/assets/111847207/3ffc5771-089f-43f5-83a5-01a01117670b)
+![README用](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/assets/111847207/114708ab-0389-4c46-b962-00cb25e2070a)
 
 ### 週刊レビューのページ
 
