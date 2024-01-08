@@ -1,3 +1,10 @@
+# [1.46.0](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.45.0...v1.46.0) (2024-1-8)
+
+
+### Features
+
+* **Add to plugin settings:** `Show boundaries on bottom` ([9103aff](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/9103affc64e6dd07a5ff68bd3b4bebabab73b636))
+
 # [1.45.0](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.44.1...v1.45.0) (2024-1-7)
 
 
