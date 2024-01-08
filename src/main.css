@@ -1,11 +1,6 @@
 body {
-    &.show-justify>div#root>div>main>div#app-container>div#left-container>div#main-container>div#main-content-container div {
 
-        &.is-journals div.ls-page-title,
-        &#journals div.journal>div.flex div.content>div.foldable-title>div.flex.items-center {
-            justify-content: space-around;
-        }
-    }
+
 
     &>div#root>div>main {
         & article>div[data-id="logseq-plugin-show-weekday-and-week-number"] div.heading-item {
