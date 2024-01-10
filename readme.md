@@ -30,7 +30,9 @@
 ### Weekly Journal
 
 - Click the week number link to open it and generate a page. If there is no content available on a page with a week number like `[[2023-W25]]`, a template will be inserted. In plugin settings, it possible to set user template.
-  > Inserting Advanced queries into the template increases flexibility.
+  1. Inserting [Advanced queries](https://hub.logseq.com/features/av5LyiLi5xS7EFQXy4h4K8/getting-started-with-advanced-queries/8xwSRJNVKFJhGSvJUxs5B2) into the template increases flexibility.
+  1. Include rendering in template
+     - [Full house Templates plugin](https://github.com/stdword/logseq13-full-house-plugin)
 
 #### "This Week" section (collection of those date links)
 
@@ -39,7 +41,7 @@
 ### Monthly Journal 🌛
 
 - Click the link on the left side of the mini calendar will open a page like `[[2023/10]]`.
-> Currently, there is no page generation feature like Weekly Journal.
+  > Currently, there is no page generation feature like Weekly Journal.
 
 ### Slash Command 🆕
 
