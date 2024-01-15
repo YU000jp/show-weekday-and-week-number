@@ -1,5 +1,5 @@
-import { AppUserConfigs, PageEntity } from '@logseq/libs/dist/LSPlugin.user'
-import { addDays, format, isBefore, isFriday, isSameDay, isSaturday, isSunday, isThursday, isToday, isWednesday, startOfISOWeek, startOfWeek, } from 'date-fns'; //https://date-fns.org/
+import { AppUserConfigs, BlockUUID, PageEntity } from '@logseq/libs/dist/LSPlugin.user'
+import { addDays, format, isBefore, isFriday, isSameDay, isSaturday, isSunday, isThursday, isToday, isWednesday, startOfISOWeek, startOfWeek, } from 'date-fns' //https://date-fns.org/
 import { t } from "logseq-l10n"
 import { formatRelativeDate, getJournalDayDate, getWeekStartOn, getWeeklyNumberFromDate, openPageFromPageName } from './lib'
 
@@ -172,6 +172,7 @@ const daysForEach = (days: number[], startDate: Date, boundariesInner: HTMLDivEl
   //ミニカレンダー作成 1日ずつ処理
   days.forEach((numDays, index) => {
     const date: Date = numDays === 0 ? startDate : addDays(startDate, numDays) as Date
+    const dateFormat: string = format(date, preferredDateFormat)
     const dayOfWeek: string = new Intl.DateTimeFormat((logseq.settings?.localizeOrEnglish as string || "default"), { weekday: "short" }).format(date)
     //日付を取得する
     const dayOfMonth: number = date.getDate()
@@ -203,9 +204,9 @@ const daysForEach = (days: number[], startDate: Date, boundariesInner: HTMLDivEl
       //日付と相対時間をtitleに追加する
       if (logseq.settings?.booleanRelativeTime === true) { //相対時間を表示する場合
         const formatString: string = formatRelativeDate(date)
-        dayElement.title = format(date, preferredDateFormat) + '\n' + formatString
+        dayElement.title = dateFormat + '\n' + formatString
       } else {
-        dayElement.title = format(date, preferredDateFormat)
+        dayElement.title = dateFormat
       }
 
       //indexが0~6
@@ -225,12 +226,17 @@ const daysForEach = (days: number[], startDate: Date, boundariesInner: HTMLDivEl
         else if (isSunday(date) as boolean) dayElement.style.color = 'var(--ls-wb-stroke-color-red)'
       }
 
+      //日付をクリックできるようにするかどうか
       if (logseq.settings!.booleanBoundariesFuturePage === true
         || isBooleanBeforeToday === true || isBooleanToday === true)
-        dayElement.addEventListener("click", openPageToSingleDay(date, isBooleanBeforeToday, preferredDateFormat))
-
+        dayElement.addEventListener("click", openPageToSingleDay(dateFormat, isBooleanBeforeToday))
       else
         dayElement.style.cursor = 'unset'
+
+      //20240115
+      //エントリーが存在するかどうかのインディケーターを表示する
+      if (logseq.settings!.booleanBoundariesIndicator === true) indicator(dateFormat, dayOfMonthElement)
+
     } finally {
       boundariesInner.appendChild(dayElement)
       if (index === 6 || index === 13) {
@@ -244,17 +250,28 @@ const daysForEach = (days: number[], startDate: Date, boundariesInner: HTMLDivEl
 }
 
 
-function openPageToSingleDay(date: Date, isBooleanBeforeToday: boolean, preferredDateFormat: string): (this: HTMLSpanElement, ev: MouseEvent) => any {
+const indicator = async (targetPageName: string, dayOfMonthElement: HTMLSpanElement) => {
+  const existPage = await logseq.Editor.getPage(targetPageName, { includeChildren: false }) as { name: string } | null
+  if (existPage) {
+    const indicatorElement: HTMLSpanElement = document.createElement('span')
+    indicatorElement.classList.add('indicator')
+    indicatorElement.innerText = "●"
+    indicatorElement.title = t("Page exists")
+    dayOfMonthElement.appendChild(indicatorElement)
+  }
+}
+
+
+function openPageToSingleDay(journalPageName: string, isBooleanBeforeToday: boolean): (this: HTMLSpanElement, ev: MouseEvent) => any {
   return async (event) => {
-    const journalPageName: string = format(date, preferredDateFormat)
     if (event.shiftKey) {//Shiftキーを押しながらクリックした場合は、サイドバーでページを開く
-      const page = await logseq.Editor.getPage(journalPageName) as PageEntity | null
+      const page = await logseq.Editor.getPage(journalPageName, { includeChildren: false }) as { uuid: BlockUUID } | null
       if (page) logseq.Editor.openInRightSidebar(page.uuid)//ページが存在しない場合は開かない
     } else {
       //Shiftキーを押さずにクリックした場合は、ページを開く
       if (logseq.settings!.booleanNoPageFoundCreatePage === true && isBooleanBeforeToday === true) {//過去の日付の場合はページを作成しない
         //ページが存在しない場合は作成しない
-        const page = await logseq.Editor.getPage(journalPageName) as PageEntity | null
+        const page = await logseq.Editor.getPage(journalPageName) as { name: string } | null
         if (page) logseq.App.pushState('page', { name: journalPageName })//ページが存在する場合は開く
         else logseq.UI.showMsg('Page not found', "warning", { timeout: 3000 })//ページが存在しない場合は警告を表示する
       } else {

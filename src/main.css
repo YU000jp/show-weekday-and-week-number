@@ -135,6 +135,12 @@ body {
                                     justify-content: center;
                                     align-items: center;
                                     font-size: 1.15em;
+
+                                    &>span.indicator {
+                                        margin-left: .3em;
+                                        font-size: .6em;
+                                        opacity: .6;
+                                    }
                                 }
                             }
                         }

@@ -199,6 +199,14 @@ export const settingsTemplate = (): SettingSchemaDesc[] => [
     default: true,
     description: "",
   },
+  {
+    key: "booleanBoundariesIndicator",
+    title: t("Show indicator (dot) of journal entries"),
+    type: "boolean",
+    default: true,
+    //ページが存在する場合に、インディケーターを表示する
+    description: t("Show indicator if the page exists"),
+  },
 
   //Weekly Journal
   {
