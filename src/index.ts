@@ -156,6 +156,7 @@ const onSettingsChanged = () => logseq.onSettingsChanged((newSet: LSPluginBaseIn
     || oldSet.boundariesHighlightColorSinglePage !== newSet.boundariesHighlightColorSinglePage
     || oldSet.boundariesHighlightColorToday !== newSet.boundariesHighlightColorToday
     || oldSet.booleanWeeklyJournal !== newSet.booleanWeeklyJournal
+    || oldSet.booleanBoundariesIndicator !== newSet.booleanBoundariesIndicator
   ) {
     //Journal boundariesを再表示する
     removeBoundaries()
@@ -174,6 +175,7 @@ const onSettingsChanged = () => logseq.onSettingsChanged((newSet: LSPluginBaseIn
     || oldSet.booleanWeekNumberHideYear !== newSet.booleanWeekNumberHideYear
     || oldSet.booleanSettingsButton !== newSet.booleanSettingsButton
     || oldSet.booleanMonthlyJournalLink !== newSet.booleanMonthlyJournalLink
+    || oldSet.booleanBoundariesIndicator !== newSet.booleanBoundariesIndicator
   ) {
     //再表示　Behind Journal Title
     removeTitleQuery()
