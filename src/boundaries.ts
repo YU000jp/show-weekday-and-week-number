@@ -16,14 +16,14 @@ export const boundariesProcess = async (targetElementName: string, remove: boole
 
   let firstElement: HTMLDivElement | null
   switch (targetElementName) {
-    case "is-journals":
-      firstElement = parent.document.querySelector("div#main-content-container div.is-journals.relative>div.relative") as HTMLDivElement
-      break
     case "journals":
       firstElement = parent.document.getElementById("journals") as HTMLDivElement
       break
+    case "is-journals":
+      firstElement = parent.document.body.querySelector("div#main-content-container div.is-journals.page>div.relative") as HTMLDivElement
+      break
     case "weeklyJournal":
-      firstElement = parent.document.querySelector("div#main-content-container div.page.relative>div.relative") as HTMLDivElement
+      firstElement = parent.document.body.querySelector("div#main-content-container div.page.relative>div.relative") as HTMLDivElement
       break
     default:
       firstElement = null
@@ -31,8 +31,8 @@ export const boundariesProcess = async (targetElementName: string, remove: boole
   }
   if (firstElement === null &&
     ((targetElementName === 'journals' && parent.document.getElementById('journals') === null)
-      || (targetElementName === 'is-journals' && parent.document.getElementsByClassName('is-journals')[0] === null)
-      || (targetElementName === 'weeklyJournal' && parent.document.getElementsByClassName('page')[0] === null)
+      || (targetElementName === 'is-journals' && parent.document.body.getElementsByClassName('is-journals')[0] === null)
+      || (targetElementName === 'weeklyJournal' && parent.document.body.getElementsByClassName('page')[0] === null)
     )) {
     setTimeout(() => boundariesProcess(targetElementName, false, repeat + 1), 300)
   }
