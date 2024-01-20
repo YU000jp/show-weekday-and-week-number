@@ -1,3 +1,20 @@
+# [1.48.0](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.47.0...v1.48.0) (2024-1-20)
+
+
+### Bug Fixes
+
+* **bug:** Journal Boundaries > indictor (not exist) ([b642ebc](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/b642ebc218b016a60ac6472652e23b552838e916))
+
+
+### Features
+
+* **Add:** Show Lunar Calendar date *sample* [#129](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/129) ([87041ef](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/87041ef051dd59442085b32af5808d8e1c764129))
+
+
+### Performance Improvements
+
+* **loading:** parent.document.body ([71692cf](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/71692cf7e289fe06b5b6f2758dfd237f939c966b))
+
 # [1.47.0](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.46.0...v1.47.0) (2024-1-15)
 
 
