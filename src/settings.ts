@@ -205,7 +205,7 @@ export const settingsTemplate = (): SettingSchemaDesc[] => [
     type: "boolean",
     default: true,
     //ページが存在する場合に、インディケーターを表示する
-    description: t("Show indicator if the page exists"),
+    description: "",
   },
 
   //Weekly Journal

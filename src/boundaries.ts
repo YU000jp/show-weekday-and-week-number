@@ -251,7 +251,7 @@ const daysForEach = (days: number[], startDate: Date, boundariesInner: HTMLDivEl
 
 
 const indicator = async (targetPageName: string, dayOfMonthElement: HTMLSpanElement) => {
-  const existsPage = await logseq.Editor.getPage(targetPageName, { includeChildren: false }) as { file: string } | null
+  const existsPage = await logseq.Editor.getPage(targetPageName, { includeChildren: false }) as { file: string | undefined } | null
   if (!existsPage || existsPage.file === undefined) return
   const indicatorElement: HTMLSpanElement = document.createElement('span')
   indicatorElement.classList.add('indicator')
@@ -271,7 +271,7 @@ function openPageToSingleDay(journalPageName: string, isBooleanBeforeToday: bool
         //ページが存在しない場合は作成しない
         const page = await logseq.Editor.getPage(journalPageName) as { name: string } | null
         if (page) logseq.App.pushState('page', { name: journalPageName })//ページが存在する場合は開く
-        else logseq.UI.showMsg('Page not found', "warning", { timeout: 3000 })//ページが存在しない場合は警告を表示する
+        else logseq.UI.showMsg(t("Page not found"), "warning", { timeout: 3000 })//ページが存在しない場合は警告を表示する
       } else {
         logseq.App.pushState('page', { name: journalPageName })//ページが存在しない場合も作成される
       }

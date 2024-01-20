@@ -51,5 +51,9 @@
   "Week number calculation (across years)": "Sposób obliczania liczby tygodni (w różnych latach)",
   "Week number: ": "Numer tygodnia: ",
   "Weekly Journal": "Tygodnik",
+  "Page not found" : "Strona nie znaleziona",
+  "Page exists" : "Strona istnieje",
+  "Show indicator (dot) of journal entries" : "Pokaż wskaźnik (kropkę) wpisów dziennika",
+  "Show boundaries on bottom" : "Pokaż granice na dole",
   "Weekly journal created": "Tygodnik utworzony"
 }
