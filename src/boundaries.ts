@@ -251,16 +251,14 @@ const daysForEach = (days: number[], startDate: Date, boundariesInner: HTMLDivEl
 
 
 const indicator = async (targetPageName: string, dayOfMonthElement: HTMLSpanElement) => {
-  const existPage = await logseq.Editor.getPage(targetPageName, { includeChildren: false }) as { name: string } | null
-  if (existPage) {
-    const indicatorElement: HTMLSpanElement = document.createElement('span')
-    indicatorElement.classList.add('indicator')
-    indicatorElement.innerText = "●"
-    indicatorElement.title = t("Page exists")
-    dayOfMonthElement.appendChild(indicatorElement)
-  }
+  const existsPage = await logseq.Editor.getPage(targetPageName, { includeChildren: false }) as { file: string } | null
+  if (!existsPage || existsPage.file === undefined) return
+  const indicatorElement: HTMLSpanElement = document.createElement('span')
+  indicatorElement.classList.add('indicator')
+  indicatorElement.innerText = "●"
+  indicatorElement.title = t("Page exists")
+  dayOfMonthElement.appendChild(indicatorElement)
 }
-
 
 function openPageToSingleDay(journalPageName: string, isBooleanBeforeToday: boolean): (this: HTMLSpanElement, ev: MouseEvent) => any {
   return async (event) => {
