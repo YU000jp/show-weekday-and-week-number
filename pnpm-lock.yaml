@@ -14,9 +14,9 @@ dependencies:
   logseq-l10n:
     specifier: ^0.2.0
     version: 0.2.0(@logseq/libs@0.0.17)
-  lunar-calendar:
-    specifier: ^0.1.4
-    version: 0.1.4
+  lunar-typescript:
+    specifier: ^1.7.0
+    version: 1.7.0
 
 devDependencies:
   '@semantic-release/changelog':
@@ -3553,8 +3553,8 @@ packages:
       yallist: 4.0.0
     dev: true
 
-  /lunar-calendar@0.1.4:
-    resolution: {integrity: sha512-5r87vbg5yg56z/jkf3A+Ur+ZggUTiJw1VATT9P7RELQgWcTNhfJ+OLkNYroSna6r65bMqyaAgapo9vRN40L75A==}
+  /lunar-typescript@1.7.0:
+    resolution: {integrity: sha512-qBGcagYd0171ANwGSMdGfdFk+5wkL8OJWprjuGB/xFG4Cm+WXs/sSbIF4tw2I7Rgpf/5UrlIHGX0+eoe2HIo4Q==}
     dev: false
 
   /magic-string@0.26.7:

@@ -72,12 +72,8 @@ body {
                             justify-content: center;
                         }
 
-                        &:hover {
-                            opacity: 1;
-                        }
-
                         &:not(:hover) {
-                            opacity: .88;
+                            opacity: .93;
                         }
 
                         &:has(>div)>span.day:not(.thisWeek)>span {
@@ -109,25 +105,22 @@ body {
                                 padding: 0.15em;
                                 margin-left: 0.25em;
                                 border-radius: 0.2em;
-                                background-color: var(--color-level-1);
                                 cursor: pointer;
-
-                                &:not(.thisWeek) {
-                                    opacity: .5;
-                                }
 
                                 &.thisWeek {
                                     background-color: var(--color-level-2);
-                                    opacity: .86;
+
+                                    &:hover {
+                                        background-color: var(--color-level-3);
+                                    }
                                 }
 
                                 &:not(.thisWeek) {
-                                    opacity: .65;
-                                }
+                                    background-color: var(--color-level-1);
 
-                                &:hover {
-                                    opacity: 1;
-                                    background-color: var(--color-level-2);
+                                    &:hover {
+                                        background-color: var(--color-level-3);
+                                    }
                                 }
 
                                 & span.dayOfMonth {
@@ -139,8 +132,13 @@ body {
                                     &>span.indicator {
                                         margin-left: .3em;
                                         font-size: .6em;
-                                        opacity: .6;
+                                        opacity: .8;
                                     }
+                                }
+
+                                & span.dayOfWeek {
+                                    white-space: nowrap;
+                                    overflow: hidden;
                                 }
                             }
                         }

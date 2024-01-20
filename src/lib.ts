@@ -127,7 +127,7 @@ export const openPageFromPageName = async (pageName: string, shiftKey: boolean) 
   } else {
     logseq.App.replaceState('page', { name: pageName })
   }
-};
+}
 
 
 export const removeProvideStyle = (className: string) => {

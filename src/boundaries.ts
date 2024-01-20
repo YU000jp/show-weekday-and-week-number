@@ -2,6 +2,7 @@ import { AppUserConfigs, BlockUUID, PageEntity } from '@logseq/libs/dist/LSPlugi
 import { addDays, format, isBefore, isFriday, isSameDay, isSaturday, isSunday, isThursday, isToday, isWednesday, startOfISOWeek, startOfWeek, } from 'date-fns' //https://date-fns.org/
 import { t } from "logseq-l10n"
 import { formatRelativeDate, getJournalDayDate, getWeekStartOn, getWeeklyNumberFromDate, openPageFromPageName } from './lib'
+import { Solar, Lunar, HolidayUtil } from 'lunar-typescript'
 
 let processingFoundBoundaries: boolean = false
 export const boundariesProcess = async (targetElementName: string, remove: boolean, repeat: number, selectStartDate?: Date) => {
@@ -107,8 +108,8 @@ export const boundariesProcess = async (targetElementName: string, remove: boole
       ? [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13] //次の週を表示する場合
       : [-7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6] //次の週を表示しない場合
 
-    const { preferredDateFormat } = await logseq.App.getUserConfigs() as AppUserConfigs
-    daysForEach(days, startDate, boundariesInner, today, targetDate, preferredDateFormat, targetElementName, flagShowNextWeek)
+    const { preferredDateFormat, preferredLanguage } = await logseq.App.getUserConfigs() as AppUserConfigs
+    daysForEach(days, startDate, boundariesInner, today, targetDate, preferredDateFormat, preferredLanguage, targetElementName, flagShowNextWeek)
   }
   processingFoundBoundaries = false
 }
@@ -167,7 +168,21 @@ const daySideScroll = (index: number, boundariesInner: HTMLDivElement, targetEle
 }
 
 
-const daysForEach = (days: number[], startDate: Date, boundariesInner: HTMLDivElement, today: Date, targetDate: Date, preferredDateFormat: string, targetElementName: string, flagShowNextWeek: boolean) => {
+const lunarString = (targetDate: Date, dayElement: HTMLSpanElement): string => {
+  const d = Lunar.fromDate(targetDate)
+  const getHoliday = HolidayUtil.getHoliday(targetDate.getFullYear(), targetDate.getMonth() + 1, targetDate.getDate())
+  const getHolidayName = getHoliday ? getHoliday.getName() : undefined
+  if (getHolidayName) {
+    dayElement.title = getHolidayName + "\n"
+    dayElement.style.backgroundColor = 'var(--highlight-bg-color)'
+    return getHolidayName
+  } else {
+    return (d.getDayInChinese() as string)
+  }
+}
+
+
+const daysForEach = (days: number[], startDate: Date, boundariesInner: HTMLDivElement, today: Date, targetDate: Date, preferredDateFormat: string, preferredLanguage: string, targetElementName: string, flagShowNextWeek: boolean) => {
   let monthDuplicate: Date
   //ミニカレンダー作成 1日ずつ処理
   days.forEach((numDays, index) => {
@@ -195,7 +210,14 @@ const daysForEach = (days: number[], startDate: Date, boundariesInner: HTMLDivEl
       dayElement.classList.add('day')
       const dayOfWeekElement: HTMLSpanElement = document.createElement('span')
       dayOfWeekElement.classList.add('dayOfWeek')
-      dayOfWeekElement.innerText = dayOfWeek
+      if (preferredLanguage === "zh-Hant" || preferredLanguage === "zh-CN") {
+        const chinese = ` <smaLl>${lunarString(date, dayElement)}</small>`
+        dayOfWeekElement.style.fontSize = ".88em"
+        dayOfWeekElement.innerText = dayOfWeek
+        dayOfWeekElement.innerHTML += chinese
+      } else {
+        dayOfWeekElement.innerText = dayOfWeek
+      }
       dayElement.appendChild(dayOfWeekElement)
       const dayOfMonthElement: HTMLSpanElement = document.createElement('span')
       dayOfMonthElement.classList.add('dayOfMonth')
@@ -204,9 +226,9 @@ const daysForEach = (days: number[], startDate: Date, boundariesInner: HTMLDivEl
       //日付と相対時間をtitleに追加する
       if (logseq.settings?.booleanRelativeTime === true) { //相対時間を表示する場合
         const formatString: string = formatRelativeDate(date)
-        dayElement.title = dateFormat + '\n' + formatString
+        dayElement.title += dateFormat + '\n' + formatString
       } else {
-        dayElement.title = dateFormat
+        dayElement.title += dateFormat
       }
 
       //indexが0~6

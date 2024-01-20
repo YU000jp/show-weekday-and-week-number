@@ -23,7 +23,7 @@
         "@logseq/libs": "^0.0.17",
         "date-fns": "^3.3.0",
         "logseq-l10n": "^0.2.0",
-        "lunar-calendar": "^0.1.4"
+        "lunar-typescript": "^1.7.0"
     },
     "devDependencies": {
         "@semantic-release/changelog": "^6.0.3",
