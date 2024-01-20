@@ -80,6 +80,7 @@ Install from Logseq Marketplace
 
 1. Script > [Show week day and week number - discuss.logseq.com](https://discuss.logseq.com/t/show-week-day-and-week-number/12685/18) @[danilofaria](https://discuss.logseq.com/u/danilofaria/), @[ottodevs](https://discuss.logseq.com/u/ottodevs/)
 1. Library > [date-fns](https://date-fns.org/)
+1. Library > [@6tail/ lunar-typescript](https://github.com/6tail/lunar-typescript) for Chinese Lunar
 1. Icon > [IonutNeagu - svgrepo.com](https://www.svgrepo.com/svg/490868/monday)
 1. Author > @[YU000jp](https://github.com/YU000jp)
 
