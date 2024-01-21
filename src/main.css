@@ -106,6 +106,8 @@ body {
                                 margin-left: 0.25em;
                                 border-radius: 0.2em;
                                 cursor: pointer;
+                                white-space: nowrap;
+                                overflow: hidden;
 
                                 &.thisWeek {
                                     background-color: var(--color-level-2);
@@ -130,15 +132,10 @@ body {
                                     font-size: 1.15em;
 
                                     &>span.indicator {
-                                        margin-left: .3em;
-                                        font-size: .6em;
-                                        opacity: .8;
+                                        margin-left: .4em;
+                                        font-size: .55em;
+                                        opacity: .7;
                                     }
-                                }
-
-                                & span.dayOfWeek {
-                                    white-space: nowrap;
-                                    overflow: hidden;
                                 }
                             }
                         }
