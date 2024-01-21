@@ -54,10 +54,28 @@ const main = async () => {
   })
 
   // メッセージを表示する
-  // if (logseq.settings && logseq.settings!.notice !== "20231024no01") {
-  //   logseq.UI.showMsg("Show Weekday and Week-number plugin\n\nUpdated\n\n", "info", { timeout: 4000 })
-  //   logseq.updateSettings({ notice: "20231024no01" })
-  // }
+  const notice = "20240122no02"
+  if (logseq.settings && logseq.settings!.notice !== notice) {
+    logseq.updateSettings({ notice })
+    setTimeout(() => {
+      logseq.UI.showMsg(`
+
+    📆"Show Weekday and Week-number" plugin
+    Updated!
+    
+    Features:
+    1. Show holidays for world country
+    2. Show indicator (dot) of journal entries
+
+
+    - New setting items have been added. 
+    
+    Select your country name in the plugin settings.
+    
+    `, "info", { timeout: 7000 })
+      logseq.showSettingsUI() // 設定画面を表示する
+    }, 5000)
+  }
 
   // 初回起動時に設定を促す
   if (logseq.settings?.weekNumberFormat === undefined) {
