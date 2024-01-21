@@ -117,6 +117,13 @@ export const settingsTemplate = (userLanguage): SettingSchemaDesc[] => [
     default: true,
     description: t("*This setting does not affect the graph"),
   },
+  {
+    key: "booleanUnderLunarCalendar",
+    title: t("Enable month and day of lunar-calendar (Chinese only)") + "🆕",
+    type: "boolean",
+    default: true,
+    description: t("Other language regions are not affected."),
+  },
 
   //Journal Boundaries
   {
@@ -258,11 +265,10 @@ export const settingsTemplate = (userLanguage): SettingSchemaDesc[] => [
   },
   {
     key: "booleanLunarCalendar",
-    title: t("Holidays > Enable Lunar-calendar (👲Chinese only)") + "🆕",
+    title: t("Enable Lunar-calendar based (Chinese only)") + "🆕",
     type: "boolean",
     default: true,
-    description: t("Other language regions are not affected.") + " / " +
-      t("By setting this toggle to false, switch to holidays that match your region.")
+    description: t("Other language regions are not affected."),
   },
 
   //Weekly Journal

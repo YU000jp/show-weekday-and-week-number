@@ -1,4 +1,6 @@
 import { format, getWeekOfMonth, isSaturday, isSunday } from "date-fns"
+import { t } from "logseq-l10n"
+import { Lunar } from "lunar-typescript"
 import { createLinkMonthlyLink, createSettingButton, formatRelativeDate, getWeeklyNumberFromDate, openPageFromPageName } from "./lib"
 
 // プロセス中かどうかを判定するフラグ
@@ -39,6 +41,9 @@ export const behindJournalTitle = async (journalDate: Date, titleElement: HTMLEl
 
   //Monthly Journalのリンクを作成する
   if (logseq.settings!.booleanMonthlyJournalLink === true) enableMonthlyJournalLink(journalDate, baseLineElement)
+
+  // 太陰暦の月日を表示する
+  if (logseq.settings!.booleanUnderLunarCalendar === true) enableUnderLunarCalendar(journalDate, baseLineElement)
 
   //設定ボタンを設置
   if (logseq.settings!.booleanSettingsButton === true) enableSettingsButton(baseLineElement)
@@ -121,7 +126,7 @@ const enableWeekNumber = (journalDate: Date, weekStartsOn: 0 | 1): string => {
     if (logseq.settings!.booleanWeeklyJournal === true) {
 
       const linkId = "weeklyJournal-" + forWeeklyJournal
-      printHtmlWeekNumber = `<span title="Week number: ${forWeeklyJournal}"><a id="${linkId}">${printWeekNumber}</a></span>`
+      printHtmlWeekNumber = `<span title="${t("Week number: ") + forWeeklyJournal}"><a id="${linkId}">${printWeekNumber}</a></span>`
 
       setTimeout(() => {
         const element = parent.document.getElementById(linkId) as HTMLSpanElement
@@ -160,3 +165,14 @@ const enableSettingsButton = (dateInfoElement: HTMLSpanElement) => {
   dateInfoElement.appendChild(settingButton)
 }
 
+const enableUnderLunarCalendar = (journalDate: Date, baseLineElement: HTMLSpanElement) => {
+  const lunarCalendarElement = document.createElement("span")
+  lunarCalendarElement.id = "lunarCalendarMonthAndDay"
+  const LunarDate = Lunar.fromDate(journalDate)
+  const LunarDateYear = LunarDate.getYear()
+  if (LunarDateYear === (new Date().getFullYear()))
+    lunarCalendarElement.textContent = LunarDate.toString().slice(5) //先頭5文字を削除する
+  else
+    lunarCalendarElement.textContent = LunarDate.toString()
+  baseLineElement.appendChild(lunarCalendarElement)
+}

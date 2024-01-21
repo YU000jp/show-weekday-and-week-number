@@ -214,7 +214,8 @@ const onSettingsChanged = () => logseq.onSettingsChanged((newSet: LSPluginBaseIn
     || oldSet.holidaysState !== newSet.holidaysState
     || oldSet.holidaysRegion !== newSet.holidaysRegion
     || oldSet.choiceHolidaysColor !== newSet.choiceHolidaysColor
-    || oldSet.booleanLunarCalendar !== newSet.booleanLunarCalendar) {
+    || oldSet.booleanLunarCalendar !== newSet.booleanLunarCalendar
+    || oldSet.booleanUnderLunarCalendar !== newSet.booleanUnderLunarCalendar) {
     //再表示 Behind Journal Title
     removeTitleQuery()
     setTimeout(() => querySelectorAllTitle(), 500)
