@@ -1,12 +1,32 @@
-import { AppUserConfigs, BlockUUID, PageEntity } from '@logseq/libs/dist/LSPlugin.user'
+import { BlockUUID, PageEntity } from '@logseq/libs/dist/LSPlugin.user'
 import { addDays, format, isBefore, isFriday, isSameDay, isSaturday, isSunday, isThursday, isToday, isWednesday, startOfISOWeek, startOfWeek, } from 'date-fns' //https://date-fns.org/
+import Holidays from 'date-holidays'
 import { t } from "logseq-l10n"
+import { HolidayUtil, Lunar } from 'lunar-typescript'
+import { getConfigPreferredDateFormat, getConfigPreferredLanguage } from '.'
 import { formatRelativeDate, getJournalDayDate, getWeekStartOn, getWeeklyNumberFromDate, openPageFromPageName } from './lib'
-import { Solar, Lunar, HolidayUtil } from 'lunar-typescript'
+let holidaysBundle: Holidays | null // バンドルを作成するための変数
+let alreadyHolidayBundle: boolean = false // プラグイン設定変更時にバンドルを更新するためのフラグ
+
+// date-holidaysのバンドルを作成する
+export const getHolidaysBundle = (userLanguage: string, flagSettingsChanged?: boolean) => {
+  if (flagSettingsChanged !== true && logseq.settings!.booleanBoundariesHolidays === false) return
+  userLanguage = (logseq.settings!.holidaysCountry as string || "US: United States of America").split(":")[0] //プラグイン設定で指定された言語を取得する
+  if (holidaysBundle === null || alreadyHolidayBundle === false)
+    holidaysBundle = new Holidays(userLanguage, logseq.settings!.holidaysState as string, logseq.settings!.holidaysRegion as string, { types: ["public"] }) // バンドルを作成する 公共の祝日のみに限定する
+  else
+    holidaysBundle.init(userLanguage) // プラグイン設定変更時にバンドルを更新する
+  alreadyHolidayBundle = true
+}
+
+export const removeHolidaysBundle = () => {
+  holidaysBundle = null
+  alreadyHolidayBundle = false
+}
 
 let processingFoundBoundaries: boolean = false
 export const boundariesProcess = async (targetElementName: string, remove: boolean, repeat: number, selectStartDate?: Date) => {
-  if (repeat >= 5 || processingFoundBoundaries === true) return
+  if (repeat >= 3 || processingFoundBoundaries === true) return
   if (!selectStartDate || (targetElementName === "weeklyJournal" && remove === true)) { //selectStartDateがある場合はチェックしない
     const checkWeekBoundaries = parent.document.getElementById('boundariesInner') as HTMLDivElement | null
     if (checkWeekBoundaries) {
@@ -30,13 +50,8 @@ export const boundariesProcess = async (targetElementName: string, remove: boole
       firstElement = null
       break
   }
-  if (firstElement === null &&
-    ((targetElementName === 'journals' && parent.document.getElementById('journals') === null)
-      || (targetElementName === 'is-journals' && parent.document.body.getElementsByClassName('is-journals')[0] === null)
-      || (targetElementName === 'weeklyJournal' && parent.document.body.getElementsByClassName('page')[0] === null)
-    )) {
+  if (firstElement === null)
     setTimeout(() => boundariesProcess(targetElementName, false, repeat + 1), 300)
-  }
   processingFoundBoundaries = true//ここからreturnする場合は必ずfalseにすること
 
 
@@ -50,9 +65,9 @@ export const boundariesProcess = async (targetElementName: string, remove: boole
       if (targetElementName === "weeklyJournal") {
         weekBoundaries = parent.document.getElementById("weekBoundaries") as HTMLDivElement | null || document.createElement('div')
         weekBoundaries.id = 'weekBoundaries'
-      } else {
+      } else
         weekBoundaries = parent.document.getElementById("weekBoundaries") as HTMLDivElement
-      }
+
     } else {
       weekBoundaries = document.createElement('div')
       weekBoundaries.id = 'weekBoundaries'
@@ -70,7 +85,7 @@ export const boundariesProcess = async (targetElementName: string, remove: boole
       targetDate = today
     } else
       if (targetElementName === 'is-journals') {
-        const { journalDay } = await logseq.Editor.getCurrentPage() as PageEntity
+        const { journalDay } = await logseq.Editor.getCurrentPage() as { journalDay: PageEntity["journalDay"] }
         if (!journalDay) {
           console.error('journalDay is undefined')
           processingFoundBoundaries = false
@@ -108,8 +123,7 @@ export const boundariesProcess = async (targetElementName: string, remove: boole
       ? [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13] //次の週を表示する場合
       : [-7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6] //次の週を表示しない場合
 
-    const { preferredDateFormat, preferredLanguage } = await logseq.App.getUserConfigs() as AppUserConfigs
-    daysForEach(days, startDate, boundariesInner, today, targetDate, preferredDateFormat, preferredLanguage, targetElementName, flagShowNextWeek)
+    daysForEach(days, startDate, boundariesInner, today, targetDate, targetElementName, flagShowNextWeek)
   }
   processingFoundBoundaries = false
 }
@@ -138,7 +152,7 @@ const daySideMonth = (date: Date, boundariesInner: HTMLDivElement, monthDuplicat
   const monthString: string = new Intl.DateTimeFormat((logseq.settings?.localizeOrEnglish as string || "default"), { month: "short" }).format(dateShowMonth)
   sideMonthElement.innerText = monthString
 
-  if (//monthDuplicateとdateShowMonthの月が一致する場合
+  if (//上下の月が一致する場合は、非表示にする
     monthDuplicate &&
     dateShowMonth.getMonth() === monthDuplicate.getMonth() &&
     dateShowMonth.getFullYear() === monthDuplicate.getFullYear()
@@ -153,6 +167,7 @@ const daySideMonth = (date: Date, boundariesInner: HTMLDivElement, monthDuplicat
   return dateShowMonth
 }
 
+// 週のスクロール
 const daySideScroll = (index: number, boundariesInner: HTMLDivElement, targetElementName: string, startDate: Date) => {
   const sideScrollElement: HTMLSpanElement = document.createElement('span')
   sideScrollElement.classList.add('daySide', 'daySideScroll')
@@ -167,34 +182,51 @@ const daySideScroll = (index: number, boundariesInner: HTMLDivElement, targetEle
   }, { once: true })
 }
 
-
+// For Chinese lunar-calendar and holidays
 const lunarString = (targetDate: Date, dayElement: HTMLSpanElement): string => {
-  const d = Lunar.fromDate(targetDate)
-  const getHoliday = HolidayUtil.getHoliday(targetDate.getFullYear(), targetDate.getMonth() + 1, targetDate.getDate())
+  const getHoliday = HolidayUtil.getHoliday(targetDate.getFullYear(), targetDate.getMonth() + 1, targetDate.getDate()) // year, month, day
   const getHolidayName = getHoliday ? getHoliday.getName() : undefined
   if (getHolidayName) {
     dayElement.title = getHolidayName + "\n"
-    dayElement.style.backgroundColor = 'var(--highlight-bg-color)'
-    return getHolidayName
-  } else {
-    return (d.getDayInChinese() as string)
-  }
+    dayElement.style.backgroundColor = `var(${logseq.settings!.choiceHolidaysColor as string || "--highlight-bg-color"})`
+    return getHolidayName // 中国の祝日
+  } else
+    return (Lunar.fromDate(targetDate).getDayInChinese() as string) // 祝日がない場合は、中国の伝統的な暦を表示する(旧暦)
 }
 
 
-const daysForEach = (days: number[], startDate: Date, boundariesInner: HTMLDivElement, today: Date, targetDate: Date, preferredDateFormat: string, preferredLanguage: string, targetElementName: string, flagShowNextWeek: boolean) => {
+// For World holidays
+const holidaysWorld = (targetDate: Date, dayElement: HTMLSpanElement): string | undefined => {
+
+  if (!holidaysBundle) return undefined
+  const checkHoliday = holidaysBundle.isHoliday(targetDate)
+
+  if (checkHoliday !== false && checkHoliday[0].type === "public") {
+    const holidayName = checkHoliday[0].name
+    if (holidayName) {
+      dayElement.title = holidayName + "\n"
+      dayElement.style.backgroundColor = `var(${logseq.settings!.choiceHolidaysColor as string || "--highlight-bg-color"})`
+      return holidayName
+    }
+  } else
+    return undefined
+}
+
+// 1日ずつの処理
+const daysForEach = (days: number[], startDate: Date, boundariesInner: HTMLDivElement, today: Date, targetDate: Date, targetElementName: string, flagShowNextWeek: boolean) => {
   let monthDuplicate: Date
+  const preferredDateFormat = getConfigPreferredDateFormat()
   //ミニカレンダー作成 1日ずつ処理
   days.forEach((numDays, index) => {
-    const date: Date = numDays === 0 ? startDate : addDays(startDate, numDays) as Date
-    const dateFormat: string = format(date, preferredDateFormat)
-    const dayOfWeek: string = new Intl.DateTimeFormat((logseq.settings?.localizeOrEnglish as string || "default"), { weekday: "short" }).format(date)
+    const date: Date = numDays === 0 ? startDate : addDays(startDate, numDays) as Date // dateを取得する
+    const dateFormat: string = format(date, preferredDateFormat) //日付をフォーマットする
+    const dayOfWeek: string = new Intl.DateTimeFormat((logseq.settings?.localizeOrEnglish as string || "default"), { weekday: "short" }).format(date) // 曜日を取得する
     //日付を取得する
-    const dayOfMonth: number = date.getDate()
+    const dayOfMonth: number = date.getDate() // 日付の数字を取得する
     const dayElement: HTMLSpanElement = document.createElement('span')
     try {
       if (index === 7) {
-        const element = document.createElement('div') as HTMLDivElement
+        const element: HTMLDivElement = document.createElement('div')
         element.style.width = "100%"
         boundariesInner.append(element)
       }
@@ -210,13 +242,21 @@ const daysForEach = (days: number[], startDate: Date, boundariesInner: HTMLDivEl
       dayElement.classList.add('day')
       const dayOfWeekElement: HTMLSpanElement = document.createElement('span')
       dayOfWeekElement.classList.add('dayOfWeek')
-      if (preferredLanguage === "zh-Hant" || preferredLanguage === "zh-CN") {
+      dayOfWeekElement.innerText = dayOfWeek
+
+      // 20240121
+      // 祝日のカラーリング機能
+      const configPreferredLanguage = getConfigPreferredLanguage()
+      // Chinese lunar-calendar and holidays
+      if (configPreferredLanguage === "zh-Hant" || configPreferredLanguage === "zh-CN") {
         const chinese = ` <smaLl>${lunarString(date, dayElement)}</small>`
         dayOfWeekElement.style.fontSize = ".88em"
-        dayOfWeekElement.innerText = dayOfWeek
         dayOfWeekElement.innerHTML += chinese
       } else {
-        dayOfWeekElement.innerText = dayOfWeek
+        // World holidays
+        const japaneseOnlyNameOfHoliday = holidaysWorld(date, dayElement)
+        // Japanese holidays
+        if (japaneseOnlyNameOfHoliday && configPreferredLanguage === "ja") dayOfWeekElement.innerHTML += ` <smaLl>${japaneseOnlyNameOfHoliday}</small>`
       }
       dayElement.appendChild(dayOfWeekElement)
       const dayOfMonthElement: HTMLSpanElement = document.createElement('span')
@@ -236,16 +276,22 @@ const daysForEach = (days: number[], startDate: Date, boundariesInner: HTMLDivEl
         if (index >= 7 && index <= 14) dayElement.classList.add('thisWeek')
       } else {
         if ((flagShowNextWeek === true && index < 7)
-          || (flagShowNextWeek === false && index > 6)) dayElement.classList.add('thisWeek')
+          || (flagShowNextWeek === false && index > 6))
+          dayElement.classList.add('thisWeek')
       }
-      if (targetElementName !== 'journals' && targetElementName !== "weeklyJournal" && isBooleanTargetSameDay === true)
+      if (targetElementName !== 'journals'
+        && targetElementName !== "weeklyJournal"
+        && isBooleanTargetSameDay === true)
         dayElement.style.border = `1px solid ${logseq.settings!.boundariesHighlightColorSinglePage}` //シングルページの日付をハイライト
 
-      else if (isBooleanToday === true) dayElement.style.border = `1px solid ${logseq.settings!.boundariesHighlightColorToday}` //今日をハイライト
+      else
+        if (isBooleanToday === true)
+          dayElement.style.border = `1px solid ${logseq.settings!.boundariesHighlightColorToday}` //今日をハイライト
 
       if (logseq.settings?.booleanWeekendsColor === true) {
         if (isSaturday(date) as boolean) dayElement.style.color = 'var(--ls-wb-stroke-color-blue)'
-        else if (isSunday(date) as boolean) dayElement.style.color = 'var(--ls-wb-stroke-color-red)'
+        else
+          if (isSunday(date) as boolean) dayElement.style.color = 'var(--ls-wb-stroke-color-red)'
       }
 
       //日付をクリックできるようにするかどうか
@@ -271,7 +317,7 @@ const daysForEach = (days: number[], startDate: Date, boundariesInner: HTMLDivEl
   })
 }
 
-
+// 日誌のページが存在するかどうかのインディケーターを表示する
 const indicator = async (targetPageName: string, dayOfMonthElement: HTMLSpanElement) => {
   const existsPage = await logseq.Editor.getPage(targetPageName, { includeChildren: false }) as { file: string | undefined } | null
   if (!existsPage || existsPage.file === undefined) return
@@ -282,6 +328,7 @@ const indicator = async (targetPageName: string, dayOfMonthElement: HTMLSpanElem
   dayOfMonthElement.appendChild(indicatorElement)
 }
 
+// 日誌のページを開く
 function openPageToSingleDay(journalPageName: string, isBooleanBeforeToday: boolean): (this: HTMLSpanElement, ev: MouseEvent) => any {
   return async (event) => {
     if (event.shiftKey) {//Shiftキーを押しながらクリックした場合は、サイドバーでページを開く
