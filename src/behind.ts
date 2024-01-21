@@ -26,22 +26,22 @@ export const behindJournalTitle = async (journalDate: Date, titleElement: HTMLEl
   const printHtmlWeekNumber: string = logseq.settings!.booleanWeekNumber === true ? enableWeekNumber(journalDate, weekStartsOn) : "" //week numberの表示用の変数
 
   //relative time
-  const relativeTime: string = logseq.settings!.booleanRelativeTime === true ? enableRelativeTime(journalDate) : "" //relative timeの表示用の変数
+  const printRelativeTime: string = logseq.settings!.booleanRelativeTime === true ? enableRelativeTime(journalDate) : "" //relative timeの表示用の変数
 
   // 反映する
-  const dateInfoElement: HTMLSpanElement = applyStyles(journalDate, dayOfWeekName, printHtmlWeekNumber, relativeTime)
+  const baseLineElement: HTMLSpanElement = createBaseLineElement(journalDate, dayOfWeekName, printHtmlWeekNumber, printRelativeTime)
 
   // h1を移動する
   moveTitleElement(titleElement)
 
   // titleElementの後ろにdateInfoElementを追加する
-  titleElement.insertAdjacentElement("afterend", dateInfoElement)
+  titleElement.insertAdjacentElement("afterend", baseLineElement)
 
   //Monthly Journalのリンクを作成する
-  if (logseq.settings!.booleanMonthlyJournalLink === true) enableMonthlyJournalLink(journalDate, dateInfoElement)
+  if (logseq.settings!.booleanMonthlyJournalLink === true) enableMonthlyJournalLink(journalDate, baseLineElement)
 
   //設定ボタンを設置
-  if (logseq.settings!.booleanSettingsButton === true) enableSettingsButton(dateInfoElement)
+  if (logseq.settings!.booleanSettingsButton === true) enableSettingsButton(baseLineElement)
 
   setTimeout(() => processingBehind = false, 300)
 
@@ -77,22 +77,19 @@ const moveTitleElement = (titleElement: HTMLElement) => {
 }
 
 
-const applyStyles = (journalDate: Date, dayOfWeekName: string, printHtmlWeekNumber: string, relativeTime: string) => {
+const createBaseLineElement = (journalDate: Date, dayOfWeekName: string, printHtmlWeekNumber: string, relativeTime: string) => {
 
   const dateInfoElement: HTMLSpanElement = document.createElement("span")
   dateInfoElement.classList.add("showWeekday")
 
   if (logseq.settings!.booleanDayOfWeek === true) {
 
-    if (logseq.settings!.booleanWeekendsColor === true
-      && isSaturday(journalDate) === true)
-      dateInfoElement.innerHTML = `<span style="color:var(--ls-wb-stroke-color-blue)">${dayOfWeekName}</span>${printHtmlWeekNumber}${relativeTime}`
+    if (logseq.settings!.booleanWeekendsColor === true)
+      dateInfoElement.innerHTML = `<span style="color:var(${isSaturday(journalDate) === true ? "--ls-wb-stroke-color-blue"
+        : isSunday(journalDate) === true ? "--ls-wb-stroke-color-red"
+          : ""})">${dayOfWeekName}</span>${printHtmlWeekNumber}${relativeTime}`
     else
-      if (logseq.settings!.booleanWeekendsColor === true
-        && isSunday(journalDate) === true)
-        dateInfoElement.innerHTML = `<span style="color:var(--ls-wb-stroke-color-red)">${dayOfWeekName}</span>${printHtmlWeekNumber}${relativeTime}`
-      else
-        dateInfoElement.innerHTML = `<span>${dayOfWeekName}</span>${printHtmlWeekNumber}${relativeTime}` //textContent
+      dateInfoElement.innerHTML = `<span>${dayOfWeekName}</span>${printHtmlWeekNumber}${relativeTime}` //textContent
 
   } else
     dateInfoElement.innerHTML = `${printHtmlWeekNumber}${relativeTime}`
