@@ -55,7 +55,7 @@ const main = async () => {
 
   // メッセージを表示する
   const notice = "20240122no02"
-  if (logseq.settings && logseq.settings!.notice !== notice) {
+  if (logseq.settings!.weekNumberFormat !== undefined  && logseq.settings!.notice !== notice) {
     logseq.updateSettings({ notice })
     setTimeout(() => {
       logseq.UI.showMsg(`
