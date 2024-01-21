@@ -1,6 +1,6 @@
-import "@logseq/libs"; //https://plugins-doc.logseq.com/
+import "@logseq/libs" //https://plugins-doc.logseq.com/
 import { EntityID, LSPluginBaseInfo } from "@logseq/libs/dist/LSPlugin.user"
-import { setup as l10nSetup } from "logseq-l10n"; //https://github.com/sethyuan/logseq-l10n
+import { setup as l10nSetup } from "logseq-l10n" //https://github.com/sethyuan/logseq-l10n
 import { behindJournalTitle } from "./behind"
 import { boundariesProcess, getHolidaysBundle, removeHolidaysBundle } from "./boundaries"
 import { convertLanguageCodeToCountryCode, getJournalDayDate, removeProvideStyle, titleElementReplaceLocalizeDayOfWeek } from "./lib"
@@ -233,7 +233,7 @@ const onSettingsChanged = () => logseq.onSettingsChanged((newSet: LSPluginBaseIn
   //20240121 祝日表示オフの場合 (バンドルを削除する)
   if (oldSet.booleanBoundariesHolidays !== newSet.booleanBoundariesHolidays) {
     if (newSet.booleanBoundariesHolidays === true)
-      getHolidaysBundle(newSet.holidaysCountry as string)
+      getHolidaysBundle(newSet.holidaysCountry as string, true)
     else
       removeHolidaysBundle()
   }

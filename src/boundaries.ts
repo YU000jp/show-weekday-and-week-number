@@ -10,7 +10,9 @@ let alreadyHolidayBundle: boolean = false // プラグイン設定変更時に�
 
 // date-holidaysのバンドルを作成する
 export const getHolidaysBundle = (userLanguage: string, flagSettingsChanged?: boolean) => {
-  if (flagSettingsChanged !== true && logseq.settings!.booleanBoundariesHolidays === false) return
+  if ((flagSettingsChanged !== true && logseq.settings!.booleanBoundariesHolidays === false) // 設定変更時はバンドルを更新する
+  || (userLanguage=== "zh-Hant" || userLanguage === "zh-CN") // 中国の祝日はdate-holidaysではなくlunar-typescriptを使用する
+  ) return
   userLanguage = (logseq.settings!.holidaysCountry as string || "US: United States of America").split(":")[0] //プラグイン設定で指定された言語を取得する
   if (holidaysBundle === null || alreadyHolidayBundle === false)
     holidaysBundle = new Holidays(userLanguage, logseq.settings!.holidaysState as string, logseq.settings!.holidaysRegion as string, { types: ["public"] }) // バンドルを作成する 公共の祝日のみに限定する
