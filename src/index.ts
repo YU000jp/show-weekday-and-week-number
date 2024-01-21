@@ -37,6 +37,13 @@ let processingSettingsChanged: boolean = false
 
 const thisWeekPopup = () => logseq.provideStyle({ key: keyThisWeekPopup, style: CSSThisWeekPopup })
 
+const getUserConfig = async () => {
+  const { preferredLanguage, preferredDateFormat } = await logseq.App.getUserConfigs() as { preferredDateFormat: string; preferredLanguage: string }
+  configPreferredLanguage = preferredLanguage
+  configPreferredDateFormat = preferredDateFormat
+  getHolidaysBundle(preferredLanguage)
+}
+
 
 /* main */
 const main = async () => {
@@ -60,12 +67,7 @@ const main = async () => {
 
   logseq.provideStyle({ key: "main", style: fileMainCSS })
 
-  const getUserConfig = async () => {
-    const { preferredLanguage, preferredDateFormat } = await logseq.App.getUserConfigs() as { preferredDateFormat: string; preferredLanguage: string }
-    configPreferredLanguage = preferredLanguage
-    configPreferredDateFormat = preferredDateFormat
-    getHolidaysBundle(preferredLanguage)
-  }
+
   await getUserConfig()
 
   if (logseq.settings!.holidaysCountry === undefined) {
@@ -149,19 +151,16 @@ const main = async () => {
   // ショートカットキーを登録
   loadShortcutItems()
 
-  // ユーザー設定が変更されたときに実行
-  logseq.onSettingsChanged(async () => {
-    if (processingSettingsChanged) return
-    processingSettingsChanged = true
-    getUserConfig()
-    setTimeout(() => processingSettingsChanged === false, 1000)
-  })
-
-
 } /* end_main */
 
 
+
+// ユーザー設定が変更されたときに実行
 const onSettingsChanged = () => logseq.onSettingsChanged((newSet: LSPluginBaseInfo["settings"], oldSet: LSPluginBaseInfo["settings"]) => {
+  if (processingSettingsChanged) return
+  processingSettingsChanged = true
+  getUserConfig()
+  setTimeout(() => processingSettingsChanged === false, 1000)
 
   if ((oldSet.booleanBoundaries === true && newSet.booleanBoundaries === false)
     || (oldSet.booleanJournalsBoundaries === true && newSet.booleanJournalsBoundaries === false && parent.document.getElementById("journals") as Node)
@@ -209,7 +208,7 @@ const onSettingsChanged = () => logseq.onSettingsChanged((newSet: LSPluginBaseIn
     || oldSet.booleanBoundariesHolidays !== newSet.booleanBoundariesHolidays
     || oldSet.choiceHolidaysColor !== newSet.choiceHolidaysColor
   ) {
-    //再表示　Behind Journal Title
+    //再表示 Behind Journal Title
     removeTitleQuery()
     setTimeout(() => querySelectorAllTitle(), 500)
   }
@@ -238,9 +237,12 @@ const onSettingsChanged = () => logseq.onSettingsChanged((newSet: LSPluginBaseIn
       removeHolidaysBundle()
   }
 
+  //CAUTION: 日付形式が変更された場合は、re-indexをおこなうので、問題ないが、言語設定が変更された場合は、その設定は、すぐには反映されない。プラグインの再読み込みが必要になるが、その頻度がかなり少ないので問題ない。
+
 }) // end_onSettingsChanged
 
-//Journal boundariesを表示する
+
+//Journal boundariesを表示する 設定変更時に実行
 const SettingsChangedJournalBoundariesEnable = () => setTimeout(() => {
   if (parent.document.getElementById("journals") as Node)
     boundaries("journals")
@@ -249,23 +251,19 @@ const SettingsChangedJournalBoundariesEnable = () => setTimeout(() => {
 }, 100)
 
 
+// クエリーセレクターでタイトルを取得する
 let processingTitleQuery: boolean = false
 const querySelectorAllTitle = async (enable?: boolean): Promise<void> => {
   if (processingTitleQuery && !enable) return
   processingTitleQuery = true
 
   //Journalsの場合は複数
-  parent.document
-    .querySelectorAll(
-      "div#main-content-container div:is(.journal,.is-journals,.page) h1.title:not([data-checked])"
-    )
-    .forEach(
-      async (titleElement) =>
-        await JournalPageTitle(titleElement as HTMLHeadElement)
-    )
+  parent.document.body.querySelectorAll("div#main-content-container div:is(.journal,.is-journals,.page) h1.title:not([data-checked])")
+    .forEach(async (titleElement) => await JournalPageTitle(titleElement as HTMLHeadElement))
   processingTitleQuery = false
 }
 
+// observer
 const observer = new MutationObserver(async (): Promise<void> => {
   observer.disconnect()
   await querySelectorAllTitle(true)
@@ -293,13 +291,11 @@ const JournalPageTitle = async (titleElement: HTMLElement) => {
   //日誌のページ名の場合のみ
 
   //設定項目ですべてのトグルがオフの場合の処理
-  if (
-    logseq.settings?.booleanWeekNumber === false &&
-    logseq.settings!.booleanDayOfWeek === false &&
-    logseq.settings?.booleanRelativeTime === false &&
-    (titleElement.classList.contains("journal-title") === true ||
-      titleElement.classList.contains("title") === true)
-  ) {
+  if (logseq.settings?.booleanWeekNumber === false
+    && logseq.settings!.booleanDayOfWeek === false
+    && logseq.settings?.booleanRelativeTime === false
+    && (titleElement.classList.contains("journal-title") === true
+      || titleElement.classList.contains("title") === true)) {
     const dateInfoElement: HTMLSpanElement =
       document.createElement("span")
     dateInfoElement.classList.add("showWeekday")
@@ -307,10 +303,7 @@ const JournalPageTitle = async (titleElement: HTMLElement) => {
     const secondElement: HTMLSpanElement =
       document.createElement("span")
     secondElement.style.width = "50%"
-    titleElement.parentElement!.insertAdjacentElement(
-      "afterend",
-      secondElement
-    )
+    titleElement.parentElement!.insertAdjacentElement("afterend", secondElement)
     return
   }
 
@@ -320,10 +313,10 @@ const JournalPageTitle = async (titleElement: HTMLElement) => {
     titleElement.classList.contains("title") === true &&
     logseq.settings!.booleanWeeklyJournal === true
   ) {
-    const match = titleElement.textContent.match(
-      /^(\d{4})-W(\d{2})$/
-    ) as RegExpMatchArray
-    if (match && match[1] !== "" && match[2] !== "") {
+    const match = titleElement.textContent.match(/^(\d{4})-W(\d{2})$/) as RegExpMatchArray
+    if (match
+      && match[1] !== ""
+      && match[2] !== "") {
       await currentPageIsWeeklyJournal(titleElement, match)
       processingJournalTitlePage = false
       return
@@ -331,20 +324,21 @@ const JournalPageTitle = async (titleElement: HTMLElement) => {
   }
 
   //日誌タイトルから日付を取得し、右側に情報を表示する
-  const title: string = titleElement.dataset.localize === "true" ? titleElement.dataset.ref || "" : titleElement.textContent
+  const title: string = titleElement.dataset.localize === "true" ?
+    titleElement.dataset.ref || ""
+    : titleElement.textContent
   if (title === "") return
   const page = (await logseq.Editor.getPage(title)) as { journalDay: number } | null
   if (page && page.journalDay) {
     const journalDate: Date = getJournalDayDate(String(page.journalDay))
+
     behindJournalTitle(journalDate, titleElement, configPreferredDateFormat)
 
     //日付フォーマットに曜日が含まれている場合
-    if (
-      configPreferredDateFormat.includes("E") === true &&
-      logseq.settings!.booleanDayOfWeek === false &&
-      logseq.settings!.booleanJournalLinkLocalizeDayOfWeek === true &&
-      titleElement.dataset.localize === undefined
-    )
+    if (configPreferredDateFormat.includes("E") === true
+      && logseq.settings!.booleanDayOfWeek === false
+      && logseq.settings!.booleanJournalLinkLocalizeDayOfWeek === true
+      && titleElement.dataset.localize === undefined)
       titleElementReplaceLocalizeDayOfWeek(journalDate, titleElement)
   }
 
@@ -358,9 +352,9 @@ const removeBoundaries = () => {
 }
 
 const removeTitleQuery = () => {
-  const titleBehindElements = parent.document.querySelectorAll("div#main-content-container div:is(.journal,.is-journals) h1.title+span.showWeekday") as NodeListOf<HTMLElement>
+  const titleBehindElements = parent.document.body.querySelectorAll("div#main-content-container div:is(.journal,.is-journals) h1.title+span.showWeekday") as NodeListOf<HTMLElement>
   titleBehindElements.forEach((titleElement) => titleElement.remove())
-  const titleElements = parent.document.querySelectorAll("div#main-content-container div:is(.journal,.is-journals) h1.title[data-checked]") as NodeListOf<HTMLElement>
+  const titleElements = parent.document.body.querySelectorAll("div#main-content-container div:is(.journal,.is-journals) h1.title[data-checked]") as NodeListOf<HTMLElement>
   titleElements.forEach((titleElement) => titleElement.removeAttribute("data-checked"))
 }
 
