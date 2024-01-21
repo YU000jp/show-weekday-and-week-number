@@ -1,3 +1,11 @@
+# [1.49.0](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.48.0...v1.49.0) (2024-1-21)
+
+
+### Features
+
+* **Add:** behind journal title > month and day of Lunar-calendar [#129](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/129) ([d8e0ae6](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/d8e0ae6579e0b00427fb7fc9c6dac49d04b0b352))
+* **Journal Boundaries:** Support holidays [#132](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/132) ([003d4a6](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/003d4a68b04abce537f1283378850fc690142906))
+
 # [1.48.0](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.47.0...v1.48.0) (2024-1-20)
 
 
