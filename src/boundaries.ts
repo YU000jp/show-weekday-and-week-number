@@ -10,8 +10,11 @@ let alreadyHolidayBundle: boolean = false // プラグイン設定変更時に�
 
 // date-holidaysのバンドルを作成する
 export const getHolidaysBundle = (userLanguage: string, flagSettingsChanged?: boolean) => {
-  if ((flagSettingsChanged !== true && logseq.settings!.booleanBoundariesHolidays === false) // 設定変更時はバンドルを更新する
-  || (userLanguage=== "zh-Hant" || userLanguage === "zh-CN") // 中国の祝日はdate-holidaysではなくlunar-typescriptを使用する
+  if ((flagSettingsChanged !== true
+    && logseq.settings!.booleanBoundariesHolidays === false) // 設定変更時はバンドルを更新する
+    || logseq.settings!.booleanLunarCalendar === true // 太陰暦オンの場合はバンドルを作成しない
+    && ((userLanguage === "zh-Hant"
+      || userLanguage === "zh-CN")) // 中国の祝日はdate-holidaysではなくlunar-typescriptを使用する
   ) return
   userLanguage = (logseq.settings!.holidaysCountry as string || "US: United States of America").split(":")[0] //プラグイン設定で指定された言語を取得する
   if (holidaysBundle === null || alreadyHolidayBundle === false)
@@ -250,15 +253,19 @@ const daysForEach = (days: number[], startDate: Date, boundariesInner: HTMLDivEl
       // 祝日のカラーリング機能
       const configPreferredLanguage = getConfigPreferredLanguage()
       // Chinese lunar-calendar and holidays
-      if (configPreferredLanguage === "zh-Hant" || configPreferredLanguage === "zh-CN") {
-        const chinese = ` <smaLl>${lunarString(date, dayElement)}</small>`
+      if (logseq.settings!.booleanLunarCalendar === true // プラグイン設定で太陰暦オンの場合
+        && (configPreferredLanguage === "zh-Hant" //中国語の場合
+          || configPreferredLanguage === "zh-CN")) {
+        const chinese = ` <smaLl>${lunarString(date, dayElement)}</small>` //文字数が少ないため、小さく祝日名を表示する
         dayOfWeekElement.style.fontSize = ".88em"
         dayOfWeekElement.innerHTML += chinese
       } else {
         // World holidays
-        const japaneseOnlyNameOfHoliday = holidaysWorld(date, dayElement)
-        // Japanese holidays
-        if (japaneseOnlyNameOfHoliday && configPreferredLanguage === "ja") dayOfWeekElement.innerHTML += ` <smaLl>${japaneseOnlyNameOfHoliday}</small>`
+        const displayNameOfHoliday = holidaysWorld(date, dayElement)
+        if (displayNameOfHoliday
+          && (configPreferredLanguage === "ja" //日本語の場合
+            || configPreferredLanguage === "ko" // 韓国語の場合
+          )) dayOfWeekElement.innerHTML += ` <smaLl>${displayNameOfHoliday}</small>` //文字数が少ないため、小さく祝日名を表示する
       }
       dayElement.appendChild(dayOfWeekElement)
       const dayOfMonthElement: HTMLSpanElement = document.createElement('span')

@@ -157,19 +157,20 @@ const main = async () => {
 
 // ユーザー設定が変更されたときに実行
 const onSettingsChanged = () => logseq.onSettingsChanged((newSet: LSPluginBaseInfo["settings"], oldSet: LSPluginBaseInfo["settings"]) => {
-  if (processingSettingsChanged) return
-  processingSettingsChanged = true
-  getUserConfig()
-  setTimeout(() => processingSettingsChanged === false, 1000)
 
-  if ((oldSet.booleanBoundaries === true && newSet.booleanBoundaries === false)
-    || (oldSet.booleanJournalsBoundaries === true && newSet.booleanJournalsBoundaries === false && parent.document.getElementById("journals") as Node)
+  if ((oldSet.booleanBoundaries === true
+    && newSet.booleanBoundaries === false)
+    || (oldSet.booleanJournalsBoundaries === true
+      && newSet.booleanJournalsBoundaries === false
+      && parent.document.getElementById("journals") as Node)
   ) removeBoundaries() //boundariesを削除する
   else
-    if (oldSet.booleanBoundaries === false && newSet.booleanBoundaries === true)
+    if (oldSet.booleanBoundaries === false
+      && newSet.booleanBoundaries === true)
       SettingsChangedJournalBoundariesEnable()//Journal boundariesを表示する
     else
-      if (oldSet.booleanJournalsBoundaries === false && newSet.booleanJournalsBoundaries === true
+      if (oldSet.booleanJournalsBoundaries === false
+        && newSet.booleanJournalsBoundaries === true
         && parent.document.getElementById("journals") as Node)
         boundaries("journals")//日誌の場合のみ
 
@@ -185,8 +186,11 @@ const onSettingsChanged = () => logseq.onSettingsChanged((newSet: LSPluginBaseIn
     || oldSet.booleanWeeklyJournal !== newSet.booleanWeeklyJournal
     || oldSet.booleanBoundariesIndicator !== newSet.booleanBoundariesIndicator
     || oldSet.booleanBoundariesHolidays !== newSet.booleanBoundariesHolidays
+    || oldSet.holidaysCountry !== newSet.holidaysCountry
+    || oldSet.holidaysState !== newSet.holidaysState
+    || oldSet.holidaysRegion !== newSet.holidaysRegion
     || oldSet.choiceHolidaysColor !== newSet.choiceHolidaysColor
-  ) {
+    || oldSet.booleanLunarCalendar !== newSet.booleanLunarCalendar) {
     //Journal boundariesを再表示する
     removeBoundaries()
     SettingsChangedJournalBoundariesEnable()
@@ -206,8 +210,11 @@ const onSettingsChanged = () => logseq.onSettingsChanged((newSet: LSPluginBaseIn
     || oldSet.booleanMonthlyJournalLink !== newSet.booleanMonthlyJournalLink
     || oldSet.booleanBoundariesIndicator !== newSet.booleanBoundariesIndicator
     || oldSet.booleanBoundariesHolidays !== newSet.booleanBoundariesHolidays
+    || oldSet.holidaysCountry !== newSet.holidaysCountry
+    || oldSet.holidaysState !== newSet.holidaysState
+    || oldSet.holidaysRegion !== newSet.holidaysRegion
     || oldSet.choiceHolidaysColor !== newSet.choiceHolidaysColor
-  ) {
+    || oldSet.booleanLunarCalendar !== newSet.booleanLunarCalendar) {
     //再表示 Behind Journal Title
     removeTitleQuery()
     setTimeout(() => querySelectorAllTitle(), 500)
@@ -237,7 +244,17 @@ const onSettingsChanged = () => logseq.onSettingsChanged((newSet: LSPluginBaseIn
       removeHolidaysBundle()
   }
 
+  if (oldSet.holidaysCountry !== newSet.holidaysCountry
+    || oldSet.holidaysState !== newSet.holidaysState
+    || oldSet.holidaysRegion !== newSet.holidaysRegion) { }
+
   //CAUTION: 日付形式が変更された場合は、re-indexをおこなうので、問題ないが、言語設定が変更された場合は、その設定は、すぐには反映されない。プラグインの再読み込みが必要になるが、その頻度がかなり少ないので問題ない。
+
+  if (processingSettingsChanged) return
+  processingSettingsChanged = true
+  getUserConfig()
+  setTimeout(() => processingSettingsChanged === false, 1000)
+
 
 }) // end_onSettingsChanged
 
@@ -259,7 +276,7 @@ const querySelectorAllTitle = async (enable?: boolean): Promise<void> => {
 
   //Journalsの場合は複数
   parent.document.body.querySelectorAll("div#main-content-container div:is(.journal,.is-journals,.page) h1.title:not([data-checked])")
-    .forEach(async (titleElement) => await JournalPageTitle(titleElement as HTMLHeadElement))
+    .forEach(async (titleElement) => await JournalPageTitle(titleElement as HTMLElement))
   processingTitleQuery = false
 }
 

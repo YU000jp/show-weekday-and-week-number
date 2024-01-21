@@ -256,6 +256,13 @@ export const settingsTemplate = (userLanguage): SettingSchemaDesc[] => [
     default: "--highlight-bg-color",
     description: "default: `--highlight-bg-color`",
   },
+  {
+    key: "booleanLunarCalendar",
+    title: t("Holidays > Enable Lunar-calendar (Chinese only)") + "🆕",
+    type: "boolean",
+    default: true,
+    description: t("By setting it to false, switch to holidays that match your region.")
+  },
 
   //Weekly Journal
   {
