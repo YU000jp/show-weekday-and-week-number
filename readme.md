@@ -24,6 +24,7 @@
 ### Mini-calendar 🗓️ (Journal boundaries)
 
 - Display a 2 lines calendar on journals. Smooth access to previous and subsequent dates on a single date page or journals.
+  > Highlight holidays for world / Show Lunar-calendar date for Chinese 🆕
 
 ![README用](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/assets/111847207/114708ab-0389-4c46-b962-00cb25e2070a)
 
@@ -81,7 +82,7 @@ Install from Logseq Marketplace
 1. Script > [Show week day and week number - discuss.logseq.com](https://discuss.logseq.com/t/show-week-day-and-week-number/12685/18) @[danilofaria](https://discuss.logseq.com/u/danilofaria/), @[ottodevs](https://discuss.logseq.com/u/ottodevs/)
 1. Library > [date-fns](https://date-fns.org/)
 1. LIbrary > [date-holidays](https://github.com/commenthol/date-holidays)
-  > Highlighting holidays is now possible thanks to the "date-holidays" library.
+   > Highlighting holidays is now possible thanks to the "date-holidays" library.
 1. Library > [@6tail/ lunar-typescript](https://github.com/6tail/lunar-typescript) for Chinese Lunar
 1. Icon > [IonutNeagu - svgrepo.com](https://www.svgrepo.com/svg/490868/monday)
 1. Author > @[YU000jp](https://github.com/YU000jp)
