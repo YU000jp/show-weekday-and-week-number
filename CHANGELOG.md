@@ -5,6 +5,13 @@
 
 * **doc:** Convey messages about updates ([95e49b8](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/95e49b8b9c30ab846d3241c46c45f2275855ae3a))
 
+# [1.50.0](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.49.0...v1.50.0) (2024-1-21)
+
+
+### Features
+
+* **doc:** Convey messages about updates ([95e49b8](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/95e49b8b9c30ab846d3241c46c45f2275855ae3a))
+
 # [1.49.0](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.48.0...v1.49.0) (2024-1-21)
 
 
