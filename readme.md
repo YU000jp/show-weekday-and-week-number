@@ -24,9 +24,9 @@
 ### Mini-calendar 🗓️ (Journal boundaries)
 
 - Display a 2 lines calendar on journals. Smooth access to previous and subsequent dates on a single date page or journals.
-  1. Highlight holidays for world country
-  1. Show indicator (dot) of journal entries
-  1. Show Lunar-calendar date for Chinese
+  1. Highlight holidays for world country 🆕
+  1. Show indicator (dot) of journal entries 🆕
+  1. Show Lunar-calendar date for Chinese 🆕
 
 ![README用](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/assets/111847207/114708ab-0389-4c46-b962-00cb25e2070a)
 
