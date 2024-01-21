@@ -77,6 +77,7 @@ Logseq マーケットプレイスからインストール
 
 1. スクリプト > [曜日と週番号を表示 - discuss.logseq.com](https://discuss.logseq.com/t/show-week-day-and-week-number/12685/18) @[danilofaria](https://discuss.logseq.com/u/danilofaria/), @[ottodevs](https://discuss.logseq.com/u/ottodevs/)
 1. ライブラリ > [date-fns](https://date-fns.org/)
+1. ライブラリ > [date-holidays](https://github.com/commenthol/date-holidays)
 1. アイコン > [@IonutNeagu - svgrepo.com](https://www.svgrepo.com/svg/490868/monday)
 1. 製作者 > [@YU000jp](https://github.com/YU000jp)
 
