@@ -258,10 +258,11 @@ export const settingsTemplate = (userLanguage): SettingSchemaDesc[] => [
   },
   {
     key: "booleanLunarCalendar",
-    title: t("Holidays > Enable Lunar-calendar (Chinese only)") + "🆕",
+    title: t("Holidays > Enable Lunar-calendar (👲Chinese only)") + "🆕",
     type: "boolean",
     default: true,
-    description: t("By setting it to false, switch to holidays that match your region.")
+    description: t("Other language regions are not affected.") + " / " +
+      t("By setting this toggle to false, switch to holidays that match your region.")
   },
 
   //Weekly Journal
