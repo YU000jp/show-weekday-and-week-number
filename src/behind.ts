@@ -1,7 +1,9 @@
 import { format, getWeekOfMonth, isSaturday, isSunday } from "date-fns"
 import { t } from "logseq-l10n"
-import { Lunar } from "lunar-typescript"
+import { HolidayUtil, Lunar } from "lunar-typescript"
 import { createLinkMonthlyLink, createSettingButton, formatRelativeDate, getWeeklyNumberFromDate, openPageFromPageName } from "./lib"
+import { getConfigPreferredLanguage } from "."
+import { exportHolidaysBundle } from "./boundaries"
 
 // プロセス中かどうかを判定するフラグ
 let processingBehind: boolean = false
@@ -39,11 +41,31 @@ export const behindJournalTitle = async (journalDate: Date, titleElement: HTMLEl
   // titleElementの後ろにdateInfoElementを追加する
   titleElement.insertAdjacentElement("afterend", baseLineElement)
 
-  //Monthly Journalのリンクを作成する
+
+
+  // Monthly Journalのリンクを作成する
   if (logseq.settings!.booleanMonthlyJournalLink === true) enableMonthlyJournalLink(journalDate, baseLineElement)
 
-  // 太陰暦の月日を表示する
-  if (logseq.settings!.booleanUnderLunarCalendar === true) enableUnderLunarCalendar(journalDate, baseLineElement)
+
+  // 20240123
+  // 祝日表記を追加する
+  const userLanguage = getConfigPreferredLanguage()
+  if ((userLanguage === "zh-Hant"
+    || userLanguage === "zh-CN")) { // 中国語の場合
+
+    if (logseq.settings!.booleanUnderLunarCalendar === true
+      || logseq.settings!.underHolidaysAlert === true) {
+      // 太陰暦の日付を取得する
+      const LunarDate = Lunar.fromDate(journalDate)
+      // 月日表記
+      if (logseq.settings!.booleanUnderLunarCalendar === true) enableUnderLunarCalendar(LunarDate, baseLineElement)
+      // 祝日表記
+      if (logseq.settings!.underHolidaysAlert === true) enableUnderLunarCalendarHoliday(LunarDate, baseLineElement)
+    }
+
+  } else  // 世界の国
+    if (logseq.settings!.underHolidaysAlert === true) enableUnderHolidayForWorldCountry(journalDate, baseLineElement)
+
 
   //設定ボタンを設置
   if (logseq.settings!.booleanSettingsButton === true) enableSettingsButton(baseLineElement)
@@ -159,20 +181,44 @@ const enableMonthlyJournalLink = (journalDate: Date, dateInfoElement: HTMLSpanEl
   dateInfoElement.appendChild(monthlyJournalLinkButton)
 }
 
-
 const enableSettingsButton = (dateInfoElement: HTMLSpanElement) => {
   const settingButton: HTMLButtonElement = createSettingButton()
   dateInfoElement.appendChild(settingButton)
 }
 
-const enableUnderLunarCalendar = (journalDate: Date, baseLineElement: HTMLSpanElement) => {
+const enableUnderLunarCalendar = (LunarDate: Lunar, baseLineElement: HTMLSpanElement) => {
   const lunarCalendarElement = document.createElement("span")
   lunarCalendarElement.id = "lunarCalendarMonthAndDay"
-  const LunarDate = Lunar.fromDate(journalDate)
-  const LunarDateYear = LunarDate.getYear()
-  if (LunarDateYear === (new Date().getFullYear()))
+  if (LunarDate.getYear() === (new Date().getFullYear()))
     lunarCalendarElement.textContent = LunarDate.toString().slice(5) //先頭5文字を削除する
   else
     lunarCalendarElement.textContent = LunarDate.toString()
   baseLineElement.appendChild(lunarCalendarElement)
+}
+
+const enableUnderLunarCalendarHoliday = (LunarDate: Lunar, baseLineElement: HTMLSpanElement) => {
+  const lunarCalendarElement = document.createElement("span")
+  lunarCalendarElement.id = "lunarCalendarHoliday"
+  lunarCalendarElement.style.textDecoration = "underline"
+  const holiday = HolidayUtil.getHoliday(LunarDate.getYear() + LunarDate.getMonth() + LunarDate.getDay())
+  if (holiday) lunarCalendarElement.textContent = holiday.getName()
+  baseLineElement.appendChild(lunarCalendarElement)
+}
+
+const enableUnderHolidayForWorldCountry = (journalDate: Date, baseLineElement: HTMLSpanElement) => {
+  const bundle = exportHolidaysBundle()
+  if (!bundle) return undefined
+  const checkHoliday = bundle.isHoliday(journalDate)
+
+  if (checkHoliday !== false
+    && checkHoliday[0].type === "public") { // 公休日のみ
+    const holidayName = checkHoliday[0].name
+    if (holidayName) {
+      const holidayElement = document.createElement("span")
+      holidayElement.id = "holidayForWorldCountry"
+      holidayElement.textContent = holidayName
+      holidayElement.style.textDecoration = "underline"
+      baseLineElement.appendChild(holidayElement)
+    }
+  }
 }

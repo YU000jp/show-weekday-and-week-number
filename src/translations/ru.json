@@ -12,6 +12,7 @@
   "Day of the week long or short": "Выберите, будет ли день недели длинным или коротким",
   "Day of the week, Select language Localize(:default) or English(:en)": "Выберите язык дня недели Локализация (:d efault) или английский (:en)",
   "Enable \"This Week\" section": "Включите раздел «На этой неделе» (ссылка на каждый день недели)",
+  "Enable Holidays alert": "Включить уведомления о праздниках",
   "Enable Lunar-calendar based (Chinese only)": "Включить лунный календарь (только для китайского языка)",
   "Enable day of the week": "Показать день недели",
   "Enable embedding for each journal": "Включение встраивания для каждого журнала",

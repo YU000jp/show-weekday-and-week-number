@@ -48,6 +48,15 @@ export const settingsTemplate = (userLanguage): SettingSchemaDesc[] => [
     enumChoices: ["long", "short"],
     description: "",
   },
+
+  // 20240123
+  { key: "underHolidaysAlert",
+    title: t("Enable Holidays alert") + "🆕",
+    type: "boolean",
+    default: true,
+    description: "",
+  },
+
   {
     key: "booleanWeekNumber",
     title: t("Enable week number"),

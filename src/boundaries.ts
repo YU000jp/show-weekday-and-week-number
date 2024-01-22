@@ -9,20 +9,29 @@ let holidaysBundle: Holidays | null // バンドルを作成するための変�
 let alreadyHolidayBundle: boolean = false // プラグイン設定変更時にバンドルを更新するためのフラグ
 
 // date-holidaysのバンドルを作成する
-export const getHolidaysBundle = (userLanguage: string, flagSettingsChanged?: boolean) => {
-  if ((flagSettingsChanged !== true
+export const getHolidaysBundle = (userLanguage: string, flag?: { settingsChanged?: boolean, already?: boolean }) => {
+
+  if (flag && flag.already === true
+    && alreadyHolidayBundle === true)
+    return // 既にバンドルを作成している場合は作成しないフラグでキャンセルする
+
+  if ((flag && flag.settingsChanged !== true
     && logseq.settings!.booleanBoundariesHolidays === false) // 設定変更時はバンドルを更新する
     || logseq.settings!.booleanLunarCalendar === true // 太陰暦オンの場合はバンドルを作成しない
     && ((userLanguage === "zh-Hant"
       || userLanguage === "zh-CN")) // 中国の祝日はdate-holidaysではなくlunar-typescriptを使用する
   ) return
+
   userLanguage = (logseq.settings!.holidaysCountry as string || "US: United States of America").split(":")[0] //プラグイン設定で指定された言語を取得する
+
   if (holidaysBundle === null || alreadyHolidayBundle === false)
     holidaysBundle = new Holidays(userLanguage, logseq.settings!.holidaysState as string, logseq.settings!.holidaysRegion as string, { types: ["public"] }) // バンドルを作成する 公共の祝日のみに限定する
   else
     holidaysBundle.init(userLanguage) // プラグイン設定変更時にバンドルを更新する
   alreadyHolidayBundle = true
 }
+
+export const exportHolidaysBundle = () => holidaysBundle // バンドルをエクスポートする
 
 export const removeHolidaysBundle = () => {
   holidaysBundle = null
@@ -142,7 +151,8 @@ const daySideWeekNumber = (date: Date, boundariesInner: HTMLDivElement) => {
   weekNumberElement.classList.add('daySide', 'daySideWeekNumber')
   weekNumberElement.innerText = "W" + weekString
   weekNumberElement.title = t("Week number: ") + year + "-W" + weekString
-  if (logseq.settings!.booleanWeeklyJournal === true) weekNumberElement.addEventListener("click", ({ shiftKey }) => openPageFromPageName(`${year}-W${weekString}`, shiftKey))
+  if (logseq.settings!.booleanWeeklyJournal === true)
+    weekNumberElement.addEventListener("click", ({ shiftKey }) => openPageFromPageName(`${year}-W${weekString}`, shiftKey))
   else weekNumberElement.style.cursor = 'unset'
   boundariesInner.appendChild(weekNumberElement)
 }
@@ -206,7 +216,8 @@ const holidaysWorld = (targetDate: Date, dayElement: HTMLSpanElement): string | 
   if (!holidaysBundle) return undefined
   const checkHoliday = holidaysBundle.isHoliday(targetDate)
 
-  if (checkHoliday !== false && checkHoliday[0].type === "public") {
+  if (checkHoliday !== false
+    && checkHoliday[0].type === "public") {
     const holidayName = checkHoliday[0].name
     if (holidayName) {
       dayElement.title = holidayName + "\n"

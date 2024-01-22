@@ -55,7 +55,7 @@ const main = async () => {
 
   // メッセージを表示する
   const notice = "20240122no02"
-  if (logseq.settings!.weekNumberFormat !== undefined  && logseq.settings!.notice !== notice) {
+  if (logseq.settings!.weekNumberFormat !== undefined && logseq.settings!.notice !== notice) {
     logseq.updateSettings({ notice })
     setTimeout(() => {
       logseq.UI.showMsg(`
@@ -226,14 +226,12 @@ const onSettingsChanged = () => logseq.onSettingsChanged((newSet: LSPluginBaseIn
     || oldSet.booleanWeekNumberHideYear !== newSet.booleanWeekNumberHideYear
     || oldSet.booleanSettingsButton !== newSet.booleanSettingsButton
     || oldSet.booleanMonthlyJournalLink !== newSet.booleanMonthlyJournalLink
-    || oldSet.booleanBoundariesIndicator !== newSet.booleanBoundariesIndicator
-    || oldSet.booleanBoundariesHolidays !== newSet.booleanBoundariesHolidays
     || oldSet.holidaysCountry !== newSet.holidaysCountry
     || oldSet.holidaysState !== newSet.holidaysState
     || oldSet.holidaysRegion !== newSet.holidaysRegion
     || oldSet.choiceHolidaysColor !== newSet.choiceHolidaysColor
-    || oldSet.booleanLunarCalendar !== newSet.booleanLunarCalendar
-    || oldSet.booleanUnderLunarCalendar !== newSet.booleanUnderLunarCalendar) {
+    || oldSet.booleanUnderLunarCalendar !== newSet.booleanUnderLunarCalendar
+    || oldSet.underHolidaysAlert !== newSet.underHolidaysAlert) {
     //再表示 Behind Journal Title
     removeTitleQuery()
     setTimeout(() => querySelectorAllTitle(), 500)
@@ -255,17 +253,20 @@ const onSettingsChanged = () => logseq.onSettingsChanged((newSet: LSPluginBaseIn
       parent.document.body.classList!.remove("boundaries-bottom")
   }
 
-  //20240121 祝日表示オフの場合 (バンドルを削除する)
-  if (oldSet.booleanBoundariesHolidays !== newSet.booleanBoundariesHolidays) {
-    if (newSet.booleanBoundariesHolidays === true)
-      getHolidaysBundle(newSet.holidaysCountry as string, true)
+  // 20240121 祝日表示に関するトグル
+  if (oldSet.booleanBoundariesHolidays !== newSet.booleanBoundariesHolidays
+    || oldSet.underHolidaysAlert !== newSet.underHolidaysAlert) {
+    if (newSet.booleanBoundariesHolidays === true || newSet.underHolidaysAlert === true) //どちらかがオンの場合
+      getHolidaysBundle(newSet.holidaysCountry as string, { settingsChanged: true }) //バンドルを取得する
     else
-      removeHolidaysBundle()
+      if (newSet.booleanBoundariesHolidays === false && newSet.underHolidaysAlert === false) //両方オフの場合
+        removeHolidaysBundle() //バンドルを削除する
   }
-
   if (oldSet.holidaysCountry !== newSet.holidaysCountry
     || oldSet.holidaysState !== newSet.holidaysState
-    || oldSet.holidaysRegion !== newSet.holidaysRegion) { }
+    || oldSet.holidaysRegion !== newSet.holidaysRegion) { //国名などが変更された場合
+    getHolidaysBundle(newSet.holidaysCountry as string, { settingsChanged: true }) //バンドルを取得する
+  }
 
   //CAUTION: 日付形式が変更された場合は、re-indexをおこなうので、問題ないが、言語設定が変更された場合は、その設定は、すぐには反映されない。プラグインの再読み込みが必要になるが、その頻度がかなり少ないので問題ない。
 

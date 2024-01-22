@@ -12,6 +12,7 @@
   "Day of the week long or short": "Haftanın gününün uzun veya kısa olmasını seçin",
   "Day of the week, Select language Localize(:default) or English(:en)": "Haftanın gününün dilini seçin: Yerelleştirme (:d efault) veya İngilizce (:en)",
   "Enable \"This Week\" section": "\"Bu Hafta\" bölümünü etkinleştirin (haftanın her gününe bağlantı)",
+  "Enable Holidays alert": "Tatil uyarısını etkinleştir",
   "Enable Lunar-calendar based (Chinese only)": "Ay takvimini etkinleştir (yalnızca Çince)",
   "Enable day of the week": "Haftanın gününü gösterme",
   "Enable embedding for each journal": "Her günlük için gömmeyi etkinleştir",

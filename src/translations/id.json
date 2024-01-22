@@ -12,6 +12,7 @@
   "Day of the week long or short": "Pilih apakah hari dalam seminggu panjang atau pendek",
   "Day of the week, Select language Localize(:default) or English(:en)": "Pilih bahasa hari dalam seminggu Pelokalan (:d efault) atau Inggris (:en)",
   "Enable \"This Week\" section": "Aktifkan bagian \"Minggu Ini\" (tautan ke setiap hari dalam seminggu)",
+  "Enable Holidays alert": "Aktifkan peringatan hari libur",
   "Enable Lunar-calendar based (Chinese only)": "Aktifkan kalender bulan berdasarkan (hanya bahasa Cina)",
   "Enable day of the week": "Memperlihatkan hari dalam seminggu",
   "Enable embedding for each journal": "Aktifkan penyematan untuk setiap jurnal",

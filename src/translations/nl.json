@@ -12,6 +12,7 @@
   "Day of the week long or short": "Kies of de dag van de week lang of kort is",
   "Day of the week, Select language Localize(:default) or English(:en)": "Selecteer de taal van de dag van de week Lokalisatie (:d efault) of Engels (:en)",
   "Enable \"This Week\" section": "Schakel het gedeelte 'Deze week' in (link naar elke dag van de week)",
+  "Enable Holidays alert": "Feestdagen waarschuwing inschakelen",
   "Enable Lunar-calendar based (Chinese only)": "Maan-kalender inschakelen (alleen Chinees)",
   "Enable day of the week": "Toon de dag van de week",
   "Enable embedding for each journal": "Insluiten inschakelen voor elk journaal",

@@ -12,6 +12,7 @@
   "Day of the week long or short": "Scegli se il giorno della settimana è lungo o corto",
   "Day of the week, Select language Localize(:default) or English(:en)": "Seleziona la lingua del giorno della settimana Localizzazione (:d efault) o Inglese (:en)",
   "Enable \"This Week\" section": "Abilita la sezione \"Questa settimana\" (link a ogni giorno della settimana)",
+  "Enable Holidays alert": "Abilita avviso festività",
   "Enable Lunar-calendar based (Chinese only)": "Abilita il calendario lunare (solo cinese)",
   "Enable day of the week": "Mostra il giorno della settimana",
   "Enable embedding for each journal": "Abilitare l'incorporamento per ogni journal",

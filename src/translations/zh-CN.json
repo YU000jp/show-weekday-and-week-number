@@ -12,6 +12,7 @@
   "Day of the week long or short": "选择星期几是长还是短",
   "Day of the week, Select language Localize(:default) or English(:en)": "选择星期几的语言本地化 （:d efault） 或英语 （：en）",
   "Enable \"This Week\" section": "启用“本周”部分（链接到一周中的每一天）",
+  "Enable Holidays alert": "启用假期提醒",
   "Enable Lunar-calendar based (Chinese only)": "启用基于农历的日历（仅限中文）",
   "Enable day of the week": "显示星期几",
   "Enable embedding for each journal": "为每个期刊启用嵌入",

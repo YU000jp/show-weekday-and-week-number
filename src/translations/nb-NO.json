@@ -12,6 +12,7 @@
   "Day of the week long or short": "Velg om ukedagen er lang eller kort",
   "Day of the week, Select language Localize(:default) or English(:en)": "Velg språk for ukedagen Lokalisering (:d efault) eller engelsk (:en)",
   "Enable \"This Week\" section": "Aktiver delen \"Denne uken\" (lenke til hver ukedag)",
+  "Enable Holidays alert": "Aktiver helligdagsvarsler",
   "Enable Lunar-calendar based (Chinese only)": "Aktiver månekalender (kun kinesisk)",
   "Enable day of the week": "Vis ukedagen",
   "Enable embedding for each journal": "Aktivere innebygging for hver journal",

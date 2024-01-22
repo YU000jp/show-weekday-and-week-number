@@ -12,6 +12,7 @@
     "Day of the week long or short": "曜日の表記を長い形式か短い形式か選択する",
     "Day of the week, Select language Localize(:default) or English(:en)": "曜日の言語を選択してください 日本語(:default) もしくは 英語(:en)",
     "Enable \"This Week\" section": "\"This Week\"セクションを有効にする (各曜日へのリンク)",
+    "Enable Holidays alert": "祝日のアラートを有効にする",
     "Enable Lunar-calendar based (Chinese only)": "太陰暦ベースを有効にする (中国語のみ)",
     "Enable day of the week": "曜日を表示する",
     "Enable embedding for each journal": "各日記に埋め込みを有効にする",

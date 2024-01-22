@@ -12,6 +12,7 @@
   "Day of the week long or short": "요일을 길거나 짧게 할지 선택합니다.",
   "Day of the week, Select language Localize(:default) or English(:en)": "요일의 언어를 선택합니다 현지화 (:d efault) 또는 영어 (:en)",
   "Enable \"This Week\" section": "\"이번 주\" 섹션 활성화(각 요일에 대한 링크)",
+  "Enable Holidays alert": "휴일 알림 사용",
   "Enable Lunar-calendar based (Chinese only)": "음력 기반(중국어만)",
   "Enable day of the week": "요일 표시",
   "Enable embedding for each journal": "각 저널에 대한 임베딩 사용",

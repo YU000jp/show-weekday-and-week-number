@@ -12,6 +12,7 @@
   "Day of the week long or short": "Vyberte, či je deň v týždni dlhý alebo krátky",
   "Day of the week, Select language Localize(:default) or English(:en)": "Vyberte jazyk dňa v týždni Lokalizácia (:d efault) alebo angličtina (:en)",
   "Enable \"This Week\" section": "Povoľte sekciu Tento týždeň (odkaz na každý deň v týždni)",
+  "Enable Holidays alert": "Povoliť upozornenia na sviatky",
   "Enable Lunar-calendar based (Chinese only)": "Povoliť lunárny kalendár (iba čínština)",
   "Enable day of the week": "Zobraziť deň v týždni",
   "Enable embedding for each journal": "Povoliť vkladanie pre každý denník",
