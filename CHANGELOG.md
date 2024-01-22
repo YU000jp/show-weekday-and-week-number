@@ -1,3 +1,10 @@
+# [1.51.0](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.50.0...v1.51.0) (2024-1-22)
+
+
+### Features
+
+* **Add:** Behind Journal Title > Support holidays for world country [#134](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/134) ([7695907](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/7695907a72cb348ce5c23fda589a25c57c56d3b5))
+
 # [1.50.0](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.49.0...v1.50.0) (2024-1-21)
 
 
