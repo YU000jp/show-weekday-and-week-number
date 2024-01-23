@@ -2,7 +2,7 @@ import "@logseq/libs" //https://plugins-doc.logseq.com/
 import { EntityID, LSPluginBaseInfo } from "@logseq/libs/dist/LSPlugin.user"
 import { setup as l10nSetup } from "logseq-l10n" //https://github.com/sethyuan/logseq-l10n
 import { behindJournalTitle } from "./behind"
-import { boundariesProcess, getHolidaysBundle, removeHolidaysBundle } from "./boundaries"
+import { boundariesProcess } from "./boundaries"
 import { convertLanguageCodeToCountryCode, getJournalDayDate, removeProvideStyle, titleElementReplaceLocalizeDayOfWeek } from "./lib"
 import fileMainCSS from "./main.css?inline"
 import { settingsTemplate } from "./settings"
@@ -28,6 +28,7 @@ import uk from "./translations/uk.json"
 import zhCN from "./translations/zh-CN.json"
 import zhHant from "./translations/zh-Hant.json"
 import { currentPageIsWeeklyJournal } from "./weeklyJournal"
+import { getHolidaysBundle, removeHolidaysBundle } from "./holidays"
 const keyThisWeekPopup = "thisWeekPopup"
 let configPreferredLanguage: string
 let configPreferredDateFormat: string

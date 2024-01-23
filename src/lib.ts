@@ -8,7 +8,6 @@ export const getJournalDayDate = (str: string): Date => new Date(
   Number(str.slice(6)) //day
 )
 
-
 //日付から週番号を求める
 export function getWeeklyNumberFromDate(journalDate: Date, weekStartsOn: 0 | 1): { year: number, weekString: string } {
   let year: number
@@ -60,7 +59,6 @@ export function titleElementReplaceLocalizeDayOfWeek(journalDate: Date, titleEle
       break
   }
 }
-
 
 //相対時間表示
 export const formatRelativeDate = (targetDate: Date): string => {
@@ -174,7 +172,6 @@ export const openPageFromPageName = async (pageName: string, shiftKey: boolean) 
     logseq.App.replaceState('page', { name: pageName })
   }
 }
-
 
 export const removeProvideStyle = (className: string) => {
   const doc = parent.document.head.querySelector(

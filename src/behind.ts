@@ -3,7 +3,7 @@ import { t } from "logseq-l10n"
 import { HolidayUtil, Lunar } from "lunar-typescript"
 import { createLinkMonthlyLink, createSettingButton, formatRelativeDate, getWeeklyNumberFromDate, openPageFromPageName } from "./lib"
 import { getConfigPreferredLanguage } from "."
-import { exportHolidaysBundle } from "./boundaries"
+import { exportHolidaysBundle } from "./holidays"
 
 // プロセス中かどうかを判定するフラグ
 let processingBehind: boolean = false

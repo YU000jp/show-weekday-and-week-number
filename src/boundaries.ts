@@ -1,42 +1,10 @@
 import { BlockUUID, PageEntity } from '@logseq/libs/dist/LSPlugin.user'
 import { addDays, format, isBefore, isFriday, isSameDay, isSaturday, isSunday, isThursday, isToday, isWednesday, startOfISOWeek, startOfWeek, } from 'date-fns' //https://date-fns.org/
-import Holidays from 'date-holidays'
 import { t } from "logseq-l10n"
 import { HolidayUtil, Lunar } from 'lunar-typescript'
 import { getConfigPreferredDateFormat, getConfigPreferredLanguage } from '.'
 import { formatRelativeDate, getJournalDayDate, getWeekStartOn, getWeeklyNumberFromDate, openPageFromPageName } from './lib'
-let holidaysBundle: Holidays | null // バンドルを作成するための変数
-let alreadyHolidayBundle: boolean = false // プラグイン設定変更時にバンドルを更新するためのフラグ
-
-// date-holidaysのバンドルを作成する
-export const getHolidaysBundle = (userLanguage: string, flag?: { settingsChanged?: boolean, already?: boolean }) => {
-
-  if (flag && flag.already === true
-    && alreadyHolidayBundle === true)
-    return // 既にバンドルを作成している場合は作成しないフラグでキャンセルする
-
-  if ((flag && flag.settingsChanged !== true
-    && logseq.settings!.booleanBoundariesHolidays === false) // 設定変更時はバンドルを更新する
-    || logseq.settings!.booleanLunarCalendar === true // 太陰暦オンの場合はバンドルを作成しない
-    && ((userLanguage === "zh-Hant"
-      || userLanguage === "zh-CN")) // 中国の祝日はdate-holidaysではなくlunar-typescriptを使用する
-  ) return
-
-  userLanguage = (logseq.settings!.holidaysCountry as string || "US: United States of America").split(":")[0] //プラグイン設定で指定された言語を取得する
-
-  if (holidaysBundle === null || alreadyHolidayBundle === false)
-    holidaysBundle = new Holidays(userLanguage, logseq.settings!.holidaysState as string, logseq.settings!.holidaysRegion as string, { types: ["public"] }) // バンドルを作成する 公共の祝日のみに限定する
-  else
-    holidaysBundle.init(userLanguage) // プラグイン設定変更時にバンドルを更新する
-  alreadyHolidayBundle = true
-}
-
-export const exportHolidaysBundle = () => holidaysBundle // バンドルをエクスポートする
-
-export const removeHolidaysBundle = () => {
-  holidaysBundle = null
-  alreadyHolidayBundle = false
-}
+import { exportHolidaysBundle } from './holidays'
 
 let processingFoundBoundaries: boolean = false
 export const boundariesProcess = async (targetElementName: string, remove: boolean, repeat: number, selectStartDate?: Date) => {
@@ -213,6 +181,7 @@ const lunarString = (targetDate: Date, dayElement: HTMLSpanElement): string => {
 // For World holidays
 const holidaysWorld = (targetDate: Date, dayElement: HTMLSpanElement): string | undefined => {
 
+  const holidaysBundle = exportHolidaysBundle()
   if (!holidaysBundle) return undefined
   const checkHoliday = holidaysBundle.isHoliday(targetDate)
 
