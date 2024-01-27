@@ -35,7 +35,7 @@
 - Click the week number link to open it and generate a page. If there is no content available on a page with a week number like `[[2023-W25]]`, a template will be inserted. In plugin settings, it possible to set user template.
   1. Inserting [Advanced queries](https://hub.logseq.com/features/av5LyiLi5xS7EFQXy4h4K8/getting-started-with-advanced-queries/8xwSRJNVKFJhGSvJUxs5B2) into the template increases flexibility.
   1. Include rendering in template
-     - [Full house Templates plugin](https://github.com/stdword/logseq13-full-house-plugin)
+     - [Full house Templates plugin](https://github.com/stdword/logseq13-full-house-plugin) (https://github.com/stdword/logseq13-full-house-plugin/discussions/31)
 
 #### "This Week" section (collection of those date links)
 
