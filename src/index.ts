@@ -79,7 +79,7 @@ const main = async () => {
   }
 
   // 初回起動時に設定を促す
-  if (logseq.settings?.weekNumberFormat === undefined) {
+  if (logseq.settings!.weekNumberFormat === undefined) {
     logseq.UI.showMsg("Select either \"US format\" or \"ISO format\"", "info", { timeout: 3000 })
     setTimeout(() => logseq.showSettingsUI(), 300)
   }
@@ -110,7 +110,7 @@ const main = async () => {
   //ページ遷移時に実行 (Journal boundariesとBehind Journal Titleの更新)
   logseq.App.onRouteChanged(({ template }) => {
     if (
-      logseq.settings?.booleanBoundaries === true &&
+      logseq.settings!.booleanBoundaries === true &&
       template === "/page/:name"
     ) {
       //page only
@@ -129,7 +129,7 @@ const main = async () => {
 
   // 今日の日記が作成されたときに実行される (Journal boundariesの更新のため) ※ただし、今日以外の日記を作成した場合は実行されないので注意
   logseq.App.onTodayJournalCreated(async () => {
-    if (logseq.settings?.booleanBoundaries === true) {
+    if (logseq.settings!.booleanBoundaries === true) {
       const weekBoundaries = parent.document.getElementById(
         "weekBoundaries"
       ) as HTMLDivElement | null
@@ -329,9 +329,13 @@ const JournalPageTitle = async (titleElement: HTMLElement) => {
   //日誌のページ名の場合のみ
 
   //設定項目ですべてのトグルがオフの場合の処理
-  if (logseq.settings?.booleanWeekNumber === false
+  if (logseq.settings!.booleanWeekNumber === false
     && logseq.settings!.booleanDayOfWeek === false
-    && logseq.settings?.booleanRelativeTime === false
+    && logseq.settings!.booleanRelativeTime === false
+    && logseq.settings!.underHolidaysAlert === false
+    && logseq.settings!.booleanSettingsButton === false
+    && logseq.settings!.booleanMonthlyJournalLink === false
+    && logseq.settings!.booleanUnderLunarCalendar === false
     && (titleElement.classList.contains("journal-title") === true
       || titleElement.classList.contains("title") === true)) {
     const dateInfoElement: HTMLSpanElement =
