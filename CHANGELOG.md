@@ -1,3 +1,15 @@
+# [1.52.0](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.51.0...v1.52.0) (2024-1-29)
+
+
+### Bug Fixes
+
+* **bug:** behind journal title > Reflect plugin settings ([2e0470b](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/2e0470bf0b4a53678467fde7a209114b2e18bcaa))
+
+
+### Features
+
+* Sort plugin settings items ([8d12df4](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/8d12df4664d337ff60b173908e06119a4355dbbd))
+
 # [1.51.0](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.50.0...v1.51.0) (2024-1-22)
 
 
