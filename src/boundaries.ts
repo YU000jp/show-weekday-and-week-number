@@ -169,12 +169,14 @@ const daySideScroll = (index: number, boundariesInner: HTMLDivElement, targetEle
 const lunarString = (targetDate: Date, dayElement: HTMLSpanElement): string => {
   const getHoliday = HolidayUtil.getHoliday(targetDate.getFullYear(), targetDate.getMonth() + 1, targetDate.getDate()) // year, month, day
   const getHolidayName = getHoliday ? getHoliday.getName() : undefined
+  const string = (Lunar.fromDate(targetDate).getDayInChinese() as string)
   if (getHolidayName) {
-    dayElement.title = getHolidayName + "\n"
+    dayElement.title = string + ` (${getHolidayName})` + "\n"// 中国の祝日
     dayElement.style.backgroundColor = `var(${logseq.settings!.choiceHolidaysColor as string || "--highlight-bg-color"})`
-    return getHolidayName // 中国の祝日
-  } else
-    return (Lunar.fromDate(targetDate).getDayInChinese() as string) // 祝日がない場合は、中国の伝統的な暦を表示する(旧暦)
+  } else {
+    dayElement.title = string + "\n"// 祝日がない場合は、中国の伝統的な暦を表示する(旧暦) 
+  }
+  return string
 }
 
 
