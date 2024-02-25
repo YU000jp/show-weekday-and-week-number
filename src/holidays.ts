@@ -6,11 +6,13 @@ let alreadyHolidayBundle: boolean = false // プラグイン設定変更時に�
 // date-holidaysのバンドルを作成する
 export const getHolidaysBundle = (userLanguage: string, flag?: { settingsChanged?: boolean, already?: boolean }) => {
 
-  if (flag && flag.already === true
+  if (flag
+    && flag.already === true
     && alreadyHolidayBundle === true)
     return // 既にバンドルを作成している場合は作成しないフラグでキャンセルする
 
-  if ((flag && flag.settingsChanged !== true
+  if ((flag
+    && flag.settingsChanged !== true
     && logseq.settings!.booleanBoundariesHolidays === false) // 設定変更時はバンドルを更新する
     || logseq.settings!.booleanLunarCalendar === true // 太陰暦オンの場合はバンドルを作成しない
     && ((userLanguage === "zh-Hant"
@@ -19,7 +21,8 @@ export const getHolidaysBundle = (userLanguage: string, flag?: { settingsChanged
 
   userLanguage = (logseq.settings!.holidaysCountry as string || "US: United States of America").split(":")[0] //プラグイン設定で指定された言語を取得する
 
-  if (holidaysBundle === null || alreadyHolidayBundle === false)
+  if (holidaysBundle === null
+    || alreadyHolidayBundle === false)
     holidaysBundle = new Holidays(userLanguage, logseq.settings!.holidaysState as string, logseq.settings!.holidaysRegion as string, { types: ["public"] }) // バンドルを作成する 公共の祝日のみに限定する
   else
     holidaysBundle.init(userLanguage) // プラグイン設定変更時にバンドルを更新する

@@ -89,13 +89,13 @@ const main = async () => {
 
   await getUserConfig()
 
-  if (logseq.settings!.holidaysCountry === undefined) {
+  if (logseq.settings!.holidaysCountry === undefined)
     logseq.useSettingsSchema(
       settingsTemplate(
         convertLanguageCodeToCountryCode(configPreferredLanguage)
       )
     )
-  } else
+  else
     logseq.useSettingsSchema(settingsTemplate(logseq.settings!.holidaysCountry))
 
   //Logseqを開いたときに実行
@@ -109,42 +109,34 @@ const main = async () => {
 
   //ページ遷移時に実行 (Journal boundariesとBehind Journal Titleの更新)
   logseq.App.onRouteChanged(({ template }) => {
-    if (
-      logseq.settings!.booleanBoundaries === true &&
-      template === "/page/:name"
-    ) {
+    if (logseq.settings!.booleanBoundaries === true
+      && template === "/page/:name")
       //page only
       //div.is-journals
       setTimeout(() => boundaries("is-journals"), 20)
-    } else if (
-      logseq.settings!.booleanJournalsBoundaries === true &&
-      template === "/"
-    ) {
-      //journals only
-      //div#journals
-      setTimeout(() => boundaries("journals"), 20)
-    }
+    else
+      if (logseq.settings!.booleanJournalsBoundaries === true
+        && template === "/")
+        //journals only
+        //div#journals
+        setTimeout(() => boundaries("journals"), 20)
+
     setTimeout(() => querySelectorAllTitle(), 50)
   })
 
   // 今日の日記が作成されたときに実行される (Journal boundariesの更新のため) ※ただし、今日以外の日記を作成した場合は実行されないので注意
   logseq.App.onTodayJournalCreated(async () => {
     if (logseq.settings!.booleanBoundaries === true) {
-      const weekBoundaries = parent.document.getElementById(
-        "weekBoundaries"
-      ) as HTMLDivElement | null
+      const weekBoundaries = parent.document.getElementById("weekBoundaries") as HTMLDivElement | null
       if (weekBoundaries) weekBoundaries.remove()
-      if (
-        (await logseq.Editor.getCurrentPage() as { id: EntityID } | null) !== null
-      ) {
+      if ((await logseq.Editor.getCurrentPage() as { id: EntityID } | null) !== null)
         //page only
         //div.is-journals
         setTimeout(() => boundaries("is-journals"), 10)
-      } else {
+      else
         //journals only
         //div#journals
         setTimeout(() => boundaries("journals"), 10)
-      }
     }
   })
 
@@ -292,7 +284,8 @@ const SettingsChangedJournalBoundariesEnable = () => setTimeout(() => {
 // クエリーセレクターでタイトルを取得する
 let processingTitleQuery: boolean = false
 const querySelectorAllTitle = async (enable?: boolean): Promise<void> => {
-  if (processingTitleQuery && !enable) return
+  if (processingTitleQuery
+    && !enable) return
   processingTitleQuery = true
 
   //Journalsの場合は複数
@@ -350,11 +343,9 @@ const JournalPageTitle = async (titleElement: HTMLElement) => {
   }
 
   //Weekly Journalのページだった場合
-  if (
-    titleElement.classList.contains("journal-title") === false &&
-    titleElement.classList.contains("title") === true &&
-    logseq.settings!.booleanWeeklyJournal === true
-  ) {
+  if (titleElement.classList.contains("journal-title") === false
+    && titleElement.classList.contains("title") === true
+    && logseq.settings!.booleanWeeklyJournal === true) {
     const match = titleElement.textContent.match(/^(\d{4})-W(\d{2})$/) as RegExpMatchArray
     if (match
       && match[1] !== ""
@@ -371,7 +362,8 @@ const JournalPageTitle = async (titleElement: HTMLElement) => {
     : titleElement.textContent
   if (title === "") return
   const page = (await logseq.Editor.getPage(title)) as { journalDay: number } | null
-  if (page && page.journalDay) {
+  if (page
+    && page.journalDay) {
     const journalDate: Date = getJournalDayDate(String(page.journalDay))
 
     behindJournalTitle(journalDate, titleElement, configPreferredDateFormat)

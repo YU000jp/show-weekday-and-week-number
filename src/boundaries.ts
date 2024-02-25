@@ -8,8 +8,11 @@ import { exportHolidaysBundle } from './holidays'
 
 let processingFoundBoundaries: boolean = false
 export const boundariesProcess = async (targetElementName: string, remove: boolean, repeat: number, selectStartDate?: Date) => {
-  if (repeat >= 3 || processingFoundBoundaries === true) return
-  if (!selectStartDate || (targetElementName === "weeklyJournal" && remove === true)) { //selectStartDateがある場合はチェックしない
+  if (repeat >= 3
+    || processingFoundBoundaries === true) return
+  if (!selectStartDate
+    || (targetElementName === "weeklyJournal"
+      && remove === true)) { //selectStartDateがある場合はチェックしない
     const checkWeekBoundaries = parent.document.getElementById('boundariesInner') as HTMLDivElement | null
     if (checkWeekBoundaries) {
       if (remove === true) checkWeekBoundaries.remove()
@@ -63,9 +66,9 @@ export const boundariesProcess = async (targetElementName: string, remove: boole
     weekBoundaries.appendChild(boundariesInner)
 
     let targetDate: Date//今日の日付もしくはそのページの日付を求める
-    if (targetElementName === 'journals') {
+    if (targetElementName === 'journals')
       targetDate = today
-    } else
+    else
       if (targetElementName === 'is-journals') {
         const { journalDay } = await logseq.Editor.getCurrentPage() as { journalDay: PageEntity["journalDay"] }
         if (!journalDay) {
@@ -75,9 +78,9 @@ export const boundariesProcess = async (targetElementName: string, remove: boole
         }
         targetDate = getJournalDayDate(String(journalDay)) as Date
       } else
-        if (targetElementName === "weeklyJournal") {
+        if (targetElementName === "weeklyJournal")
           targetDate = selectStartDate as Date
-        } else {
+        else {
           console.error('targetElementName is undefined')
           processingFoundBoundaries = false
           return
@@ -135,11 +138,9 @@ const daySideMonth = (date: Date, boundariesInner: HTMLDivElement, monthDuplicat
   const monthString: string = new Intl.DateTimeFormat((logseq.settings?.localizeOrEnglish as string || "default"), { month: "short" }).format(dateShowMonth)
   sideMonthElement.innerText = monthString
 
-  if (//上下の月が一致する場合は、非表示にする
-    monthDuplicate &&
-    dateShowMonth.getMonth() === monthDuplicate.getMonth() &&
-    dateShowMonth.getFullYear() === monthDuplicate.getFullYear()
-  ) {
+  if (monthDuplicate //上下の月が一致する場合は、非表示にする
+    && dateShowMonth.getMonth() === monthDuplicate.getMonth()
+    && dateShowMonth.getFullYear() === monthDuplicate.getFullYear()) {
     sideMonthElement.style.visibility = 'hidden'
   } else {
     const monthString: string = format(dateShowMonth, "yyyy/MM")
@@ -173,9 +174,8 @@ const lunarString = (targetDate: Date, dayElement: HTMLSpanElement): string => {
   if (getHolidayName) {
     dayElement.title = string + ` (${getHolidayName})` + "\n"// 中国の祝日
     dayElement.style.backgroundColor = `var(${logseq.settings!.choiceHolidaysColor as string || "--highlight-bg-color"})`
-  } else {
+  } else
     dayElement.title = string + "\n"// 祝日がない場合は、中国の伝統的な暦を表示する(旧暦) 
-  }
   return string
 }
 
@@ -217,7 +217,8 @@ const daysForEach = (days: number[], startDate: Date, boundariesInner: HTMLDivEl
         element.style.width = "100%"
         boundariesInner.append(element)
       }
-      if (index === 0 || index === 7) {
+      if (index === 0
+        || index === 7) {
         //daySideElement作成    
         //月を表示する場合
         if (logseq.settings!.booleanBoundariesShowMonth === true) monthDuplicate = daySideMonth(date, boundariesInner, monthDuplicate) //daySideElement作成
@@ -264,10 +265,13 @@ const daysForEach = (days: number[], startDate: Date, boundariesInner: HTMLDivEl
 
       //indexが0~6
       if (targetElementName === 'weeklyJournal') {
-        if (index >= 7 && index <= 14) dayElement.classList.add('thisWeek')
+        if (index >= 7
+          && index <= 14) dayElement.classList.add('thisWeek')
       } else {
-        if ((flagShowNextWeek === true && index < 7)
-          || (flagShowNextWeek === false && index > 6))
+        if ((flagShowNextWeek === true
+          && index < 7)
+          || (flagShowNextWeek === false
+            && index > 6))
           dayElement.classList.add('thisWeek')
       }
       if (targetElementName !== 'journals'
@@ -298,7 +302,8 @@ const daysForEach = (days: number[], startDate: Date, boundariesInner: HTMLDivEl
 
     } finally {
       boundariesInner.appendChild(dayElement)
-      if (index === 6 || index === 13) {
+      if (index === 6
+        || index === 13) {
         //daySideElement作成    
         //週番号を表示する場合
         if (logseq.settings!.booleanBoundariesShowWeekNumber === true) daySideWeekNumber(date, boundariesInner)
@@ -311,7 +316,8 @@ const daysForEach = (days: number[], startDate: Date, boundariesInner: HTMLDivEl
 // 日誌のページが存在するかどうかのインディケーターを表示する
 const indicator = async (targetPageName: string, dayOfMonthElement: HTMLSpanElement) => {
   const existsPage = await logseq.Editor.getPage(targetPageName, { includeChildren: false }) as { file: string | undefined } | null
-  if (!existsPage || existsPage.file === undefined) return
+  if (!existsPage
+    || existsPage.file === undefined) return
   const indicatorElement: HTMLSpanElement = document.createElement('span')
   indicatorElement.classList.add('indicator')
   indicatorElement.innerText = "●"
@@ -327,14 +333,15 @@ function openPageToSingleDay(journalPageName: string, isBooleanBeforeToday: bool
       if (page) logseq.Editor.openInRightSidebar(page.uuid)//ページが存在しない場合は開かない
     } else {
       //Shiftキーを押さずにクリックした場合は、ページを開く
-      if (logseq.settings!.booleanNoPageFoundCreatePage === true && isBooleanBeforeToday === true) {//過去の日付の場合はページを作成しない
+      if (logseq.settings!.booleanNoPageFoundCreatePage === true
+        && isBooleanBeforeToday === true) {//過去の日付の場合はページを作成しない
         //ページが存在しない場合は作成しない
-        const page = await logseq.Editor.getPage(journalPageName) as { name: string } | null
-        if (page) logseq.App.pushState('page', { name: journalPageName })//ページが存在する場合は開く
-        else logseq.UI.showMsg(t("Page not found"), "warning", { timeout: 3000 })//ページが存在しない場合は警告を表示する
-      } else {
+        if (await logseq.Editor.getPage(journalPageName) as { name: string } | null)
+          logseq.App.pushState('page', { name: journalPageName })//ページが存在する場合は開く
+        else
+          logseq.UI.showMsg(t("Page not found"), "warning", { timeout: 3000 })//ページが存在しない場合は警告を表示する
+      } else
         logseq.App.pushState('page', { name: journalPageName })//ページが存在しない場合も作成される
-      }
     }
   }
 }
