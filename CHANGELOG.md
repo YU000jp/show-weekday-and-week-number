@@ -1,3 +1,10 @@
+# [1.53.0](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.52.0...v1.53.0) (2024-2-25)
+
+
+### Features
+
+* **lunar-calendar:** [#129](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/129) Prioritize the lunar calendar over holidays ([b5504ee](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/b5504eed7fcece4dbac1edc753670b718161e25e))
+
 # [1.52.0](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.51.0...v1.52.0) (2024-1-29)
 
 
