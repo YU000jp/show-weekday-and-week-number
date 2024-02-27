@@ -110,18 +110,18 @@ body {
                                 overflow: hidden;
 
                                 &.thisWeek {
-                                    background-color: var(--color-level-2);
+                                    background-color: var(--ls-tertiary-background-color);
 
                                     &:hover {
-                                        background-color: var(--color-level-3);
+                                        background-color: var(--ls-secondary-background-color);
                                     }
                                 }
 
                                 &:not(.thisWeek) {
-                                    background-color: var(--color-level-1);
+                                    background-color: var(--ls-quaternary-background-color);
 
                                     &:hover {
-                                        background-color: var(--color-level-3);
+                                        background-color: var(--ls-secondary-background-color);
                                     }
                                 }
 
