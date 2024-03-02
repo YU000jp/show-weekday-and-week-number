@@ -173,7 +173,7 @@ const lunarString = (targetDate: Date, dayElement: HTMLSpanElement): string => {
   const string = (Lunar.fromDate(targetDate).getDayInChinese() as string)
   if (getHolidayName) {
     dayElement.title = string + ` (${getHolidayName})` + "\n"// 中国の祝日
-    dayElement.style.backgroundColor = `var(${logseq.settings!.choiceHolidaysColor as string || "--highlight-bg-color"})`
+    dayElement.style.outline = `2px solid var(${logseq.settings!.choiceHolidaysColor as string || "--highlight-bg-color"})`
   } else
     dayElement.title = string + "\n"// 祝日がない場合は、中国の伝統的な暦を表示する(旧暦) 
   return string
@@ -192,7 +192,7 @@ const holidaysWorld = (targetDate: Date, dayElement: HTMLSpanElement): string | 
     const holidayName = checkHoliday[0].name
     if (holidayName) {
       dayElement.title = holidayName + "\n"
-      dayElement.style.backgroundColor = `var(${logseq.settings!.choiceHolidaysColor as string || "--highlight-bg-color"})`
+      dayElement.style.outline = `2px solid var(${logseq.settings!.choiceHolidaysColor as string || "--highlight-bg-color"})`
       return holidayName
     }
   } else
