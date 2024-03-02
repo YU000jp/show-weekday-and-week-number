@@ -60,14 +60,9 @@ Install from Logseq Marketplace
 
 ### Usage
 
-- When this plugin install, the style be applied to journals or the single journal page , the right sidebar. First, please configure the plugin settings.
-   1. Select either US format or ISO format.
-      > [Document here](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/wiki/Week-number-format)
-
-
-### Plugin settings
-
-  > [Document here](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/wiki/Plugin-Settings)
+1. The style be applied to journals or the single journal page , the right sidebar. First, please configure the plugin settings.
+1. 1. Select either US format or ISO format.
+   > [Document here](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/wiki/Week-number-format)
 
 ---
 
