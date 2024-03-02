@@ -18,7 +18,7 @@ export const settingsTemplate = (userLanguage): SettingSchemaDesc[] => [
     title: t("Week number calculation (across years)"),
     type: "enum",
     default: "ISO(EU) format",
-    enumChoices: ["US format", "ISO(EU) format", "Japanese format"],
+    enumChoices: ["US format", "ISO(EU) format"],
     description: t("`US format`: Sunday, `ISO(EU) format`: Monday, [>> document here](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/wiki/Week-number-format)"),
   },
   {
@@ -31,7 +31,7 @@ export const settingsTemplate = (userLanguage): SettingSchemaDesc[] => [
     enumChoices: ["default", "en"],
     description: "",
   },
-  
+
   {
     key: "holidaysCountry",
     title: t("Holidays > Select your country name") + "🆕",
@@ -89,7 +89,8 @@ export const settingsTemplate = (userLanguage): SettingSchemaDesc[] => [
   },
 
   // 20240123
-  { key: "underHolidaysAlert",
+  {
+    key: "underHolidaysAlert",
     title: t("Enable Holidays alert") + "🆕",
     type: "boolean",
     default: true,
@@ -186,9 +187,7 @@ export const settingsTemplate = (userLanguage): SettingSchemaDesc[] => [
     title: t("Enable feature"),
     type: "boolean",
     default: true,
-    description: t(
-      "Show the boundaries of days before and after the day on the single journal page"
-    ),
+    description: t("Show the boundaries of days before and after the day on the single journal page"),
   },
   {
     key: "booleanJournalsBoundaries",
@@ -208,7 +207,7 @@ export const settingsTemplate = (userLanguage): SettingSchemaDesc[] => [
     key: "boundariesBottom",
     title: t("Show boundaries on bottom") + "🆕",
     type: "boolean",
-    default: false,
+    default: true,
     description: "",
   },
   {//Journal Boundaries, week start 通常はformatに従う
