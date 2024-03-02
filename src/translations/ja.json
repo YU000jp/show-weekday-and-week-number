@@ -67,7 +67,7 @@
     "Weekly Journal": "Weekly Journal (週間レビュー)",
     "Weekly journal created": "Weekly journal が作成されました",
     "`US format`: Sunday, `ISO(EU) format`: Monday, [>> document here](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/wiki/Week-number-format)": "USフォーマット: 日曜日始まり, ISO(EU向け)フォーマット: 月曜日始まり, [>> ドキュメント](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/wiki/%E9%80%B1%E7%95%AA%E5%8F%B7%E3%83%95%E3%82%A9%E3%83%BC%E3%83%9E%E3%83%83%E3%83%88%E3%81%AE%E9%81%B8%E6%8A%9E%E8%82%A2-(Japanese))",
-    "default: `true` | The `#.ThisWeek` tag is added to the `This Week` section. If the tag is added, a popup will be displayed. (The tag is not added to the past section.)": "デフォルト: `true` | `This Week`セクションに`#.ThisWeek`タグが追加されます。 タグが追加されると、ポップアップが表示されます。 (過去のセクションにはタグが追加されません。)",
+    "default: `true` | The `#.ThisWeek` tag is added to the `This Week` section. If the tag is added, a popup will be displayed. (The tag is not added to the past section.)": "デフォルト: `true` | This Weekセクションに`#.ThisWeek`タグが追加されます。 タグが追加されると、ポップアップが表示されます。 (過去のセクションにはタグが追加されません。)",
     "default: `yyyy(: year), yyyy/MM(: month), yyyy-Www(: previous), yyyy-Www(: next)`": "デフォルト: `yyyy(: 年), yyyy/MM(: 年/月), yyyy-Www(: 年-前の週), yyyy-Www(: 年-次の週)`",
     "like `3 days ago`": "`3日前`のように表示する"
 }
