@@ -1,3 +1,11 @@
+## [1.53.1](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.53.0...v1.53.1) (2024-3-2)
+
+
+### Bug Fixes
+
+* **bug:** Journal Boundaries (mini-calendar) background-color ([c173c93](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/c173c93d382396713717904993ba3ca84c608913))
+* mini calendar > For holidays marker, use border instead of background color [#135](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/135) ([4dea5e4](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/4dea5e444c73b48609815cf21dc612f972817ba4))
+
 # [1.53.0](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.52.0...v1.53.0) (2024-2-25)
 
 
