@@ -22,15 +22,15 @@
     "dependencies": {
         "@logseq/libs": "^0.0.17",
         "date-fns": "^3.3.1",
-        "date-holidays": "^3.23.8",
+        "date-holidays": "^3.23.9",
         "logseq-l10n": "^0.2.0",
-        "lunar-typescript": "^1.7.3"
+        "lunar-typescript": "^1.7.4"
     },
     "devDependencies": {
         "@semantic-release/changelog": "^6.0.3",
         "@semantic-release/exec": "^6.0.3",
         "@semantic-release/git": "^10.0.1",
-        "@types/node": "^20.11.20",
+        "@types/node": "^20.11.24",
         "conventional-changelog-conventionalcommits": "^7.0.2",
         "cz-conventional-changelog": "^3.3.0",
         "jest": "^29.7.0",
