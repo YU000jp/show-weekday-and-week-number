@@ -1,7 +1,7 @@
 import { format, getWeekOfMonth, isSaturday, isSunday } from "date-fns"
 import { t } from "logseq-l10n"
 import { HolidayUtil, Lunar } from "lunar-typescript"
-import { createLinkMonthlyLink, createSettingButton, formatRelativeDate, getWeeklyNumberFromDate, openPageFromPageName } from "./lib"
+import { createLinkMonthlyLink, createSettingButton, formatRelativeDate, getQuarter, getWeeklyNumberFromDate, getWeeklyNumberString, openPageFromPageName } from "./lib"
 import { getConfigPreferredLanguage } from "."
 import { exportHolidaysBundle } from "./holidays"
 
@@ -58,17 +58,21 @@ export const behindJournalTitle = async (journalDate: Date, titleElement: HTMLEl
       // 太陰暦の日付を取得する
       const LunarDate = Lunar.fromDate(journalDate)
       // 月日表記
-      if (logseq.settings!.booleanUnderLunarCalendar === true) enableUnderLunarCalendar(LunarDate, baseLineElement)
+      if (logseq.settings!.booleanUnderLunarCalendar === true)
+        enableUnderLunarCalendar(LunarDate, baseLineElement)
       // 祝日表記
-      if (logseq.settings!.underHolidaysAlert === true) enableUnderLunarCalendarHoliday(LunarDate, baseLineElement)
+      if (logseq.settings!.underHolidaysAlert === true)
+        enableUnderLunarCalendarHoliday(LunarDate, baseLineElement)
     }
 
   } else  // 世界の国
-    if (logseq.settings!.underHolidaysAlert === true) enableUnderHolidayForWorldCountry(journalDate, baseLineElement)
+    if (logseq.settings!.underHolidaysAlert === true)
+      enableUnderHolidayForWorldCountry(journalDate, baseLineElement)
 
 
   //設定ボタンを設置
-  if (logseq.settings!.booleanSettingsButton === true) enableSettingsButton(baseLineElement)
+  if (logseq.settings!.booleanSettingsButton === true)
+    enableSettingsButton(baseLineElement)
 
   setTimeout(() => processingBehind = false, 300)
 
@@ -78,7 +82,8 @@ export const behindJournalTitle = async (journalDate: Date, titleElement: HTMLEl
 
 const moveTitleElement = (titleElement: HTMLElement) => {
   //h1から.blockを削除
-  if (titleElement.classList.contains("block")) titleElement.classList.remove("block")
+  if (titleElement.classList.contains("block"))
+    titleElement.classList.remove("block")
 
 
   //h1の中にdateInfoElementを挿入
@@ -98,7 +103,8 @@ const moveTitleElement = (titleElement: HTMLElement) => {
     //移動したaタグの中身にtitleElementTextContentを戻す
     aTag.textContent = titleElementTextContent
     //aタグから.initial-colorを削除
-    if (aTag.classList.contains("initial-color")) aTag.classList.remove("initial-color")
+    if (aTag.classList.contains("initial-color"))
+      aTag.classList.remove("initial-color")
 
   }
 }
@@ -143,21 +149,21 @@ const enableWeekNumber = (journalDate: Date, weekStartsOn: 0 | 1): string => {
       ? `W<strong>${weekString}</strong>`
       : `${year}-W<strong>${weekString}</strong>`
 
-    const forWeeklyJournal = `${year}-W${weekString}`
+    const weeklyNumberString = getWeeklyNumberString(year, weekString, getQuarter(Number(weekString)))
 
     if (logseq.settings!.booleanWeeklyJournal === true) {
 
-      const linkId = "weeklyJournal-" + forWeeklyJournal
-      printHtmlWeekNumber = `<span title="${t("Week number: ") + forWeeklyJournal}"><a id="${linkId}">${printWeekNumber}</a></span>`
+      const linkId = "weeklyJournal-" + weeklyNumberString
+      printHtmlWeekNumber = `<span title="${t("Week number: ") + weeklyNumberString}"><a id="${linkId}">${printWeekNumber}</a></span>`
 
       setTimeout(() => {
         const element = parent.document.getElementById(linkId) as HTMLSpanElement
-        if (element) element.addEventListener("click", ({ shiftKey }) => openPageFromPageName(forWeeklyJournal, shiftKey))
+        if (element) element.addEventListener("click", ({ shiftKey }) => openPageFromPageName(weeklyNumberString, shiftKey))
       }, 150)
 
     }
     else
-      printHtmlWeekNumber = `<span title="${forWeeklyJournal}">${printWeekNumber}</span>`
+      printHtmlWeekNumber = `<span title="${weeklyNumberString}">${printWeekNumber}</span>`
 
   } else {
 

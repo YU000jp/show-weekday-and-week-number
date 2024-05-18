@@ -1,5 +1,5 @@
 import "@logseq/libs" //https://plugins-doc.logseq.com/
-import { EntityID, LSPluginBaseInfo } from "@logseq/libs/dist/LSPlugin.user"
+import { EntityID, LSPluginBaseInfo, PageEntity } from "@logseq/libs/dist/LSPlugin.user"
 import { setup as l10nSetup } from "logseq-l10n" //https://github.com/sethyuan/logseq-l10n
 import { behindJournalTitle } from "./behind"
 import { boundariesProcess } from "./boundaries"
@@ -56,7 +56,8 @@ const main = async () => {
 
   // メッセージを表示する
   const notice = "20240122no02"
-  if (logseq.settings!.weekNumberFormat !== undefined && logseq.settings!.notice !== notice) {
+  if (logseq.settings!.weekNumberFormat !== undefined
+    && logseq.settings!.notice !== notice) {
     logseq.updateSettings({ notice })
     setTimeout(() => {
       logseq.UI.showMsg(`
@@ -142,7 +143,8 @@ const main = async () => {
 
   // サイドバーの表示/非表示が切り替わったときにセレクタークエリを実行
   logseq.App.onSidebarVisibleChanged(({ visible }) => {
-    if (visible === true) setTimeout(() => querySelectorAllTitle(), 100)
+    if (visible === true)
+      setTimeout(() => querySelectorAllTitle(), 100)
   })
 
   // CSS適用
@@ -166,9 +168,10 @@ const main = async () => {
 
 
 
+let processingRenamePage: boolean = false
+
 // ユーザー設定が変更されたときに実行
 const onSettingsChanged = () => logseq.onSettingsChanged((newSet: LSPluginBaseInfo["settings"], oldSet: LSPluginBaseInfo["settings"]) => {
-
   if ((oldSet.booleanBoundaries === true
     && newSet.booleanBoundaries === false)
     || (oldSet.booleanJournalsBoundaries === true
@@ -201,7 +204,8 @@ const onSettingsChanged = () => logseq.onSettingsChanged((newSet: LSPluginBaseIn
     || oldSet.holidaysState !== newSet.holidaysState
     || oldSet.holidaysRegion !== newSet.holidaysRegion
     || oldSet.choiceHolidaysColor !== newSet.choiceHolidaysColor
-    || oldSet.booleanLunarCalendar !== newSet.booleanLunarCalendar) {
+    || oldSet.booleanLunarCalendar !== newSet.booleanLunarCalendar
+    || oldSet.weekNumberOptions !== newSet.weekNumberOptions) {
     //Journal boundariesを再表示する
     removeBoundaries()
     SettingsChangedJournalBoundariesEnable()
@@ -224,7 +228,8 @@ const onSettingsChanged = () => logseq.onSettingsChanged((newSet: LSPluginBaseIn
     || oldSet.holidaysRegion !== newSet.holidaysRegion
     || oldSet.choiceHolidaysColor !== newSet.choiceHolidaysColor
     || oldSet.booleanUnderLunarCalendar !== newSet.booleanUnderLunarCalendar
-    || oldSet.underHolidaysAlert !== newSet.underHolidaysAlert) {
+    || oldSet.underHolidaysAlert !== newSet.underHolidaysAlert
+    || oldSet.weekNumberOptions !== newSet.weekNumberOptions) {
     //再表示 Behind Journal Title
     removeTitleQuery()
     setTimeout(() => querySelectorAllTitle(), 500)
@@ -249,10 +254,12 @@ const onSettingsChanged = () => logseq.onSettingsChanged((newSet: LSPluginBaseIn
   // 20240121 祝日表示に関するトグル
   if (oldSet.booleanBoundariesHolidays !== newSet.booleanBoundariesHolidays
     || oldSet.underHolidaysAlert !== newSet.underHolidaysAlert) {
-    if (newSet.booleanBoundariesHolidays === true || newSet.underHolidaysAlert === true) //どちらかがオンの場合
+    if (newSet.booleanBoundariesHolidays === true
+      || newSet.underHolidaysAlert === true) //どちらかがオンの場合
       getHolidaysBundle(newSet.holidaysCountry as string, { settingsChanged: true }) //バンドルを取得する
     else
-      if (newSet.booleanBoundariesHolidays === false && newSet.underHolidaysAlert === false) //両方オフの場合
+      if (newSet.booleanBoundariesHolidays === false
+        && newSet.underHolidaysAlert === false) //両方オフの場合
         removeHolidaysBundle() //バンドルを削除する
   }
   if (oldSet.holidaysCountry !== newSet.holidaysCountry
@@ -261,24 +268,100 @@ const onSettingsChanged = () => logseq.onSettingsChanged((newSet: LSPluginBaseIn
     getHolidaysBundle(newSet.holidaysCountry as string, { settingsChanged: true }) //バンドルを取得する
   }
 
-  //CAUTION: 日付形式が変更された場合は、re-indexをおこなうので、問題ないが、言語設定が変更された場合は、その設定は、すぐには反映されない。プラグインの再読み込みが必要になるが、その頻度がかなり少ないので問題ない。
+  // 週番号のフォーマットを変更する
+  if ((oldSet.weekNumberChangeQ === false && newSet.weekNumberChangeQ === true)
+    || (oldSet.weekNumberChangeQS === false && newSet.weekNumberChangeQS === true)
+    || (oldSet.weekNumberChangeRevert === false && newSet.weekNumberChangeRevert === true)) {
 
+    const changeWeekNumberToQuarterly = async (separateString: string, revert: boolean) => {
+      if (processingRenamePage) return
+      processingRenamePage = true
+      //logseq.Editor.renamePage("2023-W01", "2023/Q1/W01") のようにして、四半期を入れてほしい 2023-W01からW53までと2024-W01からW53まで。
+      const targetList = ["2022", "2023", "2024", "2025"]
+      const targetList2 = ["Q1", "Q2", "Q3", "Q4", "Q4"]
+      targetList.forEach((year) => {
+        const weekList = Array.from({ length: 53 }, (_, i) => i + 1)
+        weekList.forEach((week) => {
+          const weekNumber = week.toString().padStart(2, "0")
+          if (revert === true) {
+            const weekNumberQuarter = targetList2[Math.floor((week - 1) / 13)]
+            logseq.Editor.getPage(`${year}/${weekNumberQuarter}/W${weekNumber}`).then((page: { uuid: PageEntity["uuid"] } | null) => {
+              if (page) {
+                logseq.Editor.renamePage(`${year}/${weekNumberQuarter}/W${weekNumber}`, `${year}${separateString}W${weekNumber}`)
+                console.log(`Page ${year}/${weekNumberQuarter}/W${weekNumber} has been renamed to ${year}${separateString}W${weekNumber}.`)
+              } else
+                console.log(`Page ${year}/${weekNumberQuarter}/W${weekNumber} does not exist.`)
+            })
+          } else {
+            logseq.Editor.getPage(`${year}${separateString}W${weekNumber}`).then((page: { uuid: PageEntity["uuid"] } | null) => {
+              if (page) {
+                //四半世紀を入れる
+                const weekNumberQuarter = targetList2[Math.floor((week - 1) / 13)]
+                logseq.Editor.renamePage(`${year}${separateString}W${weekNumber}`, `${year}/${weekNumberQuarter}/W${weekNumber}`)
+                console.log(`Page ${year}${separateString}W${weekNumber} has been renamed to ${year}/${weekNumberQuarter}/W${weekNumber}.`)
+              } else
+                console.log(`Page ${year}${separateString}W${weekNumber} does not exist.`)
+            })
+          }
+        })
+      })
+      logseq.UI.showMsg("Week number has been changed to the quarterly format.", "info", { timeout: 5000 })
+      setTimeout(() => {
+        processingRenamePage = false
+        logseq.updateSettings({ weekNumberChangeQ: false })
+      }, 2000)
+    }
+
+    if (oldSet.weekNumberChangeQ === false && newSet.weekNumberChangeQ === true)
+      changeWeekNumberToQuarterly("-", false) //2023-W01からW53までと2024-W01からW53まで。
+    else
+      if (oldSet.weekNumberChangeQS === false && newSet.weekNumberChangeQS === true)
+        changeWeekNumberToQuarterly("/", false) //2023/W01からW53までと2024/W01からW53まで。
+      else
+        if (oldSet.weekNumberChangeRevert === false && newSet.weekNumberChangeRevert === true)
+          changeWeekNumberToQuarterly("/", true) //2023/Q1/W01からQ4/W53までと2024/Q1/W01からQ4/W53まで。
+  }
+
+  if (oldSet.weekNumberChangeSlash === false && newSet.weekNumberChangeSlash === true) {
+    if (processingRenamePage) return
+    processingRenamePage = true
+    //logseq.Editor.renamePage("2023-W01", "2023/W01") のようにして-を/にしてほしい。2023-W01からW53までと2024-W01からW53まで。
+    const targetList = ["2022", "2023", "2024", "2025"]
+    targetList.forEach((year) => {
+      const weekList = Array.from({ length: 53 }, (_, i) => i + 1)
+      weekList.forEach((week) => {
+        const weekNumber = week.toString().padStart(2, "0")
+        logseq.Editor.getPage(`${year}-W${weekNumber}`).then((page: { uuid: PageEntity["uuid"] } | null) => {
+          if (page) {
+            logseq.Editor.renamePage(`${year}-W${weekNumber}`, `${year}/W${weekNumber}`)
+            console.log(`Page ${year}-W${weekNumber} has been renamed to ${year}/W${weekNumber}.`)
+          } else
+            console.log(`Page ${year}-W${weekNumber} does not exist.`)
+        })
+      })
+    })
+    logseq.UI.showMsg("Week number has been changed to the quarterly format.", "info", { timeout: 5000 })
+    setTimeout(() => {
+      processingRenamePage = false
+      logseq.updateSettings({ weekNumberChangeSlash: false })
+    }, 2000)
+  }
+
+  //CAUTION: 日付形式が変更された場合は、re-indexをおこなうので、問題ないが、言語設定が変更された場合は、その設定は、すぐには反映されない。プラグインの再読み込みが必要になるが、その頻度がかなり少ないので問題ない。
   if (processingSettingsChanged) return
   processingSettingsChanged = true
   getUserConfig()
   setTimeout(() => processingSettingsChanged === false, 1000)
-
-
 }) // end_onSettingsChanged
 
 
 //Journal boundariesを表示する 設定変更時に実行
-const SettingsChangedJournalBoundariesEnable = () => setTimeout(() => {
-  if (parent.document.getElementById("journals") as Node)
-    boundaries("journals")
-  else
-    boundaries("is-journals")
-}, 100)
+const SettingsChangedJournalBoundariesEnable = () =>
+  setTimeout(() =>
+    boundaries(parent.document.getElementById("journals") as Node ?
+      "journals"
+      : "is-journals")
+    , 100)
 
 
 // クエリーセレクターでタイトルを取得する
@@ -319,6 +402,11 @@ const JournalPageTitle = async (titleElement: HTMLElement) => {
     || titleElement.nextElementSibling?.className === "showWeekday") return // check if element already has date info
   processingJournalTitlePage = true
 
+  const title: string = titleElement.dataset.localize === "true" ?
+    titleElement.dataset.ref || ""
+    : titleElement.textContent
+  if (title === "") return
+
   //日誌のページ名の場合のみ
 
   //設定項目ですべてのトグルがオフの場合の処理
@@ -342,25 +430,35 @@ const JournalPageTitle = async (titleElement: HTMLElement) => {
     return
   }
 
-  //Weekly Journalのページだった場合
+
+  //Weekly Journalのページかどうか
   if (titleElement.classList.contains("journal-title") === false
     && titleElement.classList.contains("title") === true
     && logseq.settings!.booleanWeeklyJournal === true) {
-    const match = titleElement.textContent.match(/^(\d{4})-W(\d{2})$/) as RegExpMatchArray
+    const match = (() => {
+      switch (logseq.settings!.weekNumberOptions) {
+        case "YYYY-Www":
+          return title.match(/^(\d{4})-W(\d{2})$/) // "YYYY-Www"
+        case "YYYY/qqq/Www": // 2023/Q1/W01
+          return title.match(/^(\d{4})\/Q\d{1}\/W(\d{2})$/) // "YYYY/qqq/Www"
+        default:
+          return title.match(/^(\d{4})\/W(\d{2})$/) // "YYYY/Www"
+      }
+    })() as RegExpMatchArray
     if (match
       && match[1] !== ""
       && match[2] !== "") {
       await currentPageIsWeeklyJournal(titleElement, match)
-      processingJournalTitlePage = false
+      titleElement.title = "Weekly Journal"
+      setTimeout(() =>
+        processingJournalTitlePage = false
+        , 300)
       return
     }
   }
 
   //日誌タイトルから日付を取得し、右側に情報を表示する
-  const title: string = titleElement.dataset.localize === "true" ?
-    titleElement.dataset.ref || ""
-    : titleElement.textContent
-  if (title === "") return
+
   const page = (await logseq.Editor.getPage(title)) as { journalDay: number } | null
   if (page
     && page.journalDay) {

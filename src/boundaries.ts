@@ -3,7 +3,7 @@ import { addDays, format, isBefore, isFriday, isSameDay, isSaturday, isSunday, i
 import { t } from "logseq-l10n"
 import { HolidayUtil, Lunar } from 'lunar-typescript'
 import { getConfigPreferredDateFormat, getConfigPreferredLanguage } from '.'
-import { formatRelativeDate, getJournalDayDate, getWeekStartOn, getWeeklyNumberFromDate, openPageFromPageName } from './lib'
+import { formatRelativeDate, getJournalDayDate, getWeekStartOn, getWeeklyNumberFromDate, getWeeklyNumberString, openPageFromPageName } from './lib'
 import { exportHolidaysBundle } from './holidays'
 
 let processingFoundBoundaries: boolean = false
@@ -115,16 +115,16 @@ export const boundariesProcess = async (targetElementName: string, remove: boole
 
 
 const daySideWeekNumber = (date: Date, boundariesInner: HTMLDivElement) => {
-  const weekStartsOn: 0 | 1 = logseq.settings?.weekNumberFormat === "US format" ? 0 : 1
-  //dateAddOneDayの週番号を取得する
-  const { year, weekString }: { year: number; weekString: string } = getWeeklyNumberFromDate(date, weekStartsOn)
+  const { year, weekString, quarter } = getWeeklyNumberFromDate(date, logseq.settings?.weekNumberFormat === "US format" ? 0 : 1) // 週番号を取得する
+  const weekNumberString = getWeeklyNumberString(year, weekString, quarter) // 週番号からユーザー指定文字列を取得する
   const weekNumberElement: HTMLSpanElement = document.createElement('span')
   weekNumberElement.classList.add('daySide', 'daySideWeekNumber')
   weekNumberElement.innerText = "W" + weekString
-  weekNumberElement.title = t("Week number: ") + year + "-W" + weekString
+  weekNumberElement.title = t("Week number: ") + weekNumberString
   if (logseq.settings!.booleanWeeklyJournal === true)
-    weekNumberElement.addEventListener("click", ({ shiftKey }) => openPageFromPageName(`${year}-W${weekString}`, shiftKey))
-  else weekNumberElement.style.cursor = 'unset'
+    weekNumberElement.addEventListener("click", ({ shiftKey }) => openPageFromPageName(weekNumberString, shiftKey))
+  else
+    weekNumberElement.style.cursor = 'unset'
   boundariesInner.appendChild(weekNumberElement)
 }
 

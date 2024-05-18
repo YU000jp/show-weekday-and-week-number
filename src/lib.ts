@@ -9,21 +9,42 @@ export const getJournalDayDate = (str: string): Date => new Date(
 )
 
 //日付から週番号を求める
-export function getWeeklyNumberFromDate(journalDate: Date, weekStartsOn: 0 | 1): { year: number, weekString: string } {
+export function getWeeklyNumberFromDate(date: Date, weekStartsOn: 0 | 1): { year: number, weekString: string, quarter: number } {
   let year: number
   let week: number
   if (logseq.settings?.weekNumberFormat === "ISO(EU) format") {
-    year = getISOWeekYear(journalDate)
-    week = getISOWeek(journalDate)
+    // ISO 8601週番号を求める
+    year = getISOWeekYear(date)
+    week = getISOWeek(date)
   } else {
     //NOTE: getWeekYear関数は1月1日がその年の第1週の始まりとなる(デフォルト)
     //weekStartsOnは先に指定済み
-    year = getWeekYear(journalDate, { weekStartsOn })
-    week = getWeek(journalDate, { weekStartsOn })
+    year = getWeekYear(date, { weekStartsOn })
+    week = getWeek(date, { weekStartsOn })
   }
-  const weekString: string = (week < 10) ? String("0" + week) : String(week) //weekを2文字にする
-  return { year, weekString }//weekを2文字にする
+  const quarter:number = getQuarter(week) //四半期を求める
+  const weekString: string = (week < 10) ?
+    String("0" + week)
+    : String(week) //weekを2文字にする
+  return { year, weekString, quarter }//weekを2文字にする
 }
+
+// 四半世紀を求める
+export const getQuarter = (week:number): number =>  week < 14 ? 1 : week < 27 ? 2 : week < 40 ? 3 : 4
+
+// 週番号のユーザー指定文字列を返す
+//"YYYY-Www","YYYY/qqq/Www", "YYYY/Www"
+export const getWeeklyNumberString = (year: number, weekString: string, quarter: number): string => {
+  switch (logseq.settings?.weekNumberOptions) {
+    case "YYYY-Www":
+      return `${year}-W${weekString}` // "YYYY-Www"
+    case "YYYY/qqq/Www":
+      return `${year}/Q${quarter}/W${weekString}` // "YYYY/qqq/Www"
+    default:
+      return `${year}/W${weekString}` // "YYYY/Www"
+  }
+}
+
 
 //日付からローカライズされた曜日を求める
 export const localizeDayOfWeek = (weekday, journalDate: Date, locales?: string) => new Intl.DateTimeFormat((locales ? locales : "default"), { weekday }).format(journalDate)

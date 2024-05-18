@@ -1,5 +1,5 @@
 import { AppUserConfigs, BlockEntity, IBatchBlock } from "@logseq/libs/dist/LSPlugin"
-import { getWeeklyNumberFromDate } from "./lib"
+import { getQuarter, getWeeklyNumberFromDate, getWeeklyNumberString } from "./lib"
 import { addMonths, addWeeks, addYears, endOfYear, format, startOfMonth, } from "date-fns"
 
 export const loadShortcutItems = () => {
@@ -28,24 +28,18 @@ export const loadShortcutItems = () => {
 }
 
 
-const currentWeekNumberLink = () => logseq.Editor.registerSlashCommand("Current week number link: [[yyyy/Ww]]", async () => {
+const currentWeekNumberLink = () => logseq.Editor.registerSlashCommand("Current week number link", async () => {
     //Week number linkのスラッシュコマンド
-    const { year, weekString }: { year: number; weekString: string } =
-        getWeeklyNumberFromDate(
-            new Date(),
-            logseq.settings?.weekNumberFormat === "US format" ? 0 : 1
-        )
-    logseq.Editor.insertAtEditingCursor(` [[${year}-W${weekString}]] `)
+    const { year, weekString, quarter } = getWeeklyNumberFromDate(new Date(), logseq.settings?.weekNumberFormat === "US format" ? 0 : 1) // 週番号を取得する
+    const weekNumberString = getWeeklyNumberString(year, weekString, quarter) // 週番号からユーザー指定文字列を取得する
+    logseq.Editor.insertAtEditingCursor(` [[${weekNumberString}]] `)
 })
 
-const nextWeekNumberLink = () => logseq.Editor.registerSlashCommand("Next week number link: [[yyyy/Ww]]", async () => {
+const nextWeekNumberLink = () => logseq.Editor.registerSlashCommand("Next week number link", async () => {
     //Week number linkのスラッシュコマンド
-    const { year, weekString }: { year: number; weekString: string } =
-        getWeeklyNumberFromDate(
-            addWeeks(new Date(), 1),
-            logseq.settings?.weekNumberFormat === "US format" ? 0 : 1
-        )
-    logseq.Editor.insertAtEditingCursor(` [[${year}-W${weekString}]] `)
+    const { year, weekString, quarter } = getWeeklyNumberFromDate(addWeeks(new Date(), 1), logseq.settings?.weekNumberFormat === "US format" ? 0 : 1) // 週番号を取得する
+    const weekNumberString = getWeeklyNumberString(year, weekString, quarter) // 週番号からユーザー指定文字列を取得する
+    logseq.Editor.insertAtEditingCursor(` [[${weekNumberString}]] `)
 })
 
 
@@ -75,13 +69,21 @@ const weekNumberYearAll = async (selectYear: number, uuid: string) => {
     //週番号のリストを作成
     //weekStringが52か53なのでそれを元に、1～52か1～53の配列を作成
     const weekNumberList = [...Array(Number(weekString)).keys()].map((i) => i + 1)
+
     //週番号のリストを元に、年と週番号を組み合わせたリストを作成
-    const weekNumberListWithYear = weekNumberList.map((weekNumber) => `${year}-W${weekNumber.toString().padStart(2, "0")}`)
+    const weekNumberListWithYear = weekNumberList.map((weekNumber) =>
+        getWeeklyNumberString(year,
+            weekNumber.toString().padStart(2, "0"),
+            getQuarter(weekNumber)))
+    
     let batch: IBatchBlock[]
     batch = weekNumberListWithYear.map((weekNumber) => ({
         content: `[[${weekNumber}]] `,
     }))
-    const { uuid: yearUuid } = await logseq.Editor.insertBlock(uuid, `[[${year}]] `, { sibling: true }) as BlockEntity as { uuid: string }
+    const { uuid: yearUuid } = await logseq.Editor.insertBlock(uuid,
+        `[[${year}]] `,
+        { sibling: true }) as BlockEntity as { uuid: string }
+    
     if (yearUuid) await logseq.Editor.insertBatchBlock(yearUuid, batch, { sibling: false })
 }
 
