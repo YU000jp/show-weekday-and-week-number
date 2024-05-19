@@ -9,6 +9,11 @@ let processingWeeklyJournal: boolean = false
 export const currentPageIsWeeklyJournal = async (titleElement: HTMLElement, match: RegExpMatchArray) => {
     //yyyy-Wwwのページを開いた状態
 
+    const year = Number(match[1]) //2023
+    const weekNumber = Number(match[2]) //27
+    const ISO = (logseq.settings?.weekNumberFormat === "ISO(EU) format") ? true : false
+    const weekStartsOn = (logseq.settings?.weekNumberFormat === "US format") ? 0 : 1
+
     //Journal Boundariesを表示する
     if (logseq.settings!.booleanBoundariesOnWeeklyJournal === true
         && !parent.document.getElementById("weekBoundaries")
@@ -16,24 +21,23 @@ export const currentPageIsWeeklyJournal = async (titleElement: HTMLElement, matc
         processingFoundBoundaries = true
         setTimeout(() => {
             //週番号から週始まりの日付を求める
-            const weeklyJournalStartOfWeek: Date = getWeekStartFromWeekNumber(Number(match[1]), Number(match[2]),
-                (logseq.settings?.weekNumberFormat === "US format") ? 0 : 1, (logseq.settings?.weekNumberFormat === "ISO(EU) format") ? true : false)
+            const weeklyJournalStartOfWeek: Date = getWeekStartFromWeekNumber(
+                Number(match[1]),
+                Number(match[2]),
+                weekStartsOn, ISO
+            )
             if (!parent.document.getElementById("weekBoundaries"))
                 boundariesProcess("weeklyJournal", false, 0, weeklyJournalStartOfWeek)
             processingFoundBoundaries = false
         }, 200)
     }
 
-
     //プロセスロック
     if (processingWeeklyJournal === true
         || (titleElement.dataset!.WeeklyJournalChecked as string) === "true")
         return//一度だけ処理を行う
 
-    const year = Number(match[1]) //2023
-    const weekNumber = Number(match[2]) //27
-    const weekStartsOn = (logseq.settings?.weekNumberFormat === "US format") ? 0 : 1
-    const ISO = (logseq.settings?.weekNumberFormat === "ISO(EU) format") ? true : false
+
     //その週の日付リンクを作成
     const weekStart: Date = getWeekStartFromWeekNumber(year, weekNumber, weekStartsOn, ISO)
     const weekEnd: Date = addDays(weekStart, 6)
@@ -234,7 +238,7 @@ const weeklyJournalCreateNav = (
     let weekDaysNavLinks: string[] = []
 
 
-        // parent.document div.page.relativeの中の先頭に挿入する
+    // parent.document div.page.relativeの中の先頭に挿入する
     const pageRelative = parent.document.querySelector("div.page.relative") as HTMLDivElement
     if (!pageRelative || pageRelative.dataset.weeklyJournalNav === "true") return
 
