@@ -43,7 +43,7 @@
 ### Monthly Journal 🌛 / Quarterly Journal
 
 - Click the link on the left side of the mini calendar will open a page like `[[2023/10]]`.
-  >TThere is page generation feature like Weekly Journal. 🆙
+  > There is page generation feature like Weekly Journal. 🆙
 
 ### Slash Command 🆕
 
