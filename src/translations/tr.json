@@ -70,5 +70,11 @@
   "Weekly journal created": "Haftalık dergi oluşturuldu",
   "`US format`: Sunday, `ISO(EU) format`: Monday, [>> document here](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/wiki/Week-number-format)": "ABD biçimi: Pazar başlar, ISO (AB için) biçimleri: Pazartesi başlar, [>> belgeler](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/wiki/Week-number-format)",
   "default: `true` | The `#.ThisWeek` tag is added to the `This Week` section. If the tag is added, a popup will be displayed. (The tag is not added to the past section.)": "Varsayılan: `true` | `#.BuHafta` etiketi `Bu Hafta` bölümüne eklenir. Etiket eklenirse, bir açılır pencere görüntülenir. (Etiket geçmiş bölümüne eklenmez.)",
-  "like `3 days ago`": "'3 gün önce' olarak görüntüle"
+  "like `3 days ago`": "'3 gün önce' olarak görüntüle",
+  "Monthly journal created" : "Aylık dergi oluşturuldu",
+  "Quarterly journal created"  : "Üç aylık dergi oluşturuldu",
+  "Monthly Journal"  : "Aylık Dergi",
+  "Quarterly Journal"  : "Üç Aylık Dergi",
+  "Enable the link and function. If there is no content available on a page with a month number like 2024/05, a template will be inserted."  : "Bağlantıları ve özellikleri etkinleştirin. 2024/05 gibi bir ay numarası olan bir sayfada içerik yoksa şablon eklenecektir.",
+  "Enable the link and function. If there is no content available on a page with a quarterly number like 2024/Q1, a template will be inserted."  : "Bağlantıları ve özellikleri etkinleştirin. 2024/Q1 gibi üç aylık bir numarası olan bir sayfada içerik yoksa şablon eklenecektir."
 }

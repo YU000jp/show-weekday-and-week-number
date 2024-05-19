@@ -409,5 +409,65 @@ export const settingsTemplate = (userLanguage): SettingSchemaDesc[] => [
     type: "boolean",
     default: true, //trueの場合に、ThisWeek セクションにタグが付与されます。そのタグが付与されている場合、ポップアップが表示されます。(過去のセクションにはタグが付与されません。)
     description: t("default: `true` | The `#.ThisWeek` tag is added to the `This Week` section. If the tag is added, a popup will be displayed. (The tag is not added to the past section.)"),
-  }
+  },
+
+  //Monthly Journal
+  {
+    key: "heading004",
+    title: t("Monthly Journal") + "🆕",
+    type: "heading",
+    default: "",
+    description: "",
+  },
+  {
+    key: "booleanMonthlyJournal",
+    title: t("Enable feature"),
+    type: "boolean",
+    default: true,
+    description: t("Enable the link and function. If there is no content available on a page with a month number like 2024/05, a template will be inserted."),
+  },
+  {
+    key: "monthlyJournalSetPageTag",
+    title: t("Set page tag (Add to tags property)"),
+    type: "string",
+    default: "",
+    description: t("Input a page name (default is blank)"),
+  },
+  {
+    key: "monthlyJournalTemplateName",
+    title: t("Template name"),
+    type: "string",
+    default: "",
+    description: t("Input the template name (default is blank)"),
+  },
+
+  //Quarterly Journal
+  {
+    key: "heading004",
+    title: t("Quarterly Journal") + "🆕",
+    type: "heading",
+    default: "",
+    description: "",
+  },
+  {
+    key: "booleanQuarterlyJournal",
+    title: t("Enable feature"),
+    type: "boolean",
+    default: true,
+    description: t("Enable the link and function. If there is no content available on a page with a quarterly number like 2024/Q1, a template will be inserted."),
+  },
+  {
+    key: "quarterlyJournalSetPageTag",
+    title: t("Set page tag (Add to tags property)"),
+    type: "string",
+    default: "",
+    description: t("Input a page name (default is blank)"),
+  },
+  {
+    key: "quarterlyJournalTemplateName",
+    title: t("Template name"),
+    type: "string",
+    default: "",
+    description: t("Input the template name (default is blank)"),
+  },
 ]

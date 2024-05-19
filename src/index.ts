@@ -29,6 +29,8 @@ import zhCN from "./translations/zh-CN.json"
 import zhHant from "./translations/zh-Hant.json"
 import { currentPageIsWeeklyJournal } from "./weeklyJournal"
 import { getHolidaysBundle, removeHolidaysBundle } from "./holidays"
+import { currentPageIsMonthlyJournal } from "./monthlyJournal"
+import { currentPageIsQuarterlyJournal } from "./quarterlyJournal"
 const keyThisWeekPopup = "thisWeekPopup"
 let configPreferredLanguage: string
 let configPreferredDateFormat: string
@@ -55,27 +57,31 @@ const main = async () => {
   })
 
   // メッセージを表示する
-  const notice = "20240519no01"
+  const notice = "20240519no02"
   if (logseq.settings!.weekNumberFormat !== undefined
     && logseq.settings!.notice !== notice) {
     logseq.updateSettings({ notice })
     setTimeout(() => {
       logseq.UI.showMsg(`
 
-    📆"Show Weekday and Week-number" plugin
+    📆"Show weekday and week-number" plugin
     Updated!
     
 
     Feature:
     1. Week-number format options
-        
-    Bug fix:
-    1. Show indicator (dot) of journal entries
-
+    2. Monthly Journal (Insert Template)
+    3. Quarterly Journal (Insert Template)
+    4. (Weekly/M/Q) Journal Nav link
 
     - New setting items have been added in the plugin settings.
+
+
+    Bug fix:
+    1. Show indicator (dot) of journal entries
+      (⚠️Due to changes in the specifications of Logseq app, judgments are made based on the database rather than the file.)
     
-    `, "info", { timeout: 7000 })
+    `, "info", { timeout: 8500 })
       logseq.showSettingsUI() // 設定画面を表示する
     }, 5000)
   }
@@ -433,30 +439,58 @@ const JournalPageTitle = async (titleElement: HTMLElement) => {
     return
   }
 
-
-  //Weekly Journalのページかどうか
+  //Weekly(M/Q) Journalのページかどうか
   if (titleElement.classList.contains("journal-title") === false
-    && titleElement.classList.contains("title") === true
-    && logseq.settings!.booleanWeeklyJournal === true) {
-    const match = (() => {
-      switch (logseq.settings!.weekNumberOptions) {
-        case "YYYY-Www":
-          return title.match(/^(\d{4})-W(\d{2})$/) // "YYYY-Www"
-        case "YYYY/qqq/Www": // 2023/Q1/W01
-          return title.match(/^(\d{4})\/Q\d{1}\/W(\d{2})$/) // "YYYY/qqq/Www"
-        default:
-          return title.match(/^(\d{4})\/W(\d{2})$/) // "YYYY/Www"
+    && titleElement.classList.contains("title") === true) {
+    // 2024/01にマッチするかどうか
+    if (logseq.settings!.booleanMonthlyJournal === true) {
+      const match = title.match(/^(\d{4})\/(\d{2})$/) as RegExpMatchArray
+      if (match
+        && match[1] !== ""
+        && match[2] !== "") {
+        await currentPageIsMonthlyJournal(titleElement, match)
+        titleElement.title = "Monthly Journal"
+        setTimeout(() =>
+          processingJournalTitlePage = false
+          , 300)
+        return
       }
-    })() as RegExpMatchArray
-    if (match
-      && match[1] !== ""
-      && match[2] !== "") {
-      await currentPageIsWeeklyJournal(titleElement, match)
-      titleElement.title = "Weekly Journal"
-      setTimeout(() =>
-        processingJournalTitlePage = false
-        , 300)
-      return
+    }
+    // 2024/Q1にマッチするかどうか
+    if (logseq.settings!.booleanQuarterlyJournal === true) {
+      const match = title.match(/^(\d{4})\/[qQ](\d{1})$/) as RegExpMatchArray
+      if (match
+        && match[1] !== ""
+        && match[2] !== "") {
+        await currentPageIsQuarterlyJournal(titleElement, match)
+        titleElement.title = "Quarterly Journal"
+        setTimeout(() =>
+          processingJournalTitlePage = false
+          , 300)
+        return
+      }
+    }
+    if (logseq.settings!.booleanWeeklyJournal === true) {
+      const match = (() => {
+        switch (logseq.settings!.weekNumberOptions) {
+          case "YYYY-Www":
+            return title.match(/^(\d{4})-[wW](\d{2})$/) // "YYYY-Www"
+          case "YYYY/qqq/Www": // 2023/Q1/W01
+            return title.match(/^(\d{4})\/[qQ]\d{1}\/[wW](\d{2})$/) // "YYYY/qqq/Www"
+          default:
+            return title.match(/^(\d{4})\/[wW](\d{2})$/) // "YYYY/Www"
+        }
+      })() as RegExpMatchArray
+      if (match
+        && match[1] !== ""
+        && match[2] !== "") {
+        await currentPageIsWeeklyJournal(titleElement, match)
+        titleElement.title = "Weekly Journal"
+        setTimeout(() =>
+          processingJournalTitlePage = false
+          , 300)
+        return
+      }
     }
   }
 

@@ -68,7 +68,7 @@ export const currentPageIsWeeklyJournal = async (titleElement: HTMLElement, matc
     if (currentBlockTree) {
         //コンテンツがある場合は処理を中断する
         //block.contentが空ではないブロックがひとつでもあったら処理を中断する
-        if (currentBlockTree.find((block) => block.content !== "")) return
+        if (currentBlockTree.find((block) => block.content !== null)) return
 
         processingWeeklyJournal = true//処理中フラグを立てる ここからreturnする場合は必ずfalseにすること
         titleElement.dataset.WeeklyJournalChecked = "true"
@@ -242,7 +242,7 @@ const weeklyJournalCreateNav = (
     const pageRelative = parent.document.querySelector("div.page.relative") as HTMLDivElement
     if (!pageRelative || pageRelative.dataset.weeklyJournalNav === "true") return
 
-    //ひとつ前の週番号をページタグに追加
+    //ひとつ前の週番号
     if (logseq.settings!.weekNumberOptions === "YYYY-Www") {
         weekDaysNavLinks.unshift(`${(ISO === true)
             ? getISOWeekYear(prevWeekStart)
@@ -250,7 +250,7 @@ const weeklyJournalCreateNav = (
                 ? String("0" + prevWeekNumber)
                 : String(prevWeekNumber)}`)
 
-        //ひとつ次の週番号をページタグに追加
+        //ひとつ次の週番号
         weekDaysNavLinks.push(`${(ISO === true)
             ? getISOWeekYear(nextWeekStart)
             : getWeekYear(nextWeekStart, { weekStartsOn })}-W${(nextWeekNumber < 10)
@@ -259,13 +259,13 @@ const weeklyJournalCreateNav = (
     }
 
     if (logseq.settings!.weekNumberOptions === "YYYY/Www") {
-        //ひとつ前の週番号をページタグに追加
+        //ひとつ前の週番号
         weekDaysNavLinks.unshift(`${(ISO === true)
             ? getISOWeekYear(prevWeekStart)
             : getWeekYear(prevWeekStart, { weekStartsOn })}/W${(prevWeekNumber < 10)
                 ? String("0" + prevWeekNumber)
                 : String(prevWeekNumber)}`)
-        //ひとつ次の週番号をページタグに追加
+        //ひとつ次の週番号
         weekDaysNavLinks.push(`${(ISO === true)
             ? getISOWeekYear(nextWeekStart)
             : getWeekYear(nextWeekStart, { weekStartsOn })}/W${(nextWeekNumber < 10)
@@ -274,13 +274,13 @@ const weeklyJournalCreateNav = (
     }
 
     if (logseq.settings!.weekNumberOptions === "YYYY/qqq/Www") {
-        //ひとつ前の週番号をページタグに追加
+        //ひとつ前の週番号
         weekDaysNavLinks.unshift(`${(ISO === true)
             ? getISOWeekYear(prevWeekStart)
             : getWeekYear(prevWeekStart, { weekStartsOn })}/Q${getQuarter(prevWeekNumber)}/W${(prevWeekNumber < 10)
                 ? String("0" + prevWeekNumber)
                 : String(prevWeekNumber)}`)
-        //ひとつ次の週番号をページタグに追加
+        //ひとつ次の週番号
         weekDaysNavLinks.push(`${(ISO === true)
             ? getISOWeekYear(nextWeekStart)
             : getWeekYear(nextWeekStart, { weekStartsOn })}/Q${getQuarter(nextWeekNumber)}/W${(nextWeekNumber < 10)
