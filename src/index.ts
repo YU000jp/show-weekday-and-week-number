@@ -413,7 +413,7 @@ const JournalPageTitle = async (titleElement: HTMLElement) => {
 
   const title: string = titleElement.dataset.localize === "true" ?
     titleElement.dataset.ref || ""
-    : titleElement.textContent
+    : titleElement.dataset.ref || titleElement.textContent
   if (title === "") return
 
   //日誌のページ名の場合のみ
