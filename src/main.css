@@ -155,4 +155,14 @@ body {
             }
         }
     }
+
+    & div[data-id="show-weekday-and-week-number"] div.cp__plugins-settings-inner {
+        & h2>code {
+            display: none;
+        }
+
+        & div.heading-item {
+            margin-top: 6em;
+        }
+    }
 }
