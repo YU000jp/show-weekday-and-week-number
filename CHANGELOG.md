@@ -1,3 +1,16 @@
+# [1.54.0](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.53.1...v1.54.0) (2024-05-19)
+
+
+### Bug Fixes
+
+* **bug:** Not working "Show indicator (dot) of journal entries" [#141](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/141) ([6909e48](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/6909e48796fa501f3576ad4e0c8f923a1e854796))
+
+
+### Features
+
+* **Add:** Quarterly Journal [#140](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/140) ([4626196](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/462619631ccf1f94cedf2d23a44e0ee6adef46a5))
+* **Add:** Week-number format options [#140](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/140) ([fde65c6](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/fde65c60b3571acb36a1f710a8a1d4f5168af9dd))
+
 ## [1.53.1](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.53.0...v1.53.1) (2024-3-2)
 
 
