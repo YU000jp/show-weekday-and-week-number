@@ -40,10 +40,10 @@
 
 - It becomes references for the day by nesting it in date links.
 
-### Monthly Journal 🌛
+### Monthly Journal 🌛 / Quarterly Journal
 
-- Click the link on the left side of the mini calendar will open a page like `[[2023/10]]`.
-  > Currently, there is no page generation feature like Weekly Journal.
+- Click the link on the left side of the mini calendar will open a page like `[[2023/10]]` or `[[2024/Q1]]`.
+  >TThere is page generation feature like Weekly Journal. 🆙
 
 ### Slash Command 🆕
 
