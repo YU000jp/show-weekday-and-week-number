@@ -18,20 +18,25 @@
 - The week number for that week will be generated. Like below
   1. ![image](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/assets/111847207/f47b8948-5e7a-4e16-a5ae-6966672742b1)
   1. ![image](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/assets/111847207/ee97c455-714e-45d2-9f9f-905798e298b4)
-> Highlight holidays for world country 🆕
+> Highlight holidays for world country
 
 ### Mini-calendar 🗓️ (Journal boundaries)
 
 - Display a 2 lines calendar on journals. Smooth access to previous and subsequent dates on a single date page or journals.
-  1. Highlight holidays for world country 🆕
-  1. Show indicator (dot) of journal entries 🆕
-  1. Show Lunar-calendar date for Chinese 🆕
+  1. Highlight holidays for world country
+  1. Show indicator (dot) of journal entries 🆙
+  1. Show Lunar-calendar date for Chinese
 
 ![README用](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/assets/111847207/114708ab-0389-4c46-b962-00cb25e2070a)
 
 ### Weekly Journal
 
 - Click the week number link to open it and generate a page. If there is no content available on a page with a week number like `[[2023-W25]]`, a template will be inserted. In plugin settings, it possible to set user template.
+  1. format option 🆕
+     1. yyyy-Www -> 2024-W01
+     2. yyyy/qqq/Www -> 2024/Q1/W01 *
+     3. yyyy/Www -> 2024/W01 *
+     > *hierarchy
   1. Inserting [Advanced queries](https://hub.logseq.com/features/av5LyiLi5xS7EFQXy4h4K8/getting-started-with-advanced-queries/8xwSRJNVKFJhGSvJUxs5B2) into the template increases flexibility.
   1. Include rendering in template
      - [Full house Templates plugin](https://github.com/stdword/logseq13-full-house-plugin) (https://github.com/stdword/logseq13-full-house-plugin/discussions/31)
@@ -45,7 +50,7 @@
 - Click the link on the left side of the mini calendar will open a page like `[[2023/10]]`.
   > There is page generation feature. 🆙
 
-### Slash Command 🆕
+### Slash Command
 
 > Week-number etc.. [Document here](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/wiki/Slash-Command)
 
