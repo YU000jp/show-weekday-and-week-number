@@ -24,7 +24,7 @@ export const settingsTemplate = (userLanguage): SettingSchemaDesc[] => [
   {
     key: "localizeOrEnglish",
     title: t(
-      "Day of the week, Select language Localize(:default) or English(:en)"
+      "Select language Localize(:default) or English(:en) for day of the week"
     ),
     type: "enum",
     default: "default",
@@ -57,7 +57,7 @@ export const settingsTemplate = (userLanguage): SettingSchemaDesc[] => [
   },
   {
     key: "choiceHolidaysColor",
-    title: t("Holidays > Highlight Color (background)"),
+    title: t("Holidays > Highlight Color"),
     type: "enum",
     enumChoices: ["--highlight-bg-color", "--highlight-selected-bg-color", "--ls-wb-stroke-color-default", "--ls-wb-stroke-color-gray", "--ls-wb-stroke-color-red", "--ls-wb-stroke-color-yellow", "--ls-wb-stroke-color-green", "--ls-wb-stroke-color-blue", "--ls-wb-stroke-color-purple", "--ls-wb-stroke-color-pink", "unset"],
     default: "--highlight-bg-color",
@@ -82,42 +82,49 @@ export const settingsTemplate = (userLanguage): SettingSchemaDesc[] => [
   },
   {
     key: "heading011",
-    title: t("For compatibility. Replace page titles"),
+    title: t("For compatibility. Replace page titles (Weekly Journals)"),
     type: "heading",
     default: "",
-    description: "",
+    description: `
+    YYYY: ${t("4-digit year")} (e.g. 2023)
+    qqq: ${t("Quarter")} (e.g. Q1)
+    Www: ${t("Week")} (e.g. W30)
+
+    ${t("year range")}: 2022-2025
+    ${t("Click this toggle to run it.")}
+    `,
   },
   //20240518
   {
     key: "weekNumberChangeQ",
-    title: " YYYY-Www -> YYYY/qqq/Www [2022-2025] 🆕",
+    title: " YYYY-Www  ->  YYYY/qqq/Www",
     type: "boolean",
     default: true,
-    description: t("Click this toggle to run it.")
+    description: "",
   },
   //20240518
   {
     key: "weekNumberChangeQS",
-    title: " YYYY/Www -> YYYY/qqq/Www [2022-2025] 🆕",
+    title: " YYYY/Www  ->  YYYY/qqq/Www",
     type: "boolean",
     default: true,
-    description: t("Click this toggle to run it.")
+    description: "",
   },
   //20240518
   {
     key: "weekNumberChangeSlash",
-    title: " YYYY-Www -> YYYY/Www [2022-2025] 🆕",
+    title: " YYYY-Www  ->  YYYY/Www",
     type: "boolean",
     default: true,
-    description: t("Click this toggle to run it.")
+    description: "",
   },
   //20240519
   {
     key: "weekNumberChangeRevert",
-    title: " YYYY/qqq/Www -> YYYY/Www [2022-2025] 🆕",
+    title: " YYYY/qqq/Www  ->  YYYY/Www",
     type: "boolean",
     default: true,
-    description: t("Click this toggle to run it.")
+    description: "",
   },
 
   //Behind journal title
@@ -226,7 +233,7 @@ export const settingsTemplate = (userLanguage): SettingSchemaDesc[] => [
   //Journal Boundaries
   {
     key: "heading002",
-    title: t("Journal boundaries"),
+    title: t("Journal boundaries (mini calendar)"),
     type: "heading",
     default: "",
     description: "",
@@ -236,7 +243,7 @@ export const settingsTemplate = (userLanguage): SettingSchemaDesc[] => [
     title: t("Enable feature"),
     type: "boolean",
     default: true,
-    description: t("Show the boundaries of days before and after the day on the single journal page"),
+    description: t("Use also on single journal"),
   },
   {
     key: "booleanJournalsBoundaries",
@@ -254,7 +261,7 @@ export const settingsTemplate = (userLanguage): SettingSchemaDesc[] => [
   },
   {//20240108
     key: "boundariesBottom",
-    title: t("Show boundaries on bottom"),
+    title: t("Show it on bottom"),
     type: "boolean",
     default: true,
     description: "",
@@ -323,7 +330,8 @@ export const settingsTemplate = (userLanguage): SettingSchemaDesc[] => [
   //20240121
   {
     key: "booleanBoundariesHolidays",
-    title: t("Support holidays"),
+    //休日をハイライトする
+    title: t("Highlight holidays"),
     type: "boolean",
     default: true,
     description: t("Add color to holidays and display the content on mouseover")
@@ -361,71 +369,76 @@ export const settingsTemplate = (userLanguage): SettingSchemaDesc[] => [
   {//20240615
     // Headline of each days
     key: "booleanWeeklyJournalHeadline",
-    title: t("Enable headline of each days"),
+    title: t("Enable [headline of each days]") + "🆕",
     type: "boolean",
     default: false,
-    // その週のジャーナルにあるプロパティの値を取得して、日付ごとにヘッドラインを表示するクエリーを自動生成する
-    description: t("Automatically generate a query to display headlines for each day by obtaining the value of the property in the journal for that week."),
+    // その週のジャーナルにあるプロパティの値を取得して、日付ごとにヘッドラインを表示するクエリーを自動生成する。過去のWeekly Journalには適用されません。
+    description: t("Automatically generate a query to display headlines for each day by obtaining the value of the property in the journal for that week. Not applied to past Weekly Journals."),
   },
   {//20240615
     // Headline of each days用 プロパティ名指定
     key: "weeklyJournalHeadlineProperty",
-    title: t("Property name for headline of each days"),
+    title: t("headline of each days > Property name for headline of each days") + "🆕",
     type: "string",
-    default: "log",
-    description: ""
+    default: "headline",
+    // 各ジャーナルのブロックに、このプロパティ名を持つブロックを用意します。ジャーナルテンプレートに取り込むと便利です。変更すると、リネームがおこなわれます。
+    description: t("Prepare a block with this property name in each journal block. It is convenient to incorporate it into the journal template. If you change it, the rename will be done."),
   },
   {
     key: "booleanWeeklyJournalThisWeek",
     title: t("Enable \"This Week\" section"),
     type: "boolean",
     default: true,
-    description: "",
+    // 各曜日へのリンク。マウスオーバーでツールチップ
+    description: t("Links to each day. Tooltip on mouseover."),
   },
   {//"This Week" セクションの位置を選択する(上か下か)
     key: "weeklyJournalThisWeekPosition",
-    title: t("\"This Week\" section position"),
+    title: t("\"This Week\" section or headline > position"),
     type: "enum",
     enumChoices: ["top", "bottom"],
     default: "top",
-    description: "",
+    // テンプレートよりも上か下か
+    description: t("above or below the template"),
   },
   {
     key: "booleanWeeklyJournalThisWeekWeekday",
-    title: t("Enable the day of the week in the `This Week` section"),
+    title: t("\"This Week\" section > Enable the day of the week"),
     type: "boolean",
     default: false,
-    description: "default: `false`",
-  },
-  {//Enable embedding for each journal
-    key: "booleanWeeklyJournalThisWeekEmbedding",
-    title: t("Enable embedding for each journal"),
-    type: "boolean",
-    default: false,
-    description: "default: `false`",
-  },
-  {//Enable embedding for each journal ("Linked References"が重複するのを防ぐため、日付リンクを解除する。参照を使わない場合)
-    key: "booleanWJThisWeekEmbeddingUnlink",
-    title: t("\"This Week\" section > Embed feature > Unlink date links for each journal (to avoid duplication of \"Linked References\" if references are not used)"),
-    type: "boolean",
-    default: false,
-    description: "default: `false`",
+    // リンクとともに曜日を表示する
+    description: t("Display the day of the week with a link."),
   },
   {
     key: "booleanWeeklyJournalThisWeekLinkWeekday",
-    title: t(
-      "Convert the day of the week in the `This Week` section into links."
-    ),
+    title: t("\"This Week\" section > Convert the day of the week in the section into links."),
     type: "boolean",
     default: false,
-    description: "default: `false`",
+    // 曜日ページにアクセスするためのリンクにする
+    description: t("Make it a link to access the weekday page."),
+  },
+  {//Enable embedding for each journal
+    key: "booleanWeeklyJournalThisWeekEmbedding",
+    title: t("\"This Week\" section > Enable embedding for each journal"),
+    type: "boolean",
+    default: false,
+    // そのページに移動せずに、そのまま閲覧と編集が可能。
+    description: t("You can view and edit it as it is without moving to that page."),
+  },
+  {//Enable embedding for each journal ("Linked References"が重複するのを防ぐため、日付リンクを解除する。参照を使わない場合)
+    key: "booleanWJThisWeekEmbeddingUnlink",
+    title: t("\"This Week\" section > Unlink date links for each journal"),
+    type: "boolean",
+    default: false,
+    // とくに上の設定が有効の場合
+    description: t("Especially when the above setting is enabled. (to avoid duplication of \"Linked References\" if references are not used)"),
   },
   {
     key: "thisWeekPopup",
-    title: t("Pin the “This Week” section to the bottom right"),
+    title: t("\"This Week\" section > Pin the “This Week” section to the bottom right"),
     type: "boolean",
-    default: true, //trueの場合に、ThisWeek セクションにタグが付与されます。そのタグが付与されている場合、ポップアップが表示されます。(過去のセクションにはタグが付与されません。)
-    description: t("default: `true` | The `#.ThisWeek` tag is added to the `This Week` section. If the tag is added, a popup will be displayed. (The tag is not added to the past section.)"),
+    default: false, //trueの場合に、ThisWeek セクションにタグが付与されます。そのタグが付与されている場合、ポップアップが表示されます。(過去のセクションにはタグが付与されません。)
+    description: t("The `#.ThisWeek` tag is added to the `This Week` section. If the tag is added, a popup will be displayed. (The tag is not added to the past section.)"),
   },
 
   //Monthly Journal
