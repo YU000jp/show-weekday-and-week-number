@@ -41,6 +41,10 @@
   1. Include rendering in template
      - [Full house Templates plugin](https://github.com/stdword/logseq13-full-house-plugin) (https://github.com/stdword/logseq13-full-house-plugin/discussions/31)
 
+#### Headline of each days
+
+- Automatically generate a query to display headlines for each day by obtaining the value of the property in the journal for that week.
+
 #### "This Week" section (collection of those date links)
 
 - It becomes references for the day by nesting it in date links.
