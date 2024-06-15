@@ -43,7 +43,7 @@
 
 #### Headline of each days
 
-- Automatically generate a query to display headlines for each day by obtaining the value of the property in the journal for that week. 🆕
+- Automatically generate a query to display headlines for each day by obtaining the value of the property in the journal for the week. 🆕
 
   ![image](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/assets/111847207/7c6be831-683d-454f-9950-153e5828fa48)
 
