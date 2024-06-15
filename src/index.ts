@@ -252,6 +252,12 @@ const onSettingsChanged = () => logseq.onSettingsChanged((newSet: LSPluginBaseIn
       removeProvideStyle(keyThisWeekPopup)
   }
 
+  //weeklyJournalHeadlineProperty
+  if (oldSet.weeklyJournalHeadlineProperty !== newSet.weeklyJournalHeadlineProperty
+    && oldSet.weeklyJournalHeadlineProperty !== ""
+    && newSet.weeklyJournalHeadlineProperty !== "") //空白の場合は実行しない
+    logseq.Editor.renamePage(oldSet.weeklyJournalHeadlineProperty as string, newSet.weeklyJournalHeadlineProperty as string) //ページ名を変更する
+
   //20240108 boundariesを下側に表示する
   if (oldSet.boundariesBottom !== newSet.boundariesBottom) {
     if (newSet.boundariesBottom === true)
