@@ -1,3 +1,16 @@
+## [1.55.1](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.55.0...v1.55.1) (2024-06-15)
+
+
+### Bug Fixes
+
+* **bug:** revert boundaries indicator ([04ddcd9](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/04ddcd9082685015228672db7078acdf9481ba75))
+* **Translation:** ja.json ([d1d9334](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/d1d9334e26beeb6207af95d61bbd397c0ee87482))
+
+
+### Performance Improvements
+
+* cleanup ([1c4a5a4](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/1c4a5a455b1a879ae544d78841be90ef0e5c1ab5))
+
 # [1.55.0](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.54.0...v1.55.0) (2024-06-15)
 
 
