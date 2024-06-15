@@ -1,3 +1,10 @@
+# [1.55.0](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.54.0...v1.55.0) (2024-06-15)
+
+
+### Features
+
+* **Add:** Weekly Journal >> Headline feature (generate a query) [#143](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/143) ([dc020f9](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/dc020f9daebb037a3dd33f9979991cc5a2847368))
+
 # [1.54.0](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.53.1...v1.54.0) (2024-05-19)
 
 
