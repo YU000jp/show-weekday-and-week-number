@@ -74,7 +74,8 @@ export const currentPageIsWeeklyJournal = async (titleElement: HTMLElement, matc
         titleElement.dataset.WeeklyJournalChecked = "true"
 
         //currentBlockTree[0]!.uuidが存在しなかったら処理を中断する
-        if (currentBlockTree[0] && currentBlockTree[0].uuid)
+        if (currentBlockTree[0]
+            && currentBlockTree[0].uuid)
             firstUuid = currentBlockTree[0].uuid
         else {
             //ページを作成する
@@ -181,8 +182,10 @@ const createPageContent = async (firstBlock: BlockEntity, preferredDateFormat: s
         const secondBottomBlank = await logseq.Editor.insertBlock(firstBlock.uuid, "", { sibling: true, before: false }) as BlockEntity //下から二番目の空白行
         if (secondBottomBlank) { //下から二番目の空白行へ挿入
             await logseq.Editor.insertBlock(secondBottomBlank.uuid, "", { sibling: true, before: false }) //空白行を作成
-            if (logseq.settings!.weeklyJournalTemplateName) await weeklyJournalInsertTemplate(secondBottomBlank.uuid, logseq.settings!.weeklyJournalTemplateName as string) //テンプレート挿入
-            await logseq.Editor.insertBlock(secondBottomBlank.uuid, "", { sibling: true, before: false }) //空白行を作成
+            if (logseq.settings!.weeklyJournalTemplateName) {
+                await weeklyJournalInsertTemplate(secondBottomBlank.uuid, logseq.settings!.weeklyJournalTemplateName as string) //テンプレート挿入
+                await logseq.Editor.insertBlock(secondBottomBlank.uuid, "", { sibling: true, before: false }) //空白行を作成
+            }
         }
 
     } else
@@ -191,17 +194,25 @@ const createPageContent = async (firstBlock: BlockEntity, preferredDateFormat: s
             if (logseq.settings!.weeklyJournalTemplateName)
                 await weeklyJournalInsertTemplate(firstBlock.uuid, logseq.settings!.weeklyJournalTemplateName as string) //テンプレート挿入
             setTimeout(async () => {
-                await logseq.Editor.insertBlock(firstBlock.uuid, "", { sibling: true, before: false }) //空白行を作成
-                //曜日リンク (This Week section)
-                if (logseq.settings!.booleanWeeklyJournalThisWeek === true) await insertBlockThisWeekSection(firstBlock.uuid, preferredDateFormat, weekDaysLinkArray, weekdayArray) //上にくるようにする
+                if (logseq.settings!.booleanWeeklyJournalThisWeek === true) {
+                    await logseq.Editor.insertBlock(firstBlock.uuid, "", { sibling: true, before: false }) //空白行を作成
+                    //曜日リンク (This Week section)
+                    await insertBlockThisWeekSection(firstBlock.uuid, preferredDateFormat, weekDaysLinkArray, weekdayArray) //上にくるようにする
+                }
             }, 50)
         }
 }
 
 
 const insertBlockThisWeekSection = async (uuid: string, preferredDateFormat: string, weekDaysLinkArray: string[], weekdayArray: string[]) => {
-    const thisWeek = await logseq.Editor.insertBlock(uuid, `#### ${t("This Week")}${logseq.settings!.thisWeekPopup === true ? " #.ThisWeek" : ""}`, { sibling: true, before: false }) as BlockEntity | null
-    if (thisWeek) weekDaysLinkArray.forEach(async (eachJournal, index) => {
+    const thisWeek = await logseq.Editor.insertBlock(
+        uuid,
+        `#### ${t("This Week")}${logseq.settings!.thisWeekPopup === true ? " #.ThisWeek" : ""}`,
+        { sibling: true, before: false }
+    ) as BlockEntity | null
+    if (thisWeek)
+        weekDaysLinkArray.forEach(
+            async (eachJournal, index) => {
         const eachDayBlock = await logseq.Editor.insertBlock(
             thisWeek.uuid,
             `${!preferredDateFormat.includes("E") //日付フォーマットに曜日がない場合
