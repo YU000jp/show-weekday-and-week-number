@@ -315,9 +315,9 @@ const daysForEach = (days: number[], startDate: Date, boundariesInner: HTMLDivEl
 
 // 日誌のページが存在するかどうかのインディケーターを表示する
 const indicator = async (targetPageName: string, dayOfMonthElement: HTMLSpanElement) => {
-  const existsPage = await logseq.Editor.getPage(targetPageName, { includeChildren: false }) as { uuid: PageEntity["uuid"] } | null
+  const existsPage = await logseq.Editor.getPage(targetPageName, { includeChildren: false }) as { file: PageEntity["file"] } | null
   if (!existsPage
-    || !existsPage.uuid)
+    || !existsPage.file)
     return
   const indicatorElement: HTMLSpanElement = document.createElement('span')
   indicatorElement.classList.add('indicator')
