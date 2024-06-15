@@ -358,6 +358,23 @@ export const settingsTemplate = (userLanguage): SettingSchemaDesc[] => [
     default: "",
     description: t("Input the template name (default is blank)"),
   },
+  {//20240615
+    // Headline of each days
+    key: "booleanWeeklyJournalHeadline",
+    title: t("Enable headline of each days"),
+    type: "boolean",
+    default: false,
+    // その週のジャーナルにあるプロパティの値を取得して、日付ごとにヘッドラインを表示するクエリーを自動生成する
+    description: t("Automatically generate a query to display headlines for each day by obtaining the value of the property in the journal for that week."),
+  },
+  {//20240615
+    // Headline of each days用 プロパティ名指定
+    key: "weeklyJournalHeadlineProperty",
+    title: t("Property name for headline of each days"),
+    type: "string",
+    default: "log",
+    description: ""
+  },
   {
     key: "booleanWeeklyJournalThisWeek",
     title: t("Enable \"This Week\" section"),
