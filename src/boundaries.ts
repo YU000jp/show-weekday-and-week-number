@@ -218,11 +218,12 @@ const daysForEach = (days: number[], startDate: Date, boundariesInner: HTMLDivEl
         boundariesInner.append(element)
       }
       if (index === 0
-        || index === 7) {
+        || index === 7)
         //daySideElement作成    
         //月を表示する場合
-        if (logseq.settings!.booleanBoundariesShowMonth === true) monthDuplicate = daySideMonth(date, boundariesInner, monthDuplicate) //daySideElement作成
-      }
+        if (logseq.settings!.booleanBoundariesShowMonth === true)
+          monthDuplicate = daySideMonth(date, boundariesInner, monthDuplicate) //daySideElement作成
+
       //dayElement作成
       const isBooleanBeforeToday: boolean = isBefore(date, today)
       const isBooleanToday: boolean = isToday(date)
@@ -239,9 +240,8 @@ const daysForEach = (days: number[], startDate: Date, boundariesInner: HTMLDivEl
       if (logseq.settings!.booleanLunarCalendar === true // プラグイン設定で太陰暦オンの場合
         && (configPreferredLanguage === "zh-Hant" //中国語の場合
           || configPreferredLanguage === "zh-CN")) {
-        const chinese = ` <smaLl>${lunarString(date, dayElement)}</small>` //文字数が少ないため、小さく祝日名を表示する
         dayOfWeekElement.style.fontSize = ".88em"
-        dayOfWeekElement.innerHTML += chinese
+        dayOfWeekElement.innerHTML += ` <smaLl>${lunarString(date, dayElement)}</small>` //文字数が少ないため、小さく祝日名を表示する
       } else {
         // World holidays
         const displayNameOfHoliday = holidaysWorld(date, dayElement)
@@ -256,12 +256,9 @@ const daysForEach = (days: number[], startDate: Date, boundariesInner: HTMLDivEl
       dayOfMonthElement.innerText = `${dayOfMonth}`
       dayElement.appendChild(dayOfMonthElement)
       //日付と相対時間をtitleに追加する
-      if (logseq.settings?.booleanRelativeTime === true) { //相対時間を表示する場合
-        const formatString: string = formatRelativeDate(date)
-        dayElement.title += dateFormat + '\n' + formatString
-      } else {
-        dayElement.title += dateFormat
-      }
+      dayElement.title += logseq.settings?.booleanRelativeTime === true ?
+        dateFormat + '\n' + formatRelativeDate(date)//相対時間を表示する場合
+        : dateFormat
 
       //indexが0~6
       if (targetElementName === 'weeklyJournal') {
@@ -278,27 +275,29 @@ const daysForEach = (days: number[], startDate: Date, boundariesInner: HTMLDivEl
         && targetElementName !== "weeklyJournal"
         && isBooleanTargetSameDay === true)
         dayElement.style.border = `1px solid ${logseq.settings!.boundariesHighlightColorSinglePage}` //シングルページの日付をハイライト
-
       else
         if (isBooleanToday === true)
           dayElement.style.border = `1px solid ${logseq.settings!.boundariesHighlightColorToday}` //今日をハイライト
 
-      if (logseq.settings?.booleanWeekendsColor === true) {
-        if (isSaturday(date) as boolean) dayElement.style.color = 'var(--ls-wb-stroke-color-blue)'
+      if (logseq.settings?.booleanWeekendsColor === true)
+        if (isSaturday(date) as boolean)
+          dayElement.style.color = 'var(--ls-wb-stroke-color-blue)'
         else
-          if (isSunday(date) as boolean) dayElement.style.color = 'var(--ls-wb-stroke-color-red)'
-      }
+          if (isSunday(date) as boolean)
+            dayElement.style.color = 'var(--ls-wb-stroke-color-red)'
 
       //日付をクリックできるようにするかどうか
       if (logseq.settings!.booleanBoundariesFuturePage === true
-        || isBooleanBeforeToday === true || isBooleanToday === true)
+        || isBooleanBeforeToday === true
+        || isBooleanToday === true)
         dayElement.addEventListener("click", openPageToSingleDay(dateFormat, isBooleanBeforeToday))
       else
         dayElement.style.cursor = 'unset'
 
       //20240115
       //エントリーが存在するかどうかのインディケーターを表示する
-      if (logseq.settings!.booleanBoundariesIndicator === true) indicator(dateFormat, dayOfMonthElement)
+      if (logseq.settings!.booleanBoundariesIndicator === true)
+        indicator(dateFormat, dayOfMonthElement)
 
     } finally {
       boundariesInner.appendChild(dayElement)
@@ -306,7 +305,8 @@ const daysForEach = (days: number[], startDate: Date, boundariesInner: HTMLDivEl
         || index === 13) {
         //daySideElement作成    
         //週番号を表示する場合
-        if (logseq.settings!.booleanBoundariesShowWeekNumber === true) daySideWeekNumber(date, boundariesInner)
+        if (logseq.settings!.booleanBoundariesShowWeekNumber === true)
+          daySideWeekNumber(date, boundariesInner)
         daySideScroll(index, boundariesInner, targetElementName, startDate)
       }
     }
@@ -317,7 +317,8 @@ const daysForEach = (days: number[], startDate: Date, boundariesInner: HTMLDivEl
 const indicator = async (targetPageName: string, dayOfMonthElement: HTMLSpanElement) => {
   const existsPage = await logseq.Editor.getPage(targetPageName, { includeChildren: false }) as { uuid: PageEntity["uuid"] } | null
   if (!existsPage
-    || !existsPage.uuid) return
+    || !existsPage.uuid)
+    return
   const indicatorElement: HTMLSpanElement = document.createElement('span')
   indicatorElement.classList.add('indicator')
   indicatorElement.innerText = "●"
@@ -330,18 +331,18 @@ function openPageToSingleDay(journalPageName: string, isBooleanBeforeToday: bool
   return async (event) => {
     if (event.shiftKey) {//Shiftキーを押しながらクリックした場合は、サイドバーでページを開く
       const page = await logseq.Editor.getPage(journalPageName, { includeChildren: false }) as { uuid: BlockUUID } | null
-      if (page) logseq.Editor.openInRightSidebar(page.uuid)//ページが存在しない場合は開かない
-    } else {
+      if (page)
+        logseq.Editor.openInRightSidebar(page.uuid)//ページが存在しない場合は開かない
+    } else
       //Shiftキーを押さずにクリックした場合は、ページを開く
       if (logseq.settings!.booleanNoPageFoundCreatePage === true
-        && isBooleanBeforeToday === true) {//過去の日付の場合はページを作成しない
+        && isBooleanBeforeToday === true) //過去の日付の場合はページを作成しない
         //ページが存在しない場合は作成しない
         if (await logseq.Editor.getPage(journalPageName) as { name: string } | null)
           logseq.App.pushState('page', { name: journalPageName })//ページが存在する場合は開く
         else
           logseq.UI.showMsg(t("Page not found"), "warning", { timeout: 3000 })//ページが存在しない場合は警告を表示する
-      } else
+      else
         logseq.App.pushState('page', { name: journalPageName })//ページが存在しない場合も作成される
-    }
   }
 }

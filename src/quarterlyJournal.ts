@@ -48,7 +48,8 @@ export const currentPageIsQuarterlyJournal = async (titleElement: HTMLElement, m
             titleElement.dataset.quarterlyJournalChecked = year + "/" + month
 
             //currentBlockTree[0]!.uuidが存在しなかったら処理を中断する
-            if (currentBlockTree[0] && currentBlockTree[0].uuid)
+            if (currentBlockTree[0]
+                  && currentBlockTree[0].uuid)
                   firstUuid = currentBlockTree[0].uuid
             else {
                   //ページを作成する
@@ -112,12 +113,12 @@ const quarterlyJournalCreateNav = (
 
       // parent.document div.page.relativeの中の先頭に挿入する
       const pageRelative = parent.document.querySelector("div.page.relative") as HTMLDivElement
-      if (!pageRelative || pageRelative.dataset.quarterlyJournalNav === "true") return
+      if (!pageRelative
+            || pageRelative.dataset.quarterlyJournalNav === "true")
+            return
 
-      //ひとつ前のyyyy/mm
-      weekDaysNavLinks.push(format(prevMonth, "yyyy/qqq"))
-      //ひとつ次のyyyy/mm
-      weekDaysNavLinks.push(format(nextMonth, "yyyy/qqq"))
+      weekDaysNavLinks.push(format(prevMonth, "yyyy/qqq")) //ひとつ前のyyyy/mm
+      weekDaysNavLinks.push(format(nextMonth, "yyyy/qqq")) //ひとつ次のyyyy/mm
 
       if (pageRelative) {
             const navElement = document.createElement("div")
@@ -141,8 +142,6 @@ const quarterlyJournalCreateNav = (
             nextWeek.textContent = "->"
             navElement.appendChild(nextWeek)
             pageRelative.dataset.quarterlyJournalNav = "true"
-
             pageRelative.insertBefore(navElement, pageRelative.firstChild)
       }
 }
-

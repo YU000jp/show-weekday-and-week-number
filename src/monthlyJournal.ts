@@ -46,7 +46,8 @@ export const currentPageIsMonthlyJournal = async (titleElement: HTMLElement, mat
             titleElement.dataset.monthlyJournalChecked = year + "/" + month
 
             //currentBlockTree[0]!.uuidが存在しなかったら処理を中断する
-            if (currentBlockTree[0] && currentBlockTree[0].uuid)
+            if (currentBlockTree[0]
+                  && currentBlockTree[0].uuid)
                   firstUuid = currentBlockTree[0].uuid
             else {
                   //ページを作成する
@@ -110,12 +111,12 @@ const monthlyJournalCreateNav = (
 
       // parent.document div.page.relativeの中の先頭に挿入する
       const pageRelative = parent.document.querySelector("div.page.relative") as HTMLDivElement
-      if (!pageRelative || pageRelative.dataset.monthlyJournalNav === "true") return
+      if (!pageRelative
+            || pageRelative.dataset.monthlyJournalNav === "true")
+            return
 
-      //ひとつ前のyyyy/mm
-      weekDaysNavLinks.push(format(prevMonth, "yyyy/MM"))
-      //ひとつ次のyyyy/mm
-      weekDaysNavLinks.push(format(nextMonth, "yyyy/MM"))
+      weekDaysNavLinks.push(format(prevMonth, "yyyy/MM")) //ひとつ前のyyyy/mm
+      weekDaysNavLinks.push(format(nextMonth, "yyyy/MM")) //ひとつ次のyyyy/mm
 
       if (pageRelative) {
             const navElement = document.createElement("div")
@@ -131,7 +132,8 @@ const monthlyJournalCreateNav = (
                   const navLink = document.createElement("a")
                   navLink.textContent = eachJournal
                   navLink.style.marginRight = "1.0em"
-                  navLink.addEventListener("click", ({ shiftKey }) => openPageFromPageName(eachJournal, shiftKey))
+                  navLink.addEventListener("click", ({ shiftKey }) =>
+                        openPageFromPageName(eachJournal, shiftKey))
                   navElement.appendChild(navLink)
             })
             //span "->"
@@ -139,8 +141,6 @@ const monthlyJournalCreateNav = (
             nextWeek.textContent = "->"
             navElement.appendChild(nextWeek)
             pageRelative.dataset.monthlyJournalNav = "true"
-
             pageRelative.insertBefore(navElement, pageRelative.firstChild)
       }
 }
-

@@ -44,7 +44,8 @@ export const behindJournalTitle = async (journalDate: Date, titleElement: HTMLEl
 
 
   // Monthly Journalのリンクを作成する
-  if (logseq.settings!.booleanMonthlyJournalLink === true) enableMonthlyJournalLink(journalDate, baseLineElement)
+  if (logseq.settings!.booleanMonthlyJournalLink === true)
+    enableMonthlyJournalLink(journalDate, baseLineElement)
 
 
   // 20240123
@@ -111,30 +112,27 @@ const moveTitleElement = (titleElement: HTMLElement) => {
 
 
 const createBaseLineElement = (journalDate: Date, dayOfWeekName: string, printHtmlWeekNumber: string, relativeTime: string) => {
-
   const dateInfoElement: HTMLSpanElement = document.createElement("span")
   dateInfoElement.classList.add("showWeekday")
-
-  if (logseq.settings!.booleanDayOfWeek === true) {
-
+  if (logseq.settings!.booleanDayOfWeek === true)
     if (logseq.settings!.booleanWeekendsColor === true)
       dateInfoElement.innerHTML = `<span style="color:var(${isSaturday(journalDate) === true ? "--ls-wb-stroke-color-blue"
         : isSunday(journalDate) === true ? "--ls-wb-stroke-color-red"
           : ""})">${dayOfWeekName}</span>${printHtmlWeekNumber}${relativeTime}`
     else
       dateInfoElement.innerHTML = `<span>${dayOfWeekName}</span>${printHtmlWeekNumber}${relativeTime}` //textContent
-
-  } else
+  else
     dateInfoElement.innerHTML = `${printHtmlWeekNumber}${relativeTime}`
-
   return dateInfoElement
 }
 
 
 const enableRelativeTime = (journalDate: Date): string => {
   const formatString: string = formatRelativeDate(journalDate)
-  if (formatString !== "") return `<span><small>(${formatString})</small></span>`
-  else return ""
+  if (formatString !== "")
+    return `<span><small>(${formatString})</small></span>`
+  else
+    return ""
 }
 
 
@@ -165,15 +163,13 @@ const enableWeekNumber = (journalDate: Date, weekStartsOn: 0 | 1): string => {
     else
       printHtmlWeekNumber = `<span title="${weeklyNumberString}">${printWeekNumber}</span>`
 
-  } else {
+  } else 
 
     // get week numbers of the month
     printHtmlWeekNumber = logseq.settings!.weekNumberFormat === "Japanese format"
       && logseq.settings!.localizeOrEnglish === "default"
       ? `<span title="1か月ごとの週番号">第<strong>${getWeekOfMonth(journalDate, { weekStartsOn })}</strong>週</span>`
       : `<span title="Week number within the month"><strong>W${getWeekOfMonth(journalDate, { weekStartsOn })}</strong><small>/m</small></span>`
-
-  }
 
   return printHtmlWeekNumber
 }
@@ -195,6 +191,7 @@ const enableSettingsButton = (dateInfoElement: HTMLSpanElement) => {
 const enableUnderLunarCalendar = (LunarDate: Lunar, baseLineElement: HTMLSpanElement) => {
   const lunarCalendarElement = document.createElement("span")
   lunarCalendarElement.id = "lunarCalendarMonthAndDay"
+  
   if (LunarDate.getYear() === (new Date().getFullYear()))
     lunarCalendarElement.textContent = LunarDate.toString().slice(5) //先頭5文字を削除する
   else

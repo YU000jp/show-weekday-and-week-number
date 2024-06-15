@@ -2,35 +2,39 @@ import { BlockUUID } from "@logseq/libs/dist/LSPlugin.user"
 import { getISOWeek, getISOWeekYear, getWeek, getWeekYear } from "date-fns"
 import { t } from "logseq-l10n"
 
-export const getJournalDayDate = (str: string): Date => new Date(
-  Number(str.slice(0, 4)), //year
-  Number(str.slice(4, 6)) - 1, //month 0-11
-  Number(str.slice(6)) //day
-)
+export const getJournalDayDate = (str: string): Date =>
+  new Date(
+    Number(str.slice(0, 4)), //year
+    Number(str.slice(4, 6)) - 1, //month 0-11
+    Number(str.slice(6)) //day
+  )
 
 //日付から週番号を求める
-export function getWeeklyNumberFromDate(date: Date, weekStartsOn: 0 | 1): { year: number, weekString: string, quarter: number } {
-  let year: number
-  let week: number
-  if (logseq.settings?.weekNumberFormat === "ISO(EU) format") {
-    // ISO 8601週番号を求める
-    year = getISOWeekYear(date)
-    week = getISOWeek(date)
-  } else {
-    //NOTE: getWeekYear関数は1月1日がその年の第1週の始まりとなる(デフォルト)
-    //weekStartsOnは先に指定済み
-    year = getWeekYear(date, { weekStartsOn })
-    week = getWeek(date, { weekStartsOn })
-  }
-  const quarter:number = getQuarter(week) //四半期を求める
+export const getWeeklyNumberFromDate = (date: Date, weekStartsOn: 0 | 1): { year: number, weekString: string, quarter: number } => {
+
+  const year: number = logseq.settings?.weekNumberFormat === "ISO(EU) format" ? //年
+    getISOWeekYear(date) // ISO 8601
+    : getWeekYear(date, { weekStartsOn }) //NOTE: getWeekYear関数は1月1日がその年の第1週の始まりとなる(デフォルト)
+
+  const week: number = logseq.settings?.weekNumberFormat === "ISO(EU) format" ? //週番号
+    getISOWeek(date)// ISO 8601
+    : getWeek(date, { weekStartsOn })
+
+  const quarter: number = getQuarter(week) //四半期を求める
+
   const weekString: string = (week < 10) ?
     String("0" + week)
     : String(week) //weekを2文字にする
-  return { year, weekString, quarter }//weekを2文字にする
+
+  return {
+    year,
+    weekString,
+    quarter
+  }//weekを2文字にする
 }
 
 // 四半世紀を求める
-export const getQuarter = (week:number): number =>  week < 14 ? 1 : week < 27 ? 2 : week < 40 ? 3 : 4
+export const getQuarter = (week: number): number => week < 14 ? 1 : week < 27 ? 2 : week < 40 ? 3 : 4
 
 // 週番号のユーザー指定文字列を返す
 //"YYYY-Www","YYYY/qqq/Www", "YYYY/Www"
@@ -188,10 +192,10 @@ export const createLinkMonthlyLink = (linkString: string, pageName: string, elem
 export const openPageFromPageName = async (pageName: string, shiftKey: boolean) => {
   if (shiftKey === true) {
     const page = await logseq.Editor.getPage(pageName) as { uuid: BlockUUID } | null
-    if (page) logseq.Editor.openInRightSidebar(page.uuid) //ページが存在しない場合は開かない
-  } else {
+    if (page)
+      logseq.Editor.openInRightSidebar(page.uuid) //ページが存在しない場合は開かない
+  } else
     logseq.App.replaceState('page', { name: pageName })
-  }
 }
 
 export const removeProvideStyle = (className: string) => {

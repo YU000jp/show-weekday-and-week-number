@@ -295,14 +295,14 @@ export const settingsTemplate = (userLanguage): SettingSchemaDesc[] => [
     title: t("If no page found, not create page (before today)"),
     type: "boolean",
     default: true,
-    description: "default: `true`",
+    description: "",
   },
   {//将来のページも開く
     key: "booleanBoundariesFuturePage",
     title: t("Open future page"),
     type: "boolean",
     default: true,
-    description: "default: `true`",
+    description: "",
   },
   {//月を表示する
     key: "booleanBoundariesShowMonth",

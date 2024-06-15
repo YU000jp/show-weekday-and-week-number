@@ -245,12 +245,11 @@ const onSettingsChanged = () => logseq.onSettingsChanged((newSet: LSPluginBaseIn
   }
 
   // thisWeekPopup
-  if (oldSet.thisWeekPopup !== newSet.thisWeekPopup) {
+  if (oldSet.thisWeekPopup !== newSet.thisWeekPopup)
     if (newSet.thisWeekPopup === true)
       thisWeekPopup()
     else
       removeProvideStyle(keyThisWeekPopup)
-  }
 
   //weeklyJournalHeadlineProperty
   if (oldSet.weeklyJournalHeadlineProperty !== newSet.weeklyJournalHeadlineProperty
@@ -259,16 +258,16 @@ const onSettingsChanged = () => logseq.onSettingsChanged((newSet: LSPluginBaseIn
     logseq.Editor.renamePage(oldSet.weeklyJournalHeadlineProperty as string, newSet.weeklyJournalHeadlineProperty as string) //ページ名を変更する
 
   //20240108 boundariesを下側に表示する
-  if (oldSet.boundariesBottom !== newSet.boundariesBottom) {
+  if (oldSet.boundariesBottom !== newSet.boundariesBottom)
     if (newSet.boundariesBottom === true)
       parent.document.body.classList!.add("boundaries-bottom")
     else
       parent.document.body.classList!.remove("boundaries-bottom")
-  }
+
 
   // 20240121 祝日表示に関するトグル
   if (oldSet.booleanBoundariesHolidays !== newSet.booleanBoundariesHolidays
-    || oldSet.underHolidaysAlert !== newSet.underHolidaysAlert) {
+    || oldSet.underHolidaysAlert !== newSet.underHolidaysAlert) 
     if (newSet.booleanBoundariesHolidays === true
       || newSet.underHolidaysAlert === true) //どちらかがオンの場合
       getHolidaysBundle(newSet.holidaysCountry as string, { settingsChanged: true }) //バンドルを取得する
@@ -276,12 +275,11 @@ const onSettingsChanged = () => logseq.onSettingsChanged((newSet: LSPluginBaseIn
       if (newSet.booleanBoundariesHolidays === false
         && newSet.underHolidaysAlert === false) //両方オフの場合
         removeHolidaysBundle() //バンドルを削除する
-  }
+  
   if (oldSet.holidaysCountry !== newSet.holidaysCountry
     || oldSet.holidaysState !== newSet.holidaysState
-    || oldSet.holidaysRegion !== newSet.holidaysRegion) { //国名などが変更された場合
+    || oldSet.holidaysRegion !== newSet.holidaysRegion)  //国名などが変更された場合
     getHolidaysBundle(newSet.holidaysCountry as string, { settingsChanged: true }) //バンドルを取得する
-  }
 
   // 週番号のフォーマットを変更する
   if ((oldSet.weekNumberChangeQ === false && newSet.weekNumberChangeQ === true)

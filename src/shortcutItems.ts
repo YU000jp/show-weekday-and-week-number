@@ -75,7 +75,7 @@ const weekNumberYearAll = async (selectYear: number, uuid: string) => {
         getWeeklyNumberString(year,
             weekNumber.toString().padStart(2, "0"),
             getQuarter(weekNumber)))
-    
+
     let batch: IBatchBlock[]
     batch = weekNumberListWithYear.map((weekNumber) => ({
         content: `[[${weekNumber}]] `,
@@ -83,7 +83,7 @@ const weekNumberYearAll = async (selectYear: number, uuid: string) => {
     const { uuid: yearUuid } = await logseq.Editor.insertBlock(uuid,
         `[[${year}]] `,
         { sibling: true }) as BlockEntity as { uuid: string }
-    
+
     if (yearUuid) await logseq.Editor.insertBatchBlock(yearUuid, batch, { sibling: false })
 }
 

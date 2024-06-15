@@ -123,6 +123,7 @@ const weeklyJournalCreateContent = async (
     //weekStartをもとに年と月を求め、リンクをつくる
     //変更: 日付フォーマットを限定しない
     const printMonthLink = format(weekStart, "yyyy/MM,")
+
     //weekEndをもとに年と月を求め、リンクをつくる
     const printMonthLink2 = format(weekEnd, "yyyy/MM,")
     if (printMonthLink !== printMonthLink2)
@@ -147,16 +148,12 @@ const weeklyJournalCreateContent = async (
 const getWeekStartFromWeekNumber = (year: number, weekNumber: number, weekStartsOn: 0 | 1 | 2 | 3 | 4 | 5 | 6 | undefined, ISO: boolean): Date => {
     let weekStart: Date
     if (ISO === true) {
-        const includeDay = new Date(year, 0, 4, 0, 0, 0, 0) //1/4を含む週
-        const firstDayOfWeek = startOfISOWeek(includeDay)
+        const firstDayOfWeek = startOfISOWeek(new Date(year, 0, 4, 0, 0, 0, 0))//1/4を含む週
         weekStart = (getISOWeekYear(firstDayOfWeek) === year)
             ? addDays(firstDayOfWeek, (weekNumber - 1) * 7)
             : addWeeks(firstDayOfWeek, weekNumber)
-    } else {
-        const firstDay = new Date(year, 0, 1, 0, 0, 0, 0)
-        const firstDayOfWeek = startOfWeek(firstDay, { weekStartsOn })
-        weekStart = addDays(firstDayOfWeek, (weekNumber - 1) * 7)
-    }
+    } else
+        weekStart = addDays(startOfWeek(new Date(year, 0, 1, 0, 0, 0, 0), { weekStartsOn }), (weekNumber - 1) * 7)
     return weekStart
 }
 
@@ -240,6 +237,7 @@ const insertBlockThisWeekSection = async (uuid: string, preferredDateFormat: str
         `#### ${t("This Week")}${logseq.settings!.thisWeekPopup === true ? " #.ThisWeek" : ""}`,
         { sibling: true, before: false }
     ) as BlockEntity | null
+
     if (thisWeek)
         weekDaysLinkArray.forEach(
             async (eachJournal, index) => {
@@ -281,7 +279,8 @@ const weeklyJournalCreateNav = (
 
     // parent.document div.page.relativeの中の先頭に挿入する
     const pageRelative = parent.document.querySelector("div.page.relative") as HTMLDivElement
-    if (!pageRelative || pageRelative.dataset.weeklyJournalNav === "true") return
+    if (!pageRelative
+        || pageRelative.dataset.weeklyJournalNav === "true") return
 
     //ひとつ前の週番号
     if (logseq.settings!.weekNumberOptions === "YYYY-Www") {
@@ -351,8 +350,6 @@ const weeklyJournalCreateNav = (
         nextWeek.textContent = "->"
         navElement.appendChild(nextWeek)
         pageRelative.dataset.weeklyJournalNav = "true"
-
         pageRelative.insertBefore(navElement, pageRelative.firstChild)
     }
 }
-
