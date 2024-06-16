@@ -20,7 +20,7 @@
   1. ![image](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/assets/111847207/ee97c455-714e-45d2-9f9f-905798e298b4)
 > Highlight holidays for world country
 
-### Mini-calendar 🗓️ (Journal boundaries)
+### Journal boundaries calendar 🗓️
 
 - Display a 2 lines calendar on journals. Smooth access to previous and subsequent dates on a single date page or journals.
   1. Highlight holidays for world country
@@ -29,7 +29,7 @@
 
 ![README用](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/assets/111847207/114708ab-0389-4c46-b962-00cb25e2070a)
 
-### Weekly Journal (review)
+### Weekly Journal
 
 - Click the week number link to open it and generate a page. Provide automation to facilitate retrospectives. Using a weekly journal can help you reflect on your week.
 > [Document here](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/wiki/Weekly-Journal)
@@ -38,9 +38,14 @@ Sample:
 
   ![image](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/assets/111847207/7c6be831-683d-454f-9950-153e5828fa48)
 
-### Monthly Journal 🌛 / Quarterly Journal
+### Monthly Journal
 
 - Click the link on the left side of the mini calendar will open a page like `[[2023/10]]`.
+  > There is page generation feature. 🆙
+
+### Quarterly Journal
+
+- The quarterly Journal can be accessed via the monthly or weekly breadcrumbs.
   > There is page generation feature. 🆙
 
 ### Slash Command
