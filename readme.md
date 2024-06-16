@@ -29,27 +29,14 @@
 
 ![README用](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/assets/111847207/114708ab-0389-4c46-b962-00cb25e2070a)
 
-### Weekly Journal
+### Weekly Journal (review)
 
-- Click the week number link to open it and generate a page. If there is no content available on a page with a week number like `[[2023-W25]]`, a template will be inserted. In plugin settings, it possible to set user template.
-  1. format option 🆕
-     1. yyyy-Www -> 2024-W01
-     2. yyyy/qqq/Www -> 2024/Q1/W01 *
-     3. yyyy/Www -> 2024/W01 *
-     > *hierarchy
-  1. Inserting [Advanced queries](https://hub.logseq.com/features/av5LyiLi5xS7EFQXy4h4K8/getting-started-with-advanced-queries/8xwSRJNVKFJhGSvJUxs5B2) into the template increases flexibility.
-  1. Include rendering in template
-     - [Full house Templates plugin](https://github.com/stdword/logseq13-full-house-plugin) (https://github.com/stdword/logseq13-full-house-plugin/discussions/31)
+- Click the week number link to open it and generate a page. Provide automation to facilitate retrospectives. Using a weekly journal can help you reflect on your week.
+> [Document here](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/wiki/Weekly-Journal)
 
-#### Headline of each days
-
-- 🆕 Automatically generate a query to display headlines for each day by obtaining the value of the property in the journal for the week. It does not allow editing, but you can reference, embed, or place images.
+Sample:
 
   ![image](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/assets/111847207/7c6be831-683d-454f-9950-153e5828fa48)
-
-#### "This Week" section (collection of those date links)
-
-- It becomes references for the day by nesting it in date links.
 
 ### Monthly Journal 🌛 / Quarterly Journal
 
