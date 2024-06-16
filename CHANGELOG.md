@@ -1,3 +1,10 @@
+## [1.55.2](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.55.1...v1.55.2) (2024-06-16)
+
+
+### Bug Fixes
+
+* **bug:** The bottom right corner of the "This Week" section is too large. ([f482e9a](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/f482e9a1e02dd2844958280c47ff99fd98b1ab1b))
+
 ## [1.55.1](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.55.0...v1.55.1) (2024-06-15)
 
 
