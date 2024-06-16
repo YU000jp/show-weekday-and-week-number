@@ -4,6 +4,7 @@
 
 1. 日付タイトルの横に、曜日と週番号を表示します。
 1. 日誌にそのリンクを持つミニカレンダーを表示します。前後の日付や、週次ジャーナルなどへアクセスができます。
+1. 週次ジャーナル
 
 [![最新リリースバージョン](https://img.shields.io/github/v/release/YU000jp/logseq-plugin-show-weekday-and-week-number)](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/releases)
 [![ライセンス](https://img.shields.io/github/license/YU000jp/logseq-plugin-show-weekday-and-week-number?color=blue)](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/LICENSE)
