@@ -37,11 +37,15 @@
   ![image](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/assets/111847207/eb35708d-89e9-401d-a0b9-9ff8e49bb290)
 
 
-### 月次ジャーナル(Monthly Journal) / 四半期ジャーナル(Quarterly Journal)
+### 月次ジャーナル(Monthly Journal)
 
 - ミニカレンダーの左側にあるリンクをクリックすると`[[2023/10]]`のようなページが開きます。
 > ページ生成機能があります。🆙
+
+### 四半期ジャーナル(Quarterly Journal)
+
 - 四半期ジャーナルは、月次もしくは週次の階層リンクからアクセスしてください。
+- > ページ生成機能があります。🆙
 
 ### スラッシュコマンド
 
