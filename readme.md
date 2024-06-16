@@ -1,8 +1,8 @@
 # Logseq Plugin: *Show weekday and week-number* 📆
 
 1. Show weekday and week number beside journal titles.
-1. Show the mini-calendar that has navigational links on Daily Journal. Provides access to previous and subsequent single journals, and links to Weekly Journal, etc.
-1. Weekly Journal
+1. Show the 2 lines calendar that has navigational links on Daily Journal.
+1. "Weekly Journal" feature
 
 [日本語](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/blob/main/readme.ja.md) /
  [![latest release version](https://img.shields.io/github/v/release/YU000jp/logseq-plugin-show-weekday-and-week-number)](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/releases)
@@ -12,21 +12,20 @@
 
 ---
 
-## Options
+## Feature options
 
 ### Behind Journal Title ➡️
 
 - The week number for that week will be generated. Like below
   1. ![image](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/assets/111847207/f47b8948-5e7a-4e16-a5ae-6966672742b1)
   1. ![image](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/assets/111847207/ee97c455-714e-45d2-9f9f-905798e298b4)
-> Highlight holidays for world country
 
 ### Journal Boundaries Calendar 🗓️
 
 - Display a 2 lines calendar on journals. Smooth access to previous and subsequent dates on a single date page or journals.
-  1. Highlight holidays for world country
   1. Show indicator (dot) of journal entries 🆙
-  1. Show Lunar-calendar date for Chinese
+  1. Highlight holidays for the country
+     > Show Lunar-calendar date for Chinese
 
 ![README用](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/assets/111847207/114708ab-0389-4c46-b962-00cb25e2070a)
 
@@ -47,9 +46,10 @@ Sample:
 
 > Note: This is only valid if the page title format for Weekly Journal is set to `yyyy/qqq/Www`.
 - Access from the hierarchical link of the Monthly or Weekly journal. The page will be generated and the template will be applied.
-### Slash Command
 
-> Week-number etc.. [Document here](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/wiki/Slash-Command)
+### Slash Command for week-number
+
+> [Document here](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/wiki/Slash-Command)
 
 ---
 
@@ -62,9 +62,10 @@ Install from Logseq Marketplace
 
 ### Usage
 
-1. The style be applied to journals or the single journal page , the right sidebar. First, please configure the plugin settings.
-1. 1. Select either US format or ISO format.
-   > [Document here](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/wiki/Week-number-format)
+- The style be applied to journals or the single journal page, the right sidebar.
+- First, please configure the plugin settings.
+  1. Select either US format or ISO format.
+     > [Document here](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/wiki/Week-number-format)
 
 ---
 
