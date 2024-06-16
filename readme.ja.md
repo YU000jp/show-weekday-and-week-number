@@ -33,6 +33,8 @@
 
 - 週番号のリンクをクリックして開くと、ページが生成されます。ふりかえりを容易にするためのしくみを提供します。週刊誌を使うことで、一週間を振り返ることができます。
 
+> [ドキュメントはこちら](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/wiki/%E9%80%B1%E6%AC%A1%E3%82%B8%E3%83%A3%E3%83%BC%E3%83%8A%E3%83%AB-(Weekly-Journal))
+
 サンプル:
 
   ![image](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/assets/111847207/eb35708d-89e9-401d-a0b9-9ff8e49bb290)
