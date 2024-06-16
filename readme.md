@@ -58,7 +58,7 @@ Sample:
 Install from Logseq Marketplace
   - Press [`---`] on the top right toolbar to open [`Plugins`]. Select `Marketplace`. Type `Show` in the search field, select it from the search results and install.
 
-   ![image](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/assets/111847207/5c3a2b34-298b-4790-8e12-01d83e289794)
+   ![image](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/assets/111847207/1cecf136-0843-43c9-a315-ba96eb9b34f3)
 
 ### Usage
 
