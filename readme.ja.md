@@ -61,7 +61,7 @@
 Logseq マーケットプレイスからインストール
   - 右上のツールバーで[`---`]を押して [`プラグイン`] を開きます。`マーケットプレイス` を選択します。検索フィールドに `Show` と入力し、検索結果から選択してインストールします。
 
-   ![画像](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/assets/111847207/5c3a2b34-298b-4790-8e12-01d83e289794)
+   ![image](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/assets/111847207/6bd1d650-f3ce-4962-aa22-4cd3839d0466)
 
 ### 使用方法
 
