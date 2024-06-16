@@ -1,7 +1,8 @@
 # Logseq Plugin: *Show weekday and week-number* 📆
 
 1. Show weekday and week number beside journal titles.
-1. Show the mini-calendar that has navigational links on Daily Journal. Provides access to previous and subsequent single journals, and links to weekly Journal and monthly Journal.
+1. Show the mini-calendar that has navigational links on Daily Journal. Provides access to previous and subsequent single journals, and links to Weekly Journal, etc.
+1. Weekly Journal
 
 [日本語](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/blob/main/readme.ja.md) /
  [![latest release version](https://img.shields.io/github/v/release/YU000jp/logseq-plugin-show-weekday-and-week-number)](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/releases)
@@ -20,7 +21,7 @@
   1. ![image](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/assets/111847207/ee97c455-714e-45d2-9f9f-905798e298b4)
 > Highlight holidays for world country
 
-### Journal boundaries calendar 🗓️
+### Journal Boundaries Calendar 🗓️
 
 - Display a 2 lines calendar on journals. Smooth access to previous and subsequent dates on a single date page or journals.
   1. Highlight holidays for world country
@@ -40,14 +41,12 @@ Sample:
 
 ### Monthly Journal
 
-- Click the link on the left side of the mini calendar will open a page like `[[2023/10]]`.
-  > There is page generation feature. 🆙
+- Click the link on the left side of the mini calendar to generate a page like `[[2023/10]]` and apply the template.
 
 ### Quarterly Journal
 
-- The quarterly Journal can be accessed via the monthly or weekly breadcrumbs.
-  > There is page generation feature. 🆙
-
+> Note: This is only valid if the page title format for Weekly Journal is set to `yyyy/qqq/Www`.
+- Access from the hierarchical link of the Monthly or Weekly journal. The page will be generated and the template will be applied.
 ### Slash Command
 
 > Week-number etc.. [Document here](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/wiki/Slash-Command)
