@@ -3,7 +3,8 @@
 # Logseq プラグイン: *Show weekday and week-number* 📆
 
 1. 日付タイトルの横に、曜日と週番号を表示します。
-1. 日誌にそのリンクを持つミニカレンダーを表示します。前後の日付にアクセスしたり、週刊レビューと月刊レビューのページへのリンクが提供されます。
+1. 日誌にそのリンクを持つミニカレンダーを表示します。前後の日付や、週次ジャーナルなどへアクセスができます。
+1. 週次ジャーナル
 
 [![最新リリースバージョン](https://img.shields.io/github/v/release/YU000jp/logseq-plugin-show-weekday-and-week-number)](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/releases)
 [![ライセンス](https://img.shields.io/github/license/YU000jp/logseq-plugin-show-weekday-and-week-number?color=blue)](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/LICENSE)
@@ -14,45 +15,40 @@
 
 ## オプション機能
 
-### 日付タイトルの横
+### 日付タイトルの横 (Behinde Journal Title)
 
 - 次のように、曜日や週番号が生成されます。
 
 1. ![画像](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/assets/111847207/f47b8948-5e7a-4e16-a5ae-6966672742b1)
 
-### ミニカレンダー 🗓️
+### ミニカレンダー (Journal Boundaries Calendar)
 
-- 日誌や日付ページ、あるいは週間レビューのページに、2行のカレンダーを表示します。前後の日付にすぐにアクセスできます。Shiftキーを押しながらクリックすると、サイドバーで開きます。
+- 日誌や日付ページ、あるいは週次ジャーナルなどに、2行のカレンダーを表示します。前後の日付にすぐにアクセスできます。
+  > Shiftキーを押しながらクリックすると、サイドバーで開きます。
   1. 祝日をハイライト🆕
   1. 日誌エントリーのインジケーター (ドット) 🆕
 
 ![README用](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/assets/111847207/114708ab-0389-4c46-b962-00cb25e2070a)
 
-### 週刊レビュー のためのページ
+### 週次ジャーナル (Weekly Journal)
 
-- 週番号のリンクをクリックすると、`[[2023-W25]]`というようなページが開きます。そのページにコンテンツがない場合、テンプレートが挿入されます。プラグイン設定でユーザーテンプレートを設定できます。
--   1. 週番号のフォーマット オプション 🆕
-     1. yyyy-Www -> 2024-W01
-     2. yyyy/qqq/Www -> 2024/Q1/W01 *
-     3. yyyy/Www -> 2024/W01 *
-     > *階層ありのタイトルになります
-  > テンプレートに高度なクエリを挿入することで柔軟性が向上します。
+- 週番号のリンクをクリックして開くと、ページが生成されます。ふりかえりを容易にするためのしくみを提供します。週刊誌を使うことで、一週間を振り返ることができます。
 
-#### 各曜日のヘッドライン
+> [ドキュメントはこちら](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/wiki/%E9%80%B1%E6%AC%A1%E3%82%B8%E3%83%A3%E3%83%BC%E3%83%8A%E3%83%AB-(Weekly-Journal))
 
-- 🆕 その週のジャーナルにあるプロパティの値を取得して、日付ごとにヘッドラインを表示するクエリーを自動生成します。編集操作はできませんが、引用(参照)や埋め込み、あるいは画像などを置くことができます。
+サンプル:
 
   ![image](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/assets/111847207/eb35708d-89e9-401d-a0b9-9ff8e49bb290)
 
 
-#### "今週"セクション
+### 月次ジャーナル (Monthly Journal)
 
-- 日付リンクにブロックをつけると、各日付の参照にそのブロックが加わります。日誌にある"Linked References"のリストに載ります。
+- ミニカレンダーの左側にあるリンクをクリックすると`[[2023/10]]`のようなページが生成され、テンプレートが適用されます。
 
-### 月刊レビュー / 四半期レビュー のためのページ 🌛
+### 四半期ジャーナル (Quarterly Journal)
 
-- ミニカレンダーの左側にあるリンクをクリックすると`[[2023/10]]`のようなページが開きます。
-> ページ生成機能があります。🆙
+> 注: 週次ジャーナルのページタイトルのフォーマットが`yyyy/qqq/Www`に設定されている場合のみ有効です。
+- 月次もしくは週次の階層リンクからアクセスしてください。ページが生成され、テンプレートが適用されます。
 
 ### スラッシュコマンド
 
