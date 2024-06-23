@@ -4,13 +4,11 @@
 1. Show the 2 lines calendar that has navigational links on Daily Journal.
 1. "Weekly Journal" feature
 
-[日本語](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/blob/main/readme.ja.md) /
- [![latest release version](https://img.shields.io/github/v/release/YU000jp/logseq-plugin-show-weekday-and-week-number)](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/releases)
-[![License](https://img.shields.io/github/license/YU000jp/logseq-plugin-show-weekday-and-week-number?color=blue)](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/LICENSE)
-[![Downloads](https://img.shields.io/github/downloads/YU000jp/logseq-plugin-show-weekday-and-week-number/total.svg)](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/releases) /
- Published 20230526
+<div align="right">
 
----
+[English](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/)/[日本語](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/blob/main/readme.ja.md) [![latest release version](https://img.shields.io/github/v/release/YU000jp/logseq-plugin-show-weekday-and-week-number)](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/releases)[![License](https://img.shields.io/github/license/YU000jp/logseq-plugin-show-weekday-and-week-number?color=blue)](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/LICENSE)
+[![Downloads](https://img.shields.io/github/downloads/YU000jp/logseq-plugin-show-weekday-and-week-number/total.svg)](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/releases) Published 20230526 <a href="https://www.buymeacoffee.com/yu000japan"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a pizza&emoji=🍕&slug=yu000japan&button_colour=FFDD00&font_colour=000000&font_family=Poppins&outline_colour=000000&coffee_colour=ffffff" /></a>
+</div>
 
 ## Feature options
 
@@ -78,13 +76,11 @@ Install from Logseq Marketplace
 
 ## Contribution / Prior art / Credit
 
-1. Script > [Show week day and week number - discuss.logseq.com](https://discuss.logseq.com/t/show-week-day-and-week-number/12685/18) @[danilofaria](https://discuss.logseq.com/u/danilofaria/), @[ottodevs](https://discuss.logseq.com/u/ottodevs/)
-1. Library > [date-fns](https://date-fns.org/)
-1. LIbrary > [date-holidays](https://github.com/commenthol/date-holidays)
+- Script > [Show week day and week number - discuss.logseq.com](https://discuss.logseq.com/t/show-week-day-and-week-number/12685/18) @[danilofaria](https://discuss.logseq.com/u/danilofaria/), @[ottodevs](https://discuss.logseq.com/u/ottodevs/)
+- Library > [date-fns](https://date-fns.org/)
+- LIbrary > [date-holidays](https://github.com/commenthol/date-holidays)
    > Highlighting holidays is now possible thanks to this library.
-1. Library > [@6tail/ lunar-typescript](https://github.com/6tail/lunar-typescript) for Chinese Lunar
-1. Library > [@sethyuan/ logseq-l10n](https://github.com/sethyuan/logseq-l10n) for translation
-1. Icon > [IonutNeagu - svgrepo.com](https://www.svgrepo.com/svg/490868/monday)
-1. Author > @[YU000jp](https://github.com/YU000jp)
-
-<a href="https://www.buymeacoffee.com/yu000japan"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a pizza&emoji=🍕&slug=yu000japan&button_colour=FFDD00&font_colour=000000&font_family=Poppins&outline_colour=000000&coffee_colour=ffffff" /></a>
+- Library > [@6tail/ lunar-typescript](https://github.com/6tail/lunar-typescript) for Chinese Lunar
+- Library > [@sethyuan/ logseq-l10n](https://github.com/sethyuan/logseq-l10n) for translation
+- Icon > [IonutNeagu - svgrepo.com](https://www.svgrepo.com/svg/490868/monday)
+- Author > @[YU000jp](https://github.com/YU000jp)
