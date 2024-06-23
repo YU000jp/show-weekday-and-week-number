@@ -71,7 +71,7 @@ Install from Logseq Marketplace
 
 ## Showcase / Questions / Ideas / Help
 
-> Go to the [discussion](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/discussions) tab to ask and find this kind of things.
+> Go to the [Discussions](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/discussions) tab to ask and find this kind of things.
 
 - Relation
   1. Localize day of the week in journal links > For languages other than English. Split to [Flexible date format plugin](https://github.com/YU000jp/logseq-plugin-flex-date-format)
