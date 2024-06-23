@@ -73,6 +73,8 @@ Install from Logseq Marketplace
 
 - Relation
   1. Localize day of the week in journal links > For languages other than English. Split to [Flexible date format plugin](https://github.com/YU000jp/logseq-plugin-flex-date-format)
+  1. The journal template is not applied when opening an old date single page
+     > Use the 'Completion of journal template' feature in [Default Template plugin](https://github.com/YU000jp/logseq-plugin-default-template).
 
 ## Contribution / Prior art / Credit
 
