@@ -13,7 +13,7 @@
 
 ## Feature Options
 
-### Behind Journal Title ➡️
+### Beside Journal Title ➡️
 
 - The week number for that week will be generated. Like below
   1. ![image](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/assets/111847207/f47b8948-5e7a-4e16-a5ae-6966672742b1)
