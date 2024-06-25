@@ -1,8 +1,9 @@
 # Logseq Plugin: *Show weekday and week-number* 📆
 
-1. Show weekday and week number beside journal titles.
-1. Show the 2 lines calendar that has navigational links on Daily Journal.
-1. "Weekly Journal" feature
+- Enhance journal functions of Logseq
+  1. Show weekday and week number beside journal titles.
+  1. 2 lines calendar
+  1. "Weekly Journal" feature
 
 <div align="right">
 
@@ -10,7 +11,7 @@
 [![Downloads](https://img.shields.io/github/downloads/YU000jp/logseq-plugin-show-weekday-and-week-number/total.svg)](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/releases) Published 20230526 <a href="https://www.buymeacoffee.com/yu000japan"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a pizza&emoji=🍕&slug=yu000japan&button_colour=FFDD00&font_colour=000000&font_family=Poppins&outline_colour=000000&coffee_colour=ffffff" /></a>
 </div>
 
-## Feature options
+## Feature Options
 
 ### Behind Journal Title ➡️
 
