@@ -31,7 +31,6 @@ export const settingsTemplate = (userLanguage): SettingSchemaDesc[] => [
     enumChoices: ["default", "en"],
     description: "",
   },
-
   {
     key: "holidaysCountry",
     title: t("Holidays > Select your country name"),
@@ -70,9 +69,7 @@ export const settingsTemplate = (userLanguage): SettingSchemaDesc[] => [
     default: true,
     description: t("Other language regions are not affected."),
   },
-
-  //20240518
-  {
+  {//20240518
     key: "weekNumberOptions",
     title: t("Week number format options") + "🆕",
     type: "enum",
@@ -127,6 +124,8 @@ export const settingsTemplate = (userLanguage): SettingSchemaDesc[] => [
     description: "",
   },
 
+
+
   //Behind journal title
   {
     key: "heading001",
@@ -143,16 +142,13 @@ export const settingsTemplate = (userLanguage): SettingSchemaDesc[] => [
     enumChoices: ["long", "short"],
     description: "",
   },
-
-  // 20240123
-  {
+  {// 20240123
     key: "underHolidaysAlert",
     title: t("Enable Holidays alert"),
     type: "boolean",
     default: true,
     description: "",
   },
-
   {
     key: "booleanWeekNumber",
     title: t("Enable week number"),
@@ -229,6 +225,8 @@ export const settingsTemplate = (userLanguage): SettingSchemaDesc[] => [
     default: true,
     description: t("Other language regions are not affected."),
   },
+
+
 
   //Journal Boundaries
   {
@@ -337,6 +335,8 @@ export const settingsTemplate = (userLanguage): SettingSchemaDesc[] => [
     description: t("Add color to holidays and display the content on mouseover")
   },
 
+
+
   //Weekly Journal
   {
     key: "heading003",
@@ -392,47 +392,6 @@ export const settingsTemplate = (userLanguage): SettingSchemaDesc[] => [
     // 各曜日へのリンク。マウスオーバーでツールチップ
     description: t("Links to each day. Tooltip on mouseover."),
   },
-  {//"This Week" セクションの位置を選択する(上か下か)
-    key: "weeklyJournalThisWeekPosition",
-    title: t("\"This Week\" section or headline > position"),
-    type: "enum",
-    enumChoices: ["top", "bottom"],
-    default: "top",
-    // テンプレートよりも上か下か
-    description: t("above or below the template"),
-  },
-  {
-    key: "booleanWeeklyJournalThisWeekWeekday",
-    title: t("\"This Week\" section > Enable the day of the week"),
-    type: "boolean",
-    default: false,
-    // リンクとともに曜日を表示する
-    description: t("Display the day of the week with a link."),
-  },
-  {
-    key: "booleanWeeklyJournalThisWeekLinkWeekday",
-    title: t("\"This Week\" section > Convert the day of the week in the section into links."),
-    type: "boolean",
-    default: false,
-    // 曜日ページにアクセスするためのリンクにする
-    description: t("Make it a link to access the weekday page."),
-  },
-  {//Enable embedding for each journal
-    key: "booleanWeeklyJournalThisWeekEmbedding",
-    title: t("\"This Week\" section > Enable embedding for each journal"),
-    type: "boolean",
-    default: false,
-    // そのページに移動せずに、そのまま閲覧と編集が可能。
-    description: t("You can view and edit it as it is without moving to that page."),
-  },
-  {//Enable embedding for each journal ("Linked References"が重複するのを防ぐため、日付リンクを解除する。参照を使わない場合)
-    key: "booleanWJThisWeekEmbeddingUnlink",
-    title: t("\"This Week\" section > Unlink date links for each journal"),
-    type: "boolean",
-    default: false,
-    // とくに上の設定が有効の場合
-    description: t("Especially when the above setting is enabled. (to avoid duplication of \"Linked References\" if references are not used)"),
-  },
   {
     key: "thisWeekPopup",
     title: t("\"This Week\" section > Pin the “This Week” section to the bottom right"),
@@ -440,6 +399,8 @@ export const settingsTemplate = (userLanguage): SettingSchemaDesc[] => [
     default: false, //trueの場合に、ThisWeek セクションにタグが付与されます。そのタグが付与されている場合、ポップアップが表示されます。(過去のセクションにはタグが付与されません。)
     description: t("The `#.ThisWeek` tag is added to the `This Week` section. If the tag is added, a popup will be displayed. (The tag is not added to the past section.)"),
   },
+
+
 
   //Monthly Journal
   {
@@ -470,6 +431,8 @@ export const settingsTemplate = (userLanguage): SettingSchemaDesc[] => [
     default: "",
     description: t("Input the template name (default is blank)"),
   },
+
+
 
   //Quarterly Journal
   {
