@@ -21,11 +21,7 @@ export const currentPageIsWeeklyJournal = async (titleElement: HTMLElement, matc
         processingFoundBoundaries = true
         setTimeout(() => {
             //週番号から週始まりの日付を求める
-            const weeklyJournalStartOfWeek: Date = getWeekStartFromWeekNumber(
-                Number(match[1]),
-                Number(match[2]),
-                weekStartsOn, ISO
-            )
+            const weeklyJournalStartOfWeek: Date = getWeekStartFromWeekNumber(year, weekNumber, weekStartsOn, ISO)
             if (!parent.document.getElementById("weekBoundaries"))
                 boundariesProcess("weeklyJournal", false, 0, weeklyJournalStartOfWeek)
             processingFoundBoundaries = false
@@ -62,7 +58,7 @@ export const currentPageIsWeeklyJournal = async (titleElement: HTMLElement, matc
     weeklyJournalCreateNav(ISO, prevWeekStart, weekStartsOn, prevWeekNumber, nextWeekStart, nextWeekNumber)
 
 
-    const currentBlockTree = await logseq.Editor.getPageBlocksTree(match[0]) as BlockEntity[]//現在開いているページ
+    const currentBlockTree = await logseq.Editor.getPageBlocksTree(match[0]) as { uuid: BlockEntity["uuid"], content: BlockEntity["content"] }[]//現在開いているページ
 
     let firstUuid = "" //1行目のuuidを決める
     if (currentBlockTree) {
