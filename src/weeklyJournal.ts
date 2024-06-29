@@ -84,12 +84,7 @@ export const currentPageIsWeeklyJournal = async (titleElement: HTMLElement, matc
                 return
             }
         }
-        await weeklyJournalCreateContent(
-            // year,
-            // weekNumber,
-            weekStart,
-            weekEnd,
-            ISO,
+        await weeklyJournalCreateContent(weekStart, weekEnd,
             (await logseq.Editor.insertBlock(firstUuid, "", { isPageBlock: true, sibling: true, before: true }) as BlockEntity))
         processingWeeklyJournal = false
     }
@@ -98,52 +93,42 @@ export const currentPageIsWeeklyJournal = async (titleElement: HTMLElement, matc
 
 
 const weeklyJournalCreateContent = async (
-    // year: number,
-    // weekNumber: number,
     weekStart: Date,
     weekEnd: Date,
-    ISO: boolean,
     firstBlock: BlockEntity,
 ) => {
+    if (await generateContent(firstBlock, weekStart, weekEnd)) {
+        let weekDaysLinks: string[] = []
+        //ページタグの設定
+        //weekStartをもとに年と月を求め、リンクをつくる
+        const printMonthLink = format(weekStart, "yyyy/MM,")
 
-    let weekDaysLinks: string[] = []
+        //weekEndをもとに年と月を求め、リンクをつくる
+        const printMonthLink2 = format(weekEnd, "yyyy/MM,")
+        if (printMonthLink !== printMonthLink2)
+            weekDaysLinks.unshift(printMonthLink2)
+        weekDaysLinks.unshift(printMonthLink)
 
-    //ページタグの設定
-    //weekStartをもとに年と月を求め、リンクをつくる
-    //変更: 日付フォーマットを限定しない
-    const printMonthLink = format(weekStart, "yyyy/MM,")
+        //ユーザー設定のページタグを追加
+        if (logseq.settings!.weeklyJournalSetPageTag !== "")
+            weekDaysLinks.push((logseq.settings!.weeklyJournalSetPageTag) as string)
 
-    //weekEndをもとに年と月を求め、リンクをつくる
-    const printMonthLink2 = format(weekEnd, "yyyy/MM,")
-    if (printMonthLink !== printMonthLink2)
-        weekDaysLinks.unshift(printMonthLink2)
-    weekDaysLinks.unshift(printMonthLink)
-
-    //ユーザー設定のページタグを追加
-    if (logseq.settings!.weeklyJournalSetPageTag !== "")
-        weekDaysLinks.push((logseq.settings!.weeklyJournalSetPageTag) as string)
-    //ページタグとして挿入する処理
-    await logseq.Editor.upsertBlockProperty(firstBlock.uuid, "tags", weekDaysLinks)
-    await logseq.Editor.editBlock(firstBlock.uuid)
-    setTimeout(() => {
-        logseq.Editor.insertAtEditingCursor(",") //カーソルの位置にカンマを挿入する(ページタグ更新対策)
-        setTimeout(() => createPageContent(firstBlock, weekStart, weekEnd), 100)
-        if (weekDaysLinks.length === 0)
-            setTimeout(() => logseq.Editor.removeBlockProperty(firstBlock.uuid, "tags"), 200)
-    }, 200)
+        //ページタグとして挿入する処理
+        await logseq.Editor.editBlock(firstBlock.uuid)
+        await logseq.Editor.insertAtEditingCursor("tags:: " + weekDaysLinks)
+        await logseq.Editor.exitEditingMode()
+    }
 }
 
 
 const getWeekStartFromWeekNumber = (year: number, weekNumber: number, weekStartsOn: 0 | 1 | 2 | 3 | 4 | 5 | 6 | undefined, ISO: boolean): Date => {
-    let weekStart: Date
     if (ISO === true) {
         const firstDayOfWeek = startOfISOWeek(new Date(year, 0, 4, 0, 0, 0, 0))//1/4を含む週
-        weekStart = (getISOWeekYear(firstDayOfWeek) === year)
+        return (getISOWeekYear(firstDayOfWeek) === year)
             ? addDays(firstDayOfWeek, (weekNumber - 1) * 7)
             : addWeeks(firstDayOfWeek, weekNumber)
     } else
-        weekStart = addDays(startOfWeek(new Date(year, 0, 1, 0, 0, 0, 0), { weekStartsOn }), (weekNumber - 1) * 7)
-    return weekStart
+        return addDays(startOfWeek(new Date(year, 0, 1, 0, 0, 0, 0), { weekStartsOn }), (weekNumber - 1) * 7)
 }
 
 
@@ -157,9 +142,9 @@ const weeklyJournalInsertTemplate = async (uuid: string, templateName: string) =
 }
 
 
-const createPageContent = async (firstBlock: BlockEntity, weekStart: Date, weekEnd: Date) => {
+const generateContent = async (firstBlock: BlockEntity, weekStart: Date, weekEnd: Date): Promise<boolean> => {
 
-    const bottomBlank = await logseq.Editor.insertBlock(firstBlock.uuid, "", { sibling: true, before: false }) as BlockEntity //一番下の空白行
+    const bottomBlank = await logseq.Editor.insertBlock(firstBlock.uuid, "", { sibling: true, before: false }) as { uuid: BlockEntity["uuid"] } //一番下の空白行
     if (bottomBlank)
         //曜日リンク (This Week section)
         if (logseq.settings!.booleanWeeklyJournalThisWeek === true) {
@@ -174,7 +159,7 @@ const createPageContent = async (firstBlock: BlockEntity, weekStart: Date, weekE
         && logseq.settings!.weeklyJournalHeadlineProperty !== "")
         await insertHeadlineOfEachDays(bottomBlank.uuid, weekStart, weekEnd) //一番下の空白行へ挿入
 
-    const secondBottomBlank = await logseq.Editor.insertBlock(firstBlock.uuid, "", { sibling: true, before: false }) as BlockEntity //下から二番目の空白行
+    const secondBottomBlank = await logseq.Editor.insertBlock(firstBlock.uuid, "", { sibling: true, before: false }) as { uuid: BlockEntity["uuid"] } //下から二番目の空白行
     if (secondBottomBlank) { //下から二番目の空白行へ挿入
         await logseq.Editor.insertBlock(secondBottomBlank.uuid, "", { sibling: true, before: false }) //空白行を作成
         if (logseq.settings!.weeklyJournalTemplateName) {
@@ -182,6 +167,7 @@ const createPageContent = async (firstBlock: BlockEntity, weekStart: Date, weekE
             await logseq.Editor.insertBlock(secondBottomBlank.uuid, "", { sibling: true, before: false }) //空白行を作成
         }
     }
+    return true
 }
 
 
@@ -218,7 +204,6 @@ const insertBlockThisWeekSection = async (uuid: string, weekDaysLinkArray: strin
     if (thisWeek)
         for (const eachJournal of weekDaysLinkArray)
             await logseq.Editor.insertBlock(thisWeek.uuid, `[[${eachJournal}]]\n`)
-
 }
 
 
@@ -234,11 +219,11 @@ const weeklyJournalCreateNav = (
 
     let weekDaysNavLinks: string[] = []
 
-
     // parent.document div.page.relativeの中の先頭に挿入する
     const pageRelative = parent.document.querySelector("div.page.relative") as HTMLDivElement
     if (!pageRelative
-        || pageRelative.dataset.weeklyJournalNav === "true") return
+        || pageRelative.dataset.weeklyJournalNav === "true")
+        return
 
     //ひとつ前の週番号
     if (logseq.settings!.weekNumberOptions === "YYYY-Www") {
