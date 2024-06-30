@@ -392,12 +392,21 @@ export const settingsTemplate = (userLanguage): SettingSchemaDesc[] => [
     // 各曜日へのリンク。マウスオーバーでツールチップ
     description: t("Links to each day. Tooltip on mouseover."),
   },
-  {
-    key: "thisWeekPopup",
-    title: t("\"This Week\" section > Pin the “This Week” section to the bottom right"),
+  {//20240629
+  //This Week セクションに、各曜日のページを埋め込む (アナログ手帳のように横並びにする)
+    key: "weeklyEmbed",
+    title: t("Side opening workspace > Embed each day's page in the \"This Week\" section "),
     type: "boolean",
-    default: false, //trueの場合に、ThisWeek セクションにタグが付与されます。そのタグが付与されている場合、ポップアップが表示されます。(過去のセクションにはタグが付与されません。)
-    description: t("The `#.ThisWeek` tag is added to the `This Week` section. If the tag is added, a popup will be displayed. (The tag is not added to the past section.)"),
+    default: true,
+    // 上の項目が有効の場合のみ有効
+    // アナログ手帳のように横並びにする
+    // `#.ThisWeek` タグが `This Week` セクションに追加されます。タグが追加されると、ポップアップが表示されます。(過去セクションにはタグが追加されません。)
+    // ページに移動することなく、そのまま表示・編集することができます。
+    description: `
+    ${t("Only effective if the above item is enabled")}
+    ${t("Like an analog notebook with side-by-side pages")}
+    ${t("The `#.ThisWeek` tag is added to the `This Week` section. If the tag is added, a popup will be displayed. (The tag is not added to the past section.)")}
+    ${t("You can view and edit it as it is without moving to that page.")}`,
   },
 
 

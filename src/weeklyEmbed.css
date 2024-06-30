@@ -1,0 +1,164 @@
+body[data-page="page"] {
+    &.boundaries-bottom&>div#root>div>main>div#app-container>div#left-container>div#main-container>div#main-content-container div.page {
+
+        /* 2行カレンダーの位置調整 */
+        &:has(div.ls-block[data-refs-self*='".thisweek"'][data-collapsed="false"]) div#weekBoundaries>div#boundariesInner {
+            bottom: 40vh;
+            z-index: 2;
+            margin-left: 140px;
+        }
+
+        &:has(div.ls-block[data-refs-self*='".thisweek"']:not([data-collapsed="false"])) div#weekBoundaries>div#boundariesInner {
+            bottom: 10px;
+            z-index: 2;
+            margin-left: 140px;
+        }
+    }
+
+    &>div#root>div>main {
+
+        /* メニューバーを開いている場合 */
+        &.ls-left-sidebar-open {
+            &>div#app-container>div#left-container>div#main-container>div#main-content-container div.content>div.blocks-container div.ls-block[data-refs-self*='".thisweek"'] {
+                width: calc(100% - var(--ls-left-sidebar-width))
+            }
+        }
+
+        &:not(.ls-left-sidebar-open) {
+            &>div#app-container>div#left-container>div#main-container>div#main-content-container div.content>div.blocks-container div.ls-block[data-refs-self*='".thisweek"'] {
+                width: 100%
+            }
+        }
+
+        &>div#app-container>div#left-container>div#main-container>div#main-content-container {
+            & div.page:has(div.ls-block[data-refs-self*='".thisweek"']) {
+                margin-bottom: 38vh;
+
+                /* #.ThisWeekのあるブロックのサブブロックを横並びで配置する */
+                & div>div.content>div.blocks-container>div>div>div.ls-block[data-refs-self*='".thisweek"']>div.block-children-container>div.block-children {
+                    display: flex;
+                    flex-wrap: no-wrap;
+                    overflow-x: auto;
+                    height: 38vh;
+                    width: 100%;
+
+                    &>div.ls-block {
+                        overscroll-behavior-y: contain;
+                        outline: 2px solid var(--ls-border-color);
+                        outline-offset: 1px;
+                        overflow: auto;
+                        background-color: var(--ls-primary-background-color);
+                        min-width: 380px;
+                        max-width: 900px;
+                        margin-left: unset;
+                        margin-right: unset;
+                        flex: auto;
+
+                        &:has(div.embed-page>div.blocks-container) {
+
+                            /* 編集中やマウスホバーで、埋め込みのサイズを拡大する */
+                            &:focus-within,
+                            &:hover {
+                                min-width: 900px;
+
+                            }
+                        }
+
+                        /* 文字の折り返しをしない */
+                        &:not(:has(div.embed-page>div.blocks-container)) {
+                            overflow: hidden;
+                            white-space: nowrap;
+                            text-overflow: ellipsis;
+                            min-width: fit-content;
+                        }
+
+                        &>div.block-main-container {
+
+                            /* 縦の長さを合わせる場合 */
+                            height: 100%;
+
+                            &>div.block-content-wrapper>div.flex {
+                                height: 100%;
+
+                                &>div>div.block-content>div.block-content-inner {
+                                    height: 100%;
+
+                                    &>div>span>div.embed-page {
+                                        height: 100%;
+                                        opacity: 0.5;
+
+                                        &:focus-within,
+                                        &:hover {
+                                            opacity: 1.0;
+                                        }
+                                    }
+                                }
+                            }
+
+                            /* サブブロックのブロックコントロールを隠す */
+                            &>div.block-control-wrap {
+                                display: none;
+                            }
+
+                            &>div.block-content-wrapper {
+                                width: 100%;
+
+                                &>div>div>div.block-content>div.block-content-inner>div>span.inline>div.embed-page {
+                                    background-color: var(--ls-primary-background-color);
+                                    width: max-content;
+                                    min-width: 100%;
+
+                                    /* ブロックのないページの埋め込みは、グラデーションで視覚化する */
+                                    &:not(:has(>section+div.blocks-container)) {
+                                        background: repeating-linear-gradient(45deg, var(--ls-secondary-background-color), transparent 100px);
+                                    }
+
+                                    /* 埋め込みタイトルの位置をstickyにする */
+                                    &>section.embed-header {
+                                        position: sticky;
+                                        top: 0;
+                                        background-color: var(--ls-tertiary-background-color);
+                                        z-index: 1;
+                                        width: fit-content;
+                                    }
+
+                                    /* 埋め込みの文字のサイズを小さくする */
+                                    &>div.blocks-container {
+                                        font-size: .9em;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            /* #.ThisWeekがあるブロックの表示を移設 */
+            & div.content>div.blocks-container div.ls-block[data-refs-self*='".thisweek"'] {
+                position: fixed;
+                bottom: 0;
+                right: 0;
+                max-height: 43vh;
+                overflow: auto;
+                border: 2px solid var(--ls-border-color);
+                box-shadow: 0 0 7px var(--ls-border-color);
+                padding: 1em 0.5em 1em 0.5em;
+                border-radius: 15px 0 0 0;
+                margin: 0 0.4em 0.4em 0;
+                background-color: var(--ls-primary-background-color);
+                font-size: .94em;
+                z-index: 1;
+
+                /* #.ThisWeekタグを表示させない */
+                & a[data-ref=".thisweek"] {
+                    display: none;
+                }
+
+                &>div.block-main-container>div.block-content-wrapper {
+                    pointer-events: none;
+                    user-select: none;
+                }
+            }
+        }
+    }
+}

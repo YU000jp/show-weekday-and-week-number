@@ -1,4 +1,4 @@
-import { BlockUUID } from "@logseq/libs/dist/LSPlugin.user"
+import { BlockEntity, BlockUUID } from "@logseq/libs/dist/LSPlugin.user"
 import { getISOWeek, getISOWeekYear, getWeek, getWeekYear } from "date-fns"
 import { t } from "logseq-l10n"
 
@@ -195,7 +195,7 @@ export const openPageFromPageName = async (pageName: string, shiftKey: boolean) 
     if (page)
       logseq.Editor.openInRightSidebar(page.uuid) //ページが存在しない場合は開かない
   } else
-    logseq.App.replaceState('page', { name: pageName })
+    logseq.App.pushState('page', { name: pageName })
 }
 
 export const removeProvideStyle = (className: string) => {
@@ -203,4 +203,13 @@ export const removeProvideStyle = (className: string) => {
     `style[data-injected-style^="${className}"]`
   ) as HTMLStyleElement | null
   if (doc) doc.remove()
+}
+export const existInsertTemplate = async (blockUuid: BlockUUID, templateName: string, successMessage: string) => {
+  if (templateName === "") return
+  if (await logseq.App.existTemplate(templateName) as boolean) {
+    await logseq.App.insertTemplate(blockUuid, templateName)
+    logseq.UI.showMsg(successMessage, 'success', { timeout: 2000 })
+  }
+  else
+    logseq.UI.showMsg(`Template "${templateName}" does not exist.`, 'warning', { timeout: 2000 })
 }

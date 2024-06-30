@@ -1,13 +1,15 @@
-import "@logseq/libs" //https://plugins-doc.logseq.com/
+import "@logseq/libs"; //https://plugins-doc.logseq.com/
 import { EntityID, LSPluginBaseInfo, PageEntity } from "@logseq/libs/dist/LSPlugin.user"
-import { setup as l10nSetup } from "logseq-l10n" //https://github.com/sethyuan/logseq-l10n
+import { setup as l10nSetup } from "logseq-l10n"; //https://github.com/sethyuan/logseq-l10n
 import { behindJournalTitle } from "./behind"
 import { boundariesProcess } from "./boundaries"
+import { getHolidaysBundle, removeHolidaysBundle } from "./holidays"
 import { convertLanguageCodeToCountryCode, getJournalDayDate, removeProvideStyle, titleElementReplaceLocalizeDayOfWeek } from "./lib"
 import fileMainCSS from "./main.css?inline"
+import { currentPageIsMonthlyJournal } from "./monthlyJournal"
+import { currentPageIsQuarterlyJournal } from "./quarterlyJournal"
 import { settingsTemplate } from "./settings"
 import { loadShortcutItems, } from "./shortcutItems"
-import CSSThisWeekPopup from "./thisWeekPopup.css?inline"
 import af from "./translations/af.json"
 import de from "./translations/de.json"
 import es from "./translations/es.json"
@@ -27,18 +29,16 @@ import tr from "./translations/tr.json"
 import uk from "./translations/uk.json"
 import zhCN from "./translations/zh-CN.json"
 import zhHant from "./translations/zh-Hant.json"
+import CSSThisWeekPopup from "./weeklyEmbed.css?inline"
 import { currentPageIsWeeklyJournal } from "./weeklyJournal"
-import { getHolidaysBundle, removeHolidaysBundle } from "./holidays"
-import { currentPageIsMonthlyJournal } from "./monthlyJournal"
-import { currentPageIsQuarterlyJournal } from "./quarterlyJournal"
-const keyThisWeekPopup = "thisWeekPopup"
+const keyThisWeekPopup = "weeklyEmbed"
 let configPreferredLanguage: string
 let configPreferredDateFormat: string
 export const getConfigPreferredLanguage = (): string => configPreferredLanguage
 export const getConfigPreferredDateFormat = (): string => configPreferredDateFormat
 let processingSettingsChanged: boolean = false
 
-const thisWeekPopup = () => logseq.provideStyle({ key: keyThisWeekPopup, style: CSSThisWeekPopup })
+const weeklyEmbed = () => logseq.provideStyle({ key: keyThisWeekPopup, style: CSSThisWeekPopup })
 
 const getUserConfig = async () => {
   const { preferredLanguage, preferredDateFormat } = await logseq.App.getUserConfigs() as { preferredDateFormat: string; preferredLanguage: string }
@@ -157,7 +157,7 @@ const main = async () => {
   })
 
   // CSS適用
-  if (logseq.settings!.thisWeekPopup === true) thisWeekPopup()
+  if (logseq.settings!.weeklyEmbed === true) weeklyEmbed()
   if (logseq.settings!.boundariesBottom === true) parent.document.body.classList!.add("boundaries-bottom")
 
   // ユーザー設定が変更されたときにチェックを実行
@@ -244,10 +244,10 @@ const onSettingsChanged = () => logseq.onSettingsChanged((newSet: LSPluginBaseIn
     setTimeout(() => querySelectorAllTitle(), 500)
   }
 
-  // thisWeekPopup
-  if (oldSet.thisWeekPopup !== newSet.thisWeekPopup)
-    if (newSet.thisWeekPopup === true)
-      thisWeekPopup()
+  // weeklyEmbed
+  if (oldSet.weeklyEmbed !== newSet.weeklyEmbed)
+    if (newSet.weeklyEmbed === true)
+      weeklyEmbed()
     else
       removeProvideStyle(keyThisWeekPopup)
 

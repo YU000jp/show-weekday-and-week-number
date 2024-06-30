@@ -1,5 +1,7 @@
 body {
 
+
+
     &.boundaries-bottom div#weekBoundaries>div#boundariesInner {
         /* 下部に表示するオプション */
         position: fixed;
@@ -22,6 +24,9 @@ body {
         }
 
         &>div#app-container>div#left-container>div#main-container>div#main-content-container {
+            & div.content>div.blocks-container div.ls-block[data-refs-self*='".thisweek"'] a[data-ref=".thisweek"] {
+                display: none;
+            } /* 互換用 #.ThisWeekタグの廃止 */
 
             & div.is-journals {
                 & div.ls-page-title {
@@ -41,107 +46,106 @@ body {
                 }
             }
 
-            & div {
-                &:is(#journals, .is-journals) h1.title :is(a.title, span.title a) {
-                    color: inherit;
-                }
+            & div:is(#journals, .is-journals) h1.title :is(a.title, span.title a) {
+                color: inherit;
+            }
 
-                &#weekBoundaries {
+            & div#weekBoundaries {
 
-                    transition: height 0.3s ease-in-out;
+                transition: height 0.3s ease-in-out;
 
-                    &>div#boundariesInner {
-                        display: flex;
-                        margin-top: 0.1em;
-                        min-width: 40em;
-                        width: min-content;
-                        margin-left: auto;
-                        margin-right: auto;
-                        border: 2px solid var(--ls-border-color);
-                        box-shadow: 0 0 7px var(--ls-border-color);
-                        user-select: none;
-                        flex-wrap: wrap;
+                &>div#boundariesInner {
+                    display: flex;
+                    margin-top: 0.1em;
+                    min-width: 40em;
+                    width: min-content;
+                    margin-left: auto;
+                    margin-right: auto;
+                    border: 2px solid var(--ls-border-color);
+                    box-shadow: 0 0 7px var(--ls-border-color);
+                    user-select: none;
+                    flex-wrap: wrap;
 
-                        @media (max-width: 1300px) {
-                            font-size: .8em;
-                            justify-content: unset;
+                    @media (max-width: 1300px) {
+                        font-size: .8em;
+                        justify-content: unset;
+                    }
+
+                    @media (min-width: 1301px) {
+                        font-size: .87em;
+                        justify-content: center;
+                    }
+
+                    &:not(:hover) {
+                        opacity: .93;
+                    }
+
+                    &:has(>div)>span.day:not(.thisWeek)>span {
+                        &.dayOfWeek {
+                            display: none;
                         }
 
-                        @media (min-width: 1301px) {
-                            font-size: .87em;
+                        &.dayOfMonth {
+                            height: 1.4em;
+
+                        }
+                    }
+
+                    &>span {
+                        &.daySide {
+                            display: flex;
+                            align-items: center;
+                            padding: .3em;
+                            width: 3.1em;
+                            cursor: pointer;
+                            opacity: .6;
                             justify-content: center;
-                        }
-
-                        &:not(:hover) {
-                            opacity: .93;
-                        }
-
-                        &:has(>div)>span.day:not(.thisWeek)>span {
-                            &.dayOfWeek {
-                                display: none;
-                            }
-
-                            &.dayOfMonth {
-                                height: 1.4em;
-
-                            }
-                        }
-
-                        &>span {
-                            &.daySide {
-                                display: flex;
-                                align-items: center;
-                                padding: .3em;
-                                width: 3.1em;
-                                cursor: pointer;
-                                opacity: .6;
-                                justify-content: center;
-                                /* &.daySideScroll
+                            /* &.daySideScroll
                                     &.daySideWeekNumber */
+                        }
+
+                        &.day {
+                            width: 3.9em;
+                            padding: 0.15em;
+                            margin-left: 0.25em;
+                            border-radius: 0.2em;
+                            cursor: pointer;
+                            white-space: nowrap;
+                            overflow: hidden;
+
+                            &.thisWeek {
+                                background-color: var(--ls-tertiary-background-color);
+
+                                &:hover {
+                                    background-color: var(--ls-secondary-background-color);
+                                }
                             }
 
-                            &.day {
-                                width: 3.9em;
-                                padding: 0.15em;
-                                margin-left: 0.25em;
-                                border-radius: 0.2em;
-                                cursor: pointer;
-                                white-space: nowrap;
-                                overflow: hidden;
+                            &:not(.thisWeek) {
+                                background-color: var(--ls-quaternary-background-color);
 
-                                &.thisWeek {
-                                    background-color: var(--ls-tertiary-background-color);
-
-                                    &:hover {
-                                        background-color: var(--ls-secondary-background-color);
-                                    }
+                                &:hover {
+                                    background-color: var(--ls-secondary-background-color);
                                 }
+                            }
 
-                                &:not(.thisWeek) {
-                                    background-color: var(--ls-quaternary-background-color);
+                            & span.dayOfMonth {
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+                                font-size: 1.15em;
 
-                                    &:hover {
-                                        background-color: var(--ls-secondary-background-color);
-                                    }
-                                }
-
-                                & span.dayOfMonth {
-                                    display: flex;
-                                    justify-content: center;
-                                    align-items: center;
-                                    font-size: 1.15em;
-
-                                    &>span.indicator {
-                                        margin-left: .4em;
-                                        font-size: .55em;
-                                        opacity: .7;
-                                    }
+                                &>span.indicator {
+                                    margin-left: .4em;
+                                    font-size: .55em;
+                                    opacity: .7;
                                 }
                             }
                         }
                     }
                 }
             }
+
 
             & h1.title+span.showWeekday {
                 margin-left: 0.75em;
