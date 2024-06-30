@@ -1,6 +1,6 @@
 {
     "name": "logseq-plugin-show-weekday-and-week-number",
-    "description": "Show week day and, week-number within the year or month beside journal titles.",
+    "description": "Enhance journal functions of Logseq (Beside Journal Title and 2 Lines Calendar etc...)",
     "repository": "https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number.git",
     "author": "YU000jp",
     "license": "MIT",
