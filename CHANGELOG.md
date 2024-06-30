@@ -1,3 +1,10 @@
+# [1.56.0](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.55.2...v1.56.0) (2024-06-30)
+
+
+### Features
+
+* **Add:** Weekly Journal > Side opening workspace ([8866f70](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/8866f70bd4e3f2228f72dbbc31b3f612d77e2ec1))
+
 ## [1.55.2](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.55.1...v1.55.2) (2024-06-16)
 
 
