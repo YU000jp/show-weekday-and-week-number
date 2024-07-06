@@ -156,7 +156,8 @@ const enableWeekNumber = (journalDate: Date, weekStartsOn: 0 | 1): string => {
 
       setTimeout(() => {
         const element = parent.document.getElementById(linkId) as HTMLSpanElement
-        if (element) element.addEventListener("click", ({ shiftKey }) => openPageFromPageName(weeklyNumberString, shiftKey))
+        if (element)
+          element.addEventListener("click", ({ shiftKey }) => openPageFromPageName(weeklyNumberString, shiftKey))
       }, 150)
 
     }
@@ -176,26 +177,22 @@ const enableWeekNumber = (journalDate: Date, weekStartsOn: 0 | 1): string => {
 
 const enableMonthlyJournalLink = (journalDate: Date, dateInfoElement: HTMLSpanElement) => {
   const formatDateString: string = format(journalDate, "yyyy/MM")
-  //ローカライズされた月名を取得する
-  const localizedMonthName: string = new Intl.DateTimeFormat(logseq.settings!.localizeOrEnglish as string || "default", { month: "short" }).format(journalDate)
-  const monthlyJournalLinkButton = createLinkMonthlyLink(localizedMonthName, formatDateString, "Monthly Journal [[" + formatDateString + "]]")
-  dateInfoElement.appendChild(monthlyJournalLinkButton)
+  dateInfoElement.appendChild(createLinkMonthlyLink(
+    new Intl.DateTimeFormat(logseq.settings!.localizeOrEnglish as string || "default", { month: "short" }).format(journalDate)
+    , formatDateString
+    , "Monthly Journal [[" + formatDateString + "]]"))
 }
 
 const enableSettingsButton = (dateInfoElement: HTMLSpanElement) => {
-  const settingButton: HTMLButtonElement = createSettingButton()
-  dateInfoElement.appendChild(settingButton)
+  dateInfoElement.appendChild(createSettingButton())
 }
 
 const enableUnderLunarCalendar = (LunarDate: Lunar, baseLineElement: HTMLSpanElement) => {
   const lunarCalendarElement = document.createElement("span")
   lunarCalendarElement.id = "lunarCalendarMonthAndDay"
-
-
   lunarCalendarElement.textContent = LunarDate.getYear() === (new Date().getFullYear()) ?
     LunarDate.toString().slice(5) //先頭5文字を削除する
     : LunarDate.toString()
-
   baseLineElement.appendChild(lunarCalendarElement)
 }
 

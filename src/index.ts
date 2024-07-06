@@ -238,7 +238,8 @@ const onSettingsChanged = () => logseq.onSettingsChanged((newSet: LSPluginBaseIn
     || oldSet.choiceHolidaysColor !== newSet.choiceHolidaysColor
     || oldSet.booleanUnderLunarCalendar !== newSet.booleanUnderLunarCalendar
     || oldSet.underHolidaysAlert !== newSet.underHolidaysAlert
-    || oldSet.weekNumberOptions !== newSet.weekNumberOptions) {
+    || oldSet.weekNumberOptions !== newSet.weekNumberOptions
+    || oldSet.booleanBesideJournalTitle !== newSet.booleanBesideJournalTitle) {
     //再表示 Behind Journal Title
     removeTitleQuery()
     setTimeout(() => querySelectorAllTitle(), 500)
@@ -481,16 +482,19 @@ const JournalPageTitle = async (titleElement: HTMLElement) => {
     }
   }
 
-  //設定項目ですべてのトグルがオフの場合の処理
-  if (logseq.settings!.booleanWeekNumber === false
-    && logseq.settings!.booleanDayOfWeek === false
-    && logseq.settings!.booleanRelativeTime === false
-    && logseq.settings!.underHolidaysAlert === false
-    && logseq.settings!.booleanSettingsButton === false
-    && logseq.settings!.booleanMonthlyJournalLink === false
-    && logseq.settings!.booleanUnderLunarCalendar === false
+  if ((logseq.settings!.booleanBesideJournalTitle === false
+    || (logseq.settings!.booleanBesideJournalTitle === true
+      && ((logseq.settings!.booleanWeekNumber === false//設定項目ですべてのトグルがオフの場合
+        && logseq.settings!.booleanDayOfWeek === false
+        && logseq.settings!.booleanRelativeTime === false
+        && logseq.settings!.underHolidaysAlert === false
+        && logseq.settings!.booleanSettingsButton === false
+        && logseq.settings!.booleanMonthlyJournalLink === false
+        && logseq.settings!.booleanUnderLunarCalendar === false))))
+    // titleElementのクラスにjournal-titleまたはtitleが含まれている場合
     && (titleElement.classList.contains("journal-title") === true
       || titleElement.classList.contains("title") === true)) {
+
     //titleElementの後ろにdateInfoElementを追加し、スペース確保しておく
     const dateInfoElement: HTMLSpanElement = document.createElement("span")
     dateInfoElement.classList.add("showWeekday")
@@ -498,20 +502,14 @@ const JournalPageTitle = async (titleElement: HTMLElement) => {
     const secondElement: HTMLSpanElement = document.createElement("span")
     secondElement.style.width = "50%"
     titleElement.parentElement!.insertAdjacentElement("afterend", secondElement)
-    titleElement.dataset.checked = "true"
-    return //処理を終了する
-  }
-
-  // 遅延処理
-    setTimeout(async () => {
+  } else {
+    setTimeout(async () => { // 遅延処理
       const page = (await logseq.Editor.getPage(title)) as { journalDay: number } | null
       if (page
-        && page.journalDay) {
-        const journalDate: Date = getJournalDayDate(String(page.journalDay))
-
-        behindJournalTitle(journalDate, titleElement, configPreferredDateFormat)
-      }
+        && page.journalDay)
+        behindJournalTitle(getJournalDayDate(String(page.journalDay)), titleElement, configPreferredDateFormat)
     }, 10)
+  }
 
   titleElement.dataset.checked = "true"
   processingJournalTitlePage = false //Journalsの場合は複数

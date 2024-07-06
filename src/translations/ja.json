@@ -24,7 +24,7 @@
   "Enable the link and function. If there is no content available on a page with a week number like 2023-W25, a template will be inserted.": "リンクと機能を有効にします。2023-W25 のような週番号のページに利用可能なコンテンツがない場合は、テンプレートが挿入されます。",
   "Enable week number": "週番号を有効にする",
   "Enabling this setting conceals the year representation in the date format. For instance, 2023-W30 displays as W30. Typically, the notation of week numbers follows the rules based on ISO 8601. The reason for distinguishing the year is that the first week of a year might be included in the last week of the previous year. Only in such cases does it display as 2023-W53.": "この設定を有効にすると、日付形式での年表現が非表示になります。たとえば、2023-W30 は W30 と表示されます。通常、週番号の表記は ISO 8601 に基づく規則に従います。年を区別する理由は、年の最初の週が前年の最後の週に含まれる可能性があるためです。このような場合にのみ、2023-W53 と表示されます。",
-  "For compatibility. Replace page titles (Weekly Journals)": "(月次ジャーナル用) ページタイトル置換",
+  "For compatibility. Replace page titles (Weekly Journals)": "(週次ジャーナル用) ページタイトル置換",
   "Headline": "ヘッドライン",
   "Hide the year of week number": "年の週番号を隠す",
   "Highlight color (single page)": "ハイライト色 (日付ページ)",

@@ -69,6 +69,76 @@ body {
 
                                     &+div.desc-item[data-key="weeklyEmbed"] {
                                         display: none;
+
+                                        &+div.desc-item[data-key="weekNumberOptions"] {
+                                            display: none;
+
+                                            &+div.heading-item[data-key="heading011"] {
+                                                display: none;
+
+                                                &+div.desc-item[data-key="weekNumberChangeQ"] {
+                                                    display: none;
+
+                                                    &+div.desc-item[data-key="weekNumberChangeQS"] {
+                                                        display: none;
+
+                                                        &+div.desc-item[data-key="weekNumberChangeSlash"] {
+                                                            display: none;
+
+                                                            &+div.desc-item[data-key="weekNumberChangeRevert"] {
+                                                                display: none;
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+
+                &[data-key="booleanBesideJournalTitle"]:has(input.form-checkbox:not(:checked))+div.desc-item[data-key="longOrShort"] {
+                    display: none;
+
+                    &+div.desc-item[data-key="underHolidaysAlert"] {
+                        display: none;
+
+                        &+div.desc-item[data-key="booleanWeekNumber"] {
+                            display: none;
+
+                            &+div.desc-item[data-key="booleanWeekNumberHideYear"] {
+                                display: none;
+
+                                &+div.desc-item[data-key="booleanSettingsButton"] {
+                                    display: none;
+
+                                    &+div.desc-item[data-key="weekNumberOfTheYearOrMonth"] {
+                                        display: none;
+
+                                        &+div.desc-item[data-key="booleanWeekendsColor"] {
+                                            display: none;
+
+                                            &+div.desc-item[data-key="booleanRelativeTime"] {
+                                                display: none;
+
+                                                &+div.desc-item[data-key="booleanDayOfWeek"] {
+                                                    display: none;
+
+                                                    &+div.desc-item[data-key="booleanMonthlyJournalLink"] {
+                                                        display: none;
+
+                                                        &+div.desc-item[data-key="booleanUnderLunarCalendar"] {
+                                                            display: none;
+
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
                                     }
                                 }
                             }
@@ -109,9 +179,10 @@ body {
                                                         &+div.desc-item[data-key="booleanBoundariesIndicator"] {
                                                             display: none;
 
-                                                            &+div.desc-item[data-key="booleanBoundariesIndicator"] {
+                                                            &+div.desc-item[data-key="booleanBoundariesHolidays"] {
                                                                 display: none;
                                                             }
+
                                                         }
                                                     }
                                                 }

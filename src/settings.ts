@@ -69,60 +69,6 @@ export const settingsTemplate = (userLanguage): SettingSchemaDesc[] => [
     default: true,
     description: t("Other language regions are not affected."),
   },
-  {//20240518
-    key: "weekNumberOptions",
-    title: t("Week number format options") + "🆕",
-    type: "enum",
-    enumChoices: ["YYYY-Www", "YYYY/qqq/Www", "YYYY/Www"],
-    default: "YYYY-Www",
-    description: t("This is a breaking change for existing users. Please change the old page name using one of the following toggles.")
-  },
-  {
-    key: "heading011",
-    title: t("For compatibility. Replace page titles (Weekly Journals)"),
-    type: "heading",
-    default: "",
-    description: `
-    YYYY: ${t("4-digit year")} (e.g. 2023)
-    qqq: ${t("Quarter")} (e.g. Q1)
-    Www: ${t("Week")} (e.g. W30)
-
-    ${t("year range")}: 2022-2025
-    ${t("Click this toggle to run it.")}
-    `,
-  },
-  //20240518
-  {
-    key: "weekNumberChangeQ",
-    title: " YYYY-Www  ->  YYYY/qqq/Www",
-    type: "boolean",
-    default: true,
-    description: "",
-  },
-  //20240518
-  {
-    key: "weekNumberChangeQS",
-    title: " YYYY/Www  ->  YYYY/qqq/Www",
-    type: "boolean",
-    default: true,
-    description: "",
-  },
-  //20240518
-  {
-    key: "weekNumberChangeSlash",
-    title: " YYYY-Www  ->  YYYY/Www",
-    type: "boolean",
-    default: true,
-    description: "",
-  },
-  //20240519
-  {
-    key: "weekNumberChangeRevert",
-    title: " YYYY/qqq/Www  ->  YYYY/Www",
-    type: "boolean",
-    default: true,
-    description: "",
-  },
 
 
 
@@ -132,6 +78,13 @@ export const settingsTemplate = (userLanguage): SettingSchemaDesc[] => [
     title: t("Behind Journal Title"),
     type: "heading",
     default: "",
+    description: "",
+  },
+  {
+    key: "booleanBesideJournalTitle",
+    title: t("Enable feature"),
+    type: "boolean",
+    default: true,
     description: "",
   },
   {
@@ -199,7 +152,7 @@ export const settingsTemplate = (userLanguage): SettingSchemaDesc[] => [
     title: t("Enable day of the week"),
     type: "boolean",
     default: true,
-    description: t("If user date format includes day of the week, this setting is ignored."),
+    description: "",
   },
   {//Monthly Journalのリンクを作成する
     key: "booleanMonthlyJournalLink",
@@ -398,6 +351,60 @@ export const settingsTemplate = (userLanguage): SettingSchemaDesc[] => [
     ${t("Like an analog notebook with side-by-side pages")}
     ${t("The `#.ThisWeek` tag is added to the `This Week` section. If the tag is added, a popup will be displayed. (The tag is not added to the past section.)")}
     ${t("You can view and edit it as it is without moving to that page.")}`,
+  },
+  {//20240518
+    key: "weekNumberOptions",
+    title: t("Week number format options") + "🆕",
+    type: "enum",
+    enumChoices: ["YYYY-Www", "YYYY/qqq/Www", "YYYY/Www"],
+    default: "YYYY-Www",
+    description: t("This is a breaking change for existing users. Please change the old page name using one of the following toggles.")
+  },
+  {
+    key: "heading011",
+    title: t("For compatibility. Replace page titles (Weekly Journals)"),
+    type: "heading",
+    default: "",
+    description: `
+      YYYY: ${t("4-digit year")} (e.g. 2023)
+      qqq: ${t("Quarter")} (e.g. Q1)
+      Www: ${t("Week")} (e.g. W30)
+  
+      ${t("year range")}: 2022-2025
+      ${t("Click this toggle to run it.")}
+      `,
+  },
+  //20240518
+  {
+    key: "weekNumberChangeQ",
+    title: " YYYY-Www  ->  YYYY/qqq/Www",
+    type: "boolean",
+    default: true,
+    description: "",
+  },
+  //20240518
+  {
+    key: "weekNumberChangeQS",
+    title: " YYYY/Www  ->  YYYY/qqq/Www",
+    type: "boolean",
+    default: true,
+    description: "",
+  },
+  //20240518
+  {
+    key: "weekNumberChangeSlash",
+    title: " YYYY-Www  ->  YYYY/Www",
+    type: "boolean",
+    default: true,
+    description: "",
+  },
+  //20240519
+  {
+    key: "weekNumberChangeRevert",
+    title: " YYYY/qqq/Www  ->  YYYY/Www",
+    type: "boolean",
+    default: true,
+    description: "",
   },
 
 
