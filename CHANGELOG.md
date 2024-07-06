@@ -1,3 +1,10 @@
+## [1.57.1](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.57.0...v1.57.1) (2024-07-06)
+
+
+### Bug Fixes
+
+* **bug:** processing lock for Weekly Journal ([7c680c0](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/7c680c0961090a91f80f5e6876881db97afed45a))
+
 # [1.57.0](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.56.0...v1.57.0) (2024-07-06)
 
 
