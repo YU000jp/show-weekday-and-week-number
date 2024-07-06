@@ -4,7 +4,7 @@ import { setup as l10nSetup } from "logseq-l10n" //https://github.com/sethyuan/l
 import { behindJournalTitle } from "./behind"
 import { boundariesProcess } from "./boundaries"
 import { getHolidaysBundle, removeHolidaysBundle } from "./holidays"
-import { convertLanguageCodeToCountryCode, getJournalDayDate, removeProvideStyle, titleElementReplaceLocalizeDayOfWeek } from "./lib"
+import { convertLanguageCodeToCountryCode, getJournalDayDate, removeProvideStyle } from "./lib"
 import fileMainCSS from "./main.css?inline"
 import { currentPageIsMonthlyJournal } from "./monthlyJournal"
 import { currentPageIsQuarterlyJournal } from "./quarterlyJournal"
@@ -503,22 +503,15 @@ const JournalPageTitle = async (titleElement: HTMLElement) => {
   }
 
   // 遅延処理
-  setTimeout(async () => {
-    const page = (await logseq.Editor.getPage(title)) as { journalDay: number } | null
-    if (page
-      && page.journalDay) {
-      const journalDate: Date = getJournalDayDate(String(page.journalDay))
+    setTimeout(async () => {
+      const page = (await logseq.Editor.getPage(title)) as { journalDay: number } | null
+      if (page
+        && page.journalDay) {
+        const journalDate: Date = getJournalDayDate(String(page.journalDay))
 
-      behindJournalTitle(journalDate, titleElement, configPreferredDateFormat)
-
-      //日付フォーマットに曜日が含まれている場合
-      if (configPreferredDateFormat.includes("E") === true
-        && logseq.settings!.booleanDayOfWeek === false
-        && logseq.settings!.booleanJournalLinkLocalizeDayOfWeek === true
-        && titleElement.dataset.localize === undefined)
-        titleElementReplaceLocalizeDayOfWeek(journalDate, titleElement)
-    }
-  }, 10)
+        behindJournalTitle(journalDate, titleElement, configPreferredDateFormat)
+      }
+    }, 10)
 
   titleElement.dataset.checked = "true"
   processingJournalTitlePage = false //Journalsの場合は複数

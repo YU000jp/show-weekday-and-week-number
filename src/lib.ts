@@ -49,42 +49,6 @@ export const getWeeklyNumberString = (year: number, weekString: string, quarter:
   }
 }
 
-
-//日付からローカライズされた曜日を求める
-export const localizeDayOfWeek = (weekday, journalDate: Date, locales?: string) => new Intl.DateTimeFormat((locales ? locales : "default"), { weekday }).format(journalDate)
-
-//titleElementの日付をローカライズする(Element書き換え)
-export function titleElementReplaceLocalizeDayOfWeek(journalDate: Date, titleElement: HTMLElement) {
-  const replace = (textContent, long: string, short: string) => {
-    textContent = textContent!.replace(long, localizeDayOfWeek("long", journalDate))
-    textContent = textContent!.replace(short, localizeDayOfWeek("short", journalDate))
-  }
-  const dayOfWeek = journalDate.getDay() //journalDateで曜日を取得する
-  switch (dayOfWeek) {
-    case 0:
-      replace(titleElement.textContent, "Sunday", "Sun")
-      break
-    case 1:
-      replace(titleElement.textContent, "Monday", "Mon")
-      break
-    case 2:
-      replace(titleElement.textContent, "Tuesday", "Tue")
-      break
-    case 3:
-      replace(titleElement.textContent, "Wednesday", "Wed")
-      break
-    case 4:
-      replace(titleElement.textContent, "Thursday", "Thu")
-      break
-    case 5:
-      replace(titleElement.textContent, "Friday", "Fri")
-      break
-    case 6:
-      replace(titleElement.textContent, "Saturday", "Sat")
-      break
-  }
-}
-
 //相対時間表示
 export const formatRelativeDate = (targetDate: Date): string => {
   const currentDate = new Date()

@@ -210,15 +210,6 @@ export const settingsTemplate = (userLanguage): SettingSchemaDesc[] => [
     description: t("Place a link to open the Monthly Journal of the hierarchy like [[2023/10]]"),
   },
   {
-    key: "booleanJournalLinkLocalizeDayOfWeek",
-    title: t(
-      "If the day of the week is included in user date format, localize the day of the week in the date link"
-    ),
-    type: "boolean",
-    default: true,
-    description: t("*This setting does not affect the graph"),
-  },
-  {
     key: "booleanUnderLunarCalendar",
     title: t("Enable month and day of lunar-calendar (Chinese only)"),
     type: "boolean",
