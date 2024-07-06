@@ -418,34 +418,14 @@ const JournalPageTitle = async (titleElement: HTMLElement) => {
   const title: string = titleElement.dataset.localize === "true" ?
     titleElement.dataset.ref || ""
     : titleElement.dataset.ref || titleElement.textContent
-  if (title === "") return
-
-  //日誌のページ名の場合のみ
-
-  //設定項目ですべてのトグルがオフの場合の処理
-  if (logseq.settings!.booleanWeekNumber === false
-    && logseq.settings!.booleanDayOfWeek === false
-    && logseq.settings!.booleanRelativeTime === false
-    && logseq.settings!.underHolidaysAlert === false
-    && logseq.settings!.booleanSettingsButton === false
-    && logseq.settings!.booleanMonthlyJournalLink === false
-    && logseq.settings!.booleanUnderLunarCalendar === false
-    && (titleElement.classList.contains("journal-title") === true
-      || titleElement.classList.contains("title") === true)) {
-    const dateInfoElement: HTMLSpanElement =
-      document.createElement("span")
-    dateInfoElement.classList.add("showWeekday")
-    titleElement.insertAdjacentElement("afterend", dateInfoElement)
-    const secondElement: HTMLSpanElement =
-      document.createElement("span")
-    secondElement.style.width = "50%"
-    titleElement.parentElement!.insertAdjacentElement("afterend", secondElement)
-    return
-  }
+  if (title === "") return //タイトルが空の場合は処理を終了する
 
   //Weekly(M/Q) Journalのページかどうか
   if (titleElement.classList.contains("journal-title") === false
-    && titleElement.classList.contains("title") === true) {
+    && titleElement.classList.contains("title") === true
+    // titleの先頭が2024から始まるかどうか
+    && title.match(/^(\d{4})/) !== null
+  ) {
     // 2024/01にマッチするかどうか
     if (logseq.settings!.booleanMonthlyJournal === true) {
       const match = title.match(/^(\d{4})\/(\d{2})$/) as RegExpMatchArray
@@ -454,10 +434,11 @@ const JournalPageTitle = async (titleElement: HTMLElement) => {
         && match[2] !== "") {
         await currentPageIsMonthlyJournal(titleElement, match)
         titleElement.title = "Monthly Journal"
+        titleElement.dataset.checked = "true"
         setTimeout(() =>
           processingJournalTitlePage = false
           , 300)
-        return
+        return //処理を終了する
       }
     }
     // 2024/Q1にマッチするかどうか
@@ -468,10 +449,11 @@ const JournalPageTitle = async (titleElement: HTMLElement) => {
         && match[2] !== "") {
         await currentPageIsQuarterlyJournal(titleElement, match)
         titleElement.title = "Quarterly Journal"
+        titleElement.dataset.checked = "true"
         setTimeout(() =>
           processingJournalTitlePage = false
           , 300)
-        return
+        return //処理を終了する
       }
     }
     if (logseq.settings!.booleanWeeklyJournal === true) {
@@ -490,33 +472,56 @@ const JournalPageTitle = async (titleElement: HTMLElement) => {
         && match[2] !== "") {
         await currentPageIsWeeklyJournal(titleElement, match)
         titleElement.title = "Weekly Journal"
+        titleElement.dataset.checked = "true"
         setTimeout(() =>
           processingJournalTitlePage = false
           , 300)
-        return
+        return //処理を終了する
       }
     }
   }
 
-  //日誌タイトルから日付を取得し、右側に情報を表示する
-
-  const page = (await logseq.Editor.getPage(title)) as { journalDay: number } | null
-  if (page
-    && page.journalDay) {
-    const journalDate: Date = getJournalDayDate(String(page.journalDay))
-
-    behindJournalTitle(journalDate, titleElement, configPreferredDateFormat)
-
-    //日付フォーマットに曜日が含まれている場合
-    if (configPreferredDateFormat.includes("E") === true
-      && logseq.settings!.booleanDayOfWeek === false
-      && logseq.settings!.booleanJournalLinkLocalizeDayOfWeek === true
-      && titleElement.dataset.localize === undefined)
-      titleElementReplaceLocalizeDayOfWeek(journalDate, titleElement)
+  //設定項目ですべてのトグルがオフの場合の処理
+  if (logseq.settings!.booleanWeekNumber === false
+    && logseq.settings!.booleanDayOfWeek === false
+    && logseq.settings!.booleanRelativeTime === false
+    && logseq.settings!.underHolidaysAlert === false
+    && logseq.settings!.booleanSettingsButton === false
+    && logseq.settings!.booleanMonthlyJournalLink === false
+    && logseq.settings!.booleanUnderLunarCalendar === false
+    && (titleElement.classList.contains("journal-title") === true
+      || titleElement.classList.contains("title") === true)) {
+    //titleElementの後ろにdateInfoElementを追加し、スペース確保しておく
+    const dateInfoElement: HTMLSpanElement = document.createElement("span")
+    dateInfoElement.classList.add("showWeekday")
+    titleElement.insertAdjacentElement("afterend", dateInfoElement)
+    const secondElement: HTMLSpanElement = document.createElement("span")
+    secondElement.style.width = "50%"
+    titleElement.parentElement!.insertAdjacentElement("afterend", secondElement)
+    titleElement.dataset.checked = "true"
+    return //処理を終了する
   }
 
+  // 遅延処理
+  setTimeout(async () => {
+    const page = (await logseq.Editor.getPage(title)) as { journalDay: number } | null
+    if (page
+      && page.journalDay) {
+      const journalDate: Date = getJournalDayDate(String(page.journalDay))
+
+      behindJournalTitle(journalDate, titleElement, configPreferredDateFormat)
+
+      //日付フォーマットに曜日が含まれている場合
+      if (configPreferredDateFormat.includes("E") === true
+        && logseq.settings!.booleanDayOfWeek === false
+        && logseq.settings!.booleanJournalLinkLocalizeDayOfWeek === true
+        && titleElement.dataset.localize === undefined)
+        titleElementReplaceLocalizeDayOfWeek(journalDate, titleElement)
+    }
+  }, 10)
+
   titleElement.dataset.checked = "true"
-  processingJournalTitlePage = false
+  processingJournalTitlePage = false //Journalsの場合は複数
 }
 
 const removeBoundaries = () => {
