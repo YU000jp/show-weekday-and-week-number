@@ -16,17 +16,122 @@ body {
     }
 
     &>div#root>div>main {
-        & article>div[data-id="logseq-plugin-show-weekday-and-week-number"] div.heading-item {
-            /* プラグイン設定の見た目を変える(heading) */
-            margin-top: 3em;
-            border-top-width: 1px;
-            padding-top: 1em;
+        & article>div[data-id*="show-weekday-and-week-number"] {
+            & div.heading-item {
+                /* プラグイン設定の見た目を変える(heading) */
+                margin-top: 3em;
+                border-top-width: 1px;
+                padding-top: 1em;
+            }
+
+            & div.desc-item {
+
+                &[data-key="booleanQuarterlyJournal"]:has(input.form-checkbox:not(:checked))+div.desc-item[data-key="quarterlyJournalSetPageTag"] {
+                    display: none;
+
+                    &+div.desc-item[data-key="quarterlyJournalTemplateName"] {
+                        display: none;
+
+                    }
+                }
+
+                &[data-key="booleanMonthlyJournal"]:has(input.form-checkbox:not(:checked))+div.desc-item[data-key="monthlyJournalSetPageTag"] {
+                    display: none;
+
+                    &+div.desc-item[data-key="monthlyJournalTemplateName"] {
+                        display: none;
+
+                    }
+                }
+
+                &[data-key="booleanWeeklyJournalHeadline"]:has(input.form-checkbox:not(:checked))+div.desc-item[data-key="weeklyJournalHeadlineProperty"] {
+                    display: none;
+                }
+
+                &[data-key="booleanWeeklyJournalThisWeek"]:has(input.form-checkbox:not(:checked))+div.desc-item[data-key="weeklyEmbed"] {
+                    display: none;
+                }
+
+                &[data-key="booleanWeeklyJournal"]:has(input.form-checkbox:not(:checked))+div.desc-item[data-key="weeklyJournalSetPageTag"] {
+                    display: none;
+
+                    &+div.desc-item[data-key="weeklyJournalTemplateName"] {
+                        display: none;
+
+                        &+div.desc-item[data-key="booleanWeeklyJournalHeadline"] {
+                            display: none;
+
+                            &+div.desc-item[data-key="weeklyJournalHeadlineProperty"] {
+                                display: none;
+
+                                &+div.desc-item[data-key="booleanWeeklyJournalThisWeek"] {
+                                    display: none;
+
+                                    &+div.desc-item[data-key="weeklyEmbed"] {
+                                        display: none;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                &[data-key="booleanBoundaries"]:has(input.form-checkbox:not(:checked))+div.desc-item[data-key="booleanJournalsBoundaries"] {
+                    display: none;
+
+                    &+div.desc-item[data-key="booleanBoundariesOnWeeklyJournal"] {
+                        display: none;
+
+                        &+div.desc-item[data-key="boundariesBottom"] {
+                            display: none;
+
+                            &+div.desc-item[data-key="boundariesWeekStart"] {
+                                display: none;
+
+                                &+div.desc-item[data-key="boundariesHighlightColorSinglePage"] {
+                                    display: none;
+
+                                    &+div.desc-item[data-key="boundariesHighlightColorToday"] {
+                                        display: none;
+
+                                        &+div.desc-item[data-key="booleanNoPageFoundCreatePage"] {
+                                            display: none;
+
+                                            &+div.desc-item[data-key="booleanBoundariesFuturePage"] {
+                                                display: none;
+
+                                                &+div.desc-item[data-key="booleanBoundariesShowMonth"] {
+                                                    display: none;
+
+                                                    &+div.desc-item[data-key="booleanBoundariesShowWeekNumber"] {
+                                                        display: none;
+
+                                                        &+div.desc-item[data-key="booleanBoundariesIndicator"] {
+                                                            display: none;
+
+                                                            &+div.desc-item[data-key="booleanBoundariesIndicator"] {
+                                                                display: none;
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         &>div#app-container>div#left-container>div#main-container>div#main-content-container {
             & div.content>div.blocks-container div.ls-block[data-refs-self*='".thisweek"'] a[data-ref=".thisweek"] {
                 display: none;
-            } /* 互換用 #.ThisWeekタグの廃止 */
+            }
+
+            /* 互換用 #.ThisWeekタグの廃止 */
 
             & div.is-journals {
                 & div.ls-page-title {
@@ -160,7 +265,7 @@ body {
         }
     }
 
-    & div[data-id="show-weekday-and-week-number"] div.cp__plugins-settings-inner {
+    & div[data-id*="show-weekday-and-week-number"] div.cp__plugins-settings-inner {
         & h2>code {
             display: none;
         }
