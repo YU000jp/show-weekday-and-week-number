@@ -1,3 +1,18 @@
+# [1.57.0](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.56.0...v1.57.0) (2024-07-06)
+
+
+### Features
+
+* **Add:** Toggle to turn off Beside Journal Title / Update Plugin Settings ([64c876f](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/64c876f92e5ec166def82e9bc879070b99a35017))
+* **Remove:** Journal Link Localize day of week option ([6f3c10f](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/6f3c10f6d00f6851f36e18b68b5ff5a64d1f79e5))
+* **Update:** Plugin Settings ([7cb7824](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/7cb78243b5aa6c9d6269812ffd4b69c23bc1df32))
+
+
+### Performance Improvements
+
+* Beside Journal Title ([3a4121b](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/3a4121b39a6845b3baca91b2e6f298d958cd0be0))
+* Beside Journal Title ([7e5776e](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/7e5776e2c6a17fe46f9959e1f464c72a76b6840d))
+
 # [1.56.0](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.55.2...v1.56.0) (2024-06-30)
 
 
