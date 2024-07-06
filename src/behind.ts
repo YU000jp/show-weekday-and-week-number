@@ -14,26 +14,27 @@ export const behindJournalTitle = async (journalDate: Date, titleElement: HTMLEl
 
   if (processingBehind === true) return // プロセス中の場合は処理をキャンセルする
 
-  let dayOfWeekName: string = (preferredDateFormat.includes("E") === false // "E"は曜日の省略形 日付形式の中にそれが含まれていない場合は曜日を表示する
-    && logseq.settings!.booleanDayOfWeek === true) // プラグイン設定でtrueになっている場合
-
-    ? new Intl.DateTimeFormat(
-      logseq.settings!.localizeOrEnglish as string || "default", // プラグイン設定でローカライズか英語か選択されている
-      { weekday: logseq.settings!.longOrShort as "short" | "long" || "long" } // プラグイン設定でlongかshortか選択されている
-    ).format(journalDate) // フォーマットして曜日の文字列を取得する
-
-    : "" // プラグイン設定でfalseになっている場合
-
-  const weekStartsOn: 0 | 1 = logseq.settings!.weekNumberFormat === "US format" ? 0 : 1 // 0: Sunday, 1: Monday
-
-  //week number
-  const printHtmlWeekNumber: string = logseq.settings!.booleanWeekNumber === true ? enableWeekNumber(journalDate, weekStartsOn) : "" //week numberの表示用の変数
-
-  //relative time
-  const printRelativeTime: string = logseq.settings!.booleanRelativeTime === true ? enableRelativeTime(journalDate) : "" //relative timeの表示用の変数
-
   // 反映する
-  const baseLineElement: HTMLSpanElement = createBaseLineElement(journalDate, dayOfWeekName, printHtmlWeekNumber, printRelativeTime)
+  const baseLineElement: HTMLSpanElement = createBaseLineElement(
+    journalDate
+    //preferredDateFormat.includes("E") === false は曜日の省略形が含まれていない場合
+    , logseq.settings!.booleanDayOfWeek === true // プラグイン設定でtrueになっている場合
+      ? new Intl.DateTimeFormat(
+        logseq.settings!.localizeOrEnglish as string || "default", // プラグイン設定でローカライズか英語か選択されている
+        { weekday: logseq.settings!.longOrShort as "short" | "long" || "long" } // プラグイン設定でlongかshortか選択されている
+      ).format(journalDate) // フォーマットして曜日の文字列を取得する
+      : "" // プラグイン設定でfalseになっている場合
+    , logseq.settings!.booleanWeekNumber === true ?
+      enableWeekNumber(
+        journalDate
+        , logseq.settings!.weekNumberFormat === "US format" ?
+          0 : 1 // 0: Sunday, 1: Monday
+      )
+      : "" //week numberの表示用の変数
+    , logseq.settings!.booleanRelativeTime === true ?
+      enableRelativeTime(journalDate)
+      : "" //relative timeの表示用の変数
+  )
 
   // h1を移動する
   moveTitleElement(titleElement)
@@ -90,7 +91,8 @@ const moveTitleElement = (titleElement: HTMLElement) => {
   //h1の中にdateInfoElementを挿入
   const aTag = titleElement.parentElement // 親要素を取得する
 
-  if (aTag && aTag.tagName.toLowerCase() === "a") {
+  if (aTag
+    && aTag.tagName.toLowerCase() === "a") {
 
     //For journals
     //<a><h1>日付タイトル</h1></a>の構造になっているが、<h1><a>日付タイトル</a></h1>にしたい
@@ -114,25 +116,23 @@ const moveTitleElement = (titleElement: HTMLElement) => {
 const createBaseLineElement = (journalDate: Date, dayOfWeekName: string, printHtmlWeekNumber: string, relativeTime: string) => {
   const dateInfoElement: HTMLSpanElement = document.createElement("span")
   dateInfoElement.classList.add("showWeekday")
-  if (logseq.settings!.booleanDayOfWeek === true)
-    if (logseq.settings!.booleanWeekendsColor === true)
-      dateInfoElement.innerHTML = `<span style="color:var(${isSaturday(journalDate) === true ? "--ls-wb-stroke-color-blue"
-        : isSunday(journalDate) === true ? "--ls-wb-stroke-color-red"
-          : ""})">${dayOfWeekName}</span>${printHtmlWeekNumber}${relativeTime}`
-    else
-      dateInfoElement.innerHTML = `<span>${dayOfWeekName}</span>${printHtmlWeekNumber}${relativeTime}` //textContent
-  else
-    dateInfoElement.innerHTML = `${printHtmlWeekNumber}${relativeTime}`
+  dateInfoElement.innerHTML =
+    logseq.settings!.booleanDayOfWeek === true ?
+      logseq.settings!.booleanWeekendsColor === true ?
+        `<span style="color:var(${isSaturday(journalDate) === true ?
+          "--ls-wb-stroke-color-blue"
+          : (isSunday(journalDate) === true ?
+            "--ls-wb-stroke-color-red"
+            : "")})">${dayOfWeekName}</span>${printHtmlWeekNumber}${relativeTime}`
+        : `<span>${dayOfWeekName}</span>${printHtmlWeekNumber}${relativeTime}` //textContent
+      : `${printHtmlWeekNumber}${relativeTime}`
   return dateInfoElement
 }
 
 
 const enableRelativeTime = (journalDate: Date): string => {
   const formatString: string = formatRelativeDate(journalDate)
-  if (formatString !== "")
-    return `<span><small>(${formatString})</small></span>`
-  else
-    return ""
+  return formatString !== "" ? `<span><small>(${formatString})</small></span>` : ""
 }
 
 
@@ -163,8 +163,7 @@ const enableWeekNumber = (journalDate: Date, weekStartsOn: 0 | 1): string => {
     else
       printHtmlWeekNumber = `<span title="${weeklyNumberString}">${printWeekNumber}</span>`
 
-  } else 
-
+  } else
     // get week numbers of the month
     printHtmlWeekNumber = logseq.settings!.weekNumberFormat === "Japanese format"
       && logseq.settings!.localizeOrEnglish === "default"
@@ -191,11 +190,12 @@ const enableSettingsButton = (dateInfoElement: HTMLSpanElement) => {
 const enableUnderLunarCalendar = (LunarDate: Lunar, baseLineElement: HTMLSpanElement) => {
   const lunarCalendarElement = document.createElement("span")
   lunarCalendarElement.id = "lunarCalendarMonthAndDay"
-  
-  if (LunarDate.getYear() === (new Date().getFullYear()))
-    lunarCalendarElement.textContent = LunarDate.toString().slice(5) //先頭5文字を削除する
-  else
-    lunarCalendarElement.textContent = LunarDate.toString()
+
+
+  lunarCalendarElement.textContent = LunarDate.getYear() === (new Date().getFullYear()) ?
+    LunarDate.toString().slice(5) //先頭5文字を削除する
+    : LunarDate.toString()
+
   baseLineElement.appendChild(lunarCalendarElement)
 }
 
@@ -204,7 +204,8 @@ const enableUnderLunarCalendarHoliday = (LunarDate: Lunar, baseLineElement: HTML
   lunarCalendarElement.id = "lunarCalendarHoliday"
   lunarCalendarElement.style.textDecoration = "underline"
   const holiday = HolidayUtil.getHoliday(LunarDate.getYear() + LunarDate.getMonth() + LunarDate.getDay())
-  if (holiday) lunarCalendarElement.textContent = holiday.getName()
+  if (holiday)
+    lunarCalendarElement.textContent = holiday.getName()
   baseLineElement.appendChild(lunarCalendarElement)
 }
 
