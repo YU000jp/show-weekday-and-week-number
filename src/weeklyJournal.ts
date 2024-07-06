@@ -91,7 +91,9 @@ export const currentPageIsWeeklyJournal = async (titleElement: HTMLElement, matc
                 await weeklyJournalCreateContent(weekStart, weekEnd, pageEntity.uuid)
                 resolve("Done")
             })
-            processingWeeklyJournal = false
+            setTimeout(() =>
+                processingWeeklyJournal = false
+                , 300)
         } else
             console.warn("pageBlockTree is null") //pageBlockTreeがnullの場合は警告を出す
     } else {
@@ -106,7 +108,9 @@ export const currentPageIsWeeklyJournal = async (titleElement: HTMLElement, matc
                 await weeklyJournalCreateContent(weekStart, weekEnd, pageEntity.uuid)
                 resolve("Done")
             })
-            processingWeeklyJournal = false
+            setTimeout(() =>
+                processingWeeklyJournal = false
+                , 300)
         } else
             console.warn("pageEntity is null") //pageEntityがnullの場合は警告を出す
     }
