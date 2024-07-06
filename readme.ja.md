@@ -1,5 +1,3 @@
-[English](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number)
-
 # Logseq プラグイン: *Show weekday and week-number* 📆
 
 - Logseqのジャーナル機能を強化
