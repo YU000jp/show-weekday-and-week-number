@@ -1,6 +1,6 @@
-import "@logseq/libs"; //https://plugins-doc.logseq.com/
+import "@logseq/libs" //https://plugins-doc.logseq.com/
 import { EntityID, LSPluginBaseInfo, PageEntity } from "@logseq/libs/dist/LSPlugin.user"
-import { setup as l10nSetup } from "logseq-l10n"; //https://github.com/sethyuan/logseq-l10n
+import { setup as l10nSetup } from "logseq-l10n" //https://github.com/sethyuan/logseq-l10n
 import { behindJournalTitle } from "./behind"
 import { boundariesProcess } from "./boundaries"
 import { getHolidaysBundle, removeHolidaysBundle } from "./holidays"
@@ -267,7 +267,7 @@ const onSettingsChanged = () => logseq.onSettingsChanged((newSet: LSPluginBaseIn
 
   // 20240121 祝日表示に関するトグル
   if (oldSet.booleanBoundariesHolidays !== newSet.booleanBoundariesHolidays
-    || oldSet.underHolidaysAlert !== newSet.underHolidaysAlert) 
+    || oldSet.underHolidaysAlert !== newSet.underHolidaysAlert)
     if (newSet.booleanBoundariesHolidays === true
       || newSet.underHolidaysAlert === true) //どちらかがオンの場合
       getHolidaysBundle(newSet.holidaysCountry as string, { settingsChanged: true }) //バンドルを取得する
@@ -275,7 +275,7 @@ const onSettingsChanged = () => logseq.onSettingsChanged((newSet: LSPluginBaseIn
       if (newSet.booleanBoundariesHolidays === false
         && newSet.underHolidaysAlert === false) //両方オフの場合
         removeHolidaysBundle() //バンドルを削除する
-  
+
   if (oldSet.holidaysCountry !== newSet.holidaysCountry
     || oldSet.holidaysState !== newSet.holidaysState
     || oldSet.holidaysRegion !== newSet.holidaysRegion)  //国名などが変更された場合

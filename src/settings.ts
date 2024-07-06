@@ -393,7 +393,7 @@ export const settingsTemplate = (userLanguage): SettingSchemaDesc[] => [
     description: t("Links to each day. Tooltip on mouseover."),
   },
   {//20240629
-  //This Week セクションに、各曜日のページを埋め込む (アナログ手帳のように横並びにする)
+    //This Week セクションに、各曜日のページを埋め込む (アナログ手帳のように横並びにする)
     key: "weeklyEmbed",
     title: t("Side opening workspace > Embed each day's page in the \"This Week\" section "),
     type: "boolean",
