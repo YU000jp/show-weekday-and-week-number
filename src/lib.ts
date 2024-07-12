@@ -1,4 +1,4 @@
-import { BlockEntity, BlockUUID } from "@logseq/libs/dist/LSPlugin.user"
+import { BlockUUID } from "@logseq/libs/dist/LSPlugin.user"
 import { getISOWeek, getISOWeekYear, getWeek, getWeekYear } from "date-fns"
 import { t } from "logseq-l10n"
 
