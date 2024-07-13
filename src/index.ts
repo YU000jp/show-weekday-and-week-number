@@ -112,7 +112,8 @@ const main = async () => {
   setTimeout(() => {
     if (logseq.settings!.booleanJournalsBoundaries === true)
       boundaries("journals")
-    querySelectorAllTitle()
+    querySelectorAllTitle(logseq.settings!.booleanBesideJournalTitle as boolean)
+
   }, 200)
   setTimeout(() => observerMain(), 2000) //スクロール用
 
@@ -131,7 +132,7 @@ const main = async () => {
         //div#journals
         setTimeout(() => boundaries("journals"), 20)
 
-    setTimeout(() => querySelectorAllTitle(), 50)
+    setTimeout(() => querySelectorAllTitle(logseq.settings!.booleanBesideJournalTitle as boolean), 50)
   })
 
   // 今日の日記が作成されたときに実行される (Journal boundariesの更新のため) ※ただし、今日以外の日記を作成した場合は実行されないので注意
@@ -153,7 +154,7 @@ const main = async () => {
   // サイドバーの表示/非表示が切り替わったときにセレクタークエリを実行
   logseq.App.onSidebarVisibleChanged(({ visible }) => {
     if (visible === true)
-      setTimeout(() => querySelectorAllTitle(), 100)
+      setTimeout(() => querySelectorAllTitle(logseq.settings!.booleanBesideJournalTitle as boolean), 100)
   })
 
   // CSS適用
@@ -242,7 +243,7 @@ const onSettingsChanged = () => logseq.onSettingsChanged((newSet: LSPluginBaseIn
     || oldSet.booleanBesideJournalTitle !== newSet.booleanBesideJournalTitle) {
     //再表示 Behind Journal Title
     removeTitleQuery()
-    setTimeout(() => querySelectorAllTitle(), 500)
+    setTimeout(() => querySelectorAllTitle(newSet.booleanBesideJournalTitle as boolean), 500)
   }
 
   // weeklyEmbed
@@ -380,9 +381,9 @@ const SettingsChangedJournalBoundariesEnable = () =>
 
 // クエリーセレクターでタイトルを取得する
 let processingTitleQuery: boolean = false
-const querySelectorAllTitle = async (enable?: boolean): Promise<void> => {
-  if (processingTitleQuery
-    && !enable) return
+const querySelectorAllTitle = async (enable: boolean): Promise<void> => {
+  if (enable === false
+    || processingTitleQuery) return
   processingTitleQuery = true
 
   //Journalsの場合は複数
@@ -394,7 +395,7 @@ const querySelectorAllTitle = async (enable?: boolean): Promise<void> => {
 // observer
 const observer = new MutationObserver(async (): Promise<void> => {
   observer.disconnect()
-  await querySelectorAllTitle(true)
+  await querySelectorAllTitle(logseq.settings!.booleanBesideJournalTitle as boolean)
   setTimeout(() => observerMain(), 800)
 })
 
