@@ -1,14 +1,18 @@
 import { SettingSchemaDesc } from "@logseq/libs/dist/LSPlugin.user"
 import { t } from "logseq-l10n"
 
+
 /* user setting */
 // https://logseq.github.io/plugins/types/SettingSchemaDesc.html
+
+
 export const settingsTemplate = (userLanguage): SettingSchemaDesc[] => [
+
 
   //Common
   {
     key: "heading000",
-    title: t("Common settings"),
+    title: "0. " + t("Common settings"),
     type: "heading",
     default: "",
     description: "",
@@ -75,7 +79,7 @@ export const settingsTemplate = (userLanguage): SettingSchemaDesc[] => [
   //Behind journal title
   {
     key: "heading001",
-    title: t("Behind Journal Title"),
+    title: "1. " + t("Behind Journal Title"),
     type: "heading",
     default: "",
     description: "",
@@ -175,7 +179,7 @@ export const settingsTemplate = (userLanguage): SettingSchemaDesc[] => [
   //Journal Boundaries
   {
     key: "heading002",
-    title: t("Journal boundaries (mini calendar)"),
+    title: "2. " + t("Journal boundaries (mini calendar)"),
     type: "heading",
     default: "",
     description: "",
@@ -284,7 +288,7 @@ export const settingsTemplate = (userLanguage): SettingSchemaDesc[] => [
   //Weekly Journal
   {
     key: "heading003",
-    title: t("Weekly Journal"),
+    title: "3. " + t("Weekly Journal"),
     type: "heading",
     default: "",
     description: "",
@@ -412,7 +416,7 @@ export const settingsTemplate = (userLanguage): SettingSchemaDesc[] => [
   //Monthly Journal
   {
     key: "heading004",
-    title: t("Monthly Journal") + "🆕",
+    title: "4. " + t("Monthly Journal") + "🆕",
     type: "heading",
     default: "",
     description: "",
@@ -443,8 +447,8 @@ export const settingsTemplate = (userLanguage): SettingSchemaDesc[] => [
 
   //Quarterly Journal
   {
-    key: "heading004",
-    title: t("Quarterly Journal") + "🆕",
+    key: "heading005",
+    title: "5. " + t("Quarterly Journal") + "🆕",
     type: "heading",
     default: "",
     description: "",
@@ -470,4 +474,5 @@ export const settingsTemplate = (userLanguage): SettingSchemaDesc[] => [
     default: "",
     description: t("Input the template name (default is blank)"),
   },
+  
 ]
