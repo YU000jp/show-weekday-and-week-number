@@ -9,7 +9,7 @@ import { t } from "logseq-l10n"
 export const settingsTemplate = (userLanguage): SettingSchemaDesc[] => [
 
 
-  //Common
+  //共通設定
   {
     key: "heading000",
     title: "0. " + t("Common settings"),
@@ -73,6 +73,7 @@ export const settingsTemplate = (userLanguage): SettingSchemaDesc[] => [
     default: true,
     description: t("Other language regions are not affected."),
   },
+  // 共通設定ここまで
 
 
 
@@ -84,7 +85,7 @@ export const settingsTemplate = (userLanguage): SettingSchemaDesc[] => [
     default: "",
     description: "",
   },
-  {
+  { // 有効トグル
     key: "booleanBesideJournalTitle",
     title: t("Enable feature"),
     type: "boolean",
@@ -173,6 +174,7 @@ export const settingsTemplate = (userLanguage): SettingSchemaDesc[] => [
     default: true,
     description: t("Other language regions are not affected."),
   },
+  // ここまでトグルの対象
 
 
 
@@ -184,7 +186,7 @@ export const settingsTemplate = (userLanguage): SettingSchemaDesc[] => [
     default: "",
     description: "",
   },
-  {
+  { // 有効トグル
     key: "booleanBoundaries",
     title: t("Enable feature"),
     type: "boolean",
@@ -282,6 +284,7 @@ export const settingsTemplate = (userLanguage): SettingSchemaDesc[] => [
     default: true,
     description: t("Add color to holidays and display the content on mouseover")
   },
+  // ここまでトグルの対象
 
 
 
@@ -293,7 +296,7 @@ export const settingsTemplate = (userLanguage): SettingSchemaDesc[] => [
     default: "",
     description: "",
   },
-  {
+  { // 有効トグル
     key: "booleanWeeklyJournal",
     title: t("Enable feature"),
     type: "boolean",
@@ -410,6 +413,7 @@ export const settingsTemplate = (userLanguage): SettingSchemaDesc[] => [
     default: true,
     description: "",
   },
+  // ここまでトグルの対象
 
 
 
@@ -421,7 +425,7 @@ export const settingsTemplate = (userLanguage): SettingSchemaDesc[] => [
     default: "",
     description: "",
   },
-  {
+  { // 有効トグル
     key: "booleanMonthlyJournal",
     title: t("Enable feature"),
     type: "boolean",
@@ -442,6 +446,7 @@ export const settingsTemplate = (userLanguage): SettingSchemaDesc[] => [
     default: "",
     description: t("Input the template name (default is blank)"),
   },
+  // ここまでトグルの対象
 
 
 
@@ -453,7 +458,7 @@ export const settingsTemplate = (userLanguage): SettingSchemaDesc[] => [
     default: "",
     description: "",
   },
-  {
+  { // 有効トグル
     key: "booleanQuarterlyJournal",
     title: t("Enable feature"),
     type: "boolean",
@@ -476,3 +481,4 @@ export const settingsTemplate = (userLanguage): SettingSchemaDesc[] => [
   },
   
 ]
+  // ここまでトグルの対象
