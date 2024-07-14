@@ -1,11 +1,11 @@
-import { AppUserConfigs, LSPluginBaseInfo, PageEntity } from "@logseq/libs/dist/LSPlugin.user"
+import { LSPluginBaseInfo, PageEntity } from "@logseq/libs/dist/LSPlugin.user"
+import { addDays, Day, eachDayOfInterval, getISOWeek, getWeek, isSameDay, isSameISOWeek, isSameMonth, isSameWeek, isToday, startOfISOWeek, startOfMonth, startOfWeek } from "date-fns"
 import { format } from "date-fns/format"
 import { t } from "logseq-l10n"
-import { getWeeklyNumberFromDate, getWeeklyNumberString, localizeDayOfWeekString, localizeMonthDayString, localizeMonthString, openPageFromPageName, removeElementById, removeProvideStyle } from "./lib"
 import { getConfigPreferredDateFormat, getConfigPreferredLanguage, pluginName } from "."
-import { addDays, Day, eachDayOfInterval, getISOWeek, getWeek, isSameDay, isSameISOWeek, isSameWeek, isToday, startOfISOWeek, startOfMonth, startOfWeek } from "date-fns"
 import { openPageToSingleDay } from "./boundaries"
 import { holidaysWorld, lunarString } from "./holidays"
+import { getWeeklyNumberFromDate, getWeeklyNumberString, localizeDayOfWeekString, localizeMonthDayString, localizeMonthString, openPageFromPageName, removeElementById } from "./lib"
 
 export const keyLeftCalendarContainer = "left-calendar-container"
 
@@ -22,6 +22,11 @@ export const loadLeftCalendar = () => {
             else
                 removeElementById(keyLeftCalendarContainer)//消す
         }
+        if (oldSet.booleanLcWeekNumber !== newSet.booleanLcWeekNumber
+            || oldSet.booleanLcHolidays !== newSet.booleanLcHolidays
+            || oldSet.lcHolidaysAlert !== newSet.lcHolidaysAlert
+        )
+            refreshCalendar(currentCalendarDate, false, false)
 
     })
 
@@ -345,7 +350,7 @@ const checkDay = (date: Date, month: number, dayCell: HTMLElement, preferredDate
 
     // 今日の日付の場合は背景色を変える
     const checkIsToday: boolean = isToday(date)
-    if (checkIsToday === true){
+    if (checkIsToday === true) {
         dayCell.style.border = `2px solid ${logseq.settings!.boundariesHighlightColorToday}`
         dayCell.style.borderRadius = "50%"
     }
@@ -383,4 +388,20 @@ const checkDay = (date: Date, month: number, dayCell: HTMLElement, preferredDate
         return holiday
     }
     return ""
+}
+export const refreshCalendar = (targetDate: Date, singlePage: boolean, weekly: boolean) => {
+    const innerElement: HTMLDivElement | null = parent.document.getElementById("left-calendar-inner") as HTMLDivElement | null
+    if (innerElement) {
+        removeCalendarAndNav()
+        createCalendar(
+            targetDate,
+            getConfigPreferredDateFormat(),
+            innerElement,
+            { singlePage, weekly })
+    }
+}
+export const refreshCalendarCheckSameMonth = () => {
+    const today = new Date()
+    if (isSameMonth(currentCalendarDate, today) === false)
+        refreshCalendar(today, false, false)
 }

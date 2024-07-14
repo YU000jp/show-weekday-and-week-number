@@ -1,11 +1,10 @@
 import "@logseq/libs" //https://plugins-doc.logseq.com/
 import { EntityID, PageEntity } from "@logseq/libs/dist/LSPlugin.user"
-import { addWeeks, isSameMonth, startOfISOWeek, startOfWeek } from "date-fns"
 import { setup as l10nSetup, t } from "logseq-l10n" //https://github.com/sethyuan/logseq-l10n
 import { besideJournalTitle, observer, observerMain, removeTitleQuery } from "./beside"
 import { boundariesProcess, removeBoundaries } from "./boundaries"
 import { getHolidaysBundle } from "./holidays"
-import { createCalendar, currentCalendarDate, keyLeftCalendarContainer, loadLeftCalendar, removeCalendarAndNav } from "./left-calendar"
+import { keyLeftCalendarContainer, loadLeftCalendar, refreshCalendar, refreshCalendarCheckSameMonth } from "./left-calendar"
 import { convertLanguageCodeToCountryCode, getJournalDayDate, getWeekStartFromWeekNumber, removeElementById } from "./lib"
 import fileMainCSS from "./main.css?inline"
 import { currentPageIsMonthlyJournal } from "./monthlyJournal"
@@ -367,26 +366,6 @@ export const boundaries = (targetElementName: string, remove?: boolean) => {
   processingBoundaries = false
 }
 
-
-
-const refreshCalendar = (targetDate: Date, singlePage: boolean, weekly: boolean) => {
-  const innerElement: HTMLDivElement | null = parent.document.getElementById("left-calendar-inner") as HTMLDivElement | null
-  if (innerElement) {
-    removeCalendarAndNav()
-    createCalendar(
-      targetDate,
-      getConfigPreferredDateFormat(),
-      innerElement,
-      { singlePage, weekly })
-  }
-}
-
-
-const refreshCalendarCheckSameMonth = () => {
-  const today = new Date()
-  if (isSameMonth(currentCalendarDate, today) === false)
-    refreshCalendar(today, false, false)
-}
 
 
 logseq.ready(main).catch(console.error)
