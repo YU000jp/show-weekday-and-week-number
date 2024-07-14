@@ -1,8 +1,8 @@
 import { AppUserConfigs, BlockEntity, BlockUUID, IBatchBlock } from '@logseq/libs/dist/LSPlugin.user'
-import { addDays, addWeeks, eachDayOfInterval, format, getISOWeek, getISOWeekYear, getWeek, getWeekYear, isSameISOWeek, isSameWeek, startOfISOWeek, startOfWeek, subDays, subWeeks, } from 'date-fns'; //https://date-fns.org/
+import { addDays, addWeeks, eachDayOfInterval, format, getISOWeek, getISOWeekYear, getWeek, getWeekYear, isSameISOWeek, isSameWeek, subDays, subWeeks, } from 'date-fns'; //https://date-fns.org/
 import { t } from 'logseq-l10n'
 import { boundariesProcess } from './boundaries'
-import { existInsertTemplate, getQuarter, openPageFromPageName } from './lib'
+import { existInsertTemplate, getQuarter, getWeekStartFromWeekNumber, openPageFromPageName } from './lib'
 import CSSThisWeekPopup from "./weeklyEmbed.css?inline"; //CSSをインラインで読み込む
 let processingFoundBoundaries: boolean = false
 let processingWeeklyJournal: boolean = false
@@ -222,17 +222,6 @@ const weeklyJournalCreateContent = async (
         }, 10)
     } else
         console.warn("newBlock is null") //newBlockがnullの場合は警告を出す
-}
-
-
-const getWeekStartFromWeekNumber = (year: number, weekNumber: number, weekStartsOn: 0 | 1 | 2 | 3 | 4 | 5 | 6 | undefined, ISO: boolean): Date => {
-    if (ISO === true) {
-        const firstDayOfWeek = startOfISOWeek(new Date(year, 0, 4, 0, 0, 0, 0))//1/4を含む週
-        return (getISOWeekYear(firstDayOfWeek) === year)
-            ? addDays(firstDayOfWeek, (weekNumber - 1) * 7)
-            : addWeeks(firstDayOfWeek, weekNumber)
-    } else
-        return addDays(startOfWeek(new Date(year, 0, 1, 0, 0, 0, 0), { weekStartsOn }), (weekNumber - 1) * 7)
 }
 
 

@@ -1,5 +1,5 @@
 import { BlockUUID } from "@logseq/libs/dist/LSPlugin.user"
-import { getISOWeek, getISOWeekYear, getWeek, getWeekYear } from "date-fns"
+import { addDays, addWeeks, getISOWeek, getISOWeekYear, getWeek, getWeekYear, startOfISOWeek, startOfWeek } from "date-fns"
 import { t } from "logseq-l10n"
 
 export const getJournalDayDate = (str: string): Date =>
@@ -187,4 +187,32 @@ export const existInsertTemplate = async (blockUuid: BlockUUID, templateName: st
   }
   else
     logseq.UI.showMsg(`Template "${templateName}" does not exist.`, 'warning', { timeout: 2000 })
+}
+
+
+// エレメント(id)を削除
+export const removeElementById = (elementById: string) => {
+  const ele: HTMLDivElement | null = parent.document.getElementById(elementById) as HTMLDivElement | null
+  if (ele) ele.remove()
+}
+
+
+//ローカライズされた月の名前を取得する
+export const localizeMonthString = (date: Date, long: boolean): string => new Intl.DateTimeFormat((logseq.settings?.localizeOrEnglish as string || "default"), { month: long === true ? "long" : "short" }).format(date)
+
+
+//ローカライズされた曜日の名前を取得する
+export const localizeDayOfWeekString = (date: Date, long: boolean): string => new Intl.DateTimeFormat((logseq.settings?.localizeOrEnglish as string || "default"), { weekday: long === true ? "long" : "short" }).format(date)
+
+//ローカライズされた月日を取得する
+export const localizeMonthDayString = (date: Date): string => new Intl.DateTimeFormat((logseq.settings?.localizeOrEnglish as string || "default"), { month: "short", day: "numeric" }).format(date)
+export const getWeekStartFromWeekNumber = (year: number, weekNumber: number, weekStartsOn: 0 | 1 | 2 | 3 | 4 | 5 | 6 | undefined, ISO: boolean): Date => {
+    if (ISO === true) {
+        const firstDayOfWeek = startOfISOWeek(new Date(year, 0, 4, 0, 0, 0, 0)) //1/4を含む週
+        return (getISOWeekYear(firstDayOfWeek) === year)
+            ? addDays(firstDayOfWeek, (weekNumber - 1) * 7)
+            : addWeeks(firstDayOfWeek, weekNumber)
+    }
+    else
+        return addDays(startOfWeek(new Date(year, 0, 1, 0, 0, 0, 0), { weekStartsOn }), (weekNumber - 1) * 7)
 }

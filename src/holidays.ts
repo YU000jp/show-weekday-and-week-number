@@ -1,4 +1,7 @@
+import { add } from "date-fns"
 import Holidays from "date-holidays"
+import { HolidayUtil, Lunar } from 'lunar-typescript'
+
 
 let holidaysBundle: Holidays | null // バンドルを作成するための変数
 let alreadyHolidayBundle: boolean = false // プラグイン設定変更時にバンドルを更新するためのフラグ
@@ -34,4 +37,39 @@ export const exportHolidaysBundle = () => holidaysBundle // バンドルをエ�
 export const removeHolidaysBundle = () => {
   holidaysBundle = null
   alreadyHolidayBundle = false
+}
+
+// For Chinese lunar-calendar and holidays
+export const lunarString = (targetDate: Date, dayElement: HTMLSpanElement, addToElementTip: boolean): string => {
+  const getHoliday = HolidayUtil.getHoliday(targetDate.getFullYear(), targetDate.getMonth() + 1, targetDate.getDate()) // year, month, day
+  const getHolidayName = getHoliday ? getHoliday.getName() : undefined
+  const string = (Lunar.fromDate(targetDate).getDayInChinese() as string)
+  if (getHolidayName) {
+    if (addToElementTip === true)
+      dayElement.title = string + ` (${getHolidayName})` + "\n"// 中国の祝日
+    dayElement.style.border = `2px solid var(${logseq.settings!.choiceHolidaysColor as string || "--highlight-bg-color"})`
+  } else
+    dayElement.title = string + "\n"// 祝日がない場合は、中国の伝統的な暦を表示する(旧暦) 
+  return string
+}
+
+
+// For World holidays
+export const holidaysWorld = (targetDate: Date, dayElement: HTMLSpanElement, addToElementTip: boolean): string => {
+
+  const holidaysBundle = exportHolidaysBundle()
+  if (!holidaysBundle) return ""
+  const checkHoliday = holidaysBundle.isHoliday(targetDate)
+
+  if (checkHoliday !== false
+    && checkHoliday[0].type === "public") {
+    const holidayName = checkHoliday[0].name
+    if (holidayName) {
+      if (addToElementTip === true)
+        dayElement.title = holidayName + "\n"
+      dayElement.style.border = `2px solid var(${logseq.settings!.choiceHolidaysColor as string || "--highlight-bg-color"})`
+      return holidayName
+    }
+  }
+  return ""
 }

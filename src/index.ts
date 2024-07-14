@@ -1,10 +1,11 @@
-import "@logseq/libs"; //https://plugins-doc.logseq.com/
-import { EntityID } from "@logseq/libs/dist/LSPlugin.user"
-import { setup as l10nSetup } from "logseq-l10n"; //https://github.com/sethyuan/logseq-l10n
+import "@logseq/libs" //https://plugins-doc.logseq.com/
+import { EntityID, PageEntity } from "@logseq/libs/dist/LSPlugin.user"
+import { setup as l10nSetup, t } from "logseq-l10n" //https://github.com/sethyuan/logseq-l10n
 import { besideJournalTitle, observer, observerMain, removeTitleQuery } from "./beside"
 import { boundariesProcess, removeBoundaries } from "./boundaries"
 import { getHolidaysBundle } from "./holidays"
-import { convertLanguageCodeToCountryCode, getJournalDayDate } from "./lib"
+import { keyLeftCalendarContainer, loadLeftCalendar, refreshCalendar, refreshCalendarCheckSameMonth } from "./left-calendar"
+import { convertLanguageCodeToCountryCode, getJournalDayDate, getWeekStartFromWeekNumber, removeElementById } from "./lib"
 import fileMainCSS from "./main.css?inline"
 import { currentPageIsMonthlyJournal } from "./monthlyJournal"
 import { notice } from "./notice"
@@ -33,6 +34,13 @@ import zhCN from "./translations/zh-CN.json"
 import zhHant from "./translations/zh-Hant.json"
 import { currentPageIsWeeklyJournal, weeklyEmbed } from "./weeklyJournal"
 
+// プラグイン名(小文字タイプ)
+export const pluginNameCut = "show-weekday-and-week-number"
+// プラグイン名の最後に[plugin]を追加
+export const pluginName = `${pluginNameCut} ${t("plugin")}`
+// コンソールの署名用
+export const consoleSignature = ` <----- [${pluginName}]`
+
 let configPreferredLanguage: string
 let configPreferredDateFormat: string
 export const getConfigPreferredLanguage = (): string => configPreferredLanguage
@@ -51,6 +59,8 @@ export const getUserConfig = async () => {
 /* main */
 const main = async () => {
 
+
+  // l10nのセットアップ
   await l10nSetup({
     builtinTranslations: {//Full translations
       ja, af, de, es, fr, id, it, ko, "nb-NO": nbNO, nl, pl, "pt-BR": ptBR, "pt-PT": ptPT, ru, sk, tr, uk, "zh-CN": zhCN, "zh-Hant": zhHant
@@ -79,7 +89,7 @@ const main = async () => {
   await getUserConfig()
 
 
-  // プラグイン設定スキーマを使用
+  // プラグイン設定のセットアップ
   logseq.useSettingsSchema(
     settingsTemplate(
       logseq.settings!.holidaysCountry === undefined ? // 国名が設定されていない場合は取得
@@ -114,6 +124,44 @@ const main = async () => {
         //journals only
         //div#journals
         setTimeout(() => boundaries("journals"), 20)
+
+    // 左サイドバーのカレンダーを更新する
+    if (logseq.settings!.booleanLeftCalendar === true)
+      logseq.Editor.getCurrentPage().then((pageEntity) => {
+        if (pageEntity) {
+          if (pageEntity.journalDay)
+            refreshCalendar(getJournalDayDate(String(pageEntity.journalDay)), true, false)
+          else
+            if (logseq.settings!.booleanWeeklyJournal === true) {
+              const pageName = pageEntity.originalName as PageEntity["originalName"]
+              const match = (() => {
+                switch (logseq.settings!.weekNumberOptions) {
+                  case "YYYY-Www":
+                    return pageName.match(/^(\d{4})-[wW](\d{2})$/) // "YYYY-Www"
+                  case "YYYY/qqq/Www": // 2023/Q1/W01
+                    return pageName.match(/^(\d{4})\/[qQ]\d{1}\/[wW](\d{2})$/) // "YYYY/qqq/Www"
+                  default:
+                    return pageName.match(/^(\d{4})\/[wW](\d{2})$/) // "YYYY/Www"
+                }
+              })() as RegExpMatchArray
+              if (match
+                && match[1] !== ""
+                && match[2] !== "") {
+                const weekStart: Date = getWeekStartFromWeekNumber(
+                  Number(match[1]),
+                  Number(match[2]),
+                  logseq.settings?.weekNumberFormat === "US format" ? 0 : 1,
+                  logseq.settings!.weekNumberFormat === "ISO format" ? true : false)
+                refreshCalendar(weekStart, false, true) // 週の最初の日付がハイライトされる
+              } else
+                refreshCalendarCheckSameMonth()
+            } else
+              refreshCalendarCheckSameMonth()
+        } else
+          refreshCalendarCheckSameMonth()
+      })
+    else
+      refreshCalendarCheckSameMonth()
 
     setTimeout(() => querySelectorAllTitle(logseq.settings!.booleanBesideJournalTitle as boolean), 50)
   })
@@ -153,8 +201,12 @@ const main = async () => {
     parent.document.body.classList!.add("boundaries-bottom")
 
 
+  loadLeftCalendar()
+
+
   // ユーザー設定が変更されたときにチェックを実行
   onSettingsChanged()
+
 
   // プラグインオフ時に実行
   logseq.beforeunload(async () => {
@@ -168,10 +220,15 @@ const main = async () => {
     // Observerの解除
     observer.disconnect()
 
+    // Left Calendarのcontainerを取り除く
+    removeElementById(keyLeftCalendarContainer)
+
   })
+
 
   // ショートカットキーを登録
   loadShortcutItems()
+
 
 } /* end_main */
 
@@ -181,8 +238,8 @@ const main = async () => {
 let processingTitleQuery: boolean = false
 
 export const querySelectorAllTitle = async (enable: boolean): Promise<void> => {
-  if (enable === false
-    || processingTitleQuery) return
+  if (// enable === false ||
+    processingTitleQuery) return
   processingTitleQuery = true
 
   //Journalsの場合は複数
@@ -308,6 +365,7 @@ export const boundaries = (targetElementName: string, remove?: boolean) => {
   boundariesProcess(targetElementName, remove ? remove : false, 0)
   processingBoundaries = false
 }
+
 
 
 logseq.ready(main).catch(console.error)
