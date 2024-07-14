@@ -377,7 +377,7 @@ export const settingsTemplate = (userLanguage): SettingSchemaDesc[] => [
       qqq: ${t("Quarter")} (e.g. Q1)
       Www: ${t("Week")} (e.g. W30)
   
-      ${t("year range")}: 2022-2025
+      ${t("year range")}: 2022-${new Date().getFullYear() + 1}
       ${t("Click this toggle to run it.")}
       `,
   },
