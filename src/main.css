@@ -1,7 +1,4 @@
 body {
-
-
-
     &.boundaries-bottom div#weekBoundaries>div#boundariesInner {
         /* 下部に表示するオプション */
         position: fixed;
@@ -17,14 +14,22 @@ body {
 
     &>div#root>div>main {
         & article>div[data-id*="show-weekday-and-week-number"] {
+            & h2>code {
+                /* 設定キーを隠す(表示不要) */
+                display: none;
+            }
+
             & div.heading-item {
-                /* プラグイン設定の見た目を変える(heading) */
+                /* プラグイン設定の見た目を変える(headingのみ) */
                 margin-top: 3em;
                 border-top-width: 1px;
                 padding-top: 1em;
             }
 
             & div.desc-item {
+                /* プラグイン設定の見た目を変える(各項目) */
+
+                /* 有効トグルに合わせて、その次の項目を隠す */
 
                 &[data-key="booleanQuarterlyJournal"]:has(input.form-checkbox:not(:checked))+div.desc-item[data-key="quarterlyJournalSetPageTag"] {
                     display: none;
@@ -202,8 +207,6 @@ body {
                 display: none;
             }
 
-            /* 互換用 #.ThisWeekタグの廃止 */
-
             & div.is-journals {
                 & div.ls-page-title {
                     display: flex;
@@ -322,7 +325,6 @@ body {
                 }
             }
 
-
             & h1.title+span.showWeekday {
                 margin-left: 0.75em;
                 opacity: .75;
@@ -333,16 +335,6 @@ body {
                     margin-left: .75em;
                 }
             }
-        }
-    }
-
-    & div[data-id*="show-weekday-and-week-number"] div.cp__plugins-settings-inner {
-        & h2>code {
-            display: none;
-        }
-
-        & div.heading-item {
-            margin-top: 6em;
         }
     }
 }
