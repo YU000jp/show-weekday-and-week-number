@@ -1,3 +1,15 @@
+# [1.58.0](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.57.1...v1.58.0) (2024-07-14)
+
+
+### Bug Fixes
+
+* **bug:** Beside Journal Title > Match querySelectorAll stop to toggle ([f922920](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/f922920cd3defe66b5ef99317d4014ba5856142f))
+
+
+### Features
+
+* **Add:** Monthly Calendar in left sidebar ([9d6e7de](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/9d6e7dea09b5233a7db937d1d6a9e4941c14ff74))
+
 ## [1.57.1](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.57.0...v1.57.1) (2024-07-06)
 
 
