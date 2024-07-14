@@ -25,6 +25,10 @@ export const loadLeftCalendar = () => {
         if (oldSet.booleanLcWeekNumber !== newSet.booleanLcWeekNumber
             || oldSet.booleanLcHolidays !== newSet.booleanLcHolidays
             || oldSet.lcHolidaysAlert !== newSet.lcHolidaysAlert
+            || oldSet.localizeOrEnglish !== newSet.localizeOrEnglish
+            || oldSet.holidaysCountry !== newSet.holidaysCountry
+            || oldSet.holidaysState !== newSet.holidaysState
+            || oldSet.holidaysRegion !== newSet.holidaysRegion
         )
             refreshCalendar(currentCalendarDate, false, false)
 
