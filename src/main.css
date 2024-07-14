@@ -118,29 +118,20 @@ body {
                             &+div.desc-item[data-key="booleanWeekNumberHideYear"] {
                                 display: none;
 
-                                &+div.desc-item[data-key="booleanSettingsButton"] {
+                                &+div.desc-item[data-key="weekNumberOfTheYearOrMonth"] {
                                     display: none;
 
-                                    &+div.desc-item[data-key="weekNumberOfTheYearOrMonth"] {
+                                    &+div.desc-item[data-key="booleanRelativeTime"] {
                                         display: none;
 
-                                        &+div.desc-item[data-key="booleanWeekendsColor"] {
+                                        &+div.desc-item[data-key="booleanDayOfWeek"] {
                                             display: none;
 
-                                            &+div.desc-item[data-key="booleanRelativeTime"] {
+                                            &+div.desc-item[data-key="booleanMonthlyJournalLink"] {
                                                 display: none;
 
-                                                &+div.desc-item[data-key="booleanDayOfWeek"] {
+                                                &+div.desc-item[data-key="booleanSettingsButton"] {
                                                     display: none;
-
-                                                    &+div.desc-item[data-key="booleanMonthlyJournalLink"] {
-                                                        display: none;
-
-                                                        &+div.desc-item[data-key="booleanUnderLunarCalendar"] {
-                                                            display: none;
-
-                                                        }
-                                                    }
                                                 }
                                             }
                                         }
@@ -160,42 +151,83 @@ body {
                         &+div.desc-item[data-key="boundariesBottom"] {
                             display: none;
 
-                            &+div.desc-item[data-key="boundariesWeekStart"] {
+                            &+div.desc-item[data-key="booleanBoundariesShowMonth"] {
                                 display: none;
 
-                                &+div.desc-item[data-key="boundariesHighlightColorSinglePage"] {
+                                &+div.desc-item[data-key="booleanBoundariesShowWeekNumber"] {
                                     display: none;
 
-                                    &+div.desc-item[data-key="boundariesHighlightColorToday"] {
+                                    &+div.desc-item[data-key="booleanBoundariesHolidays"] {
                                         display: none;
-
-                                        &+div.desc-item[data-key="booleanNoPageFoundCreatePage"] {
-                                            display: none;
-
-                                            &+div.desc-item[data-key="booleanBoundariesFuturePage"] {
-                                                display: none;
-
-                                                &+div.desc-item[data-key="booleanBoundariesShowMonth"] {
-                                                    display: none;
-
-                                                    &+div.desc-item[data-key="booleanBoundariesShowWeekNumber"] {
-                                                        display: none;
-
-                                                        &+div.desc-item[data-key="booleanBoundariesIndicator"] {
-                                                            display: none;
-
-                                                            &+div.desc-item[data-key="booleanBoundariesHolidays"] {
-                                                                display: none;
-                                                            }
-
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
                                     }
                                 }
                             }
+                        }
+                    }
+                }
+
+                &[data-key="booleanLeftCalendar"]:has(input.form-checkbox:not(:checked))+div.desc-item[data-key="booleanLcWeekNumber"] {
+                    display: none;
+
+                    &+div.desc-item[data-key="booleanLcHolidays"] {
+                        display: none;
+
+                        &+div.desc-item[data-key="lcHolidaysAlert"] {
+                            display: none;
+                        }
+                    }
+                }
+            }
+        }
+
+        & div#left-sidebar {
+            & div#left-calendar-container>details {
+
+                &>div#left-calendar-inner {
+
+                    &>div#left-calendar {
+                        margin-left: 0.2em;
+                        white-space: nowrap;
+                        overflow: visible;
+                        font-size: 0.86em;
+
+                        &>table {
+                            background-color: var(--left-sidebar-bg-color);
+                            padding-top: 0.5em;
+                            padding-bottom: 0.5em;
+                            margin-top: 0.5em;
+                            margin-bottom: 0.5em;
+                            white-space: nowrap;
+                            width: 295px;
+                            border: 2px solid var(--ls-border-color);
+                            box-shadow: 0 0 7px var(--ls-border-color);
+
+                            &>thead>tr>th {
+                                padding: 0.55em;
+                                text-align: center;
+                            }
+
+                            &>tbody>tr>td {
+                                padding: 0.45em;
+                                text-align: center;
+                                opacity: 0.8;
+                                font-size: 1.12em;
+                                background-color: var(--ls-tertiary-background-color);
+
+                                &:hover {
+                                    opacity: 1;
+                                    background-color: var(--ls-secondary-background-color);
+                                    box-shadow: 0 0 10px var(--ls-tertiary-background-color);
+                                }
+                            }
+                        }
+
+                        &>a:hover {
+                            text-decoration: underline;
+                        }
+
+                        &>div#testOutput {
+                            overflow: scroll;
                         }
                     }
                 }
@@ -251,7 +283,7 @@ body {
                     }
 
                     @media (min-width: 1301px) {
-                        font-size: .87em;
+                        font-size: 0.87em;
                         justify-content: center;
                     }
 

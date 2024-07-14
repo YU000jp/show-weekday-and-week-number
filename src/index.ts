@@ -1,10 +1,12 @@
-import "@logseq/libs"; //https://plugins-doc.logseq.com/
-import { EntityID } from "@logseq/libs/dist/LSPlugin.user"
-import { setup as l10nSetup, t } from "logseq-l10n"; //https://github.com/sethyuan/logseq-l10n
+import "@logseq/libs" //https://plugins-doc.logseq.com/
+import { EntityID, PageEntity } from "@logseq/libs/dist/LSPlugin.user"
+import { addWeeks, isSameMonth, startOfISOWeek, startOfWeek } from "date-fns"
+import { setup as l10nSetup, t } from "logseq-l10n" //https://github.com/sethyuan/logseq-l10n
 import { besideJournalTitle, observer, observerMain, removeTitleQuery } from "./beside"
 import { boundariesProcess, removeBoundaries } from "./boundaries"
 import { getHolidaysBundle } from "./holidays"
-import { convertLanguageCodeToCountryCode, getJournalDayDate, removeContainer } from "./lib"
+import { createCalendar, currentCalendarDate, keyLeftCalendarContainer, loadLeftCalendar, removeCalendarAndNav } from "./left-calendar"
+import { convertLanguageCodeToCountryCode, getJournalDayDate, getWeekStartFromWeekNumber, removeElementById } from "./lib"
 import fileMainCSS from "./main.css?inline"
 import { currentPageIsMonthlyJournal } from "./monthlyJournal"
 import { notice } from "./notice"
@@ -32,12 +34,11 @@ import uk from "./translations/uk.json"
 import zhCN from "./translations/zh-CN.json"
 import zhHant from "./translations/zh-Hant.json"
 import { currentPageIsWeeklyJournal, weeklyEmbed } from "./weeklyJournal"
-import { keyLeftCalendarContainer, loadLeftCalendar } from "./left-calendar"
 
 // プラグイン名(小文字タイプ)
 export const pluginNameCut = "show-weekday-and-week-number"
 // プラグイン名の最後に[plugin]を追加
-export const pluginName  = `${pluginNameCut} ${t("plugin")}`
+export const pluginName = `${pluginNameCut} ${t("plugin")}`
 // コンソールの署名用
 export const consoleSignature = ` <----- [${pluginName}]`
 
@@ -125,6 +126,44 @@ const main = async () => {
         //div#journals
         setTimeout(() => boundaries("journals"), 20)
 
+    // 左サイドバーのカレンダーを更新する
+    if (logseq.settings!.booleanLeftCalendar === true)
+      logseq.Editor.getCurrentPage().then((pageEntity) => {
+        if (pageEntity) {
+          if (pageEntity.journalDay)
+            refreshCalendar(getJournalDayDate(String(pageEntity.journalDay)), true, false)
+          else
+            if (logseq.settings!.booleanWeeklyJournal === true) {
+              const pageName = pageEntity.originalName as PageEntity["originalName"]
+              const match = (() => {
+                switch (logseq.settings!.weekNumberOptions) {
+                  case "YYYY-Www":
+                    return pageName.match(/^(\d{4})-[wW](\d{2})$/) // "YYYY-Www"
+                  case "YYYY/qqq/Www": // 2023/Q1/W01
+                    return pageName.match(/^(\d{4})\/[qQ]\d{1}\/[wW](\d{2})$/) // "YYYY/qqq/Www"
+                  default:
+                    return pageName.match(/^(\d{4})\/[wW](\d{2})$/) // "YYYY/Www"
+                }
+              })() as RegExpMatchArray
+              if (match
+                && match[1] !== ""
+                && match[2] !== "") {
+                const weekStart: Date = getWeekStartFromWeekNumber(
+                  Number(match[1]),
+                  Number(match[2]),
+                  logseq.settings?.weekNumberFormat === "US format" ? 0 : 1,
+                  logseq.settings!.weekNumberFormat === "ISO format" ? true : false)
+                refreshCalendar(weekStart, false, true) // 週の最初の日付がハイライトされる
+              } else
+                refreshCalendarCheckSameMonth()
+            } else
+              refreshCalendarCheckSameMonth()
+        } else
+          refreshCalendarCheckSameMonth()
+      })
+    else
+      refreshCalendarCheckSameMonth()
+
     setTimeout(() => querySelectorAllTitle(logseq.settings!.booleanBesideJournalTitle as boolean), 50)
   })
 
@@ -183,7 +222,7 @@ const main = async () => {
     observer.disconnect()
 
     // Left Calendarのcontainerを取り除く
-    removeContainer(keyLeftCalendarContainer)
+    removeElementById(keyLeftCalendarContainer)
 
   })
 
@@ -191,7 +230,7 @@ const main = async () => {
   // ショートカットキーを登録
   loadShortcutItems()
 
-  
+
 } /* end_main */
 
 
@@ -200,8 +239,8 @@ const main = async () => {
 let processingTitleQuery: boolean = false
 
 export const querySelectorAllTitle = async (enable: boolean): Promise<void> => {
-  if (enable === false
-    || processingTitleQuery) return
+  if (// enable === false ||
+    processingTitleQuery) return
   processingTitleQuery = true
 
   //Journalsの場合は複数
@@ -326,6 +365,27 @@ export const boundaries = (targetElementName: string, remove?: boolean) => {
   processingBoundaries = true
   boundariesProcess(targetElementName, remove ? remove : false, 0)
   processingBoundaries = false
+}
+
+
+
+const refreshCalendar = (targetDate: Date, singlePage: boolean, weekly: boolean) => {
+  const innerElement: HTMLDivElement | null = parent.document.getElementById("left-calendar-inner") as HTMLDivElement | null
+  if (innerElement) {
+    removeCalendarAndNav()
+    createCalendar(
+      targetDate,
+      getConfigPreferredDateFormat(),
+      innerElement,
+      { singlePage, weekly })
+  }
+}
+
+
+const refreshCalendarCheckSameMonth = () => {
+  const today = new Date()
+  if (isSameMonth(currentCalendarDate, today) === false)
+    refreshCalendar(today, false, false)
 }
 
 

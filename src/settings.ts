@@ -27,13 +27,75 @@ export const settingsTemplate = (userLanguage): SettingSchemaDesc[] => [
   },
   {
     key: "localizeOrEnglish",
-    title: t(
-      "Select language Localize(:default) or English(:en) for day of the week"
-    ),
+    title: t("Select language (default)"),
     type: "enum",
     default: "default",
-    enumChoices: ["default", "en"],
-    description: "",
+    enumChoices: [
+      "default",              // Gregorian calendar (default)
+      "en",                   // Gregorian calendar (English)
+      "am-ET-u-ca-ethiopic",   // Amharic (Ethiopia) - Ethiopian calendar
+      "ar-EG",   // Egypt
+      "ar-SA",   // Arabic (Saudi Arabia) - Gregorian calendar (default)
+      "ar-SA-u-ca-islamic-umalqura",   // Arabic (Saudi Arabia) - Islamic (Umm al-Qura) calendar
+      "bn-BD",   // Bangladesh
+      "de-DE",   // Germany
+      "en-AU",   // Australia
+      "en-CA",   // Canada (English)
+      "en-GB",   // English (United Kingdom) - Gregorian calendar (default)
+      "en-GB-u-ca-islamic",   // English (United Kingdom) - Islamic calendar
+      "en-GB-u-ca-persian",   // English (United Kingdom) - Persian calendar
+      "en-US",   // English (United States) - Gregorian calendar (default)
+      "en-US-u-ca-islamic",   // English (United States) - Islamic calendar
+      "en-US-u-ca-persian",   // English (United States) - Persian calendar
+      "es-AR",   // Argentina
+      "es-CL",   // Chile
+      "es-CO",   // Colombia
+      "es-CR",   // Costa Rica
+      "es-DO",   // Dominican Republic
+      "es-EC",   // Ecuador
+      "es-ES",   // Spain
+      "es-GT",   // Guatemala
+      "es-HN",   // Honduras
+      "es-MX",   // Mexico
+      "es-NI",   // Nicaragua
+      "es-PA",   // Panama
+      "es-PE",   // Peru
+      "es-PR",   // Puerto Rico
+      "es-SV",   // El Salvador
+      "es-UY",   // Uruguay
+      "es-VE",   // Venezuela
+      "fa-IR",   // Persian (Iran) - Gregorian calendar (default)
+      "fa-IR-u-ca-persian",    // Persian (Iran) - Persian calendar (Jalali)
+      "fr-CA",   // Canada (French)
+      "fr-FR",   // France
+      "he-IL-u-ca-hebrew",     // Hebrew (Israel) - Hebrew calendar
+      "hi-IN",   // India
+      "id-ID",   // Indonesia
+      "it-IT",   // Italy
+      "ja-JP",   // Japanese (Japan) - Gregorian calendar (default)
+      "ja-JP-u-ca-japanese",   // Japanese (Japan) - Japanese calendar
+      "ko-KR",   // Korean (Korea) - Gregorian calendar (default)
+      "ko-KR-u-ca-korean",    // Korean (Korea) - Korean calendar
+      "ms-MY",   // Malaysia
+      "nl-NL",   // Netherlands
+      "pl-PL",   // Poland
+      "pt-BR",   // Brazil
+      "pt-PT",   // Portugal
+      "ru-RU",   // Russia
+      "th-TH",   // Thailand
+      "th-TH-u-ca-buddhist",   // Thai (Thailand) - Buddhist calendar
+      "th-TH-u-nu-thai",       // Thai (Thailand) - Thai digits
+      "tr-TR",   // Turkey
+      "vi-VN",   // Vietnam
+      "zh-CN",   // China
+      "zh-CN-u-ca-chinese",    // Chinese (China) - Chinese calendar
+      "zh-Hans-CN",            // Chinese (China) - Gregorian calendar (default)
+      "zh-Hant-TW-u-ca-taiwan",// Chinese (Taiwan) - Gregorian calendar (default)
+      "zh-TW",   // Taiwan
+      "zh-TW-u-ca-roc",        // Chinese (Taiwan) - Minguo calendar (Republic of China era)
+    ],
+    // defaultを選択すると、ブラウザの言語設定に従う(ローカライズ)
+    description: t("If default is selected, the browser's language settings are followed (localisation)."),
   },
   {
     key: "holidaysCountry",
@@ -73,8 +135,67 @@ export const settingsTemplate = (userLanguage): SettingSchemaDesc[] => [
     default: true,
     description: t("Other language regions are not affected."),
   },
-  // 共通設定ここまで
-
+  {//20240120
+    key: "booleanBoundariesIndicator",
+    title: t("Show indicator of journal entries") + "🆙",
+    type: "boolean",
+    default: true,
+    //ページが存在する場合に、インディケーターを表示する
+    description: "",
+  },
+  {//week start 通常はformatに従う
+    key: "boundariesWeekStart",
+    title: t("Week start (Unset: by the selected format)"),
+    type: "enum",
+    enumChoices: ["unset", "Sunday", "Monday", "Saturday"],
+    default: "unset",
+    description: t("default: `unset`"),
+  },
+  {
+    // 土曜日と日曜日の文字に色を付ける
+    key: "booleanWeekendsColor",
+    title: t("Colour the letters Saturday and Sunday"),
+    type: "boolean",
+    default: true,
+    description: "",
+  },
+  {//ハイライトカラーの指定(シングルページ)
+    key: "boundariesHighlightColorSinglePage",
+    title: t("Highlight color (single page)"),
+    type: "string",
+    inputAs: "color",
+    default: "#f59e0b",
+    description: "default-color: `#f59e0b`",
+  },
+  {//ハイライトカラーの指定(今日の日付)
+    key: "boundariesHighlightColorToday",
+    title: t("Highlight color (today)"),
+    type: "string",
+    inputAs: "color",
+    default: "#22c55e",
+    description: "default-color: `#22c55e`",
+  },
+  {//今日以前のページを開こうとして、それが見つからない場合は、ページを作成する
+    key: "booleanNoPageFoundCreatePage",
+    title: t("If no page found, not create page (before today)"),
+    type: "boolean",
+    default: true,
+    description: "",
+  },
+  {//将来のページも開く
+    key: "booleanBoundariesFuturePage",
+    title: t("Open future page"),
+    type: "boolean",
+    default: true,
+    description: "",
+  },
+  {
+    key: "booleanUnderLunarCalendar",
+    title: t("Enable month and day of lunar-calendar (Chinese only)"),
+    type: "boolean",
+    default: true,
+    description: t("Other language regions are not affected."),
+  },
 
 
   //Behind journal title
@@ -123,26 +244,12 @@ export const settingsTemplate = (userLanguage): SettingSchemaDesc[] => [
       "Enabling this setting conceals the year representation in the date format. For instance, 2023-W30 displays as W30. Typically, the notation of week numbers follows the rules based on ISO 8601. The reason for distinguishing the year is that the first week of a year might be included in the last week of the previous year. Only in such cases does it display as 2023-W53."
     ),
   },
-  {//設定ボタンを表示する
-    key: "booleanSettingsButton",
-    title: t("Show settings button"),
-    type: "boolean",
-    default: true,
-    description: "",
-  },
   {
     key: "weekNumberOfTheYearOrMonth",
     title: t("Show week number of the year or month (unit)"),
     type: "enum",
     default: "Year",
     enumChoices: ["Year", "Month"],
-    description: "",
-  },
-  {
-    key: "booleanWeekendsColor",
-    title: t("Coloring to the word of Saturday or Sunday"),
-    type: "boolean",
-    default: true,
     description: "",
   },
   {
@@ -167,12 +274,12 @@ export const settingsTemplate = (userLanguage): SettingSchemaDesc[] => [
     // [[2023/10]]のような階層のMonthly Journalを開くリンクを設置する
     description: t("Place a link to open the Monthly Journal of the hierarchy like [[2023/10]]"),
   },
-  {
-    key: "booleanUnderLunarCalendar",
-    title: t("Enable month and day of lunar-calendar (Chinese only)"),
+  {//設定ボタンを表示する
+    key: "booleanSettingsButton",
+    title: t("Show settings button"),
     type: "boolean",
     default: true,
-    description: t("Other language regions are not affected."),
+    description: "",
   },
   // ここまでトグルの対象
 
@@ -191,63 +298,25 @@ export const settingsTemplate = (userLanguage): SettingSchemaDesc[] => [
     title: t("Enable feature"),
     type: "boolean",
     default: true,
-    description: t("Use also on single journal"),
+    description: t("Use on single journal"),
   },
   {
     key: "booleanJournalsBoundaries",
-    title: t("Use also on journals"),
+    title: "",
     type: "boolean",
     default: true,
-    description: "",
+    description: t("Use on journals"),
   },
   {
     key: "booleanBoundariesOnWeeklyJournal",
-    title: t("Use also on Weekly Journal"),
+    title: "",
     type: "boolean",
     default: true,
-    description: "",
+    description: t("Use on Weekly Journal"),
   },
   {//20240108
     key: "boundariesBottom",
     title: t("Show it on bottom"),
-    type: "boolean",
-    default: true,
-    description: "",
-  },
-  {//Journal Boundaries, week start 通常はformatに従う
-    key: "boundariesWeekStart",
-    title: t("Mini calendar only, Week start (Unset: by the selected format)"),
-    type: "enum",
-    enumChoices: ["unset", "Sunday", "Monday", "Saturday"],
-    default: "unset",
-    description: t("default: `unset`"),
-  },
-  {//ハイライトカラーの指定(シングルページ)
-    key: "boundariesHighlightColorSinglePage",
-    title: t("Highlight color (single page)"),
-    type: "string",
-    inputAs: "color",
-    default: "#f59e0b",
-    description: "default-color: `#f59e0b`",
-  },
-  {//ハイライトカラーの指定(今日の日付)
-    key: "boundariesHighlightColorToday",
-    title: t("Highlight color (today)"),
-    type: "string",
-    inputAs: "color",
-    default: "#22c55e",
-    description: "default-color: `#22c55e`",
-  },
-  {//今日以前のページを開こうとして、それが見つからない場合は、ページを作成する
-    key: "booleanNoPageFoundCreatePage",
-    title: t("If no page found, not create page (before today)"),
-    type: "boolean",
-    default: true,
-    description: "",
-  },
-  {//将来のページも開く
-    key: "booleanBoundariesFuturePage",
-    title: t("Open future page"),
     type: "boolean",
     default: true,
     description: "",
@@ -259,20 +328,11 @@ export const settingsTemplate = (userLanguage): SettingSchemaDesc[] => [
     default: true,
     description: "",
   },
-  {//週番号を表示する (月曜日の日付から計算した週番号)
+  {//週番号を表示する
     key: "booleanBoundariesShowWeekNumber",
-    title: t("Show week number (calculate from the date of Monday)"),
+    title: t("Show week number"),
     type: "boolean",
     default: true,
-    description: "",
-  },
-  //20240120
-  {
-    key: "booleanBoundariesIndicator",
-    title: t("Show indicator (dot) of journal entries") + "🆙",
-    type: "boolean",
-    default: true,
-    //ページが存在する場合に、インディケーターを表示する
     description: "",
   },
   //20240121
@@ -282,16 +342,74 @@ export const settingsTemplate = (userLanguage): SettingSchemaDesc[] => [
     title: t("Highlight holidays"),
     type: "boolean",
     default: true,
-    description: t("Add color to holidays and display the content on mouseover")
+    description: "",
   },
   // ここまでトグルの対象
 
 
 
-  //Weekly Journal
+  // Left Calendar 20240714-
   {
     key: "heading003",
-    title: "3. " + t("Weekly Journal"),
+    title: "3. " + t("Left Calendar") + "🆙",
+    type: "heading",
+    default: "",
+    description: "",
+  },
+  {// 有効トグル
+    key: "booleanLeftCalendar",
+    title: t("Enable feature"),
+    type: "boolean",
+    default: true,
+    description: "",
+  },
+  {//週番号を表示する
+    key: "booleanLcWeekNumber",
+    title: t("Show week number"),
+    type: "boolean",
+    default: true,
+    description: "",
+  },
+  {// 祝日をハイライトするかどうか
+    key: "booleanLcHolidays",
+    title: t("Highlight holidays"),
+    type: "boolean",
+    default: true,
+    description: "",
+    //共通設定に、choiceHolidaysColorあり
+  },
+  {// 祝日のアラートを表示するかどうか
+    key: "lcHolidaysAlert",
+    title: t("Enable Holidays alert"),
+    type: "enum",
+    enumChoices: ["none", "Today only", "Monthly"],
+    default: "Today only",
+    description: "",
+  },
+  // ここまでトグルの対象
+  // {// 特定の日付に色を付けるためのユーザー設定
+  //   key: "userColor",
+  //   title: t("User color"), //TODO: 翻訳に追加する
+  //   type: "string",
+  //   default: "",
+  //     // yyyy/mm/dd::ライブ参加の日 のような形式でtextareaに複数行で入力する
+  // // mm/dd::Birthday のような形式で入力すると、毎年その日に色が付く
+  // // textareaに複数行入力する
+  // // 
+  //   description: `
+  //   ${t("Input in the form of yyyy/mm/dd::Event name")}
+  //   ${t("If you input in the form of mm/dd::Event name, the color will be applied every year on that day.")}
+  //   ${t("Enter multiple lines in the textarea.")}
+  //   `,
+  // },
+  // 共通設定ここまで
+
+
+
+  //Weekly Journal
+  {
+    key: "heading004",
+    title: "4. " + t("Weekly Journal"),
     type: "heading",
     default: "",
     description: "",
@@ -419,8 +537,8 @@ export const settingsTemplate = (userLanguage): SettingSchemaDesc[] => [
 
   //Monthly Journal
   {
-    key: "heading004",
-    title: "4. " + t("Monthly Journal") + "🆕",
+    key: "heading005",
+    title: "5. " + t("Monthly Journal"),
     type: "heading",
     default: "",
     description: "",
@@ -452,8 +570,8 @@ export const settingsTemplate = (userLanguage): SettingSchemaDesc[] => [
 
   //Quarterly Journal
   {
-    key: "heading005",
-    title: "5. " + t("Quarterly Journal") + "🆕",
+    key: "heading006",
+    title: "6. " + t("Quarterly Journal"),
     type: "heading",
     default: "",
     description: "",
@@ -480,54 +598,6 @@ export const settingsTemplate = (userLanguage): SettingSchemaDesc[] => [
     description: t("Input the template name (default is blank)"),
   },
   // ここまでトグルの対象
-
-
-  // Left Calendar 20240714-
-  {
-    key: "heading006",
-    title: "6. " + t("Left Calendar") + "🆙", // TODO: 翻訳に追加する
-    type: "heading",
-    default: "",
-    description: "",
-  },
-  {// 有効トグル
-    key: "booleanLeftCalendar",
-    title: t("Enable feature"),
-    type: "boolean",
-    default: false,
-    description: "",
-  },
-  {// 祝日をハイライトするかどうか
-    key: "booleanLcHolidays",
-    title: t("Highlight holidays"),
-    type: "boolean",
-    default: true,
-    description: "",
-    //共通設定に、choiceHolidaysColorあり
-  },
-  {// 週末に色を付けるかどうか
-    key: "booleanLcWeekendsColor",
-    title: t("Coloring to the word of Saturday or Sunday"),
-    type: "boolean",
-    default: true,
-    description: "",
-  },
-  {//週番号を表示する
-    key: "booleanLcWeekNumber",
-    title: t("Show week number (calculate from the date of Monday)"),
-    type: "boolean",
-    default: true,
-    description: "",
-  },
-  {
-    key: "booleanLcIndicator",
-    title: t("Show indicator (dot) of journal entries"),
-    type: "boolean",
-    default: true,
-    //ページが存在する場合に、インディケーターを表示する
-    description: "",
-  },
-  // ここまでトグルの対象 TODO: トグル用CSS未設定
 
 
 ]

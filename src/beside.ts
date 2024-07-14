@@ -1,7 +1,7 @@
 import { format, getWeekOfMonth, isSaturday, isSunday } from "date-fns"
 import { t } from "logseq-l10n"
 import { HolidayUtil, Lunar } from "lunar-typescript"
-import { createLinkMonthlyLink, createSettingButton, formatRelativeDate, getQuarter, getWeeklyNumberFromDate, getWeeklyNumberString, openPageFromPageName } from "./lib"
+import { createLinkMonthlyLink, createSettingButton, formatRelativeDate, getQuarter, getWeeklyNumberFromDate, getWeeklyNumberString, localizeMonthString, openPageFromPageName } from "./lib"
 import { getConfigPreferredLanguage, querySelectorAllTitle } from "."
 import { exportHolidaysBundle } from "./holidays"
 
@@ -178,7 +178,7 @@ const enableWeekNumber = (journalDate: Date, weekStartsOn: 0 | 1): string => {
 const enableMonthlyJournalLink = (journalDate: Date, dateInfoElement: HTMLSpanElement) => {
   const formatDateString: string = format(journalDate, "yyyy/MM")
   dateInfoElement.appendChild(createLinkMonthlyLink(
-    new Intl.DateTimeFormat(logseq.settings!.localizeOrEnglish as string || "default", { month: "short" }).format(journalDate)
+    localizeMonthString(journalDate, false)
     , formatDateString
     , "Monthly Journal [[" + formatDateString + "]]"))
 }
