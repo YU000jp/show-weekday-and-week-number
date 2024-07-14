@@ -2,7 +2,7 @@ import { format, getWeekOfMonth, isSaturday, isSunday } from "date-fns"
 import { t } from "logseq-l10n"
 import { HolidayUtil, Lunar } from "lunar-typescript"
 import { createLinkMonthlyLink, createSettingButton, formatRelativeDate, getQuarter, getWeeklyNumberFromDate, getWeeklyNumberString, openPageFromPageName } from "./lib"
-import { getConfigPreferredLanguage } from "."
+import { getConfigPreferredLanguage, querySelectorAllTitle } from "."
 import { exportHolidaysBundle } from "./holidays"
 
 // プロセス中かどうかを判定するフラグ
@@ -10,7 +10,7 @@ let processingBehind: boolean = false
 
 
 //behind journal title
-export const behindJournalTitle = async (journalDate: Date, titleElement: HTMLElement, preferredDateFormat) => {
+export const besideJournalTitle = async (journalDate: Date, titleElement: HTMLElement, preferredDateFormat) => {
 
   if (processingBehind === true) return // プロセス中の場合は処理をキャンセルする
 
@@ -183,9 +183,11 @@ const enableMonthlyJournalLink = (journalDate: Date, dateInfoElement: HTMLSpanEl
     , "Monthly Journal [[" + formatDateString + "]]"))
 }
 
+
 const enableSettingsButton = (dateInfoElement: HTMLSpanElement) => {
   dateInfoElement.appendChild(createSettingButton())
 }
+
 
 const enableUnderLunarCalendar = (LunarDate: Lunar, baseLineElement: HTMLSpanElement) => {
   const lunarCalendarElement = document.createElement("span")
@@ -196,6 +198,7 @@ const enableUnderLunarCalendar = (LunarDate: Lunar, baseLineElement: HTMLSpanEle
   baseLineElement.appendChild(lunarCalendarElement)
 }
 
+
 const enableUnderLunarCalendarHoliday = (LunarDate: Lunar, baseLineElement: HTMLSpanElement) => {
   const lunarCalendarElement = document.createElement("span")
   lunarCalendarElement.id = "lunarCalendarHoliday"
@@ -205,6 +208,7 @@ const enableUnderLunarCalendarHoliday = (LunarDate: Lunar, baseLineElement: HTML
     lunarCalendarElement.textContent = holiday.getName()
   baseLineElement.appendChild(lunarCalendarElement)
 }
+
 
 const enableUnderHolidayForWorldCountry = (journalDate: Date, baseLineElement: HTMLSpanElement) => {
   const bundle = exportHolidaysBundle()
@@ -223,3 +227,30 @@ const enableUnderHolidayForWorldCountry = (journalDate: Date, baseLineElement: H
     }
   }
 }
+
+
+export const removeTitleQuery = () => {
+  const titleBehindElements = parent.document.body.querySelectorAll("div#main-content-container div:is(.journal,.is-journals) h1.title+span.showWeekday") as NodeListOf<HTMLElement>
+  titleBehindElements.forEach((titleElement) => titleElement.remove())
+  const titleElements = parent.document.body.querySelectorAll("div#main-content-container div:is(.journal,.is-journals) h1.title[data-checked]") as NodeListOf<HTMLElement>
+  titleElements.forEach((titleElement) => titleElement.removeAttribute("data-checked"))
+}
+
+
+// observer
+export const observer = new MutationObserver(async (): Promise<void> => {
+  observer.disconnect()
+  await querySelectorAllTitle(logseq.settings!.booleanBesideJournalTitle as boolean)
+  setTimeout(() => observerMain(), 800)
+})
+
+
+//Credit: ottodevs  https://discuss.logseq.com/t/show-week-day-and-week-number/12685/18
+export const observerMain = () => observer.observe(
+  parent.document.getElementById("main-content-container") as HTMLDivElement,
+  {
+    attributes: true,
+    subtree: true,
+    attributeFilter: ["class"],
+  }
+)

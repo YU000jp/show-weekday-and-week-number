@@ -1,0 +1,236 @@
+import { LSPluginBaseInfo, PageEntity } from "@logseq/libs/dist/LSPlugin.user"
+import { boundaries, querySelectorAllTitle, getUserConfig } from "."
+import { removeBoundaries } from "./boundaries"
+import { removeTitleQuery } from "./beside"
+import { getHolidaysBundle, removeHolidaysBundle } from "./holidays"
+import { removeProvideStyle } from "./lib"
+import { keyThisWeekPopup, weeklyEmbed } from "./weeklyJournal"
+
+let processingSettingsChanged: boolean = false
+let processingRenamePage: boolean = false
+
+
+// ユーザー設定が変更されたときに実行
+
+export const onSettingsChanged = () => {
+  logseq.onSettingsChanged((newSet: LSPluginBaseInfo["settings"], oldSet: LSPluginBaseInfo["settings"]) => {
+
+
+    if ((oldSet.booleanBoundaries === true
+      && newSet.booleanBoundaries === false)
+      || (oldSet.booleanJournalsBoundaries === true
+        && newSet.booleanJournalsBoundaries === false
+        && parent.document.getElementById("journals") as Node)) removeBoundaries() //boundariesを削除する
+    else
+      if (oldSet.booleanBoundaries === false
+        && newSet.booleanBoundaries === true)
+        SettingsChangedJournalBoundariesEnable() //Journal boundariesを表示する
+      else
+        if (oldSet.booleanJournalsBoundaries === false
+          && newSet.booleanJournalsBoundaries === true
+          && parent.document.getElementById("journals") as Node)
+          boundaries("journals") //日誌の場合のみ
+
+
+    if (oldSet.boundariesWeekStart !== newSet.boundariesWeekStart
+      || oldSet.localizeOrEnglish !== newSet.localizeOrEnglish
+      || oldSet.weekNumberFormat !== newSet.weekNumberFormat
+      || oldSet.booleanBoundariesFuturePage !== newSet.booleanBoundariesFuturePage
+      || oldSet.booleanBoundariesShowMonth !== newSet.booleanBoundariesShowMonth
+      || oldSet.booleanBoundariesShowWeekNumber !== newSet.booleanBoundariesShowWeekNumber
+      || oldSet.booleanWeekendsColor !== newSet.booleanWeekendsColor
+      || oldSet.boundariesHighlightColorSinglePage !== newSet.boundariesHighlightColorSinglePage
+      || oldSet.boundariesHighlightColorToday !== newSet.boundariesHighlightColorToday
+      || oldSet.booleanWeeklyJournal !== newSet.booleanWeeklyJournal
+      || oldSet.booleanBoundariesIndicator !== newSet.booleanBoundariesIndicator
+      || oldSet.booleanBoundariesHolidays !== newSet.booleanBoundariesHolidays
+      || oldSet.holidaysCountry !== newSet.holidaysCountry
+      || oldSet.holidaysState !== newSet.holidaysState
+      || oldSet.holidaysRegion !== newSet.holidaysRegion
+      || oldSet.choiceHolidaysColor !== newSet.choiceHolidaysColor
+      || oldSet.booleanLunarCalendar !== newSet.booleanLunarCalendar
+      || oldSet.weekNumberOptions !== newSet.weekNumberOptions) {
+      //Journal boundariesを再表示する
+      removeBoundaries()
+      SettingsChangedJournalBoundariesEnable()
+    }
+
+
+    if (oldSet.localizeOrEnglish !== newSet.localizeOrEnglish
+      || oldSet.booleanDayOfWeek !== newSet.booleanDayOfWeek
+      || oldSet.longOrShort !== newSet.longOrShort
+      || oldSet.booleanWeekNumber !== newSet.booleanWeekNumber
+      || oldSet.weekNumberOfTheYearOrMonth !== newSet.weekNumberOfTheYearOrMonth
+      || oldSet.booleanWeekendsColor !== newSet.booleanWeekendsColor
+      || oldSet.weekNumberFormat !== newSet.weekNumberFormat
+      || oldSet.booleanRelativeTime !== newSet.booleanRelativeTime
+      || oldSet.booleanWeeklyJournal !== newSet.booleanWeeklyJournal
+      || oldSet.booleanWeekNumberHideYear !== newSet.booleanWeekNumberHideYear
+      || oldSet.booleanSettingsButton !== newSet.booleanSettingsButton
+      || oldSet.booleanMonthlyJournalLink !== newSet.booleanMonthlyJournalLink
+      || oldSet.holidaysCountry !== newSet.holidaysCountry
+      || oldSet.holidaysState !== newSet.holidaysState
+      || oldSet.holidaysRegion !== newSet.holidaysRegion
+      || oldSet.choiceHolidaysColor !== newSet.choiceHolidaysColor
+      || oldSet.booleanUnderLunarCalendar !== newSet.booleanUnderLunarCalendar
+      || oldSet.underHolidaysAlert !== newSet.underHolidaysAlert
+      || oldSet.weekNumberOptions !== newSet.weekNumberOptions
+      || oldSet.booleanBesideJournalTitle !== newSet.booleanBesideJournalTitle) {
+      //再表示 Behind Journal Title
+      removeTitleQuery()
+      setTimeout(() => querySelectorAllTitle(newSet.booleanBesideJournalTitle as boolean), 500)
+    }
+
+
+    // weeklyEmbed
+    if (oldSet.weeklyEmbed !== newSet.weeklyEmbed)
+      if (newSet.weeklyEmbed === true)
+        weeklyEmbed() //styleを追加する
+      else
+        removeProvideStyle(keyThisWeekPopup) //styleを削除する
+
+
+    //weeklyJournalHeadlineProperty
+    if (oldSet.weeklyJournalHeadlineProperty !== newSet.weeklyJournalHeadlineProperty
+      && oldSet.weeklyJournalHeadlineProperty !== ""
+      && newSet.weeklyJournalHeadlineProperty !== "") //空白の場合は実行しない
+      logseq.Editor.renamePage(oldSet.weeklyJournalHeadlineProperty as string, newSet.weeklyJournalHeadlineProperty as string) //ページ名を変更する
+
+
+    //20240108 boundariesを下側に表示する
+    if (oldSet.boundariesBottom !== newSet.boundariesBottom)
+      if (newSet.boundariesBottom === true)
+        parent.document.body.classList!.add("boundaries-bottom")
+      else
+        parent.document.body.classList!.remove("boundaries-bottom")
+
+
+    // 20240121 祝日表示に関するトグル
+    if (oldSet.booleanBoundariesHolidays !== newSet.booleanBoundariesHolidays
+      || oldSet.underHolidaysAlert !== newSet.underHolidaysAlert)
+      if (newSet.booleanBoundariesHolidays === true
+        || newSet.underHolidaysAlert === true) //どちらかがオンの場合
+        getHolidaysBundle(newSet.holidaysCountry as string, { settingsChanged: true }) //バンドルを取得する
+      else
+        if (newSet.booleanBoundariesHolidays === false
+          && newSet.underHolidaysAlert === false) //両方オフの場合
+          removeHolidaysBundle() //バンドルを削除する
+
+    if (oldSet.holidaysCountry !== newSet.holidaysCountry
+      || oldSet.holidaysState !== newSet.holidaysState
+      || oldSet.holidaysRegion !== newSet.holidaysRegion) //国名などが変更された場合
+      getHolidaysBundle(newSet.holidaysCountry as string, { settingsChanged: true }) //バンドルを取得する
+
+
+    // 週番号のフォーマットを変更する
+    if (oldSet.weekNumberChangeQ === false
+      && newSet.weekNumberChangeQ === true)
+      changeWeekNumberToQuarterly("-", false) //2023-W01からW53までと2024-W01からW53まで。
+    else
+      if (oldSet.weekNumberChangeQS === false
+        && newSet.weekNumberChangeQS === true)
+        changeWeekNumberToQuarterly("/", false) //2023/W01からW53までと2024/W01からW53まで。
+      else
+        if (oldSet.weekNumberChangeRevert === false
+          && newSet.weekNumberChangeRevert === true)
+          changeWeekNumberToQuarterly("/", true) //2023/Q1/W01からQ4/W53までと2024/Q1/W01からQ4/W53まで。
+        else
+          if (oldSet.weekNumberChangeSlash === false
+            && newSet.weekNumberChangeSlash === true)
+            changeWeekNumberForSlash()
+
+
+    //CAUTION: 日付形式が変更された場合は、re-indexをおこなうので、問題ないが、言語設定が変更された場合は、その設定は、すぐには反映されない。プラグインの再読み込みが必要になるが、その頻度がかなり少ないので問題ない。
+    if (processingSettingsChanged) return
+    processingSettingsChanged = true
+    getUserConfig()
+    setTimeout(() => processingSettingsChanged === false, 1000)
+
+
+  })
+}  // end_onSettingsChanged
+
+
+
+//Journal boundariesを表示する 設定変更時に実行
+export const SettingsChangedJournalBoundariesEnable = () =>
+  setTimeout(() =>
+    boundaries(parent.document.getElementById("journals") as Node ?
+      "journals"
+      : "is-journals"),
+    100)
+
+
+// 年間のすべての週番号の配列を用意する
+const getWeekList = () => Array.from({ length: 53 }, (_, i) => i + 1)
+
+// 2022年から現在の年+1年までの週番号の配列を用意する
+const getTargetList = () => Array.from({ length: (new Date().getFullYear()) - 2022 + 2 }, (_, i) => (2022 + i).toString())
+
+
+// 週番号のフォーマットを変更する - から/に変更する
+const changeWeekNumberForSlash = () => {
+  if (processingRenamePage) return
+  processingRenamePage = true
+  const weekList: number[] = getWeekList()
+  const targetList: string[] = getTargetList()
+  for (const year of targetList)
+    for (const week of weekList) {
+      const weekNumber = week.toString().padStart(2, "0")
+      logseq.Editor.getPage(`${year}-W${weekNumber}`).then((page: { uuid: PageEntity["uuid"] } | null) => {
+        if (page) {
+          logseq.Editor.renamePage(`${year}-W${weekNumber}`, `${year}/W${weekNumber}`)
+          console.log(`Page ${year}-W${weekNumber} has been renamed to ${year}/W${weekNumber}.`)
+        }
+        else
+          console.log(`Page ${year}-W${weekNumber} does not exist.`)
+      })
+    }
+  logseq.UI.showMsg("Week number has been changed to the quarterly format.", "info", { timeout: 5000 })
+  setTimeout(() => {
+    processingRenamePage = false
+    logseq.updateSettings({ weekNumberChangeSlash: false })
+  }, 2000)
+}
+
+
+// 週番号のフォーマットを変更する 四半期との変換
+const changeWeekNumberToQuarterly = async (separateString: string, revert: boolean) => {
+  if (processingRenamePage) return
+  processingRenamePage = true
+
+  const targetList: string[] = getTargetList()
+  const targetList2 = ["Q1", "Q2", "Q3", "Q4", "Q4"]
+  const weekList = getWeekList()
+  for (const year of targetList)
+    for (const week of weekList) {
+      const weekNumber = week.toString().padStart(2, "0")
+      if (revert === true) {
+        const weekNumberQuarter = targetList2[Math.floor((week - 1) / 13)]
+        logseq.Editor.getPage(`${year}/${weekNumberQuarter}/W${weekNumber}`).then((page: { uuid: PageEntity["uuid"] } | null) => {
+          if (page) {
+            logseq.Editor.renamePage(`${year}/${weekNumberQuarter}/W${weekNumber}`, `${year}${separateString}W${weekNumber}`)
+            console.log(`Page ${year}/${weekNumberQuarter}/W${weekNumber} has been renamed to ${year}${separateString}W${weekNumber}.`)
+          }
+          else
+            console.log(`Page ${year}/${weekNumberQuarter}/W${weekNumber} does not exist.`)
+        })
+      } else {
+        logseq.Editor.getPage(`${year}${separateString}W${weekNumber}`).then((page: { uuid: PageEntity["uuid"] } | null) => {
+          if (page) {
+            //四半世紀を入れる
+            const weekNumberQuarter = targetList2[Math.floor((week - 1) / 13)]
+            logseq.Editor.renamePage(`${year}${separateString}W${weekNumber}`, `${year}/${weekNumberQuarter}/W${weekNumber}`)
+            console.log(`Page ${year}${separateString}W${weekNumber} has been renamed to ${year}/${weekNumberQuarter}/W${weekNumber}.`)
+          }
+          else
+            console.log(`Page ${year}${separateString}W${weekNumber} does not exist.`)
+        })
+      }
+    }
+  logseq.UI.showMsg("Week number has been changed to the quarterly format.", "info", { timeout: 5000 })
+  setTimeout(() => {
+    processingRenamePage = false
+    logseq.updateSettings({ weekNumberChangeQ: false })
+  }, 2000)
+}

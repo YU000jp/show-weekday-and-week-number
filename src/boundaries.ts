@@ -345,3 +345,7 @@ function openPageToSingleDay(journalPageName: string, isBooleanBeforeToday: bool
         logseq.App.pushState('page', { name: journalPageName })//ページが存在しない場合も作成される
   }
 }
+export const removeBoundaries = () => {
+  const weekBoundaries = parent.document.getElementById("weekBoundaries") as HTMLDivElement | null
+  if (weekBoundaries) weekBoundaries.remove()
+}

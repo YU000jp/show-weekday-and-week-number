@@ -1,10 +1,15 @@
 import { AppUserConfigs, BlockEntity, BlockUUID, IBatchBlock } from '@logseq/libs/dist/LSPlugin.user'
-import { addDays, addWeeks, eachDayOfInterval, format, getISOWeek, getISOWeekYear, getWeek, getWeekYear, isSameISOWeek, isSameWeek, startOfISOWeek, startOfWeek, subDays, subWeeks, } from 'date-fns' //https://date-fns.org/
+import { addDays, addWeeks, eachDayOfInterval, format, getISOWeek, getISOWeekYear, getWeek, getWeekYear, isSameISOWeek, isSameWeek, startOfISOWeek, startOfWeek, subDays, subWeeks, } from 'date-fns'; //https://date-fns.org/
 import { t } from 'logseq-l10n'
 import { boundariesProcess } from './boundaries'
 import { existInsertTemplate, getQuarter, openPageFromPageName } from './lib'
+import CSSThisWeekPopup from "./weeklyEmbed.css?inline"; //CSSをインラインで読み込む
 let processingFoundBoundaries: boolean = false
 let processingWeeklyJournal: boolean = false
+export const keyThisWeekPopup = "weeklyEmbed"
+
+export const weeklyEmbed = () => logseq.provideStyle({ key: keyThisWeekPopup, style: CSSThisWeekPopup })
+
 
 export const currentPageIsWeeklyJournal = async (titleElement: HTMLElement, match: RegExpMatchArray) => {
     //yyyy-Wwwのページを開いた状態
@@ -334,6 +339,7 @@ const weeklyJournalCreateNav = (
     return Promise.resolve(true)
 }
 
+
 const generatePageTagsArray = (weekStart: Date, weekEnd: Date) => {
     let pageTagsPropertyArray: string[] = []
     const printMonthLink = format(weekStart, "yyyy/MM")
@@ -383,6 +389,7 @@ const handleScrolling = (currentWeek: boolean, today: Date, ISO: boolean) => {
 
 
 let processingEventListener = false
+
 const eventListener = (scrollTargetElement: HTMLElement, ev: WheelEvent) => {
     if (processingEventListener) return
     processingEventListener = true

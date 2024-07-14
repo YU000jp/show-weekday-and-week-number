@@ -9,6 +9,7 @@ export const getJournalDayDate = (str: string): Date =>
     Number(str.slice(6)) //day
   )
 
+
 //日付から週番号を求める
 export const getWeeklyNumberFromDate = (date: Date, weekStartsOn: 0 | 1): { year: number, weekString: string, quarter: number } => {
 
@@ -33,6 +34,7 @@ export const getWeeklyNumberFromDate = (date: Date, weekStartsOn: 0 | 1): { year
   }//weekを2文字にする
 }
 
+
 // 四半世紀を求める
 export const getQuarter = (week: number): number => week < 14 ? 1 : week < 27 ? 2 : week < 40 ? 3 : 4
 
@@ -48,6 +50,7 @@ export const getWeeklyNumberString = (year: number, weekString: string, quarter:
       return `${year}/W${weekString}` // "YYYY/Www"
   }
 }
+
 
 //相対時間表示
 export const formatRelativeDate = (targetDate: Date): string => {
@@ -68,6 +71,7 @@ export const formatRelativeDate = (targetDate: Date): string => {
   return new Intl.RelativeTimeFormat(("default"), { numeric: 'auto' }).format(diffInDays, 'day') as string
 } //formatRelativeDate end
 
+
 export const getWeekStartOn = (): 0 | 1 | 6 => {
   let weekStartsOn: 0 | 1 | 6
   switch (logseq.settings!.boundariesWeekStart) {
@@ -86,6 +90,7 @@ export const getWeekStartOn = (): 0 | 1 | 6 => {
   }
   return weekStartsOn
 }
+
 
 // プラグイン初期設定用。実際は「:」より前の文字列を使い、指定する
 export const convertLanguageCodeToCountryCode = (languageCode: string): string => {
@@ -133,6 +138,7 @@ export const convertLanguageCodeToCountryCode = (languageCode: string): string =
   }
 }
 
+
 export const createSettingButton = (): HTMLButtonElement => {
   const button: HTMLButtonElement = document.createElement("button")
   button.textContent = "⚙"
@@ -144,6 +150,7 @@ export const createSettingButton = (): HTMLButtonElement => {
   return button
 }
 
+
 export const createLinkMonthlyLink = (linkString: string, pageName: string, elementTitle: string): HTMLButtonElement => {
   const button: HTMLButtonElement = document.createElement("button")
   button.textContent = linkString
@@ -152,6 +159,7 @@ export const createLinkMonthlyLink = (linkString: string, pageName: string, elem
   button.addEventListener("click", ({ shiftKey }) => openPageFromPageName(pageName, shiftKey))
   return button
 }
+
 
 export const openPageFromPageName = async (pageName: string, shiftKey: boolean) => {
   if (shiftKey === true) {
@@ -162,12 +170,15 @@ export const openPageFromPageName = async (pageName: string, shiftKey: boolean) 
     logseq.App.pushState('page', { name: pageName })
 }
 
+
 export const removeProvideStyle = (className: string) => {
   const doc = parent.document.head.querySelector(
     `style[data-injected-style^="${className}"]`
   ) as HTMLStyleElement | null
   if (doc) doc.remove()
 }
+
+
 export const existInsertTemplate = async (blockUuid: BlockUUID, templateName: string, successMessage: string) => {
   if (templateName === "") return
   if (await logseq.App.existTemplate(templateName) as boolean) {
