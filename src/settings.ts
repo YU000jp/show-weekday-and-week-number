@@ -479,6 +479,55 @@ export const settingsTemplate = (userLanguage): SettingSchemaDesc[] => [
     default: "",
     description: t("Input the template name (default is blank)"),
   },
-  
-]
   // ここまでトグルの対象
+
+
+  // Left Calendar 20240714-
+  {
+    key: "heading006",
+    title: "6. " + t("Left Calendar") + "🆙", // TODO: 翻訳に追加する
+    type: "heading",
+    default: "",
+    description: "",
+  },
+  {// 有効トグル
+    key: "booleanLeftCalendar",
+    title: t("Enable feature"),
+    type: "boolean",
+    default: false,
+    description: "",
+  },
+  {// 祝日をハイライトするかどうか
+    key: "booleanLcHolidays",
+    title: t("Highlight holidays"),
+    type: "boolean",
+    default: true,
+    description: "",
+    //共通設定に、choiceHolidaysColorあり
+  },
+  {// 週末に色を付けるかどうか
+    key: "booleanLcWeekendsColor",
+    title: t("Coloring to the word of Saturday or Sunday"),
+    type: "boolean",
+    default: true,
+    description: "",
+  },
+  {//週番号を表示する
+    key: "booleanLcWeekNumber",
+    title: t("Show week number (calculate from the date of Monday)"),
+    type: "boolean",
+    default: true,
+    description: "",
+  },
+  {
+    key: "booleanLcIndicator",
+    title: t("Show indicator (dot) of journal entries"),
+    type: "boolean",
+    default: true,
+    //ページが存在する場合に、インディケーターを表示する
+    description: "",
+  },
+  // ここまでトグルの対象 TODO: トグル用CSS未設定
+
+
+]

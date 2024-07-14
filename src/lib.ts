@@ -188,3 +188,9 @@ export const existInsertTemplate = async (blockUuid: BlockUUID, templateName: st
   else
     logseq.UI.showMsg(`Template "${templateName}" does not exist.`, 'warning', { timeout: 2000 })
 }
+
+
+export const removeContainer = (elementById:string) => {
+  const ele: HTMLDivElement | null = parent.document.getElementById(elementById) as HTMLDivElement | null
+  if (ele) ele.remove()
+}

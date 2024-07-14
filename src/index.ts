@@ -1,10 +1,10 @@
 import "@logseq/libs"; //https://plugins-doc.logseq.com/
 import { EntityID } from "@logseq/libs/dist/LSPlugin.user"
-import { setup as l10nSetup } from "logseq-l10n"; //https://github.com/sethyuan/logseq-l10n
+import { setup as l10nSetup, t } from "logseq-l10n"; //https://github.com/sethyuan/logseq-l10n
 import { besideJournalTitle, observer, observerMain, removeTitleQuery } from "./beside"
 import { boundariesProcess, removeBoundaries } from "./boundaries"
 import { getHolidaysBundle } from "./holidays"
-import { convertLanguageCodeToCountryCode, getJournalDayDate } from "./lib"
+import { convertLanguageCodeToCountryCode, getJournalDayDate, removeContainer } from "./lib"
 import fileMainCSS from "./main.css?inline"
 import { currentPageIsMonthlyJournal } from "./monthlyJournal"
 import { notice } from "./notice"
@@ -32,6 +32,14 @@ import uk from "./translations/uk.json"
 import zhCN from "./translations/zh-CN.json"
 import zhHant from "./translations/zh-Hant.json"
 import { currentPageIsWeeklyJournal, weeklyEmbed } from "./weeklyJournal"
+import { keyLeftCalendarContainer, loadLeftCalendar } from "./left-calendar"
+
+// プラグイン名(小文字タイプ)
+export const pluginNameCut = "show-weekday-and-week-number"
+// プラグイン名の最後に[plugin]を追加
+export const pluginName  = `${pluginNameCut} ${t("plugin")}`
+// コンソールの署名用
+export const consoleSignature = ` <----- [${pluginName}]`
 
 let configPreferredLanguage: string
 let configPreferredDateFormat: string
@@ -51,6 +59,8 @@ export const getUserConfig = async () => {
 /* main */
 const main = async () => {
 
+
+  // l10nのセットアップ
   await l10nSetup({
     builtinTranslations: {//Full translations
       ja, af, de, es, fr, id, it, ko, "nb-NO": nbNO, nl, pl, "pt-BR": ptBR, "pt-PT": ptPT, ru, sk, tr, uk, "zh-CN": zhCN, "zh-Hant": zhHant
@@ -79,7 +89,7 @@ const main = async () => {
   await getUserConfig()
 
 
-  // プラグイン設定スキーマを使用
+  // プラグイン設定のセットアップ
   logseq.useSettingsSchema(
     settingsTemplate(
       logseq.settings!.holidaysCountry === undefined ? // 国名が設定されていない場合は取得
@@ -153,8 +163,12 @@ const main = async () => {
     parent.document.body.classList!.add("boundaries-bottom")
 
 
+  loadLeftCalendar()
+
+
   // ユーザー設定が変更されたときにチェックを実行
   onSettingsChanged()
+
 
   // プラグインオフ時に実行
   logseq.beforeunload(async () => {
@@ -168,11 +182,16 @@ const main = async () => {
     // Observerの解除
     observer.disconnect()
 
+    // Left Calendarのcontainerを取り除く
+    removeContainer(keyLeftCalendarContainer)
+
   })
+
 
   // ショートカットキーを登録
   loadShortcutItems()
 
+  
 } /* end_main */
 
 
