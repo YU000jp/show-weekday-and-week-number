@@ -2,7 +2,7 @@
 
 - Enhance journal functions of Logseq
   1. Show weekday and week number beside journal titles.
-  1. 2 lines calendar
+  1. **Monthly Calendar** in left sidebar or **2 lines mini-Calendar**
   1. "Weekly Journal" feature
 
 <div align="right">
@@ -13,20 +13,28 @@
 
 ## Feature Options
 
-### Beside Journal Title ➡️
+### Daily Journal Details
 
+> From: https://discuss.logseq.com/t/show-week-day-and-week-number/12685/1
 - The week number for that week will be generated. Like below
   1. ![image](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/assets/111847207/f47b8948-5e7a-4e16-a5ae-6966672742b1)
   1. ![image](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/assets/111847207/ee97c455-714e-45d2-9f9f-905798e298b4)
 
 ### Journal Boundaries Calendar 🗓️
 
-- Display a 2 lines calendar on journals. Smooth access to previous and subsequent dates on a single date page or journals.
-  1. Show indicator (dot) of journal entries 🆙
+- Smooth access to previous and subsequent dates on a single date page or journals, Weekly Journal.
+  1. Show indicator (dot) of journal entries
   1. Highlight holidays for the country
      > Show Lunar-calendar date for Chinese
 
-![README用](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/assets/111847207/114708ab-0389-4c46-b962-00cb25e2070a)
+1. **Two lines mini-Calendar**
+
+   > ![README用](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/assets/111847207/114708ab-0389-4c46-b962-00cb25e2070a)
+
+ 1. **Monthly Calendar** in left sidebar
+
+    > ![image](https://github.com/user-attachments/assets/6d0e4c0e-1960-4db4-b559-154300db164d)
+
 
 ### Weekly Journal
 
