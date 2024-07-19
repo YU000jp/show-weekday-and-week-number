@@ -113,17 +113,18 @@ const main = async () => {
   //ページ遷移時に実行 (Journal boundariesとBehind Journal Titleの更新)
   logseq.App.onRouteChanged(({ template }) => {
 
-    if (logseq.settings!.booleanBoundaries === true
-      && template === "/page/:name")
-      //page only
-      //div.is-journals
-      setTimeout(() => boundaries("is-journals"), 20)
-    else
-      if (logseq.settings!.booleanJournalsBoundaries === true
-        && template === "/")
-        //journals only
-        //div#journals
-        setTimeout(() => boundaries("journals"), 20)
+    if (logseq.settings!.booleanBoundariesAll === true)
+      if (logseq.settings!.booleanBoundaries === true
+        && template === "/page/:name")
+        //page only
+        //div.is-journals
+        setTimeout(() => boundaries("is-journals"), 20)
+      else
+        if (logseq.settings!.booleanJournalsBoundaries === true
+          && template === "/")
+          //journals only
+          //div#journals
+          setTimeout(() => boundaries("journals"), 20)
 
     // 左サイドバーのカレンダーを更新する
     if (logseq.settings!.booleanLeftCalendar === true)

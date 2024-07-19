@@ -121,19 +121,26 @@ export const settingsTemplate = (userLanguage): SettingSchemaDesc[] => [
     default: "",
   },
   {
+    key: "booleanLunarCalendar",
+    title: t("Enable Lunar-calendar based (Chinese only)"),
+    type: "boolean",
+    default: true,
+    description: t("Other language regions are not affected."),
+  },
+  {
+    key: "booleanUnderLunarCalendar",
+    title: t("Enable month and day of lunar-calendar (Chinese only)"),
+    type: "boolean",
+    default: true,
+    description: t("Other language regions are not affected."),
+  },
+  {
     key: "choiceHolidaysColor",
     title: t("Holidays > Highlight Color"),
     type: "enum",
     enumChoices: ["--highlight-bg-color", "--highlight-selected-bg-color", "--ls-wb-stroke-color-default", "--ls-wb-stroke-color-gray", "--ls-wb-stroke-color-red", "--ls-wb-stroke-color-yellow", "--ls-wb-stroke-color-green", "--ls-wb-stroke-color-blue", "--ls-wb-stroke-color-purple", "--ls-wb-stroke-color-pink", "unset"],
     default: "--highlight-bg-color",
     description: "default: `--highlight-bg-color`",
-  },
-  {
-    key: "booleanLunarCalendar",
-    title: t("Enable Lunar-calendar based (Chinese only)"),
-    type: "boolean",
-    default: true,
-    description: t("Other language regions are not affected."),
   },
   {//20240120
     key: "booleanBoundariesIndicator",
@@ -188,13 +195,6 @@ export const settingsTemplate = (userLanguage): SettingSchemaDesc[] => [
     type: "boolean",
     default: true,
     description: "",
-  },
-  {
-    key: "booleanUnderLunarCalendar",
-    title: t("Enable month and day of lunar-calendar (Chinese only)"),
-    type: "boolean",
-    default: true,
-    description: t("Other language regions are not affected."),
   },
 
 
@@ -294,8 +294,15 @@ export const settingsTemplate = (userLanguage): SettingSchemaDesc[] => [
     description: "",
   },
   { // 有効トグル
-    key: "booleanBoundaries",
+    key: "booleanBoundariesAll",
     title: t("Enable feature"),
+    type: "boolean",
+    default: true,
+    description: "",
+  },
+  { // 有効トグル
+    key: "booleanBoundaries",
+    title: "",
     type: "boolean",
     default: true,
     description: t("Use on single journal"),

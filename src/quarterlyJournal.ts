@@ -15,7 +15,8 @@ export const currentPageIsQuarterlyJournal = async (titleElement: HTMLElement, m
       const monthStartDay = startOfMonth(new Date(year, month - 1, 1)) //月初の日付
 
       //Journal Boundariesを表示する
-      if (logseq.settings!.booleanBoundariesOnWeeklyJournal === true
+      if ((logseq.settings!.booleanBoundariesAll === true
+            && logseq.settings!.booleanBoundariesOnWeeklyJournal === true)
             && !parent.document.getElementById("weekBoundaries")
             && processingFoundBoundaries !== true) {
             processingFoundBoundaries = true

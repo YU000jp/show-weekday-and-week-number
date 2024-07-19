@@ -202,21 +202,24 @@ const daysForEach = (days: number[], startDate: Date, boundariesInner: HTMLDivEl
 
       // 20240121
       // 祝日のカラーリング機能
-      const configPreferredLanguage = getConfigPreferredLanguage()
-      // Chinese lunar-calendar and holidays
-      if (logseq.settings!.booleanLunarCalendar === true // プラグイン設定で太陰暦オンの場合
-        && (configPreferredLanguage === "zh-Hant" //中国語の場合
-          || configPreferredLanguage === "zh-CN")) {
-        dayOfWeekElement.style.fontSize = ".88em"
-        dayOfWeekElement.innerHTML += ` <smaLl>${lunarString(day, dayElement, true)}</small>` //文字数が少ないため、小さく祝日名を表示する
-      } else {
-        // World holidays
-        const displayNameOfHoliday = holidaysWorld(day, dayElement, true)
-        if (displayNameOfHoliday
-          && (configPreferredLanguage === "ja" //日本語の場合
-            || configPreferredLanguage === "ko" // 韓国語の場合
-          )) dayOfWeekElement.innerHTML += ` <smaLl>${displayNameOfHoliday}</small>` //文字数が少ないため、小さく祝日名を表示する
+      if (logseq.settings!.booleanBoundariesHolidays === true) {
+        const configPreferredLanguage = getConfigPreferredLanguage()
+        // Chinese lunar-calendar and holidays
+        if (logseq.settings!.booleanLunarCalendar === true // プラグイン設定で太陰暦オンの場合
+          && (configPreferredLanguage === "zh-Hant" //中国語の場合
+            || configPreferredLanguage === "zh-CN")) {
+          dayOfWeekElement.style.fontSize = ".88em"
+          dayOfWeekElement.innerHTML += ` <smaLl>${lunarString(day, dayElement, true)}</small>` //文字数が少ないため、小さく祝日名を表示する
+        } else {
+          // World holidays
+          const displayNameOfHoliday = holidaysWorld(day, dayElement, true)
+          if (displayNameOfHoliday
+            && (configPreferredLanguage === "ja" //日本語の場合
+              || configPreferredLanguage === "ko" // 韓国語の場合
+            )) dayOfWeekElement.innerHTML += ` <smaLl>${displayNameOfHoliday}</small>` //文字数が少ないため、小さく祝日名を表示する
+        }
       }
+
       dayElement.appendChild(dayOfWeekElement)
       const dayOfMonthElement: HTMLSpanElement = document.createElement('span')
       dayOfMonthElement.classList.add('dayOfMonth')

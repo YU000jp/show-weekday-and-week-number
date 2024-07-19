@@ -6,6 +6,7 @@ import { getConfigPreferredDateFormat, getConfigPreferredLanguage, pluginName } 
 import { openPageToSingleDay } from "./boundaries"
 import { holidaysWorld, lunarString } from "./holidays"
 import { getWeeklyNumberFromDate, getWeeklyNumberString, localizeDayOfWeekString, localizeMonthDayString, localizeMonthString, openPageFromPageName, removeElementById } from "./lib"
+import { isCommonSettingsChanged } from "./onSettingsChanged"
 
 export const keyLeftCalendarContainer = "left-calendar-container"
 
@@ -25,10 +26,7 @@ export const loadLeftCalendar = () => {
         if (oldSet.booleanLcWeekNumber !== newSet.booleanLcWeekNumber
             || oldSet.booleanLcHolidays !== newSet.booleanLcHolidays
             || oldSet.lcHolidaysAlert !== newSet.lcHolidaysAlert
-            || oldSet.localizeOrEnglish !== newSet.localizeOrEnglish
-            || oldSet.holidaysCountry !== newSet.holidaysCountry
-            || oldSet.holidaysState !== newSet.holidaysState
-            || oldSet.holidaysRegion !== newSet.holidaysRegion
+            || isCommonSettingsChanged(newSet, oldSet) === true //共通処理
         )
             refreshCalendar(currentCalendarDate, false, false)
 
@@ -102,8 +100,10 @@ export const createCalendar = (targetDate: Date, preferredDateFormat: string, in
 
     //カレンダーは7列x5行。週番号の1列を左に追加して、合計8列にする
 
-    const calendarFirstDay: Date = ISO ? startOfISOWeek(startOfMonthDay)
-        : startOfWeek(startOfMonthDay, { weekStartsOn }) //ISO(EU) formatかどうかで分岐
+    const calendarFirstDay: Date = logseq.settings!.boundariesWeekStart === "unset"
+        && ISO ?
+        startOfISOWeek(startOfMonthDay)
+        : startOfWeek(startOfMonthDay, { weekStartsOn })
     const calendarLastDay: Date = addDays(calendarFirstDay, 34) //35日後の日付を取得
     const eachDays = eachDayOfInterval({ start: calendarFirstDay, end: calendarLastDay })//すべての行の日付を取得
 

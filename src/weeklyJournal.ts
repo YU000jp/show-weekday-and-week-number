@@ -1,9 +1,9 @@
 import { AppUserConfigs, BlockEntity, BlockUUID, IBatchBlock } from '@logseq/libs/dist/LSPlugin.user'
-import { addDays, addWeeks, eachDayOfInterval, format, getISOWeek, getISOWeekYear, getWeek, getWeekYear, isSameISOWeek, isSameWeek, subDays, subWeeks, } from 'date-fns'; //https://date-fns.org/
+import { addDays, addWeeks, eachDayOfInterval, format, getISOWeek, getISOWeekYear, getWeek, getWeekYear, isSameISOWeek, isSameWeek, subDays, subWeeks, } from 'date-fns' //https://date-fns.org/
 import { t } from 'logseq-l10n'
 import { boundariesProcess } from './boundaries'
 import { existInsertTemplate, getQuarter, getWeekStartFromWeekNumber, openPageFromPageName } from './lib'
-import CSSThisWeekPopup from "./weeklyEmbed.css?inline"; //CSSをインラインで読み込む
+import CSSThisWeekPopup from "./weeklyEmbed.css?inline" //CSSをインラインで読み込む
 let processingFoundBoundaries: boolean = false
 let processingWeeklyJournal: boolean = false
 export const keyThisWeekPopup = "weeklyEmbed"
@@ -21,7 +21,8 @@ export const currentPageIsWeeklyJournal = async (titleElement: HTMLElement, matc
     const weekStart: Date = getWeekStartFromWeekNumber(year, weekNumber, weekStartsOn, ISO)
 
     //Journal Boundariesを表示する
-    if (logseq.settings!.booleanBoundariesOnWeeklyJournal === true
+    if ((logseq.settings!.booleanBoundariesAll === true
+        && logseq.settings!.booleanBoundariesOnWeeklyJournal === true)
         && !parent.document.getElementById("weekBoundaries")
         && processingFoundBoundaries !== true) {
         processingFoundBoundaries = true

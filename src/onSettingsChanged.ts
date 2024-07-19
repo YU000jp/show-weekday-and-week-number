@@ -10,71 +10,89 @@ let processingSettingsChanged: boolean = false
 let processingRenamePage: boolean = false
 
 
+export const isCommonSettingsChanged = (oldSet: LSPluginBaseInfo["settings"], newSet: LSPluginBaseInfo["settings"]): boolean => {
+  if (
+    //共通設定
+    oldSet.weekNumberFormat !== newSet.weekNumberFormat
+    || oldSet.localizeOrEnglish !== newSet.localizeOrEnglish
+    || oldSet.holidaysCountry !== newSet.holidaysCountry
+    || oldSet.holidaysState !== newSet.holidaysState
+    || oldSet.holidaysRegion !== newSet.holidaysRegion
+    || oldSet.booleanLunarCalendar !== newSet.booleanLunarCalendar
+    || oldSet.booleanUnderLunarCalendar !== newSet.booleanUnderLunarCalendar
+    || oldSet.choiceHolidaysColor !== newSet.choiceHolidaysColor
+    || oldSet.booleanBoundariesIndicator !== newSet.booleanBoundariesIndicator
+    || oldSet.boundariesWeekStart !== newSet.boundariesWeekStart
+    || oldSet.booleanWeekendsColor !== newSet.booleanWeekendsColor
+    || oldSet.boundariesHighlightColorSinglePage !== newSet.boundariesHighlightColorSinglePage
+    || oldSet.boundariesHighlightColorToday !== newSet.boundariesHighlightColorToday
+    //booleanNoPageFoundCreatePageは反映不要
+    //booleanBoundariesFuturePageは反映不要
+
+    //Weekly Journalの設定
+    || oldSet.weekNumberOptions !== newSet.weekNumberOptions
+  )
+    return true
+  else
+    return false
+}
+
+
 // ユーザー設定が変更されたときに実行
 
 export const onSettingsChanged = () => {
   logseq.onSettingsChanged((newSet: LSPluginBaseInfo["settings"], oldSet: LSPluginBaseInfo["settings"]) => {
 
 
-    if ((oldSet.booleanBoundaries === true
-      && newSet.booleanBoundaries === false)
+    if (
+      (oldSet.booleanBoundariesAll === true
+        && newSet.booleanBoundariesAll === false)
+      || (oldSet.booleanBoundaries === true
+        && newSet.booleanBoundaries === false)
       || (oldSet.booleanJournalsBoundaries === true
-        && newSet.booleanJournalsBoundaries === false
-        && parent.document.getElementById("journals") as Node)) removeBoundaries() //boundariesを削除する
+        && newSet.booleanJournalsBoundaries === false)
+      || (oldSet.booleanBoundariesOnWeeklyJournal === true
+        && newSet.booleanBoundariesOnWeeklyJournal === false)
+    )
+      removeBoundaries() //boundariesを削除する
     else
-      if (oldSet.booleanBoundaries === false
-        && newSet.booleanBoundaries === true)
-        SettingsChangedJournalBoundariesEnable() //Journal boundariesを表示する
-      else
-        if (oldSet.booleanJournalsBoundaries === false
-          && newSet.booleanJournalsBoundaries === true
-          && parent.document.getElementById("journals") as Node)
-          boundaries("journals") //日誌の場合のみ
+      if (
+        (oldSet.booleanBoundariesAll === false
+          && newSet.booleanBoundariesAll === true)
+        || (oldSet.booleanBoundaries === false
+          && newSet.booleanBoundaries === true)
+        || (oldSet.booleanJournalsBoundaries === false
+          && newSet.booleanJournalsBoundaries === true)
+        || (oldSet.booleanBoundariesOnWeeklyJournal === false
+          && newSet.booleanBoundariesOnWeeklyJournal === true)
+      )
+        SettingsChangedJournalBoundariesEnable(newSet)
 
 
-    if (oldSet.boundariesWeekStart !== newSet.boundariesWeekStart
-      || oldSet.localizeOrEnglish !== newSet.localizeOrEnglish
-      || oldSet.weekNumberFormat !== newSet.weekNumberFormat
-      || oldSet.booleanBoundariesFuturePage !== newSet.booleanBoundariesFuturePage
+    if (isCommonSettingsChanged(oldSet, newSet) === true
+      || oldSet.booleanWeeklyJournal !== newSet.booleanWeeklyJournal
+      || oldSet.boundariesBottom !== newSet.boundariesBottom
       || oldSet.booleanBoundariesShowMonth !== newSet.booleanBoundariesShowMonth
       || oldSet.booleanBoundariesShowWeekNumber !== newSet.booleanBoundariesShowWeekNumber
-      || oldSet.booleanWeekendsColor !== newSet.booleanWeekendsColor
-      || oldSet.boundariesHighlightColorSinglePage !== newSet.boundariesHighlightColorSinglePage
-      || oldSet.boundariesHighlightColorToday !== newSet.boundariesHighlightColorToday
-      || oldSet.booleanWeeklyJournal !== newSet.booleanWeeklyJournal
-      || oldSet.booleanBoundariesIndicator !== newSet.booleanBoundariesIndicator
       || oldSet.booleanBoundariesHolidays !== newSet.booleanBoundariesHolidays
-      || oldSet.holidaysCountry !== newSet.holidaysCountry
-      || oldSet.holidaysState !== newSet.holidaysState
-      || oldSet.holidaysRegion !== newSet.holidaysRegion
-      || oldSet.choiceHolidaysColor !== newSet.choiceHolidaysColor
-      || oldSet.booleanLunarCalendar !== newSet.booleanLunarCalendar
-      || oldSet.weekNumberOptions !== newSet.weekNumberOptions) {
-      //Journal boundariesを再表示する
+    ) {
+      //再表示 Boundaries
       removeBoundaries()
-      SettingsChangedJournalBoundariesEnable()
+      SettingsChangedJournalBoundariesEnable(newSet)
     }
 
 
-    if (oldSet.localizeOrEnglish !== newSet.localizeOrEnglish
+    if (isCommonSettingsChanged(oldSet, newSet) === true
       || oldSet.booleanDayOfWeek !== newSet.booleanDayOfWeek
       || oldSet.longOrShort !== newSet.longOrShort
       || oldSet.booleanWeekNumber !== newSet.booleanWeekNumber
       || oldSet.weekNumberOfTheYearOrMonth !== newSet.weekNumberOfTheYearOrMonth
-      || oldSet.booleanWeekendsColor !== newSet.booleanWeekendsColor
-      || oldSet.weekNumberFormat !== newSet.weekNumberFormat
       || oldSet.booleanRelativeTime !== newSet.booleanRelativeTime
       || oldSet.booleanWeeklyJournal !== newSet.booleanWeeklyJournal
       || oldSet.booleanWeekNumberHideYear !== newSet.booleanWeekNumberHideYear
       || oldSet.booleanSettingsButton !== newSet.booleanSettingsButton
       || oldSet.booleanMonthlyJournalLink !== newSet.booleanMonthlyJournalLink
-      || oldSet.holidaysCountry !== newSet.holidaysCountry
-      || oldSet.holidaysState !== newSet.holidaysState
-      || oldSet.holidaysRegion !== newSet.holidaysRegion
-      || oldSet.choiceHolidaysColor !== newSet.choiceHolidaysColor
-      || oldSet.booleanUnderLunarCalendar !== newSet.booleanUnderLunarCalendar
       || oldSet.underHolidaysAlert !== newSet.underHolidaysAlert
-      || oldSet.weekNumberOptions !== newSet.weekNumberOptions
       || oldSet.booleanBesideJournalTitle !== newSet.booleanBesideJournalTitle) {
       //再表示 Behind Journal Title
       removeTitleQuery()
@@ -153,12 +171,24 @@ export const onSettingsChanged = () => {
 
 
 //Journal boundariesを表示する 設定変更時に実行
-export const SettingsChangedJournalBoundariesEnable = () =>
-  setTimeout(() =>
-    boundaries(parent.document.getElementById("journals") as Node ?
-      "journals"
-      : "is-journals"),
-    100)
+export const SettingsChangedJournalBoundariesEnable = (newSet: LSPluginBaseInfo["settings"]) => {
+  if (newSet.booleanBoundariesAll === true)
+    setTimeout(() => {
+      if (newSet.booleanJournalsBoundaries === true
+        && parent.document.getElementById("journals") as Node)
+
+        boundaries("journals")
+      else
+        if (newSet.booleanBoundaries === true
+          && parent.document.body.querySelector("div#main-content-container div.is-journals.page>div.relative") as Node)
+          boundaries("is-journals")
+        else
+          if (newSet.booleanBoundariesOnWeeklyJournal === true
+            && parent.document.body.querySelector("div#main-content-container div.page.relative>div.relative") as Node)
+            boundaries("weeklyJournal")
+    },
+      100)
+}
 
 
 // 年間のすべての週番号の配列を用意する
@@ -200,7 +230,7 @@ const changeWeekNumberToQuarterly = async (separateString: string, revert: boole
   processingRenamePage = true
 
   const targetList: string[] = getTargetList()
-  const targetList2 = ["Q1", "Q2", "Q3", "Q4", "Q4"]
+  const targetList2 = ["Q1", "Q2", "Q3", "Q4"]
   const weekList = getWeekList()
   for (const year of targetList)
     for (const week of weekList) {
