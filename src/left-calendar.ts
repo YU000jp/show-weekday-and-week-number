@@ -11,7 +11,7 @@ import { isCommonSettingsChanged } from "./onSettingsChanged"
 export const keyLeftCalendarContainer = "left-calendar-container"
 
 export let currentCalendarDate: Date = new Date() //今日の日付を取得
-
+let flagWeekly = false //週間表示フラグ
 
 export const loadLeftCalendar = () => {
 
@@ -89,6 +89,8 @@ export const createCalendar = (targetDate: Date, preferredDateFormat: string, in
     calendarElement.className = "flex items-center"
     calendarElement.id = "left-calendar"
 
+    // Weeklyフラグの場合は週間表示フラグを立てる
+    flagWeekly = flag?.weekly === true ? true : false
 
     currentCalendarDate = targetDate // 更新
     const year = targetDate.getFullYear() //年を取得
@@ -406,6 +408,7 @@ export const refreshCalendar = (targetDate: Date, singlePage: boolean, weekly: b
 }
 export const refreshCalendarCheckSameMonth = () => {
     const today = new Date()
-    if (isSameMonth(currentCalendarDate, today) === false)
+    if (flagWeekly === true
+        || isSameMonth(currentCalendarDate, today) === false)
         refreshCalendar(today, false, false)
 }
