@@ -1,7 +1,7 @@
 import "@logseq/libs" //https://plugins-doc.logseq.com/
 import { EntityID, PageEntity } from "@logseq/libs/dist/LSPlugin.user"
 import { setup as l10nSetup, t } from "logseq-l10n" //https://github.com/sethyuan/logseq-l10n
-import { besideJournalTitle, observer, observerMain, removeTitleQuery } from "./beside"
+import { dailyJournalDetails, observer, observerMain, removeTitleQuery } from "./dailyJournalDetails"
 import { boundariesProcess, removeBoundaries } from "./boundaries"
 import { getHolidaysBundle } from "./holidays"
 import { keyLeftCalendarContainer, loadLeftCalendar, refreshCalendar, refreshCalendarCheckSameMonth } from "./left-calendar"
@@ -349,7 +349,7 @@ const checkJournalTitle = async (titleElement: HTMLElement) => {
       const page = (await logseq.Editor.getPage(title)) as { journalDay: number } | null
       if (page
         && page.journalDay)
-        besideJournalTitle(getJournalDayDate(String(page.journalDay)), titleElement, configPreferredDateFormat)
+        dailyJournalDetails(getJournalDayDate(String(page.journalDay)), titleElement)
     }, 10)
   }
 

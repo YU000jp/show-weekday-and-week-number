@@ -95,5 +95,8 @@
   "headline of each days > Property name for headline of each days": "заголовок каждого дня > Название свойства для заголовка каждого дня",
   "like `3 days ago`": "как «3 дня назад»",
   "plugin": "Плагин",
-  "year range": "Диапазон лет"
+  "year range": "Диапазон лет",
+  "Daily Journal Details": "Детали ежедневного дневника",
+  "Two-lines mini-Calendar": "Двухстрочный мини-календарь",
+  "(Journal Boundaries)": "(Границы журнала)"
 }

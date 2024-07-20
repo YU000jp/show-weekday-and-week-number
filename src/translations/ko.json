@@ -95,5 +95,8 @@
   "headline of each days > Property name for headline of each days": "headline of each days(각 요일의 헤드라인) > 각 요일의 헤드라인에 대한 속성 이름",
   "like `3 days ago`": "'3일 전'처럼",
   "plugin": "플러그인(plugin)",
-  "year range": "연도 범위"
+  "year range": "연도 범위",
+  "Daily Journal Details": "Daily Journal 세부 정보",
+  "Two-lines mini-Calendar": "두 줄 미니 캘린더",
+  "(Journal Boundaries)": "(저널 경계)"
 }

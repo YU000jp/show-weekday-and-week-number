@@ -201,7 +201,7 @@ export const settingsTemplate = (userLanguage): SettingSchemaDesc[] => [
   //Behind journal title
   {
     key: "heading001",
-    title: "1. " + t("Behind Journal Title"),
+    title: "1. " + t("Daily Journal Details"),
     type: "heading",
     default: "",
     description: "",
@@ -288,7 +288,7 @@ export const settingsTemplate = (userLanguage): SettingSchemaDesc[] => [
   //Journal Boundaries
   {
     key: "heading002",
-    title: "2. " + t("Journal boundaries (mini calendar)"),
+    title: "2. " + t("Two-lines mini-Calendar") + t("(Journal Boundaries)"),
     type: "heading",
     default: "",
     description: "",
@@ -358,7 +358,7 @@ export const settingsTemplate = (userLanguage): SettingSchemaDesc[] => [
   // Left Calendar 20240714-
   {
     key: "heading003",
-    title: "3. " + t("Left Calendar") + "🆙",
+    title: "3. " + t("Left Calendar") + t("(Journal Boundaries)") + "🆙",
     type: "heading",
     default: "",
     description: "",

@@ -1,7 +1,7 @@
 import { LSPluginBaseInfo, PageEntity } from "@logseq/libs/dist/LSPlugin.user"
 import { boundaries, querySelectorAllTitle, getUserConfig } from "."
 import { removeBoundaries } from "./boundaries"
-import { removeTitleQuery } from "./beside"
+import { removeTitleQuery } from "./dailyJournalDetails"
 import { getHolidaysBundle, removeHolidaysBundle } from "./holidays"
 import { removeProvideStyle } from "./lib"
 import { keyThisWeekPopup, weeklyEmbed } from "./weeklyJournal"

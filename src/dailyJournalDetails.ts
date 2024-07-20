@@ -9,8 +9,8 @@ import { exportHolidaysBundle } from "./holidays"
 let processingBehind: boolean = false
 
 
-//behind journal title
-export const besideJournalTitle = async (journalDate: Date, titleElement: HTMLElement, preferredDateFormat) => {
+//Daily Journal Details 機能
+export const dailyJournalDetails = async (journalDate: Date, titleElement: HTMLElement) => {
 
   if (processingBehind === true) return // プロセス中の場合は処理をキャンセルする
 
