@@ -64,7 +64,7 @@
   "Quarterly Journal": "年四半期ジャーナル",
   "Quarterly journal created": "年四半期ジャーナルが作成されました",
   "Select language (default)": "言語の選択 (デフォルト)",
-  "Set page tag (Add to tags property)": "ページタグの設定(タグに追加プロパティ)",
+  "Set page tag (Add to tags property)": "ページタグの設定(ページタグ「tags」プロパティに追加)",
   "Show indicator of journal entries": "ジャーナルエントリーのインジケータを表示する",
   "Show it on bottom": "下側に表示",
   "Show month": "月を表示",
@@ -98,5 +98,8 @@
   "year range": "年の範囲",
   "Daily Journal Details": "デイリー・ジャーナルの詳細表示",
   "Two-lines mini-Calendar": "2行のミニカレンダー",
-  "(Journal Boundaries)": "(Journal Boundaries)"
+  "(Journal Boundaries)": "(Journal Boundaries)",
+  "Yearly Journal": "年次ジャーナル",
+  "Enable the link and function. If there is no content available on a page with a yearly number like 2024, a template will be inserted.": "リンクと機能を有効にします。2024 のような年次番号のページに利用可能なコンテンツがない場合は、テンプレートが挿入されます。",
+  "Yearly journal created": "年次ジャーナルが作成されました"
 }

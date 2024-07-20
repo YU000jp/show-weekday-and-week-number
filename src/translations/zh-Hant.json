@@ -98,5 +98,8 @@
   "year range": "年份範圍",
   "Daily Journal Details": "每日日記詳細資訊",
   "Two-lines mini-Calendar": "兩行迷你日曆",
-  "(Journal Boundaries)": "（日記帳邊界）"
+  "(Journal Boundaries)": "（日記帳邊界）",
+  "Yearly Journal": "年刊",
+  "Enable the link and function. If there is no content available on a page with a yearly number like 2024, a template will be inserted.": "啟用連結和功能。如果年度編號為 2024 的頁面上沒有可用的內容，則將插入範本。",
+  "Yearly journal created": "創建的年度日記"
 }

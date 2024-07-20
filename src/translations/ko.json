@@ -98,5 +98,8 @@
   "year range": "연도 범위",
   "Daily Journal Details": "Daily Journal 세부 정보",
   "Two-lines mini-Calendar": "두 줄 미니 캘린더",
-  "(Journal Boundaries)": "(저널 경계)"
+  "(Journal Boundaries)": "(저널 경계)",
+  "Yearly Journal": "연간저널",
+  "Enable the link and function. If there is no content available on a page with a yearly number like 2024, a template will be inserted.": "링크와 기능을 활성화합니다. 2024년과 같은 연간 숫자가 있는 페이지에서 사용할 수 있는 콘텐츠가 없으면 템플릿이 삽입됩니다.",
+  "Yearly journal created": "연간 분개장 작성"
 }

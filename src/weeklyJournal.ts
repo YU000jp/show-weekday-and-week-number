@@ -21,25 +21,19 @@ export const currentPageIsWeeklyJournal = async (titleElement: HTMLElement, matc
     const ISO = (logseq.settings?.weekNumberFormat === "ISO(EU) format") ? true : false
     const weekStartsOn = (logseq.settings?.weekNumberFormat === "US format") ? 0 : 1
     const weekStart: Date = getWeekStartFromWeekNumber(year, weekNumber, weekStartsOn, ISO)
-
-    //Journal Boundariesを表示する
-    if ((logseq.settings!.booleanBoundariesAll === true
-        && logseq.settings!.booleanBoundariesOnWeeklyJournal === true)
-        && !parent.document.getElementById("weekBoundaries")
-        && processingFoundBoundaries !== true) {
-        processingFoundBoundaries = true
-        setTimeout(() => {
-            //週番号から週始まりの日付を求める
-            if (!parent.document.getElementById("weekBoundaries"))
-                boundariesProcess("weeklyJournal", false, 0, weekStart)
-            processingFoundBoundaries = false
-        }, 150)
-    }
-
     //プロセスロック
     if (processingWeeklyJournal === true
         || (titleElement.dataset!.WeeklyJournalChecked as string) === "true")
         return//一度だけ処理を行う
+
+    //処理中フラグを立てる ここからreturnする場合は必ずfalseにすること
+    processingWeeklyJournal = true
+    titleElement.dataset.WeeklyJournalChecked = "true"
+
+
+    //Journal Boundariesを表示する
+    callMiniCalendar(weekStart)
+
 
     const weekEnd: Date = addDays(weekStart, 6)
 
@@ -55,10 +49,10 @@ export const currentPageIsWeeklyJournal = async (titleElement: HTMLElement, matc
 
     setTimeout(async () => {
         // 週番号のナビゲーションを作成する
-        const boolean = await weeklyJournalCreateNav(ISO,year.toString(),weekNumberString, weekStart,weekEnd, prevWeekStart, nextWeekStart)
+        const boolean = await weeklyJournalCreateNav(ISO, year.toString(), weekNumberString, weekStart, weekEnd, prevWeekStart, nextWeekStart)
         if (boolean === false)
             setTimeout(async () =>
-                await weeklyJournalCreateNav(ISO, year.toString(),weekNumberString,weekStart,weekEnd, prevWeekStart, nextWeekStart) //再度実行
+                await weeklyJournalCreateNav(ISO, year.toString(), weekNumberString, weekStart, weekEnd, prevWeekStart, nextWeekStart) //再度実行
                 , 1200)
     }, 250)
 
@@ -86,9 +80,7 @@ export const currentPageIsWeeklyJournal = async (titleElement: HTMLElement, matc
             //コンテンツがある場合は処理を中断する
             if (pageBlockTree.find((block) => block.content !== null)) // block.contentが空ではないブロックがひとつでもあったら処理を中断する
                 return
-            //処理中フラグを立てる ここからreturnする場合は必ずfalseにすること
-            processingWeeklyJournal = true
-            titleElement.dataset.WeeklyJournalChecked = "true"
+
             await new Promise(async (resolve) => {
                 await weeklyJournalCreateContent(weekStart, weekEnd, pageEntity.uuid)
                 resolve("Done")
@@ -204,14 +196,13 @@ const weeklyJournalCreateContent = async (
         setTimeout(async () => {
             const blocks = await logseq.Editor.getPageBlocksTree(pageUuid) as { uuid: BlockEntity["uuid"] }[] | null
             if (blocks) {
-                if (logseq.settings!.weeklyJournalTemplateName) {
-
+                if (logseq.settings!.weeklyJournalTemplateName !== "")
                     await existInsertTemplate(
                         blocks[1].uuid, //2番目のブロックにテンプレートを挿入する
                         logseq.settings!.weeklyJournalTemplateName as string,
                         t("Weekly journal created"))
-                    // テンプレートにページプロパティが含まれる場合は、重複してしまう。
-                } else
+                // テンプレートにページプロパティが含まれる場合は、重複してしまう。
+                else
                     console.warn("weeklyJournalTemplateName is not set") //weeklyJournalTemplateNameが設定されていない場合は警告を出す
             } else
                 console.warn("blocks is null") //blocksがnullの場合は警告を出す
@@ -300,6 +291,18 @@ const eventListener = (scrollTargetElement: HTMLElement, ev: WheelEvent) => {
         // イベントリスナー削除
         scrollTargetElement.removeEventListener("wheel", (ev) => eventListener(scrollTargetElement, ev))
         setTimeout(() => processingEventListener = false, 1000) // 1秒後に処理を再開
-        return
+    }
+}
+
+
+export const callMiniCalendar = (monthStartDay: Date) => {
+    if (logseq.settings!.booleanBoundariesOnWeeklyJournal === true
+        && !parent.document.getElementById("weekBoundaries")
+        && processingFoundBoundaries !== true) {
+        processingFoundBoundaries = true
+        setTimeout(() => {
+            boundariesProcess("weeklyJournal", false, 0, monthStartDay)
+            processingFoundBoundaries = false
+        }, 200)
     }
 }

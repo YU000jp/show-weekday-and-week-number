@@ -98,5 +98,8 @@
   "year range": "yıl aralığı",
   "Daily Journal Details": "Günlük Dergi Detayları",
   "Two-lines mini-Calendar": "İki satırlık mini Takvim",
-  "(Journal Boundaries)": "(Dergi Sınırları)"
+  "(Journal Boundaries)": "(Dergi Sınırları)",
+  "Yearly Journal": "Yıllık Dergi",
+  "Enable the link and function. If there is no content available on a page with a yearly number like 2024, a template will be inserted.": "Bağlantıyı ve işlevi etkinleştirin. 2024 gibi yıllık bir numaraya sahip bir sayfada içerik yoksa, bir şablon eklenecektir.",
+  "Yearly journal created": "Yıllık dergi oluşturuldu"
 }

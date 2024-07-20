@@ -3,7 +3,7 @@ import { boundaries, querySelectorAllTitle, getUserConfig } from "."
 import { removeBoundaries } from "./boundaries"
 import { removeTitleQuery } from "./dailyJournalDetails"
 import { getHolidaysBundle, removeHolidaysBundle } from "./holidays"
-import { removeProvideStyle } from "./lib"
+import { removeElementById, removeProvideStyle } from "./lib"
 import { keyThisWeekPopup, weeklyEmbed } from "./weeklyJournal"
 
 let processingSettingsChanged: boolean = false
@@ -98,7 +98,7 @@ export const onSettingsChanged = () => {
       removeTitleQuery()
       setTimeout(() => querySelectorAllTitle(newSet.booleanBesideJournalTitle as boolean), 500)
     }
-    
+
 
     // weeklyEmbed
     if (oldSet.weeklyEmbed !== newSet.weeklyEmbed)
@@ -158,6 +158,27 @@ export const onSettingsChanged = () => {
           if (oldSet.weekNumberChangeSlash === false
             && newSet.weekNumberChangeSlash === true)
             changeWeekNumberForSlash()
+
+    if (oldSet.booleanWeeklyJournal === true
+      && newSet.booleanWeeklyJournal === false)
+      //#weeklyJournalNavを削除する
+      removeElementById("weeklyJournalNav")
+    //else trueになったときの実装はまだなし
+    else
+      if (oldSet.booleanMonthlyJournal === true
+        && newSet.booleanMonthlyJournal === false)
+        //#monthlyJournalNavを削除する
+        removeElementById("monthlyJournalNav")
+      else
+        if (oldSet.booleanQuarterlyJournal === true
+          && newSet.booleanQuarterlyJournal === false)
+          //#quarterlyJournalNavを削除する
+          removeElementById("quarterlyJournalNav")
+        else
+          if (oldSet.booleanYearlyJournal === true
+            && newSet.booleanYearlyJournal === false)
+            //#yearlyJournalNavを削除する
+            removeElementById("yearlyJournalNav")
 
 
     //CAUTION: 日付形式が変更された場合は、re-indexをおこなうので、問題ないが、言語設定が変更された場合は、その設定は、すぐには反映されない。プラグインの再読み込みが必要になるが、その頻度がかなり少ないので問題ない。

@@ -431,18 +431,18 @@ export const settingsTemplate = (userLanguage): SettingSchemaDesc[] => [
     description: t("Enable the link and function. If there is no content available on a page with a week number like 2023-W25, a template will be inserted."),
   },
   {
-    key: "weeklyJournalSetPageTag",
-    title: t("Set page tag (Add to tags property)"),
-    type: "string",
-    default: "",
-    description: t("Input a page name (default is blank)"),
-  },
-  {
     key: "weeklyJournalTemplateName",
     title: t("Template name"),
     type: "string",
     default: "",
     description: t("Input the template name (default is blank)"),
+  },
+  {
+    key: "weeklyJournalSetPageTag",
+    title: t("Set page tag (Add to tags property)"),
+    type: "string",
+    default: "",
+    description: t("Input a page name (default is blank)"),
   },
   {//20240615
     // Headline of each days
@@ -560,13 +560,6 @@ export const settingsTemplate = (userLanguage): SettingSchemaDesc[] => [
     description: t("Enable the link and function. If there is no content available on a page with a month number like 2024/05, a template will be inserted."),
   },
   {
-    key: "monthlyJournalSetPageTag",
-    title: t("Set page tag (Add to tags property)"),
-    type: "string",
-    default: "",
-    description: t("Input a page name (default is blank)"),
-  },
-  {
     key: "monthlyJournalTemplateName",
     title: t("Template name"),
     type: "string",
@@ -593,20 +586,42 @@ export const settingsTemplate = (userLanguage): SettingSchemaDesc[] => [
     description: t("Enable the link and function. If there is no content available on a page with a quarterly number like 2024/Q1, a template will be inserted."),
   },
   {
-    key: "quarterlyJournalSetPageTag",
-    title: t("Set page tag (Add to tags property)"),
-    type: "string",
-    default: "",
-    description: t("Input a page name (default is blank)"),
-  },
-  {
     key: "quarterlyJournalTemplateName",
     title: t("Template name"),
     type: "string",
     default: "",
     description: t("Input the template name (default is blank)"),
   },
+  {
+    key: "quarterlyJournalSetPageTag",
+    title: t("Set page tag (Add to tags property)"),
+    type: "string",
+    default: "",
+    description: t("Input a page name (default is blank)"),
+  },
   // ここまでトグルの対象
 
 
+  // Yearly Journal
+  {
+    key: "heading007",
+    title: "7. " + t("Yearly Journal"),
+    type: "heading",
+    default: "",
+    description: "",
+  },
+  { // 有効トグル
+    key: "booleanYearlyJournal",
+    title: t("Enable feature"),
+    type: "boolean",
+    default: true,
+    description: t("Enable the link and function. If there is no content available on a page with a yearly number like 2024, a template will be inserted."),
+  },
+  {// テンプレート名
+    key: "yearlyJournalTemplateName",
+    title: t("Template name"),
+    type: "string",
+    default: "",
+    description: t("Input the template name (default is blank)"),
+  },
 ]

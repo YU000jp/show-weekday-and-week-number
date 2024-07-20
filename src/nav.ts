@@ -1,4 +1,4 @@
-import { addWeeks, addYears, eachDayOfInterval, format, getWeeksInMonth, isSameMonth, subMonths, subWeeks, subYears } from "date-fns"
+import { addMonths, addWeeks, addYears, eachDayOfInterval, format, getWeeksInMonth, isSameMonth, subMonths, subWeeks, subYears } from "date-fns"
 import { t } from "logseq-l10n"
 import { getConfigPreferredDateFormat } from "."
 import { getWeeklyNumberFromDate, localizeDayOfWeekDayString, localizeMonthString, openPageFromPageName } from "./lib"
@@ -37,7 +37,7 @@ export const createNavLinkWeekNumber = (day: Date, ISO: boolean, configWeekNumbe
 
 export const spanFreeSpace = (text: string, flag?: { sm?: true }) => {
       const space = document.createElement("span")
-      space.style.marginRight = "1.0em"
+      space.style.paddingRight = "0.88em"
       space.textContent = text
       if (flag && flag.sm)
             space.classList.add("text-sm")
@@ -46,96 +46,90 @@ export const spanFreeSpace = (text: string, flag?: { sm?: true }) => {
 
 
 // MonthlyJournal用ナビゲーションを作成する
-export const monthlyJournalCreateNav = (
-      prevMonth: Date,
-      thisMonth: Date,
-      nextMonth: Date,
+export const monthlyJournalCreateNav = async (
+      monthStartDay: Date,
       year: number
-) => {
-      // parent.document div.page.relativeの中の先頭に挿入する
+): Promise<boolean> => {
+
+      // parent.document div.page.relative div.relativeの中の先頭に挿入する
       const pageRelative = parent.document.querySelector("div.page.relative div.relative") as HTMLDivElement | null
       if (!pageRelative
             || pageRelative.dataset.monthlyJournalNav === "true")
-            return
+            return Promise.resolve(false)
+
+      pageRelative.dataset.monthlyJournalNav = "true"
 
       const ISO = logseq.settings!.booleanISOWeek === true ? true : false
+      const { quarter, weekString } = getWeeklyNumberFromDate(monthStartDay, ISO ? 1 : 0)
+      const prevMonth = subMonths(monthStartDay, 1)
+      const nextMonth = addMonths(monthStartDay, 1)
 
-      const { quarter, weekString } = getWeeklyNumberFromDate(thisMonth, ISO ? 1 : 0)
-
-      if (pageRelative) {
-            pageRelative.dataset.monthlyJournalNav = "true"
-
-            const navElement = document.createElement("div")
-            navElement.id = "monthlyJournalNav"
-            navElement.className = "flex justify-center items-center text-sm"
-            navElement.style.userSelect = "none"
-            navElement.style.overflow = "auto"
+      const navElement = document.createElement("div")
+      navElement.id = "monthlyJournalNav"
+      navElement.className = "flex justify-center items-center text-sm"
+      navElement.style.userSelect = "none"
 
 
-            // Year
+      // Year
 
-            // Prev Year
-            const prevYearLink = format(subYears(thisMonth, 1), "yyyy")
-            navElement.appendChild(createNavLink(prevYearLink, prevYearLink))
+      // Prev Year
+      const prevYearLink = format(subYears(monthStartDay, 1), "yyyy")
+      navElement.appendChild(createNavLink(prevYearLink, prevYearLink))
 
-            // This Year
-            const thisYearLink = year.toString()
-            const thisYearNavLink = createNavLink(thisYearLink, thisYearLink)
-            thisYearNavLink.style.textDecoration = "underline"
-            navElement.appendChild(thisYearNavLink)
+      // This Year
+      const thisYearLink = year.toString()
+      const thisYearNavLink = createNavLink(thisYearLink, thisYearLink)
+      thisYearNavLink.style.textDecoration = "underline"
+      navElement.appendChild(thisYearNavLink)
 
-            if (logseq.settings!.weekNumberOptions === "YYYY/qqq/Www") {
-                  // Quarter
-                  const putSpanQuarterMark = createNavLink(`Q${quarter}`, `${year}/Q${quarter}/W${weekString}`)
-                  putSpanQuarterMark.style.textDecoration = "underline"
-                  navElement.appendChild(putSpanQuarterMark)
-            }
-
-            // Next Year
-            const nextYearLink = format(addYears(thisMonth, 1), "yyyy")
-            navElement.appendChild(createNavLink(nextYearLink, nextYearLink))
-
-            // span ">",{sm:true}
-            navElement.appendChild(spanFreeSpace(">", { sm: true }))
-
-
-            // Month
-
-            // Prev Month
-            navElement.appendChild(createNavLink(localizeMonthString(prevMonth, true), format(prevMonth, "yyyy/MM")))
-
-            // This Month
-            const thisMonthLink = spanFreeSpace(localizeMonthString(thisMonth, true))
-            thisMonthLink.style.textDecoration = "underline"
-            navElement.appendChild(thisMonthLink)
-
-            // Next Month
-            navElement.appendChild(createNavLink(localizeMonthString(nextMonth, true), format(nextMonth, "yyyy/MM")))
-
-            // span ">",{sm:true}
-            navElement.appendChild(spanFreeSpace(">", { sm: true }))
-
-
-            // Week
-
-            // span "Week"
-            navElement.appendChild(spanFreeSpace(t("Week")))
-
-
-            const configWeekNumberFormat = logseq.settings!.weekNumberOptions as string
-            const weekOfMonth = getWeeksInMonth(thisMonth, { weekStartsOn: ISO ? 1 : 0 }) // 1:月曜日
-            for (let i = 0; i < weekOfMonth; i++) {
-                  const week = addWeeks(thisMonth, i)
-                  if (isSameMonth(week, thisMonth) === false) break
-                  navElement.appendChild(createNavLinkWeekNumber(week, ISO, configWeekNumberFormat))
-            }
-
-            // span ">",{sm:true}
-            navElement.appendChild(spanFreeSpace(">", { sm: true }))
-
-
-            pageRelative.insertBefore(navElement, pageRelative.firstChild)
+      if (logseq.settings!.weekNumberOptions === "YYYY/qqq/Www") {
+            // Quarter
+            const putSpanQuarterMark = createNavLink(`Q${quarter}`, `${year}/Q${quarter}/W${weekString}`)
+            putSpanQuarterMark.style.textDecoration = "underline"
+            navElement.appendChild(putSpanQuarterMark)
       }
+
+      // Next Year
+      const nextYearLink = format(addYears(monthStartDay, 1), "yyyy")
+      navElement.appendChild(createNavLink(nextYearLink, nextYearLink))
+
+      // span ">",{sm:true}
+      navElement.appendChild(spanFreeSpace(">", { sm: true }))
+
+
+      // Month
+
+      // Prev Month
+      navElement.appendChild(createNavLink(localizeMonthString(prevMonth, true), format(prevMonth, "yyyy/MM")))
+
+      // This Month
+      const thisMonthLink = spanFreeSpace(localizeMonthString(monthStartDay, true))
+      thisMonthLink.style.textDecoration = "underline"
+      navElement.appendChild(thisMonthLink)
+
+      // Next Month
+      navElement.appendChild(createNavLink(localizeMonthString(nextMonth, true), format(nextMonth, "yyyy/MM")))
+
+      // span ">",{sm:true}
+      navElement.appendChild(spanFreeSpace(">", { sm: true }))
+
+
+      // Week
+
+      // span "Week"
+      navElement.appendChild(spanFreeSpace(t("Week")))
+
+
+      for (let i = 0; i < getWeeksInMonth(monthStartDay, { weekStartsOn: ISO ? 1 : 0 }); i++) {
+            const week = addWeeks(monthStartDay, i)
+            if (isSameMonth(week, monthStartDay) === false) break
+            navElement.appendChild(createNavLinkWeekNumber(week, ISO, logseq.settings!.weekNumberOptions as string))
+      }
+
+
+      pageRelative.insertBefore(navElement, pageRelative.firstChild)
+
+      return Promise.resolve(true)
 }
 
 
@@ -163,7 +157,7 @@ export const weeklyJournalCreateNav = (
       navElement.id = "weeklyJournalNav"
       navElement.className = "flex justify-center items-center text-sm"
       navElement.style.userSelect = "none"
-      navElement.style.overflow = "auto"
+      navElement.style.whiteSpace = "nowrap"
 
 
       // Year
@@ -228,6 +222,125 @@ export const weeklyJournalCreateNav = (
 
 
       pageRelative.insertBefore(navElement, pageRelative.firstChild)
+      return Promise.resolve(true)
+}
 
+
+
+// QuarterlyJournal用ナビゲーションを作成する
+export const quarterlyJournalCreateNav = async (
+      year: number,
+      quarterly: number,
+      // month: number,
+      // monthStartDay: Date,
+): Promise<boolean> => {
+
+      // parent.document div.page.relative div.relativeの中の先頭に挿入する
+      const pageRelative = parent.document.querySelector("div.page.relative div.relative") as HTMLDivElement | null
+      if (!pageRelative
+            || pageRelative.dataset.quarterlyJournalNav === "true")
+            return Promise.resolve(false)
+
+      pageRelative.dataset.quarterlyJournalNav = "true"
+      const navElement = document.createElement("div")
+      navElement.id = "quarterlyJournalNav"
+      navElement.className = "flex justify-center items-center text-sm"
+      navElement.style.userSelect = "none"
+      navElement.style.whiteSpace = "nowrap"
+
+
+      // Year
+
+      // Prev Year
+      navElement.appendChild(createNavLink((year - 1).toString(), (year - 1).toString()))
+      // This Year
+      const thisYearLink = spanFreeSpace(year.toString())
+      thisYearLink.style.textDecoration = "underline"
+      navElement.appendChild(thisYearLink)
+      // Next Year
+      navElement.appendChild(createNavLink((year + 1).toString(), (year + 1).toString()))
+
+      // span ">",{sm:true}
+      navElement.appendChild(spanFreeSpace(">", { sm: true }))
+
+      // Quarter Q1-Q4
+      for (let i = 1; i <= 4; i++)
+            if (quarterly === i) {
+                  const quarterLink = spanFreeSpace(`Q${i}`)
+                  quarterLink.style.textDecoration = "underline"
+                  navElement.appendChild(quarterLink)
+            } else
+                  navElement.appendChild(createNavLink(`Q${i}`, `${year}/Q${i}`))
+
+
+      // span ">",{sm:true}
+      navElement.appendChild(spanFreeSpace(">", { sm: true }))
+
+      // Month Quarterに含まれる月のみ表示
+      for (let i = 1; i <= 12; i++)
+            if (quarterly * 3 - 2 <= i && i <= quarterly * 3) {
+                  const monthLink = createNavLink(localizeMonthString(new Date(year, i - 1, 1), false), `${year}/${i.toString().padStart(2, "0")}`)
+                  monthLink.style.fontWeight = "bold"
+                  navElement.appendChild(monthLink)
+            }
+
+
+      pageRelative.insertBefore(navElement, pageRelative.firstChild)
+      return Promise.resolve(true)
+}
+
+
+
+// YearlyJournal用ナビゲーションを作成する
+export const yearlyJournalCreateNav = async (
+      year: number,
+): Promise<boolean> => {
+
+      // parent.document div.page.relative div.relativeの中の先頭に挿入する
+      const pageRelative = parent.document.querySelector("div.page.relative div.relative") as HTMLDivElement | null
+      if (!pageRelative
+            || pageRelative.dataset.yearlyJournalNav === "true")
+            return Promise.resolve(false)
+
+      pageRelative.dataset.yearlyJournalNav = "true"
+      const navElement = document.createElement("div")
+      navElement.id = "yearlyJournalNav"
+      navElement.className = "flex justify-center items-center text-sm"
+      navElement.style.userSelect = "none"
+      navElement.style.whiteSpace = "nowrap"
+
+      // 3 years 
+      navElement.appendChild(createNavLink((year - 3).toString(), (year - 3).toString()))
+      // 2 years
+      navElement.appendChild(createNavLink((year - 2).toString(), (year - 2).toString()))
+      // Prev Year
+      navElement.appendChild(createNavLink((year - 1).toString(), (year - 1).toString()))
+      // This Year
+      const thisYearLink = spanFreeSpace(year.toString())
+      thisYearLink.style.textDecoration = "underline"
+      navElement.appendChild(thisYearLink)
+      // Next Year
+      navElement.appendChild(createNavLink((year + 1).toString(), (year + 1).toString()))
+      // 2 years later
+      navElement.appendChild(createNavLink((year + 2).toString(), (year + 2).toString()))
+      // 3 years later
+      navElement.appendChild(createNavLink((year + 3).toString(), (year + 3).toString()))
+      // span ">",{sm:true}
+      navElement.appendChild(spanFreeSpace(">", { sm: true }))
+
+      if (logseq.settings!.weekNumberOptions === "YYYY/qqq/Www") {
+            // Quarter
+            for (let i = 1; i <= 4; i++)
+                  navElement.appendChild(createNavLink(`Q${i}`, `${year}/Q${i}`))
+            // span ">",{sm:true}
+            navElement.appendChild(spanFreeSpace(">", { sm: true }))
+      }
+
+      // Month
+      for (let i = 1; i <= 12; i++)
+            navElement.appendChild(createNavLink(localizeMonthString(new Date(year, i - 1, 1), false), `${year}/${i.toString().padStart(2, "0")}`))
+
+
+      pageRelative.insertBefore(navElement, pageRelative.firstChild)
       return Promise.resolve(true)
 }

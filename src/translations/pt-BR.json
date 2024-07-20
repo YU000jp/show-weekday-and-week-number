@@ -98,5 +98,8 @@
   "year range": "Intervalo de anos",
   "Daily Journal Details": "Detalhes do Daily Journal",
   "Two-lines mini-Calendar": "Mini-calendário de duas linhas",
-  "(Journal Boundaries)": "(Limites do diário)"
+  "(Journal Boundaries)": "(Limites do diário)",
+  "Yearly Journal": "Revista Anual",
+  "Enable the link and function. If there is no content available on a page with a yearly number like 2024, a template will be inserted.": "Ative o link e a função. Se não houver conteúdo disponível em uma página com um número anual como 2024, um modelo será inserido.",
+  "Yearly journal created": "Diário anual criado"
 }

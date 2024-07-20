@@ -98,5 +98,8 @@
   "year range": "Діапазон років",
   "Daily Journal Details": "Подробиці щоденного журналу",
   "Two-lines mini-Calendar": "Дворядковий міні-календар",
-  "(Journal Boundaries)": "(Межі журналу)"
+  "(Journal Boundaries)": "(Межі журналу)",
+  "Yearly Journal": "Щорічний журнал",
+  "Enable the link and function. If there is no content available on a page with a yearly number like 2024, a template will be inserted.": "Увімкніть зв'язок і функцію. Якщо на сторінці з річним номером, як-от 2024 рік, немає доступного вмісту, буде вставлено шаблон.",
+  "Yearly journal created": "Створено щорічний журнал"
 }

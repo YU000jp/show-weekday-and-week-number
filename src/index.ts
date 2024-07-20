@@ -33,6 +33,7 @@ import uk from "./translations/uk.json"
 import zhCN from "./translations/zh-CN.json"
 import zhHant from "./translations/zh-Hant.json"
 import { currentPageIsWeeklyJournal, weeklyEmbed } from "./weeklyJournal"
+import { currentPageIsYearlyJournal } from "./yearlyJournal"
 
 // プラグイン名(小文字タイプ)
 export const pluginNameCut = "show-weekday-and-week-number"
@@ -269,36 +270,8 @@ const checkJournalTitle = async (titleElement: HTMLElement) => {
     // titleの先頭が2024から始まるかどうか
     && title.match(/^(\d{4})/) !== null
   ) {
-    // 2024/01にマッチするかどうか
-    if (logseq.settings!.booleanMonthlyJournal === true) {
-      const match = title.match(/^(\d{4})\/(\d{2})$/) as RegExpMatchArray
-      if (match
-        && match[1] !== ""
-        && match[2] !== "") {
-        await currentPageIsMonthlyJournal(titleElement, match)
-        titleElement.title = "Monthly Journal"
-        titleElement.dataset.checked = "true"
-        setTimeout(() =>
-          processingJournalTitlePage = false
-          , 300)
-        return //処理を終了する
-      }
-    }
-    // 2024/Q1にマッチするかどうか
-    if (logseq.settings!.booleanQuarterlyJournal === true) {
-      const match = title.match(/^(\d{4})\/[qQ](\d{1})$/) as RegExpMatchArray
-      if (match
-        && match[1] !== ""
-        && match[2] !== "") {
-        await currentPageIsQuarterlyJournal(titleElement, match)
-        titleElement.title = "Quarterly Journal"
-        titleElement.dataset.checked = "true"
-        setTimeout(() =>
-          processingJournalTitlePage = false
-          , 300)
-        return //処理を終了する
-      }
-    }
+
+    // Weekly Journalのページかどうか
     if (logseq.settings!.booleanWeeklyJournal === true) {
       const match = (() => {
         switch (logseq.settings!.weekNumberOptions) {
@@ -320,6 +293,56 @@ const checkJournalTitle = async (titleElement: HTMLElement) => {
           processingJournalTitlePage = false
           , 300)
         return //処理を終了する
+      }
+    }
+
+    // Monthly Journalのページかどうか
+    // 2024/01にマッチするかどうか
+    if (logseq.settings!.booleanMonthlyJournal === true) {
+      const match = title.match(/^(\d{4})\/(\d{2})$/) as RegExpMatchArray
+      if (match
+        && match[1] !== ""
+        && match[2] !== "") {
+        await currentPageIsMonthlyJournal(titleElement, match)
+        titleElement.title = "Monthly Journal"
+        titleElement.dataset.checked = "true"
+        setTimeout(() =>
+          processingJournalTitlePage = false
+          , 300)
+        return //処理を終了する
+      }
+    }
+
+    // Quarterly Journalのページかどうか
+    // 2024/Q1にマッチするかどうか
+    if (logseq.settings!.booleanQuarterlyJournal === true) {
+      const match = title.match(/^(\d{4})\/[qQ](\d{1})$/) as RegExpMatchArray
+      if (match
+        && match[1] !== ""
+        && match[2] !== "") {
+        await currentPageIsQuarterlyJournal(titleElement, match)
+        titleElement.title = "Quarterly Journal"
+        titleElement.dataset.checked = "true"
+        setTimeout(() =>
+          processingJournalTitlePage = false
+          , 300)
+        return //処理を終了する
+      }
+
+      // Yearly Journalのページかどうか
+      // 2024にマッチするかどうか
+      if (logseq.settings!.booleanYearlyJournal === true) {
+        const match = title.match(/^(\d{4})$/) as RegExpMatchArray
+        if (match
+          && match[1] !== "") {
+          await currentPageIsYearlyJournal(titleElement, match)
+          titleElement.title = "Yearly Journal"
+          titleElement.dataset.checked = "true"
+          setTimeout(() =>
+            processingJournalTitlePage = false
+            , 300)
+          return //処理を終了する
+        }
       }
     }
   }

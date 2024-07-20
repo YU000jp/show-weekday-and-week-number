@@ -98,5 +98,8 @@
   "year range": "jaar bereik",
   "Daily Journal Details": "Details van het dagelijkse journaal",
   "Two-lines mini-Calendar": "Mini-kalender met twee regels",
-  "(Journal Boundaries)": "(Grenzen van het journaal)"
+  "(Journal Boundaries)": "(Grenzen van het journaal)",
+  "Yearly Journal": "Jaarlijks journaal",
+  "Enable the link and function. If there is no content available on a page with a yearly number like 2024, a template will be inserted.": "Schakel de link en functie in. Als er geen inhoud beschikbaar is op een pagina met een jaarnummer zoals 2024, wordt er een sjabloon ingevoegd.",
+  "Yearly journal created": "Jaarlijks journaal aangemaakt"
 }

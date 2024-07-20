@@ -98,5 +98,8 @@
   "year range": "年份范围",
   "Daily Journal Details": "每日日记详细信息",
   "Two-lines mini-Calendar": "两行迷你日历",
-  "(Journal Boundaries)": "（日记账边界）"
+  "(Journal Boundaries)": "（日记账边界）",
+  "Yearly Journal": "年刊",
+  "Enable the link and function. If there is no content available on a page with a yearly number like 2024, a template will be inserted.": "启用链接和功能。如果年度编号为 2024 的页面上没有可用的内容，则将插入模板。",
+  "Yearly journal created": "创建的年度日记"
 }

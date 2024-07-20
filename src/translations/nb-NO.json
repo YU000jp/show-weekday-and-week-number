@@ -98,5 +98,8 @@
   "year range": "årsintervall",
   "Daily Journal Details": "Detaljer om daglig journal",
   "Two-lines mini-Calendar": "Minikalender med to linjer",
-  "(Journal Boundaries)": "(Tidsskriftets grenser)"
+  "(Journal Boundaries)": "(Tidsskriftets grenser)",
+  "Yearly Journal": "Årlig journal",
+  "Enable the link and function. If there is no content available on a page with a yearly number like 2024, a template will be inserted.": "Aktiver lenken og funksjonen. Hvis det ikke er noe innhold tilgjengelig på en side med et årlig nummer som 2024, vil en mal bli satt inn.",
+  "Yearly journal created": "Årsjournal opprettet"
 }

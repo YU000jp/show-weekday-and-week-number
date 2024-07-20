@@ -30,23 +30,20 @@ body {
                 /* プラグイン設定の見た目を変える(各項目) */
 
                 /* 有効トグルに合わせて、その次の項目を隠す */
+                &[data-key="booleanMonthlyJournal"]:has(input.form-checkbox:not(:checked))+div.desc-item[data-key="monthlyJournalTemplateName"] {
+                    display: none;
+                }
 
-                &[data-key="booleanQuarterlyJournal"]:has(input.form-checkbox:not(:checked))+div.desc-item[data-key="quarterlyJournalSetPageTag"] {
+                &[data-key="booleanQuarterlyJournal"]:has(input.form-checkbox:not(:checked))+div.desc-item[data-key="quarterlyJournalTemplateName"] {
                     display: none;
 
-                    &+div.desc-item[data-key="quarterlyJournalTemplateName"] {
+                    &+div.desc-item[data-key="quarterlyJournalSetPageTag"] {
                         display: none;
-
                     }
                 }
 
-                &[data-key="booleanMonthlyJournal"]:has(input.form-checkbox:not(:checked))+div.desc-item[data-key="monthlyJournalSetPageTag"] {
+                &[data-key="booleanYearlyJournal"]:has(input.form-checkbox:not(:checked))+div.desc-item[data-key="yearlyJournalTemplateName"] {
                     display: none;
-
-                    &+div.desc-item[data-key="monthlyJournalTemplateName"] {
-                        display: none;
-
-                    }
                 }
 
                 &[data-key="booleanWeeklyJournalHeadline"]:has(input.form-checkbox:not(:checked))+div.desc-item[data-key="weeklyJournalHeadlineProperty"] {
@@ -57,10 +54,10 @@ body {
                     display: none;
                 }
 
-                &[data-key="booleanWeeklyJournal"]:has(input.form-checkbox:not(:checked))+div.desc-item[data-key="weeklyJournalSetPageTag"] {
+                &[data-key="booleanWeeklyJournal"]:has(input.form-checkbox:not(:checked))+div.desc-item[data-key="weeklyJournalTemplateName"] {
                     display: none;
 
-                    &+div.desc-item[data-key="weeklyJournalTemplateName"] {
+                    &+div.desc-item[data-key="weeklyJournalSetPageTag"] {
                         display: none;
 
                         &+div.desc-item[data-key="booleanWeeklyJournalHeadline"] {
