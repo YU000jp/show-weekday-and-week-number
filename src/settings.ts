@@ -6,6 +6,8 @@ import { t } from "logseq-l10n"
 // https://logseq.github.io/plugins/types/SettingSchemaDesc.html
 
 
+export const weekNumberFormat: string[] = ["YYYY-Www", "YYYY/qqq/Www", "YYYY/Www"]
+
 export const settingsTemplate = (userLanguage): SettingSchemaDesc[] => [
 
 
@@ -488,7 +490,7 @@ export const settingsTemplate = (userLanguage): SettingSchemaDesc[] => [
     key: "weekNumberOptions",
     title: t("Week number format options") + "🆕",
     type: "enum",
-    enumChoices: ["YYYY-Www", "YYYY/qqq/Www", "YYYY/Www"],
+    enumChoices: weekNumberFormat,
     default: "YYYY-Www",
     description: t("This is a breaking change for existing users. Please change the old page name using one of the following toggles.")
   },

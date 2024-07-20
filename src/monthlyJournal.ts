@@ -1,8 +1,8 @@
 import { BlockEntity } from '@logseq/libs/dist/LSPlugin.user'
-import { format, subMonths, addMonths, startOfMonth } from 'date-fns' //https://date-fns.org/
-import { boundariesProcess } from './boundaries'
+import { addMonths, startOfMonth, subMonths } from 'date-fns'; //https://date-fns.org/
 import { t } from 'logseq-l10n'
-import { openPageFromPageName } from './lib'
+import { boundariesProcess } from './boundaries'
+import { monthlyJournalCreateNav } from './nav'
 let processingFoundBoundaries: boolean = false
 let processingMonthlyJournal: boolean = false
 
@@ -29,9 +29,11 @@ export const currentPageIsMonthlyJournal = async (titleElement: HTMLElement, mat
             return//一度だけ処理を行う
 
       // ナビゲーションを作成する
-      weeklyJournalCreateNav(
+      monthlyJournalCreateNav(
             subMonths(monthStartDay, 1),
-            addMonths(monthStartDay, 1)
+            monthStartDay,
+            addMonths(monthStartDay, 1),
+            year
       )
 
       const currentBlockTree = await logseq.Editor.getPageBlocksTree(match[0]) as BlockEntity[]//現在開いているページ
@@ -99,48 +101,4 @@ const monthlyJournalInsertTemplate = async (uuid: string, templateName: string) 
             logseq.UI.showMsg(t("Monthly journal created"), 'success', { timeout: 2000 })
       } else
             logseq.UI.showMsg(`Template "${templateName}" does not exist.`, 'warning', { timeout: 2000 })
-}
-
-
-// "<-2024/Q2/W19 2024/Q2/W21->" のように週番号のナビゲーションを作成する
-const weeklyJournalCreateNav = (
-      prevMonth: Date,
-      nextMonth: Date
-) => {
-      let weekDaysNavLinks: string[] = []
-
-      // parent.document div.page.relativeの中の先頭に挿入する
-      const pageRelative = parent.document.querySelector("div.page.relative") as HTMLDivElement
-      if (!pageRelative
-            || pageRelative.dataset.monthlyJournalNav === "true")
-            return
-
-      weekDaysNavLinks.push(format(prevMonth, "yyyy/MM")) //ひとつ前のyyyy/mm
-      weekDaysNavLinks.push(format(nextMonth, "yyyy/MM")) //ひとつ次のyyyy/mm
-
-      if (pageRelative) {
-            const navElement = document.createElement("div")
-            navElement.id = "weekNav"
-            //span "<-"
-            const prevWeek = document.createElement("span")
-            prevWeek.textContent = "<-"
-            prevWeek.style.marginRight = "1.0em"
-            navElement.appendChild(prevWeek)
-
-            // weekDaysNavLinksのページタグをリンクに変換する
-            weekDaysNavLinks.forEach((eachJournal) => {
-                  const navLink = document.createElement("a")
-                  navLink.textContent = eachJournal
-                  navLink.style.marginRight = "1.0em"
-                  navLink.addEventListener("click", ({ shiftKey }) =>
-                        openPageFromPageName(eachJournal, shiftKey))
-                  navElement.appendChild(navLink)
-            })
-            //span "->"
-            const nextWeek = document.createElement("span")
-            nextWeek.textContent = "->"
-            navElement.appendChild(nextWeek)
-            pageRelative.dataset.monthlyJournalNav = "true"
-            pageRelative.insertBefore(navElement, pageRelative.firstChild)
-      }
 }
