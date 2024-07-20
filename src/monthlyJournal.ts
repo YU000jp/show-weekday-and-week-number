@@ -24,7 +24,7 @@ export const currentPageIsMonthlyJournal = async (titleElement: HTMLElement, mat
       const monthStartDay = startOfMonth(new Date(year, month - 1, 1)) //月初の日付
 
       //Journal Boundariesを表示する
-      callMiniCalendar(monthStartDay)
+      callMiniCalendar(logseq.settings!.booleanBoundariesOnMonthlyJournal as boolean, monthStartDay)
 
       setTimeout(async () => {
             // ナビゲーションを作成する

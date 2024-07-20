@@ -2,6 +2,7 @@ import { addMonths, addWeeks, addYears, eachDayOfInterval, format, getWeeksInMon
 import { t } from "logseq-l10n"
 import { getConfigPreferredDateFormat } from "."
 import { getWeeklyNumberFromDate, localizeDayOfWeekDayString, localizeMonthString, openPageFromPageName } from "./lib"
+import { create } from "domain"
 
 
 export const createNavLink = (text: string, pageName: string) => {
@@ -254,7 +255,7 @@ export const quarterlyJournalCreateNav = async (
       // Prev Year
       navElement.appendChild(createNavLink((year - 1).toString(), (year - 1).toString()))
       // This Year
-      const thisYearLink = spanFreeSpace(year.toString())
+      const thisYearLink = createNavLink(year.toString(), year.toString())
       thisYearLink.style.textDecoration = "underline"
       navElement.appendChild(thisYearLink)
       // Next Year

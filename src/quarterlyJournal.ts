@@ -16,7 +16,7 @@ export const currentPageIsQuarterlyJournal = async (titleElement: HTMLElement, m
       const monthStartDay = startOfMonth(new Date(year, month - 1, 1)) //月初の日付
 
       //Journal Boundariesを表示する
-      callMiniCalendar(monthStartDay)
+      callMiniCalendar(logseq.settings!.booleanBoundariesOnQuarterlyJournal as boolean, monthStartDay)
 
       //プロセスロック
       if (processingQuarterlyJournal === true

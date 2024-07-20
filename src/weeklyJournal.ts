@@ -32,7 +32,7 @@ export const currentPageIsWeeklyJournal = async (titleElement: HTMLElement, matc
 
 
     //Journal Boundariesを表示する
-    callMiniCalendar(weekStart)
+    callMiniCalendar(logseq.settings!.booleanBoundariesOnWeeklyJournal as boolean, weekStart)
 
 
     const weekEnd: Date = addDays(weekStart, 6)
@@ -295,8 +295,8 @@ const eventListener = (scrollTargetElement: HTMLElement, ev: WheelEvent) => {
 }
 
 
-export const callMiniCalendar = (monthStartDay: Date) => {
-    if (logseq.settings!.booleanBoundariesOnWeeklyJournal === true
+export const callMiniCalendar = (check: boolean, monthStartDay: Date) => {
+    if (check === true
         && !parent.document.getElementById("weekBoundaries")
         && processingFoundBoundaries !== true) {
         processingFoundBoundaries = true

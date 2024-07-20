@@ -287,7 +287,9 @@ export const settingsTemplate = (userLanguage): SettingSchemaDesc[] => [
 
 
 
-  //Journal Boundaries
+  // Journal Boundaries
+
+  // Two-lines mini-Calendar
   {
     key: "heading002",
     title: "2. " + t("Two-lines mini-Calendar") + t("(Journal Boundaries)"),
@@ -316,12 +318,33 @@ export const settingsTemplate = (userLanguage): SettingSchemaDesc[] => [
     default: true,
     description: t("Use on journals"),
   },
-  {
+  { // Weekly Journalで有効にするかどうか
     key: "booleanBoundariesOnWeeklyJournal",
     title: "",
     type: "boolean",
     default: true,
     description: t("Use on Weekly Journal"),
+  },
+  { // Monthly Journalで有効にするかどうか
+    key: "booleanBoundariesOnMonthlyJournal",
+    title: "",
+    type: "boolean",
+    default: true,
+    description: t("Use on Monthly Journal") + "🆕",
+  },
+  { // Quarterly Journalで有効にするかどうか
+    key: "booleanBoundariesOnQuarterlyJournal",
+    title: "",
+    type: "boolean",
+    default: true,
+    description: t("Use on Quarterly Journal") + "🆕",
+  },
+  { // Yearly Journalで有効にするかどうか
+    key: "booleanBoundariesOnYearlyJournal",
+    title: "",
+    type: "boolean",
+    default: true,
+    description: t("Use on Yearly Journal") + "🆕",
   },
   {//20240108
     key: "boundariesBottom",
@@ -605,7 +628,7 @@ export const settingsTemplate = (userLanguage): SettingSchemaDesc[] => [
   // Yearly Journal
   {
     key: "heading007",
-    title: "7. " + t("Yearly Journal"),
+    title: "7. " + t("Yearly Journal") + "🆕",
     type: "heading",
     default: "",
     description: "",
