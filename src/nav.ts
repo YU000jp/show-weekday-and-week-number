@@ -53,7 +53,7 @@ export const monthlyJournalCreateNav = (
       year: number
 ) => {
       // parent.document div.page.relativeの中の先頭に挿入する
-      const pageRelative = parent.document.querySelector("div.page.relative") as HTMLDivElement | null
+      const pageRelative = parent.document.querySelector("div.page.relative div.relative") as HTMLDivElement | null
       if (!pageRelative
             || pageRelative.dataset.monthlyJournalNav === "true")
             return
@@ -66,8 +66,10 @@ export const monthlyJournalCreateNav = (
             pageRelative.dataset.monthlyJournalNav = "true"
 
             const navElement = document.createElement("div")
-            navElement.id = "weekNav"
+            navElement.id = "monthlyJournalNav"
             navElement.className = "flex justify-center items-center text-sm"
+            navElement.style.userSelect = "none"
+            navElement.style.overflow = "auto"
 
 
             // Year
@@ -150,7 +152,7 @@ export const weeklyJournalCreateNav = (
 ): Promise<boolean> => {
 
       // parent.document div.page.relativeの中の先頭に挿入する
-      const pageRelative = parent.document.querySelector("div.page") as HTMLDivElement | null
+      const pageRelative = parent.document.querySelector("div.page.relative div.relative") as HTMLDivElement | null
 
       if (!pageRelative
             || pageRelative.dataset.weeklyJournalNav === "true")
@@ -158,7 +160,10 @@ export const weeklyJournalCreateNav = (
 
       pageRelative.dataset.weeklyJournalNav = "true"
       const navElement = document.createElement("div")
-      navElement.id = "weekNav"
+      navElement.id = "weeklyJournalNav"
+      navElement.className = "flex justify-center items-center text-sm"
+      navElement.style.userSelect = "none"
+      navElement.style.overflow = "auto"
 
 
       // Year
