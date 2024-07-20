@@ -29,7 +29,7 @@ export const currentPageIsMonthlyJournal = async (titleElement: HTMLElement, mat
             return//一度だけ処理を行う
 
       // ナビゲーションを作成する
-      monthlyJournalCreateNav(
+      weeklyJournalCreateNav(
             subMonths(monthStartDay, 1),
             addMonths(monthStartDay, 1)
       )
@@ -103,7 +103,7 @@ const monthlyJournalInsertTemplate = async (uuid: string, templateName: string) 
 
 
 // "<-2024/Q2/W19 2024/Q2/W21->" のように週番号のナビゲーションを作成する
-const monthlyJournalCreateNav = (
+const weeklyJournalCreateNav = (
       prevMonth: Date,
       nextMonth: Date
 ) => {

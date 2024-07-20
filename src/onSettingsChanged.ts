@@ -43,7 +43,6 @@ export const isCommonSettingsChanged = (oldSet: LSPluginBaseInfo["settings"], ne
 export const onSettingsChanged = () => {
   logseq.onSettingsChanged((newSet: LSPluginBaseInfo["settings"], oldSet: LSPluginBaseInfo["settings"]) => {
 
-
     if (
       (oldSet.booleanBoundariesAll === true
         && newSet.booleanBoundariesAll === false)
@@ -68,8 +67,8 @@ export const onSettingsChanged = () => {
       )
         SettingsChangedJournalBoundariesEnable(newSet)
 
-
-    if (isCommonSettingsChanged(oldSet, newSet) === true
+    if (
+      isCommonSettingsChanged(oldSet, newSet) === true
       || oldSet.booleanWeeklyJournal !== newSet.booleanWeeklyJournal
       || oldSet.boundariesBottom !== newSet.boundariesBottom
       || oldSet.booleanBoundariesShowMonth !== newSet.booleanBoundariesShowMonth
@@ -81,8 +80,8 @@ export const onSettingsChanged = () => {
       SettingsChangedJournalBoundariesEnable(newSet)
     }
 
-
-    if (isCommonSettingsChanged(oldSet, newSet) === true
+    if (
+      isCommonSettingsChanged(oldSet, newSet) === true
       || oldSet.booleanDayOfWeek !== newSet.booleanDayOfWeek
       || oldSet.longOrShort !== newSet.longOrShort
       || oldSet.booleanWeekNumber !== newSet.booleanWeekNumber
@@ -93,12 +92,13 @@ export const onSettingsChanged = () => {
       || oldSet.booleanSettingsButton !== newSet.booleanSettingsButton
       || oldSet.booleanMonthlyJournalLink !== newSet.booleanMonthlyJournalLink
       || oldSet.underHolidaysAlert !== newSet.underHolidaysAlert
-      || oldSet.booleanBesideJournalTitle !== newSet.booleanBesideJournalTitle) {
+      || oldSet.booleanBesideJournalTitle !== newSet.booleanBesideJournalTitle
+    ) {
       //再表示 Behind Journal Title
       removeTitleQuery()
       setTimeout(() => querySelectorAllTitle(newSet.booleanBesideJournalTitle as boolean), 500)
     }
-
+    
 
     // weeklyEmbed
     if (oldSet.weeklyEmbed !== newSet.weeklyEmbed)
@@ -109,9 +109,11 @@ export const onSettingsChanged = () => {
 
 
     //weeklyJournalHeadlineProperty
-    if (oldSet.weeklyJournalHeadlineProperty !== newSet.weeklyJournalHeadlineProperty
+    if (
+      oldSet.weeklyJournalHeadlineProperty !== newSet.weeklyJournalHeadlineProperty
       && oldSet.weeklyJournalHeadlineProperty !== ""
-      && newSet.weeklyJournalHeadlineProperty !== "") //空白の場合は実行しない
+      && newSet.weeklyJournalHeadlineProperty !== ""
+    ) //空白の場合は実行しない
       logseq.Editor.renamePage(oldSet.weeklyJournalHeadlineProperty as string, newSet.weeklyJournalHeadlineProperty as string) //ページ名を変更する
 
 
@@ -176,7 +178,6 @@ export const SettingsChangedJournalBoundariesEnable = (newSet: LSPluginBaseInfo[
     setTimeout(() => {
       if (newSet.booleanJournalsBoundaries === true
         && parent.document.getElementById("journals") as Node)
-
         boundaries("journals")
       else
         if (newSet.booleanBoundaries === true
