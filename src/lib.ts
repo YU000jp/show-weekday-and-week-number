@@ -206,6 +206,11 @@ export const localizeDayOfWeekString = (date: Date, long: boolean): string => ne
 
 //ローカライズされた月日を取得する
 export const localizeMonthDayString = (date: Date): string => new Intl.DateTimeFormat((logseq.settings?.localizeOrEnglish as string || "default"), { month: "short", day: "numeric" }).format(date)
+
+//ローカライズされた、曜日と日にちを取得する
+export const localizeDayOfWeekDayString = (date: Date): string => new Intl.DateTimeFormat((logseq.settings?.localizeOrEnglish as string || "default"), { weekday: "short", day: "numeric" }).format(date)
+
+
 export const getWeekStartFromWeekNumber = (year: number, weekNumber: number, weekStartsOn: 0 | 1 | 2 | 3 | 4 | 5 | 6 | undefined, ISO: boolean): Date => {
     if (ISO === true) {
         const firstDayOfWeek = startOfISOWeek(new Date(year, 0, 4, 0, 0, 0, 0)) //1/4を含む週

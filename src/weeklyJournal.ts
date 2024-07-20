@@ -1,9 +1,10 @@
 import { AppUserConfigs, BlockEntity, BlockUUID, IBatchBlock } from '@logseq/libs/dist/LSPlugin.user'
-import { addDays, addWeeks, eachDayOfInterval, format, getISOWeek, getISOWeekYear, getWeek, getWeekYear, isSameISOWeek, isSameWeek, subDays, subWeeks, } from 'date-fns' //https://date-fns.org/
+import { addDays, addWeeks, eachDayOfInterval, format, getISOWeek, getWeek, isSameISOWeek, isSameWeek, subDays, subWeeks, } from 'date-fns' //https://date-fns.org/
 import { t } from 'logseq-l10n'
 import { boundariesProcess } from './boundaries'
-import { existInsertTemplate, getQuarter, getWeekStartFromWeekNumber, openPageFromPageName } from './lib'
+import { existInsertTemplate, getWeekStartFromWeekNumber } from './lib'
 import CSSThisWeekPopup from "./weeklyEmbed.css?inline" //CSSをインラインで読み込む
+import { weeklyJournalCreateNav } from './nav'
 let processingFoundBoundaries: boolean = false
 let processingWeeklyJournal: boolean = false
 export const keyThisWeekPopup = "weeklyEmbed"
@@ -16,6 +17,7 @@ export const currentPageIsWeeklyJournal = async (titleElement: HTMLElement, matc
 
     const year = Number(match[1]) //2023
     const weekNumber = Number(match[2]) //27
+    const weekNumberString = weekNumber.toString().padStart(2, "0") //27→"27"
     const ISO = (logseq.settings?.weekNumberFormat === "ISO(EU) format") ? true : false
     const weekStartsOn = (logseq.settings?.weekNumberFormat === "US format") ? 0 : 1
     const weekStart: Date = getWeekStartFromWeekNumber(year, weekNumber, weekStartsOn, ISO)
@@ -45,24 +47,18 @@ export const currentPageIsWeeklyJournal = async (titleElement: HTMLElement, matc
     const prevWeekStart: Date = (ISO === true)
         ? subWeeks(weekStart, 1)
         : subDays(weekStart, 1)
-    const prevWeekNumber: number = (ISO === true)
-        ? getISOWeek(prevWeekStart)
-        : getWeek(prevWeekStart, { weekStartsOn })
 
     //次の週番号を求める
     const nextWeekStart: Date = (ISO === true)
         ? addWeeks(weekStart, 1)
         : addDays(weekEnd, 1)
-    const nextWeekNumber: number = (ISO === true)
-        ? getISOWeek(nextWeekStart)
-        : getWeek(nextWeekStart, { weekStartsOn })
 
     setTimeout(async () => {
         // 週番号のナビゲーションを作成する
-        const boolean = await weeklyJournalCreateNav(ISO, prevWeekStart, weekStartsOn, prevWeekNumber, nextWeekStart, nextWeekNumber)
+        const boolean = await weeklyJournalCreateNav(ISO,year.toString(),weekNumberString, weekStart,weekEnd, prevWeekStart, nextWeekStart)
         if (boolean === false)
             setTimeout(async () =>
-                await weeklyJournalCreateNav(ISO, prevWeekStart, weekStartsOn, prevWeekNumber, nextWeekStart, nextWeekNumber) //再度実行
+                await weeklyJournalCreateNav(ISO, year.toString(),weekNumberString,weekStart,weekEnd, prevWeekStart, nextWeekStart) //再度実行
                 , 1200)
     }, 250)
 
@@ -122,7 +118,6 @@ export const currentPageIsWeeklyJournal = async (titleElement: HTMLElement, matc
     }
 
 }// end of currentPageIsWeeklyJournal
-
 
 
 const weeklyJournalCreateContent = async (
@@ -223,110 +218,6 @@ const weeklyJournalCreateContent = async (
         }, 10)
     } else
         console.warn("newBlock is null") //newBlockがnullの場合は警告を出す
-}
-
-
-// "<-2024/Q2/W19 2024/Q2/W21->" のように週番号のナビゲーションを作成する
-const weeklyJournalCreateNav = (
-    ISO: boolean,
-    prevWeekStart: Date,
-    weekStartsOn: 0 | 1,
-    prevWeekNumber: number,
-    nextWeekStart: Date,
-    nextWeekNumber: number
-): Promise<boolean> => {
-
-    let weekDaysNavLinks: string[] = []
-
-    // parent.document div.page.relativeの中の先頭に挿入する
-    const pageRelative = parent.document.querySelector("div.page") as HTMLDivElement
-    if (!pageRelative
-        || pageRelative.dataset.weeklyJournalNav === "true")
-        return Promise.resolve(false)
-
-    switch (logseq.settings!.weekNumberOptions) {
-        case "YYYY-Www":
-            //ひとつ前の週番号
-            weekDaysNavLinks.unshift(`${(ISO === true)
-                ? getISOWeekYear(prevWeekStart)
-                : getWeekYear(prevWeekStart, { weekStartsOn })}-W${(prevWeekNumber < 10)
-                    ? String("0" + prevWeekNumber)
-                    : String(prevWeekNumber)}`)
-
-            //ひとつ次の週番号
-            weekDaysNavLinks.push(`${(ISO === true)
-                ? getISOWeekYear(nextWeekStart)
-                : getWeekYear(nextWeekStart, { weekStartsOn })}-W${(nextWeekNumber < 10)
-                    ? String("0" + nextWeekNumber)
-                    : String(nextWeekNumber)}`)
-            break
-
-        case "YYYY/Www":
-            //ひとつ前の週番号
-            weekDaysNavLinks.unshift(`${(ISO === true)
-                ? getISOWeekYear(prevWeekStart)
-                : getWeekYear(prevWeekStart, { weekStartsOn })}/W${(prevWeekNumber < 10)
-                    ? String("0" + prevWeekNumber)
-                    : String(prevWeekNumber)}`)
-            //ひとつ次の週番号
-            weekDaysNavLinks.push(`${(ISO === true)
-                ? getISOWeekYear(nextWeekStart)
-                : getWeekYear(nextWeekStart, { weekStartsOn })}/W${(nextWeekNumber < 10)
-                    ? String("0" + nextWeekNumber)
-                    : String(nextWeekNumber)}`)
-            break
-
-        case "YYYY/qqq/Www":
-            //ひとつ前の週番号
-            weekDaysNavLinks.unshift(`${(ISO === true)
-                ? getISOWeekYear(prevWeekStart)
-                : getWeekYear(prevWeekStart, { weekStartsOn })}/Q${getQuarter(prevWeekNumber)}/W${(prevWeekNumber < 10)
-                    ? String("0" + prevWeekNumber)
-                    : String(prevWeekNumber)}`)
-            //ひとつ次の週番号
-            weekDaysNavLinks.push(`${(ISO === true)
-                ? getISOWeekYear(nextWeekStart)
-                : getWeekYear(nextWeekStart, { weekStartsOn })}/Q${getQuarter(nextWeekNumber)}/W${(nextWeekNumber < 10)
-                    ? String("0" + nextWeekNumber)
-                    : String(nextWeekNumber)}`)
-            break
-
-        default:
-            console.error("weekNumberOptions is not set correctly") //weekNumberOptionsが正しく設定されていない場合はエラーを出す
-            break
-    }
-
-    if (weekDaysNavLinks.length === 0) {
-        console.error("weekDaysNavLinks is empty") //weekDaysNavLinksが空の場合はエラーを出す
-        return Promise.resolve(true)
-    }
-
-    const navElement = document.createElement("div")
-    navElement.id = "weekNav"
-
-    //span "<-"
-    const prevWeek = document.createElement("span")
-    prevWeek.textContent = "<-"
-    prevWeek.style.marginRight = "1.0em"
-    navElement.appendChild(prevWeek)
-
-    // weekDaysNavLinksのページタグをリンクに変換する
-    for (const eachJournal of weekDaysNavLinks) {
-        const navLink = document.createElement("a")
-        navLink.textContent = eachJournal
-        navLink.style.marginRight = "1.0em"
-        navLink.addEventListener("click", ({ shiftKey }) => openPageFromPageName(eachJournal, shiftKey))
-        navElement.appendChild(navLink)
-    }
-
-    //span "->"
-    const nextWeek = document.createElement("span")
-    nextWeek.textContent = "->"
-    navElement.appendChild(nextWeek)
-    pageRelative.dataset.weeklyJournalNav = "true"
-    pageRelative.insertBefore(navElement, pageRelative.firstChild)
-
-    return Promise.resolve(true)
 }
 
 
