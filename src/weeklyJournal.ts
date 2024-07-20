@@ -28,6 +28,7 @@ export const currentPageIsWeeklyJournal = async (titleElement: HTMLElement, matc
 
     //処理中フラグを立てる ここからreturnする場合は必ずfalseにすること
     processingWeeklyJournal = true
+    setTimeout(() => processingWeeklyJournal = false, 1000) // 1秒後に処理を解除する
     titleElement.dataset.WeeklyJournalChecked = "true"
 
 
@@ -54,7 +55,7 @@ export const currentPageIsWeeklyJournal = async (titleElement: HTMLElement, matc
             setTimeout(async () =>
                 await weeklyJournalCreateNav(ISO, year.toString(), weekNumberString, weekStart, weekEnd, prevWeekStart, nextWeekStart) //再度実行
                 , 1200)
-    }, 250)
+    }, 300)
 
 
     if (logseq.settings!.booleanWeeklyJournalThisWeek === true
@@ -85,11 +86,8 @@ export const currentPageIsWeeklyJournal = async (titleElement: HTMLElement, matc
                 await weeklyJournalCreateContent(weekStart, weekEnd, pageEntity.uuid)
                 resolve("Done")
             })
-            setTimeout(() =>
-                processingWeeklyJournal = false
-                , 300)
-        } else
-            console.warn("pageBlockTree is null") //pageBlockTreeがnullの場合は警告を出す
+        }
+        //else console.warn("pageBlockTree is null") //pageBlockTreeがnullの場合は警告を出す
     } else {
         console.log("Weekly Journal page not found") //ページが見つからない場合はログを出す
         // ページが存在しない場合は作成する
@@ -102,11 +100,8 @@ export const currentPageIsWeeklyJournal = async (titleElement: HTMLElement, matc
                 await weeklyJournalCreateContent(weekStart, weekEnd, pageEntity.uuid)
                 resolve("Done")
             })
-            setTimeout(() =>
-                processingWeeklyJournal = false
-                , 300)
-        } else
-            console.warn("pageEntity is null") //pageEntityがnullの場合は警告を出す
+        }
+        //else console.warn("pageEntity is null") //pageEntityがnullの場合は警告を出す
     }
 
 }// end of currentPageIsWeeklyJournal
