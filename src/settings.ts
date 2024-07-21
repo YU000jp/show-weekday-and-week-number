@@ -221,6 +221,24 @@ export const settingsTemplate = (userLanguage): SettingSchemaDesc[] => [
     default: "#00BFFF",
     description: t("User color") + "🆕",
   },
+  // タスク(SCHEDULEDやDEADLINE)との統合
+  // {
+  //   key: "booleanTaskColor",
+  //   title: t("Task color"),
+  //   type: "boolean",
+  //   default: true,
+  //   description: "",
+  // },
+  // {//タスクの色指定
+  //   key: "choiceTaskColor",
+  //   title: "",
+  //   type: "string",
+  //   inputAs: "color",
+  //   default: "#FF0000",
+  //   description: t("Task color") + "🆕",
+  // },
+  //TODO: 進捗ゼロ
+  
   // 共通設定ここまで
 
 
