@@ -1,3 +1,21 @@
+# [1.59.0](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.58.1...v1.59.0) (2024-07-21)
+
+
+### Bug Fixes
+
+* **bug:** Deactivation of weekly date markers ([0b3cc45](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/0b3cc4595a3ddc74ef6160fd21e168971cec0621))
+* **bug:** Navigation links may break down. ([fded104](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/fded104e7ac614172909e9a7d68fc858e758ebcb))
+
+
+### Features
+
+* **Add:** Colour the user's specified dates ([215556a](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/215556ad5f663b593914509503266ae8273227f6))
+* **Add:** Journal Title Details > prev next link ([5c49d33](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/5c49d33433f5b761bf4bb9a07fe8a1a55182252f))
+* **Add:** Yearly Journal (nav) [#147](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/147) ([044605e](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/044605e7d4352b4d25634455cb7de97bda0e90a2))
+* **bug:** Interlocking mini-calendars. ([aeae149](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/aeae14995060af382f3f511f91c5459bdb723cb2))
+* **Update:** Monthly Journal nav ([f2baa84](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/f2baa849e41a32cfa34ad1891595b483d0058454))
+* **Update:** Weekly Journal nav ([0de884b](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/0de884bd1406d45b1769af146d2722b5545053d8))
+
 ## [1.58.1](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.58.0...v1.58.1) (2024-07-19)
 
 
