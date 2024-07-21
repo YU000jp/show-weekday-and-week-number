@@ -3,7 +3,8 @@
 - Enhance journal functions of Logseq
   1. Show weekday and week number beside journal titles.
   1. **Monthly Calendar** in left sidebar or **2 lines mini-Calendar**
-  1. "Weekly Journal" feature
+  1. Breadcrumb of journal links
+     - "Weekly Journal" feature..etc
 
 <div align="right">
 
@@ -31,10 +32,16 @@
 
    > ![README用](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/assets/111847207/114708ab-0389-4c46-b962-00cb25e2070a)
 
- 1. **Monthly Calendar** in left sidebar
+ 1. **Monthly Calendar** in left sidebar 🆕
 
     > ![image](https://github.com/user-attachments/assets/6d0e4c0e-1960-4db4-b559-154300db164d)
 
+### Breadcrumb of Journal Links 🆕
+
+- Use the navigation links at the top of the page to access other journals.
+1. Weekly Journal:
+
+   > ![image](https://github.com/user-attachments/assets/681ca83e-8295-4062-9e17-ec90ecee52e9)
 
 ### Weekly Journal
 
@@ -49,9 +56,9 @@ Sample:
 
 - Click the link on the left side of the mini calendar to generate a page like `[[2023/10]]` and apply the template.
 
-### Quarterly Journal
+### Quarterly Journal / Yearly Journal 🆕
 
-> Note: This is only valid if the page title format for Weekly Journal is set to `yyyy/qqq/Www`.
+> Note: Quartely Journal is only valid if the page title format for Weekly Journal is set to `yyyy/qqq/Www`.
 - Access from the hierarchical link of the Monthly or Weekly journal. The page will be generated and the template will be applied.
 
 ### Slash Command for week-number
