@@ -18,7 +18,7 @@ export const createNavLink = (text: string, pageName: string) => {
 
 
 export const createNavLinkWeekNumber = (day: Date, ISO: boolean, configWeekNumberFormat: string) => {
-      
+
       const monthFirstWeekNumber: {
             year: number
             weekString: string
@@ -31,7 +31,7 @@ export const createNavLinkWeekNumber = (day: Date, ISO: boolean, configWeekNumbe
             : configWeekNumberFormat === "YYYY/qqq/Www" ?
                   `${monthFirstWeekNumber.year}/Q${monthFirstWeekNumber.quarter}/W${monthFirstWeekNumber.weekString}`
                   : `${monthFirstWeekNumber.year}/W${monthFirstWeekNumber.weekString}`
-      
+
       const monthFirstWeekNumberLink = createNavLink(monthFirstWeekNumber.weekString, linkString)
       monthFirstWeekNumberLink.title = linkString
       monthFirstWeekNumberLink.style.marginRight = "1.0em"
@@ -62,7 +62,7 @@ export const monthlyJournalCreateNav = async (
             return Promise.resolve(false)
 
       pageRelative.dataset.monthlyJournalNav = "true" // 作成済みフラグ
-      const navElement = createNavElement("monthlyJournalNav") // navElementを作成
+      const navElement = createNavElement("journalNav") // navElementを作成
 
       const ISO = logseq.settings!.booleanISOWeek === true ? true : false
       const { quarter, weekString } = getWeeklyNumberFromDate(monthStartDay, ISO ? 1 : 0)
@@ -150,9 +150,9 @@ export const weeklyJournalCreateNav = (
       if (!pageRelative
             || pageRelative.dataset.weeklyJournalNav === "true")
             return Promise.resolve(false)
-      
+
       pageRelative.dataset.weeklyJournalNav = "true" // 作成済みフラグ
-      const navElement = createNavElement("weeklyJournalNav") // navElementを作成
+      const navElement = createNavElement("journalNav") // navElementを作成
 
 
       // Year
@@ -237,7 +237,7 @@ export const quarterlyJournalCreateNav = async (
             return Promise.resolve(false)
 
       pageRelative.dataset.quarterlyJournalNav = "true" // 作成済みフラグ
-      const navElement = createNavElement("quarterlyJournalNav") // navElementを作成
+      const navElement = createNavElement("journalNav") // navElementを作成
 
 
       // Year
@@ -294,7 +294,7 @@ export const yearlyJournalCreateNav = async (
             return Promise.resolve(false)
 
       pageRelative.dataset.yearlyJournalNav = "true" // 作成済みフラグ
-      const navElement = createNavElement("yearlyJournalNav") // navElementを作成
+      const navElement = createNavElement("journalNav") // navElementを作成
 
 
       // 3 years 
@@ -337,8 +337,6 @@ const createNavElement = (id: string) =>
       Object.assign(document.createElement("div"), {
             id,
             className: "flex justify-center items-center text-sm",
-            style: {
-                  userSelect: "none",
-                  whiteSpace: "nowrap"
-            }
+            // style: {
+            // }
       })

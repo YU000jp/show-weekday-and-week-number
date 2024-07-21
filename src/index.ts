@@ -127,44 +127,6 @@ const main = async () => {
           //div#journals
           setTimeout(() => boundaries("journals"), 20)
 
-    // 左サイドバーのカレンダーを更新する
-    if (logseq.settings!.booleanLeftCalendar === true)
-      logseq.Editor.getCurrentPage().then((pageEntity) => {
-        if (pageEntity) {
-          if (pageEntity.journalDay)
-            refreshCalendar(getJournalDayDate(String(pageEntity.journalDay)), true, false)
-          else
-            if (logseq.settings!.booleanWeeklyJournal === true) {
-              const pageName = pageEntity.originalName as PageEntity["originalName"]
-              const match = (() => {
-                switch (logseq.settings!.weekNumberOptions) {
-                  case "YYYY-Www":
-                    return pageName.match(/^(\d{4})-[wW](\d{2})$/) // "YYYY-Www"
-                  case "YYYY/qqq/Www": // 2023/Q1/W01
-                    return pageName.match(/^(\d{4})\/[qQ]\d{1}\/[wW](\d{2})$/) // "YYYY/qqq/Www"
-                  default:
-                    return pageName.match(/^(\d{4})\/[wW](\d{2})$/) // "YYYY/Www"
-                }
-              })() as RegExpMatchArray
-              if (match
-                && match[1] !== ""
-                && match[2] !== "") {
-                const weekStart: Date = getWeekStartFromWeekNumber(
-                  Number(match[1]),
-                  Number(match[2]),
-                  logseq.settings?.weekNumberFormat === "US format" ? 0 : 1,
-                  logseq.settings!.weekNumberFormat === "ISO format" ? true : false)
-                refreshCalendar(weekStart, false, true) // 週の最初の日付がハイライトされる
-              } else
-                refreshCalendarCheckSameMonth()
-            } else
-              refreshCalendarCheckSameMonth()
-        } else
-          refreshCalendarCheckSameMonth()
-      })
-    else
-      refreshCalendarCheckSameMonth()
-
     setTimeout(() => querySelectorAllTitle(logseq.settings!.booleanBesideJournalTitle as boolean), 50)
   })
 
@@ -268,28 +230,26 @@ const checkJournalTitle = async (titleElement: HTMLElement) => {
   if (title === "") return //タイトルが空の場合は処理を終了する
 
 
-  //Weekly(M/Q) Journalのページかどうか
+  //Weekly Journal、Monthly Journal、Quarterly Journal、Yearly Journalのページかどうか
   if (titleElement.classList.contains("journal-title") === false
     && titleElement.classList.contains("title") === true
     && title.match(/^(\d{4})/) !== null // titleの先頭が2024から始まる場合のみチェックする
-  ) {
+  )
     // Weekly Journalのページかどうか
-    if (logseq.settings!.booleanWeeklyJournal === true)
-      if (await isMatchWeeklyJournal(title, titleElement)) return
-
-    // Monthly Journalのページかどうか
-    if (logseq.settings!.booleanMonthlyJournal === true)
+    if (await isMatchWeeklyJournal(title, titleElement)) return
+    else
+      // Monthly Journalのページかどうか
       if (await isMatchMonthlyJournal(title, titleElement)) return // 2024/01にマッチするかどうか
-
-    // Quarterly Journalのページかどうか
-
-    if (logseq.settings!.booleanQuarterlyJournal === true)
-      if (await isMatchQuarterlyJournal(title, titleElement)) return // 2024/Q1にマッチするかどうか
-
-    // Yearly Journalのページかどうか
-    if (logseq.settings!.booleanYearlyJournal === true)
-      if (await isMatchYearlyJournal(title, titleElement)) return // 2024にマッチするかどうか
-  }
+      else
+        // Quarterly Journalのページかどうか
+        if (await isMatchQuarterlyJournal(title, titleElement)) return // 2024/Q1にマッチするかどうか
+        else
+          // Yearly Journalのページかどうか
+          if (await isMatchYearlyJournal(title, titleElement)) return // 2024にマッチするかどうか
+          else
+            refreshCalendarCheckSameMonth()
+  else
+    refreshCalendarCheckSameMonth()
 
   if ((logseq.settings!.booleanBesideJournalTitle === false
     || (logseq.settings!.booleanBesideJournalTitle === true
@@ -344,41 +304,37 @@ const isMatchWeeklyJournal = async (title: string, titleElement: HTMLElement): P
   })() as RegExpMatchArray
   if (match) {
     await currentPageIsWeeklyJournal(titleElement, match)
-    titleElement.title = "Weekly Journal"
-    titleElement.dataset.checked = "true"
+    titleElement.title = t("Weekly Journal")
     return true
   } else
     return false
 }
 
 const isMatchMonthlyJournal = async (title: string, titleElement: HTMLElement): Promise<boolean> => {
-  const match = title.match(/^(\d{4})\/(\d{2})$/) as RegExpMatchArray
+  const match = title.match(/^(\d{4})\/(\d{2})$/) as RegExpMatchArray // 2023/01
   if (match) {
     await currentPageIsMonthlyJournal(titleElement, match)
-    titleElement.title = "Monthly Journal"
-    titleElement.dataset.checked = "true"
+    titleElement.title = t("Monthly Journal")
     return true
   } else
     return false
 }
 
 const isMatchQuarterlyJournal = async (title: string, titleElement: HTMLElement): Promise<boolean> => {
-  const match = title.match(/^(\d{4})\/[qQ]\d{1}$/) as RegExpMatchArray
+  const match = title.match(/^(\d{4})\/[qQ](\d{1})$/) as RegExpMatchArray // 2023/Q1
   if (match) {
     await currentPageIsQuarterlyJournal(titleElement, match)
-    titleElement.title = "Quarterly Journal"
-    titleElement.dataset.checked = "true"
+    titleElement.title = t("Quarterly Journal")
     return true
   } else
     return false
 }
 
 const isMatchYearlyJournal = async (title: string, titleElement: HTMLElement): Promise<boolean> => {
-  const match = title.match(/^(\d{4})$/) as RegExpMatchArray
+  const match = title.match(/^(\d{4})$/) as RegExpMatchArray // 2023
   if (match) {
     await currentPageIsYearlyJournal(titleElement, match)
-    titleElement.title = "Yearly Journal"
-    titleElement.dataset.checked = "true"
+    titleElement.title = t("Yearly Journal")
     return true
   } else
     return false

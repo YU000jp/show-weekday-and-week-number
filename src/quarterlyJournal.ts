@@ -4,6 +4,7 @@ import { t } from 'logseq-l10n'
 import { journalInsertTemplate } from './monthlyJournal'
 import { callMiniCalendar } from './weeklyJournal'
 import { quarterlyJournalCreateNav } from './nav'
+import { refreshCalendar } from './left-calendar'
 
 let processingQuarterlyJournal: boolean = false
 
@@ -13,19 +14,25 @@ export const currentPageIsQuarterlyJournal = async (titleElement: HTMLElement, m
       const quarterly = Number(match[2]) //Q1
       const month = quarterly * 3 - 2 //1月
 
-      const monthStartDay = startOfMonth(new Date(year, month - 1, 1)) //月初の日付
-
-      //Journal Boundariesを表示する
-      callMiniCalendar(logseq.settings!.booleanBoundariesOnQuarterlyJournal as boolean, monthStartDay)
-
       //プロセスロック
       if (processingQuarterlyJournal === true
             || (titleElement.dataset!.quarterlyJournalChecked as string) === year + "/" + month)
             return//一度だけ処理を行う
 
       processingQuarterlyJournal = true//処理中フラグを立てる ここからreturnする場合は必ずfalseにすること
-      titleElement.dataset.quarterlyJournalChecked = year + "/" + month
+      titleElement.dataset.quarterlyJournalChecked = year + "/" + month //処理済みのマーク
       setTimeout(() => processingQuarterlyJournal = false, 1000)//1秒後に強制解除する
+
+
+      const monthStartDay = startOfMonth(new Date(year, month - 1, 1)) //月初の日付
+
+      //Journal Boundariesを表示する
+      callMiniCalendar(logseq.settings!.booleanBoundariesOnQuarterlyJournal as boolean, monthStartDay)
+
+      //Left Calendarの更新
+      refreshCalendar(monthStartDay, false, false)
+
+      if (logseq.settings!.booleanQuarterlyJournal === false) return
 
 
       setTimeout(async () => {

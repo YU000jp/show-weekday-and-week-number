@@ -1,10 +1,11 @@
 import { AppUserConfigs, BlockEntity, BlockUUID, IBatchBlock } from '@logseq/libs/dist/LSPlugin.user'
-import { addDays, addWeeks, eachDayOfInterval, format, getISOWeek, getWeek, isSameISOWeek, isSameWeek, subDays, subWeeks, } from 'date-fns' //https://date-fns.org/
+import { addDays, addWeeks, eachDayOfInterval, format, isSameISOWeek, isSameWeek, subDays, subWeeks } from 'date-fns' //https://date-fns.org/
 import { t } from 'logseq-l10n'
 import { boundariesProcess } from './boundaries'
+import { refreshCalendar } from './left-calendar'
 import { existInsertTemplate, getWeekStartFromWeekNumber } from './lib'
-import CSSThisWeekPopup from "./weeklyEmbed.css?inline" //CSSをインラインで読み込む
 import { weeklyJournalCreateNav } from './nav'
+import CSSThisWeekPopup from "./weeklyEmbed.css?inline" //CSSをインラインで読み込む
 let processingFoundBoundaries: boolean = false
 let processingWeeklyJournal: boolean = false
 export const keyThisWeekPopup = "weeklyEmbed"
@@ -35,6 +36,11 @@ export const currentPageIsWeeklyJournal = async (titleElement: HTMLElement, matc
     //Journal Boundariesを表示する
     callMiniCalendar(logseq.settings!.booleanBoundariesOnWeeklyJournal as boolean, weekStart)
 
+    //Left Calendarの更新
+    refreshCalendar(weekStart, false, true)
+
+    if (logseq.settings!.booleanWeeklyJournal === false) return
+
 
     const weekEnd: Date = addDays(weekStart, 6)
 
@@ -56,7 +62,6 @@ export const currentPageIsWeeklyJournal = async (titleElement: HTMLElement, matc
                 await weeklyJournalCreateNav(ISO, year.toString(), weekNumberString, weekStart, weekEnd, prevWeekStart, nextWeekStart) //再度実行
                 , 1200)
     }, 300)
-
 
     if (logseq.settings!.booleanWeeklyJournalThisWeek === true
         && logseq.settings!.weeklyEmbed === true)

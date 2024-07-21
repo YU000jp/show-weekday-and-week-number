@@ -1,5 +1,5 @@
 import { LSPluginBaseInfo, PageEntity } from "@logseq/libs/dist/LSPlugin.user"
-import { addDays, Day, eachDayOfInterval, getISOWeek, getWeek, isSameDay, isSameISOWeek, isSameMonth, isSameWeek, isToday, startOfISOWeek, startOfMonth, startOfWeek } from "date-fns"
+import { addDays, Day, eachDayOfInterval, getISOWeek, getWeek, isSameDay, isSameISOWeek, isSameMonth, isSameWeek, isSameYear, isToday, startOfISOWeek, startOfMonth, startOfWeek } from "date-fns"
 import { format } from "date-fns/format"
 import { t } from "logseq-l10n"
 import { getConfigPreferredDateFormat, getConfigPreferredLanguage, pluginName } from "."
@@ -146,8 +146,7 @@ export const createCalendar = (targetDate: Date, preferredDateFormat: string, in
 
     // 月のセルを作成
     const monthHeaderCell = document.createElement("th")
-    monthHeaderCell.textContent = localizeMonthLong
-
+    monthHeaderCell.textContent = localizeMonthLong + (isSameYear(targetDate, new Date()) ? "" : ` ${year}`)
     monthHeaderCell.addEventListener("click", ({ shiftKey }) => openPageFromPageName(formatYearMonthTargetDate, shiftKey))
     monthHeaderCell.classList.add("cursor")
     monthHeaderCell.title = formatYearMonthTargetDate
@@ -160,8 +159,8 @@ export const createCalendar = (targetDate: Date, preferredDateFormat: string, in
     const thisMonthHeaderCell = document.createElement("th")
     thisMonthHeaderCell.colSpan = 2
     const thisMonthButton = document.createElement("button")
-    thisMonthButton.textContent = formatYearMonthThisMonth
-    thisMonthButton.title = t("This month")
+    thisMonthButton.textContent = t("This month")
+    thisMonthButton.title = formatYearMonthThisMonth
     thisMonthButton.className = "cursor lcThisMonthButton"
     thisMonthButton.addEventListener("click", () => {
         removeCalendarAndNav()//カレンダーとナビゲーションを削除

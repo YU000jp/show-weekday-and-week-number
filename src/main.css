@@ -244,6 +244,13 @@ body {
                 display: none;
             }
 
+            & div.page.relative div.relative>div#journalNav {
+                overflow: visible;
+                width: max-content;
+                user-select: none;
+                white-space: nowrap;
+            }
+
             & div.is-journals {
                 & div.ls-page-title {
                     display: flex;
@@ -256,7 +263,7 @@ body {
                     }
                 }
 
-                &>div.relative div div.ls-page-title span#hierarchyLinks {
+                &>div.relative div.ls-page-title span#hierarchyLinks {
                     position: absolute;
                     margin-top: -4em;
                 }

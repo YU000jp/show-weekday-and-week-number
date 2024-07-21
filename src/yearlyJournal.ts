@@ -4,6 +4,7 @@ import { t } from 'logseq-l10n'
 import { journalInsertTemplate } from './monthlyJournal'
 import { callMiniCalendar } from './weeklyJournal'
 import { yearlyJournalCreateNav } from './nav'
+import { refreshCalendar } from './left-calendar'
 let processingYearlyJournal: boolean = false
 
 export const currentPageIsYearlyJournal = async (titleElement: HTMLElement, match: RegExpMatchArray) => {
@@ -24,6 +25,11 @@ export const currentPageIsYearlyJournal = async (titleElement: HTMLElement, matc
       //Journal Boundariesを表示する
       callMiniCalendar(logseq.settings!.booleanBoundariesOnMonthlyJournal as boolean, monthStartDay)
 
+      //Left Calendarの更新
+      refreshCalendar(monthStartDay, false, false)
+
+      if (logseq.settings!.booleanYearlyJournal === false) return
+      
 
       setTimeout(async () => {
             // ナビゲーションを作成する

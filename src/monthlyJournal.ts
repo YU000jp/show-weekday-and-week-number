@@ -1,6 +1,7 @@
 import { BlockEntity } from '@logseq/libs/dist/LSPlugin.user'
 import { startOfMonth } from 'date-fns' //https://date-fns.org/
 import { t } from 'logseq-l10n'
+import { refreshCalendar } from './left-calendar'
 import { monthlyJournalCreateNav } from './nav'
 import { callMiniCalendar } from './weeklyJournal'
 export let processingFoundBoundaries: boolean = false
@@ -25,6 +26,12 @@ export const currentPageIsMonthlyJournal = async (titleElement: HTMLElement, mat
 
       //Journal Boundariesを表示する
       callMiniCalendar(logseq.settings!.booleanBoundariesOnMonthlyJournal as boolean, monthStartDay)
+
+      //Left Calendarの更新
+      refreshCalendar(monthStartDay, false, false)
+
+      if (logseq.settings!.booleanMonthlyJournal === false) return
+      
 
       setTimeout(async () => {
             // ナビゲーションを作成する
