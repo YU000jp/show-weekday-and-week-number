@@ -101,5 +101,12 @@
   "(Journal Boundaries)": "(Межі журналу)",
   "Yearly Journal": "Щорічний журнал",
   "Enable the link and function. If there is no content available on a page with a yearly number like 2024, a template will be inserted.": "Увімкніть зв'язок і функцію. Якщо на сторінці з річним номером, як-от 2024 рік, немає доступного вмісту, буде вставлено шаблон.",
-  "Yearly journal created": "Створено щорічний журнал"
+  "Yearly journal created": "Створено щорічний журнал",
+  "Previous day": "Попередня доба",
+  "Next day": "Наступного дня",
+  "Show previous and next link": "Показати попереднє та наступне посилання",
+  "Single journal page only": "Лише одна сторінка журналу",
+  "Use on Monthly Journal": "Використання в щомісячному журналі",
+  "Use on Quarterly Journal": "Використання в щоквартальному журналі",
+  "Use on Yearly Journal": "Використання в щорічному журналі"
 }

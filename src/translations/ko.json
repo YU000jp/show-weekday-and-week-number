@@ -101,5 +101,12 @@
   "(Journal Boundaries)": "(저널 경계)",
   "Yearly Journal": "연간저널",
   "Enable the link and function. If there is no content available on a page with a yearly number like 2024, a template will be inserted.": "링크와 기능을 활성화합니다. 2024년과 같은 연간 숫자가 있는 페이지에서 사용할 수 있는 콘텐츠가 없으면 템플릿이 삽입됩니다.",
-  "Yearly journal created": "연간 분개장 작성"
+  "Yearly journal created": "연간 분개장 작성",
+  "Previous day": "전날",
+  "Next day": "다음날",
+  "Show previous and next link": "이전 및 다음 링크 표시",
+  "Single journal page only": "단일 저널 페이지만 해당",
+  "Use on Monthly Journal": "월간 저널에 사용",
+  "Use on Quarterly Journal": "분기별 저널에 사용",
+  "Use on Yearly Journal": "연간 분개장에 사용"
 }

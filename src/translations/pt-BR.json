@@ -101,5 +101,12 @@
   "(Journal Boundaries)": "(Limites do diário)",
   "Yearly Journal": "Revista Anual",
   "Enable the link and function. If there is no content available on a page with a yearly number like 2024, a template will be inserted.": "Ative o link e a função. Se não houver conteúdo disponível em uma página com um número anual como 2024, um modelo será inserido.",
-  "Yearly journal created": "Diário anual criado"
+  "Yearly journal created": "Diário anual criado",
+  "Previous day": "Dia anterior",
+  "Next day": "Dia seguinte",
+  "Show previous and next link": "Mostrar link anterior e seguinte",
+  "Single journal page only": "Apenas uma página do diário",
+  "Use on Monthly Journal": "Use no Monthly Journal",
+  "Use on Quarterly Journal": "Use no diário trimestral",
+  "Use on Yearly Journal": "Uso no Diário Anual"
 }

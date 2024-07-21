@@ -101,5 +101,12 @@
   "(Journal Boundaries)": "(Limites de la revue)",
   "Yearly Journal": "Journal annuel",
   "Enable the link and function. If there is no content available on a page with a yearly number like 2024, a template will be inserted.": "Activez le lien et la fonction. S’il n’y a pas de contenu disponible sur une page avec un numéro annuel comme 2024, un modèle sera inséré.",
-  "Yearly journal created": "Revue annuelle créée"
+  "Yearly journal created": "Revue annuelle créée",
+  "Previous day": "Jour précédent",
+  "Next day": "Lendemain",
+  "Show previous and next link": "Afficher le lien précédent et suivant",
+  "Single journal page only": "Une seule page de journal",
+  "Use on Monthly Journal": "Utilisation dans le journal mensuel",
+  "Use on Quarterly Journal": "Utilisation dans le journal trimestriel",
+  "Use on Yearly Journal": "Utilisation dans le journal annuel"
 }

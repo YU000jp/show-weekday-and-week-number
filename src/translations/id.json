@@ -101,5 +101,12 @@
   "(Journal Boundaries)": "(Batas Jurnal)",
   "Yearly Journal": "Jurnal Tahunan",
   "Enable the link and function. If there is no content available on a page with a yearly number like 2024, a template will be inserted.": "Aktifkan tautan dan fungsi. Jika tidak ada konten yang tersedia di halaman dengan nomor tahunan seperti 2024, templat akan dimasukkan.",
-  "Yearly journal created": "Jurnal tahunan dibuat"
+  "Yearly journal created": "Jurnal tahunan dibuat",
+  "Previous day": "Hari sebelumnya",
+  "Next day": "Keesokan harinya",
+  "Show previous and next link": "Tampilkan tautan sebelumnya dan berikutnya",
+  "Single journal page only": "Hanya satu halaman jurnal",
+  "Use on Monthly Journal": "Gunakan pada Jurnal Bulanan",
+  "Use on Quarterly Journal": "Gunakan pada Jurnal Triwulanan",
+  "Use on Yearly Journal": "Gunakan pada Jurnal Tahunan"
 }

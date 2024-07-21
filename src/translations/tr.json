@@ -101,5 +101,12 @@
   "(Journal Boundaries)": "(Dergi Sınırları)",
   "Yearly Journal": "Yıllık Dergi",
   "Enable the link and function. If there is no content available on a page with a yearly number like 2024, a template will be inserted.": "Bağlantıyı ve işlevi etkinleştirin. 2024 gibi yıllık bir numaraya sahip bir sayfada içerik yoksa, bir şablon eklenecektir.",
-  "Yearly journal created": "Yıllık dergi oluşturuldu"
+  "Yearly journal created": "Yıllık dergi oluşturuldu",
+  "Previous day": "Önceki gün",
+  "Next day": "Ertesi gün",
+  "Show previous and next link": "Önceki ve sonraki bağlantıyı göster",
+  "Single journal page only": "Sadece tek dergi sayfası",
+  "Use on Monthly Journal": "Aylık Dergide Kullanım",
+  "Use on Quarterly Journal": "Üç Aylık Dergilerde Kullanım",
+  "Use on Yearly Journal": "Yıllık Dergide Kullanım"
 }

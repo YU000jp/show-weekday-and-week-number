@@ -101,5 +101,12 @@
   "(Journal Boundaries)": "(Границы журнала)",
   "Yearly Journal": "Годовой журнал",
   "Enable the link and function. If there is no content available on a page with a yearly number like 2024, a template will be inserted.": "Включите ссылку и функцию. Если на странице с годовым номером, например 2024, нет доступного контента, будет вставлен шаблон.",
-  "Yearly journal created": "Создан годовой журнал"
+  "Yearly journal created": "Создан годовой журнал",
+  "Previous day": "Предыдущий день",
+  "Next day": "На следующий день",
+  "Show previous and next link": "Показать предыдущую и следующую ссылку",
+  "Single journal page only": "Только одна страница журнала",
+  "Use on Monthly Journal": "Использование в ежемесячном журнале",
+  "Use on Quarterly Journal": "Использование в Quarterly Journal",
+  "Use on Yearly Journal": "Использование в Yearly Journal"
 }

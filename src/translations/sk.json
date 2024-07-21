@@ -101,5 +101,12 @@
   "(Journal Boundaries)": "(Hranice časopisu)",
   "Yearly Journal": "Ročný denník",
   "Enable the link and function. If there is no content available on a page with a yearly number like 2024, a template will be inserted.": "Povoľte prepojenie a funkciu. Ak na stránke s ročným číslom, napríklad 2024, nie je k dispozícii žiadny obsah, vloží sa šablóna.",
-  "Yearly journal created": "Vytvorený ročný denník"
+  "Yearly journal created": "Vytvorený ročný denník",
+  "Previous day": "Predchádzajúci deň",
+  "Next day": "Nasledujúci deň",
+  "Show previous and next link": "Zobraziť predchádzajúci a nasledujúci odkaz",
+  "Single journal page only": "Len jedna strana denníka",
+  "Use on Monthly Journal": "Použitie v mesačnom denníku",
+  "Use on Quarterly Journal": "Použitie v štvrťročnom denníku",
+  "Use on Yearly Journal": "Použitie v ročnom denníku"
 }
