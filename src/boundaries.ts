@@ -3,7 +3,7 @@ import { addDays, format, isBefore, isFriday, isSameDay, isSaturday, isSunday, i
 import { t } from "logseq-l10n"
 
 import { getConfigPreferredDateFormat, getConfigPreferredLanguage } from '.'
-import { formatRelativeDate, getJournalDayDate, getWeekStartOn, getWeeklyNumberFromDate, getWeeklyNumberString, localizeDayOfWeekString, localizeMonthString, openPageFromPageName } from './lib'
+import { formatRelativeDate, getJournalDayDate, getWeekStartOn, getWeeklyNumberFromDate, getWeeklyNumberString, localizeDayOfWeekString, localizeMonthString, openPageFromPageName, userColor } from './lib'
 import { holidaysWorld, lunarString } from './holidays'
 
 
@@ -175,9 +175,9 @@ const daysForEach = (days: number[], startDate: Date, boundariesInner: HTMLDivEl
   const preferredDateFormat = getConfigPreferredDateFormat()
   //ミニカレンダー作成 1日ずつ処理
   days.forEach((numDays, index) => {
-    const day: Date = numDays === 0 ? startDate : addDays(startDate, numDays) as Date // dateを取得する
-    const dateFormat: string = format(day, preferredDateFormat) //日付をフォーマットする
-    const dayElement: HTMLSpanElement = document.createElement('span')
+    const dayDate: Date = numDays === 0 ? startDate : addDays(startDate, numDays) as Date // dateを取得する
+    const dateFormatString: string = format(dayDate, preferredDateFormat) //日付をフォーマットする
+    const dayCell: HTMLSpanElement = document.createElement('span')
     try {
       if (index === 7) {
         const element: HTMLDivElement = document.createElement('div')
@@ -189,16 +189,16 @@ const daysForEach = (days: number[], startDate: Date, boundariesInner: HTMLDivEl
         //daySideElement作成    
         //月を表示する場合
         if (logseq.settings!.booleanBoundariesShowMonth === true)
-          monthDuplicate = daySideMonth(day, boundariesInner, monthDuplicate) //daySideElement作成
+          monthDuplicate = daySideMonth(dayDate, boundariesInner, monthDuplicate) //daySideElement作成
 
       //dayElement作成
-      const isBooleanBeforeToday: boolean = isBefore(day, today)
-      const isBooleanToday: boolean = isToday(day)
-      const isBooleanTargetSameDay: boolean = isSameDay(targetDate, day)
-      dayElement.classList.add('day')
+      const isBooleanBeforeToday: boolean = isBefore(dayDate, today)
+      const isBooleanToday: boolean = isToday(dayDate)
+      const isBooleanTargetSameDay: boolean = isSameDay(targetDate, dayDate)
+      dayCell.classList.add('day')
       const dayOfWeekElement: HTMLSpanElement = document.createElement('span')
       dayOfWeekElement.classList.add('dayOfWeek')
-      dayOfWeekElement.innerText = localizeDayOfWeekString(day, false) // 曜日を取得する
+      dayOfWeekElement.innerText = localizeDayOfWeekString(dayDate, false) // 曜日を取得する
 
       // 20240121
       // 祝日のカラーリング機能
@@ -209,10 +209,10 @@ const daysForEach = (days: number[], startDate: Date, boundariesInner: HTMLDivEl
           && (configPreferredLanguage === "zh-Hant" //中国語の場合
             || configPreferredLanguage === "zh-CN")) {
           dayOfWeekElement.style.fontSize = ".88em"
-          dayOfWeekElement.innerHTML += ` <smaLl>${lunarString(day, dayElement, true)}</small>` //文字数が少ないため、小さく祝日名を表示する
+          dayOfWeekElement.innerHTML += ` <smaLl>${lunarString(dayDate, dayCell, true)}</small>` //文字数が少ないため、小さく祝日名を表示する
         } else {
           // World holidays
-          const displayNameOfHoliday = holidaysWorld(day, dayElement, true)
+          const displayNameOfHoliday = holidaysWorld(dayDate, dayCell, true)
           if (displayNameOfHoliday
             && (configPreferredLanguage === "ja" //日本語の場合
               || configPreferredLanguage === "ko" // 韓国語の場合
@@ -220,64 +220,71 @@ const daysForEach = (days: number[], startDate: Date, boundariesInner: HTMLDivEl
         }
       }
 
-      dayElement.appendChild(dayOfWeekElement)
+      dayCell.appendChild(dayOfWeekElement)
       const dayOfMonthElement: HTMLSpanElement = document.createElement('span')
       dayOfMonthElement.classList.add('dayOfMonth')
-      dayOfMonthElement.innerText = `${day.getDate()}`
-      dayElement.appendChild(dayOfMonthElement)
+      dayOfMonthElement.innerText = `${dayDate.getDate()}`
+      dayCell.appendChild(dayOfMonthElement)
       //日付と相対時間をtitleに追加する
-      dayElement.title += logseq.settings?.booleanRelativeTime === true ?
-        dateFormat + '\n' + formatRelativeDate(day)//相対時間を表示する場合
-        : dateFormat
+      dayCell.title += logseq.settings?.booleanRelativeTime === true ?
+        dateFormatString + '\n' + formatRelativeDate(dayDate)//相対時間を表示する場合
+        : dateFormatString
 
       //indexが0~6
       if (targetElementName === 'weeklyJournal') {
         if (index >= 7
           && index <= 14)
-          dayElement.classList.add('thisWeek')
+          dayCell.classList.add('thisWeek')
       } else {
         if ((flagShowNextWeek === true
           && index < 7)
           || (flagShowNextWeek === false
             && index > 6))
-          dayElement.classList.add('thisWeek')
+          dayCell.classList.add('thisWeek')
       }
       if (targetElementName !== 'journals'
         && targetElementName !== "weeklyJournal"
         && isBooleanTargetSameDay === true)
-        dayElement.style.border = `1px solid ${logseq.settings!.boundariesHighlightColorSinglePage}` //シングルページの日付をハイライト
+        dayCell.style.border = `1px solid ${logseq.settings!.boundariesHighlightColorSinglePage}` //シングルページの日付をハイライト
       else
         if (isBooleanToday === true)
-          dayElement.style.border = `1px solid ${logseq.settings!.boundariesHighlightColorToday}` //今日をハイライト
+          dayCell.style.border = `1px solid ${logseq.settings!.boundariesHighlightColorToday}` //今日をハイライト
 
       if (logseq.settings?.booleanWeekendsColor === true)
-        if (isSaturday(day) as boolean)
-          dayElement.style.color = 'var(--ls-wb-stroke-color-blue)'
+        if (isSaturday(dayDate) as boolean)
+          dayCell.style.color = 'var(--ls-wb-stroke-color-blue)'
         else
-          if (isSunday(day) as boolean)
-            dayElement.style.color = 'var(--ls-wb-stroke-color-red)'
+          if (isSunday(dayDate) as boolean)
+            dayCell.style.color = 'var(--ls-wb-stroke-color-red)'
+
+      // ユーザー設定日
+      if (logseq.settings!.userColorList as string !== "") {
+        const eventName = userColor(dayDate, dayCell)
+        if (eventName)
+          dayCell.title = `${eventName}\n${dayCell.title}`
+      }
 
       //日付をクリックできるようにするかどうか
       if (logseq.settings!.booleanBoundariesFuturePage === true
-        || isBooleanBeforeToday === true
-        || isBooleanToday === true)
-        dayElement.addEventListener("click", openPageToSingleDay(dateFormat, isBooleanBeforeToday))
+        && isBooleanBeforeToday === true
+        && isBooleanToday === false)
+        dayCell.addEventListener("click", openPageToSingleDay(dateFormatString, isBooleanBeforeToday))
       else
-        dayElement.style.cursor = 'unset'
+        dayCell.style.cursor = 'unset'
 
       //20240115
       //エントリーが存在するかどうかのインディケーターを表示する
       if (logseq.settings!.booleanBoundariesIndicator === true)
-        indicator(dateFormat, dayOfMonthElement)
+        indicator(dateFormatString, dayOfMonthElement)
 
     } finally {
-      boundariesInner.appendChild(dayElement)
+      boundariesInner.appendChild(dayCell)
       if (index === 6
         || index === 13) {
         //daySideElement作成    
         //週番号を表示する場合
         if (logseq.settings!.booleanBoundariesShowWeekNumber === true)
-          daySideWeekNumber(day, boundariesInner)
+          daySideWeekNumber(dayDate, boundariesInner)
         daySideScroll(index, boundariesInner, targetElementName, startDate)
       }
     }

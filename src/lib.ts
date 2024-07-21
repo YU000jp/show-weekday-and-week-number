@@ -1,5 +1,5 @@
 import { BlockUUID } from "@logseq/libs/dist/LSPlugin.user"
-import { addDays, addWeeks, getISOWeek, getISOWeekYear, getWeek, getWeekYear, startOfISOWeek, startOfWeek } from "date-fns"
+import { addDays, addWeeks, format, getISOWeek, getISOWeekYear, getWeek, getWeekYear, startOfISOWeek, startOfWeek } from "date-fns"
 import { t } from "logseq-l10n"
 
 export const getJournalDayDate = (str: string): Date =>
@@ -212,12 +212,47 @@ export const localizeDayOfWeekDayString = (date: Date): string => new Intl.DateT
 
 
 export const getWeekStartFromWeekNumber = (year: number, weekNumber: number, weekStartsOn: 0 | 1 | 2 | 3 | 4 | 5 | 6 | undefined, ISO: boolean): Date => {
-    if (ISO === true) {
-        const firstDayOfWeek = startOfISOWeek(new Date(year, 0, 4, 0, 0, 0, 0)) //1/4を含む週
-        return (getISOWeekYear(firstDayOfWeek) === year)
-            ? addDays(firstDayOfWeek, (weekNumber - 1) * 7)
-            : addWeeks(firstDayOfWeek, weekNumber)
-    }
-    else
-        return addDays(startOfWeek(new Date(year, 0, 1, 0, 0, 0, 0), { weekStartsOn }), (weekNumber - 1) * 7)
+  if (ISO === true) {
+    const firstDayOfWeek = startOfISOWeek(new Date(year, 0, 4, 0, 0, 0, 0)) //1/4を含む週
+    return (getISOWeekYear(firstDayOfWeek) === year)
+      ? addDays(firstDayOfWeek, (weekNumber - 1) * 7)
+      : addWeeks(firstDayOfWeek, weekNumber)
+  }
+  else
+    return addDays(startOfWeek(new Date(year, 0, 1, 0, 0, 0, 0), { weekStartsOn }), (weekNumber - 1) * 7)
 }
+
+
+export const userColor = (dayDate: Date, titleElement: HTMLElement) => {
+  if (logseq.settings!.userColorList as string === "") return
+
+  let returnEventName: string = ""
+  const list = logseq.settings!.userColorList as string
+  // logseq.settings!.userColorListには、「yyyy/mm/dd::イベント名」あるいは「mm/dd::イベント名」のような年が入ってる日付とそうでない日付のリストが入っていて、改行区切りになっている
+  const userColorList = list.includes("\n") ?
+    list.split("\n")
+    : [list]
+  for (const userColor of userColorList) {
+    const [dateString, eventName] = userColor.split("::")
+
+    if ( //dateStringに/が2湖ある場合は、年が入っている
+      (dateString.split("/").length === 3
+        && (format(dayDate, "yyyy/MM/dd") === dateString //2024/07/21
+          || format(dayDate, "yyyy/M/d") === dateString // 2024/7/1のように月と日が1桁の場合
+        ))
+      // dateStringに/が2湖ある場合は、年が入っていない
+      || (dateString.split("/").length === 2
+        && (format(dayDate, "MM/dd") === dateString //07/21
+          || format(dayDate, "M/d") === dateString // 7/1のように月と日が1桁の場合
+        ))) {
+      if (returnEventName === "") {
+        titleElement.style.color = logseq.settings!.choiceUserColor as string
+        titleElement.style.fontWeight = "1800"
+        returnEventName = eventName
+      } else
+        returnEventName = `${returnEventName}\n${eventName}`
+    }
+  }
+  return returnEventName
+}
+

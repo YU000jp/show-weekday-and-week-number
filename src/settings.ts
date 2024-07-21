@@ -198,6 +198,31 @@ export const settingsTemplate = (userLanguage): SettingSchemaDesc[] => [
     default: true,
     description: "",
   },
+  {// 特定の日付に色を付けるためのユーザー設定
+    key: "userColorList",
+    title: t("User color") + "🆕",
+    type: "string",
+    inputAs: "textarea",
+    default: "",
+    // yyyy/mm/dd::ライブ参加の日 のような形式でtextareaに複数行で入力する
+    // mm/dd::Birthday のような形式で入力すると、毎年その日に色が付く
+    // textareaに複数行入力する
+    description: `
+    ${t("Input in the form of yyyy/mm/dd::Event name")}
+    ${t("If you input in the form of mm/dd::Event name, the color will be applied every year on that day.")}
+    ${t("Enter multiple lines in the textarea.")}
+    `,
+  },
+  {//ユーザーカラーの指定
+    key: "choiceUserColor",
+    title: "",
+    type: "string",
+    inputAs: "color",
+    default: "#00BFFF",
+    description: t("User color") + "🆕",
+  },
+  // 共通設定ここまで
+
 
 
   //Behind journal title
@@ -284,7 +309,7 @@ export const settingsTemplate = (userLanguage): SettingSchemaDesc[] => [
     description: "",
   },
   {//前後へのリンクを表示する
-  //20240721
+    //20240721
     key: "booleanPrevNextLink",
     title: t("Show previous and next link") + "🆕",
     type: "boolean",
@@ -427,22 +452,6 @@ export const settingsTemplate = (userLanguage): SettingSchemaDesc[] => [
     description: "",
   },
   // ここまでトグルの対象
-  // {// 特定の日付に色を付けるためのユーザー設定
-  //   key: "userColor",
-  //   title: t("User color"), //TODO: 翻訳に追加する
-  //   type: "string",
-  //   default: "",
-  //     // yyyy/mm/dd::ライブ参加の日 のような形式でtextareaに複数行で入力する
-  // // mm/dd::Birthday のような形式で入力すると、毎年その日に色が付く
-  // // textareaに複数行入力する
-  // // 
-  //   description: `
-  //   ${t("Input in the form of yyyy/mm/dd::Event name")}
-  //   ${t("If you input in the form of mm/dd::Event name, the color will be applied every year on that day.")}
-  //   ${t("Enter multiple lines in the textarea.")}
-  //   `,
-  // },
-  // 共通設定ここまで
 
 
 

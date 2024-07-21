@@ -1,38 +1,38 @@
 import { addDays, format, getWeekOfMonth, isSaturday, isSunday, subDays } from "date-fns"
 import { t } from "logseq-l10n"
 import { HolidayUtil, Lunar } from "lunar-typescript"
-import { createLinkMonthlyLink, createSettingButton, formatRelativeDate, getQuarter, getWeeklyNumberFromDate, getWeeklyNumberString, localizeMonthString, openPageFromPageName } from "./lib"
 import { getConfigPreferredDateFormat, getConfigPreferredLanguage, querySelectorAllTitle } from "."
 import { exportHolidaysBundle } from "./holidays"
+import { createLinkMonthlyLink, createSettingButton, formatRelativeDate, getQuarter, getWeeklyNumberFromDate, getWeeklyNumberString, localizeMonthString, openPageFromPageName, userColor } from "./lib"
 
 // プロセス中かどうかを判定するフラグ
 let processingBehind: boolean = false
 
 
 //Daily Journal Details 機能
-export const dailyJournalDetails = async (journalDate: Date, titleElement: HTMLElement) => {
+export const dailyJournalDetails = async (dayDate: Date, titleElement: HTMLElement) => {
 
   if (processingBehind === true) return // プロセス中の場合は処理をキャンセルする
 
   // 反映する
   const baseLineElement: HTMLSpanElement = createBaseLineElement(
-    journalDate
+    dayDate
     //preferredDateFormat.includes("E") === false は曜日の省略形が含まれていない場合
     , logseq.settings!.booleanDayOfWeek === true // プラグイン設定でtrueになっている場合
       ? new Intl.DateTimeFormat(
         logseq.settings!.localizeOrEnglish as string || "default", // プラグイン設定でローカライズか英語か選択されている
         { weekday: logseq.settings!.longOrShort as "short" | "long" || "long" } // プラグイン設定でlongかshortか選択されている
-      ).format(journalDate) // フォーマットして曜日の文字列を取得する
+      ).format(dayDate) // フォーマットして曜日の文字列を取得する
       : "" // プラグイン設定でfalseになっている場合
     , logseq.settings!.booleanWeekNumber === true ?
       enableWeekNumber(
-        journalDate
+        dayDate
         , logseq.settings!.weekNumberFormat === "US format" ?
           0 : 1 // 0: Sunday, 1: Monday
       )
       : "" //week numberの表示用の変数
     , logseq.settings!.booleanRelativeTime === true ?
-      enableRelativeTime(journalDate)
+      enableRelativeTime(dayDate)
       : "" //relative timeの表示用の変数
   )
 
@@ -45,7 +45,7 @@ export const dailyJournalDetails = async (journalDate: Date, titleElement: HTMLE
 
   // Monthly Journalのリンクを作成する
   if (logseq.settings!.booleanMonthlyJournalLink === true)
-    enableMonthlyJournalLink(journalDate, baseLineElement)
+    enableMonthlyJournalLink(dayDate, baseLineElement)
 
 
   // 20240123
@@ -57,7 +57,7 @@ export const dailyJournalDetails = async (journalDate: Date, titleElement: HTMLE
     if (logseq.settings!.booleanUnderLunarCalendar === true
       || logseq.settings!.underHolidaysAlert === true) {
       // 太陰暦の日付を取得する
-      const LunarDate = Lunar.fromDate(journalDate)
+      const LunarDate = Lunar.fromDate(dayDate)
       // 月日表記
       if (logseq.settings!.booleanUnderLunarCalendar === true)
         enableUnderLunarCalendar(LunarDate, baseLineElement)
@@ -67,10 +67,10 @@ export const dailyJournalDetails = async (journalDate: Date, titleElement: HTMLE
     }
   } else  // 世界の国
     if (logseq.settings!.underHolidaysAlert === true)
-      enableUnderHolidayForWorldCountry(journalDate, baseLineElement)
+      enableUnderHolidayForWorldCountry(dayDate, baseLineElement)
 
   if (logseq.settings!.booleanPrevNextLink === true)
-    baseLineElement.appendChild(enablePrevNextLink(journalDate, getConfigPreferredDateFormat()))
+    baseLineElement.appendChild(enablePrevNextLink(dayDate, getConfigPreferredDateFormat()))
 
   //設定ボタンを設置
   if (logseq.settings!.booleanSettingsButton === true
@@ -78,6 +78,13 @@ export const dailyJournalDetails = async (journalDate: Date, titleElement: HTMLE
   )
     baseLineElement.appendChild(createSettingButton())
 
+
+  // ユーザー設定日
+  if (logseq.settings!.userColorList as string !== "") {
+    const eventName = userColor(dayDate, titleElement)
+    if (eventName)
+      titleElement.title = `${eventName}\n${titleElement.title}`
+  }
 
   setTimeout(() => processingBehind = false, 300)
 

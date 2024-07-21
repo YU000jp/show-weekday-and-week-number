@@ -26,6 +26,8 @@ export const isCommonSettingsChanged = (oldSet: LSPluginBaseInfo["settings"], ne
     || oldSet.booleanWeekendsColor !== newSet.booleanWeekendsColor
     || oldSet.boundariesHighlightColorSinglePage !== newSet.boundariesHighlightColorSinglePage
     || oldSet.boundariesHighlightColorToday !== newSet.boundariesHighlightColorToday
+    || oldSet.userColorList !== newSet.userColorList
+    || oldSet.choiceUserColor !== newSet.choiceUserColor
     //booleanNoPageFoundCreatePageは反映不要
     //booleanBoundariesFuturePageは反映不要
 

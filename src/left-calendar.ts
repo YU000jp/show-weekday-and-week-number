@@ -5,7 +5,7 @@ import { t } from "logseq-l10n"
 import { getConfigPreferredDateFormat, getConfigPreferredLanguage, pluginName } from "."
 import { openPageToSingleDay } from "./boundaries"
 import { holidaysWorld, lunarString } from "./holidays"
-import { getWeeklyNumberFromDate, getWeeklyNumberString, localizeDayOfWeekString, localizeMonthDayString, localizeMonthString, openPageFromPageName, removeElementById } from "./lib"
+import { getWeeklyNumberFromDate, getWeeklyNumberString, localizeDayOfWeekString, localizeMonthDayString, localizeMonthString, openPageFromPageName, removeElementById, userColor } from "./lib"
 import { isCommonSettingsChanged } from "./onSettingsChanged"
 
 export const keyLeftCalendarContainer = "left-calendar-container"
@@ -334,66 +334,70 @@ export const removeCalendarAndNav = () => {
 }
 
 
-const checkDay = (date: Date, month: number, dayCell: HTMLElement, preferredDateFormat: string, parentElementForHolidays: HTMLElement): string => {
+const checkDay = (dayDate: Date, month: number, dayCell: HTMLElement, preferredDateFormat: string, parentElementForHolidays: HTMLElement): string => {
 
     // 土日の色を変える
     if (logseq.settings!.booleanWeekendsColor === true)
-        if (date.getDay() === 6) { //土曜日
+        if (dayDate.getDay() === 6) { //土曜日
             dayCell.style.color = 'var(--ls-wb-stroke-color-blue)'
             dayCell.style.fontWeight = "1500"
         } else
-            if (date.getDay() === 0) { //日曜日
+            if (dayDate.getDay() === 0) { //日曜日
                 dayCell.style.color = 'var(--ls-wb-stroke-color-red)'
                 dayCell.style.fontWeight = "1500"
             }
 
     // 月が異なる場合はopacityを下げる
-    if (date.getMonth() !== month - 1) {
+    if (dayDate.getMonth() !== month - 1) {
         dayCell.style.opacity = "0.4"
         dayCell.style.fontSize = "0.9em"
     }
 
     // 今日の日付の場合は背景色を変える
-    const checkIsToday: boolean = isToday(date)
+    const checkIsToday: boolean = isToday(dayDate)
     if (checkIsToday === true) {
         dayCell.style.border = `2px solid ${logseq.settings!.boundariesHighlightColorToday}`
         dayCell.style.borderRadius = "50%"
     }
 
+    // ページが存在する場合は下線を引く
     if (logseq.settings!.booleanBoundariesIndicator === true) {
-        logseq.Editor.getPage(format(date, preferredDateFormat)).then((pageEntity: { uuid: PageEntity["uuid"] } | null) => {
+        logseq.Editor.getPage(format(dayDate, preferredDateFormat)).then((pageEntity: { uuid: PageEntity["uuid"] } | null) => {
             if (pageEntity)
                 dayCell.style.textDecoration = "underline"
         })
     }
 
-    if (logseq.settings!.booleanLcHolidays === true) {
-        const configPreferredLanguage = getConfigPreferredLanguage()
-        // Chinese lunar-calendar and holidays
-        const holiday: string = logseq.settings!.booleanLunarCalendar === true // プラグイン設定で太陰暦オンの場合
-            && (configPreferredLanguage === "zh-Hant" //中国語の場合
-                || configPreferredLanguage === "zh-CN") ?
-            lunarString(date, dayCell, false)
-            :
-            holidaysWorld(date, dayCell, false) // World holidays
-        if (
-            holiday !== "" //祝日がある場合
-            && ((logseq.settings!.lcHolidaysAlert === "Today only"
-                && checkIsToday === true) //今日にマッチする場合
-                || logseq.settings!.lcHolidaysAlert === "Monthly") //すべて
-        ) {
-            //leftCalendarElementに、祝日の情報を追加する
-            const holidayEle: HTMLDivElement = document.createElement("div")
-            holidayEle.className = "text-sm text-gray-500 ml-4 leftCalendarHolidayAlert"
-            holidayEle.textContent = `${checkIsToday === true ?
-                t("Today")
-                : localizeMonthDayString(date)} >> ${holiday}`
-            parentElementForHolidays.insertAdjacentElement("afterend", holidayEle)
+    // ユーザー設定日
+    if (logseq.settings!.userColorList as string !== "") {
+        const eventName = userColor(dayDate, dayCell)
+        if (eventName) {
+            dayCell.style.fontSize = "1.3em"
+            
+            if (eventName.includes("\n")) // eventNameが\nで区切られている場合
+                for (const event of eventName.split("\n"))
+                    appendHolidayAlert(checkIsToday, dayDate, event, parentElementForHolidays) // アラートスペースに表示する
+            else
+                appendHolidayAlert(checkIsToday, dayDate, eventName, parentElementForHolidays) // アラートスペースに表示する
+
+            // 祝日を表示する
+            if (logseq.settings!.booleanLcHolidays === false)
+                return eventName
+            else {
+                const holiday = checkAndAppendHoliday(dayDate, dayCell, checkIsToday, parentElementForHolidays)
+                return holiday !== "" ? `${eventName}\n${holiday}` : eventName
+            }
         }
-        return holiday
     }
-    return ""
+
+    // 祝日を表示する ユーザー設定日オフの場合
+    if (logseq.settings!.booleanLcHolidays === true)
+        return checkAndAppendHoliday(dayDate, dayCell, checkIsToday, parentElementForHolidays)
+    else
+        return ""
 }
+
+
 export const refreshCalendar = (targetDate: Date, singlePage: boolean, weekly: boolean) => {
     const innerElement: HTMLDivElement | null = parent.document.getElementById("left-calendar-inner") as HTMLDivElement | null
     if (innerElement) {
@@ -405,9 +409,43 @@ export const refreshCalendar = (targetDate: Date, singlePage: boolean, weekly: b
             { singlePage, weekly })
     }
 }
+
+
 export const refreshCalendarCheckSameMonth = () => {
     const today = new Date()
     if (flagWeekly === true
         || isSameMonth(currentCalendarDate, today) === false)
         refreshCalendar(today, false, false)
+}
+
+
+const appendHolidayAlert = (checkIsToday: boolean, date: Date, holiday: string, parentElementForHolidays: HTMLElement) => {
+    const element: HTMLDivElement = document.createElement("div")
+    element.className = "text-sm text-gray-500 ml-4 leftCalendarHolidayAlert"
+    element.textContent = `${checkIsToday === true ?
+        t("Today")
+        : localizeMonthDayString(date)} >> ${holiday}`
+    parentElementForHolidays.insertAdjacentElement("afterend", element)
+}
+
+
+const checkAndAppendHoliday = (date: Date, dayCell: HTMLElement, checkIsToday: boolean, parentElementForHolidays: HTMLElement) => {
+    const configPreferredLanguage = getConfigPreferredLanguage()
+
+    // Chinese lunar-calendar and holidays
+    const holiday: string = logseq.settings!.booleanLunarCalendar === true // プラグイン設定で太陰暦オンの場合
+        && (configPreferredLanguage === "zh-Hant" //中国語の場合
+            || configPreferredLanguage === "zh-CN") ?
+        lunarString(date, dayCell, false)
+        : holidaysWorld(date, dayCell, false) // World holidays
+
+    if (holiday !== "" //祝日がある場合
+        && ((logseq.settings!.lcHolidaysAlert === "Today only"
+            && checkIsToday === true) //今日にマッチする場合
+            || logseq.settings!.lcHolidaysAlert === "Monthly"))
+
+        //leftCalendarElementに、祝日の情報を追加する
+        appendHolidayAlert(checkIsToday, date, holiday, parentElementForHolidays)
+
+    return holiday
 }
