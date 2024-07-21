@@ -1,8 +1,8 @@
-import { format, getWeekOfMonth, isSaturday, isSunday } from "date-fns"
+import { addDays, format, getWeekOfMonth, isSaturday, isSunday, subDays } from "date-fns"
 import { t } from "logseq-l10n"
 import { HolidayUtil, Lunar } from "lunar-typescript"
 import { createLinkMonthlyLink, createSettingButton, formatRelativeDate, getQuarter, getWeeklyNumberFromDate, getWeeklyNumberString, localizeMonthString, openPageFromPageName } from "./lib"
-import { getConfigPreferredLanguage, querySelectorAllTitle } from "."
+import { getConfigPreferredDateFormat, getConfigPreferredLanguage, querySelectorAllTitle } from "."
 import { exportHolidaysBundle } from "./holidays"
 
 // プロセス中かどうかを判定するフラグ
@@ -43,7 +43,6 @@ export const dailyJournalDetails = async (journalDate: Date, titleElement: HTMLE
   titleElement.insertAdjacentElement("afterend", baseLineElement)
 
 
-
   // Monthly Journalのリンクを作成する
   if (logseq.settings!.booleanMonthlyJournalLink === true)
     enableMonthlyJournalLink(journalDate, baseLineElement)
@@ -66,20 +65,51 @@ export const dailyJournalDetails = async (journalDate: Date, titleElement: HTMLE
       if (logseq.settings!.underHolidaysAlert === true)
         enableUnderLunarCalendarHoliday(LunarDate, baseLineElement)
     }
-
   } else  // 世界の国
     if (logseq.settings!.underHolidaysAlert === true)
       enableUnderHolidayForWorldCountry(journalDate, baseLineElement)
 
+  if (logseq.settings!.booleanPrevNextLink === true)
+    baseLineElement.appendChild(enablePrevNextLink(journalDate, getConfigPreferredDateFormat()))
 
   //設定ボタンを設置
-  if (logseq.settings!.booleanSettingsButton === true)
-    enableSettingsButton(baseLineElement)
+  if (logseq.settings!.booleanSettingsButton === true
+    // titleElementのidがjournalsではない場合のみ
+  )
+    baseLineElement.appendChild(createSettingButton())
+
 
   setTimeout(() => processingBehind = false, 300)
 
 }// end of behindJournalTitle
 
+
+
+const enablePrevNextLink = (journalDate: Date, preferredDateFormat: string) => {
+  const prevNextLink = document.createElement("span")
+  prevNextLink.id = "journalTitleDetailsPrevNextLink"
+  prevNextLink.classList.add("text-sm")
+
+  // 前の日記のリンクボタンを作成する
+  const prevLink = document.createElement("a")
+  prevLink.textContent = "←"
+  prevLink.title = t("Previous day")
+  prevLink.addEventListener("click", (ev) => openPageFromPageName(format(subDays(journalDate, 1), preferredDateFormat), ev.shiftKey))
+  prevNextLink.appendChild(prevLink)
+
+  // ここに0.5文字分のスペースを入れる
+  const space = document.createElement("span")
+  space.style.padding = "0 0.5em"
+  prevNextLink.appendChild(space)
+
+  // 次の日記のリンクボタンを作成する
+  const nextLink = document.createElement("a")
+  nextLink.textContent = "→"
+  nextLink.title = t("Next day")
+  nextLink.addEventListener("click", (ev) => openPageFromPageName(format(addDays(journalDate, 1), preferredDateFormat), ev.shiftKey))
+  prevNextLink.appendChild(nextLink)
+  return prevNextLink
+}
 
 
 const moveTitleElement = (titleElement: HTMLElement) => {
@@ -178,14 +208,9 @@ const enableWeekNumber = (journalDate: Date, weekStartsOn: 0 | 1): string => {
 const enableMonthlyJournalLink = (journalDate: Date, dateInfoElement: HTMLSpanElement) => {
   const formatDateString: string = format(journalDate, "yyyy/MM")
   dateInfoElement.appendChild(createLinkMonthlyLink(
-    localizeMonthString(journalDate, false)
+    localizeMonthString(journalDate, true)
     , formatDateString
     , "Monthly Journal [[" + formatDateString + "]]"))
-}
-
-
-const enableSettingsButton = (dateInfoElement: HTMLSpanElement) => {
-  dateInfoElement.appendChild(createSettingButton())
 }
 
 

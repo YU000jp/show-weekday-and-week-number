@@ -283,6 +283,14 @@ export const settingsTemplate = (userLanguage): SettingSchemaDesc[] => [
     default: true,
     description: "",
   },
+  {//前後へのリンクを表示する
+  //20240721
+    key: "booleanPrevNextLink",
+    title: t("Show previous and next link") + "🆕",
+    type: "boolean",
+    default: true,
+    description: t("Single journal page only"),
+  },
   // ここまでトグルの対象
 
 
@@ -626,7 +634,7 @@ export const settingsTemplate = (userLanguage): SettingSchemaDesc[] => [
 
 
   // Yearly Journal
-  {
+  {//20240721
     key: "heading007",
     title: "7. " + t("Yearly Journal") + "🆕",
     type: "heading",
