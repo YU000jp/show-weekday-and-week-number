@@ -235,19 +235,14 @@ const checkJournalTitle = async (titleElement: HTMLElement) => {
     && titleElement.classList.contains("title") === true
     && title.match(/^(\d{4})/) !== null // titleの先頭が2024から始まる場合のみチェックする
   )
-    // Weekly Journalのページかどうか
-    if (await isMatchWeeklyJournal(title, titleElement)) return
+    
+    if (await isMatchWeeklyJournal(title, titleElement) // Weekly Journalのいずれかの形式にマッチ
+      || await isMatchMonthlyJournal(title, titleElement) // 2024/01にマッチ
+      || await isMatchQuarterlyJournal(title, titleElement) // 2024/Q1にマッチ
+      || await isMatchYearlyJournal(title, titleElement)) // 2024にマッチ
+      return
     else
-      // Monthly Journalのページかどうか
-      if (await isMatchMonthlyJournal(title, titleElement)) return // 2024/01にマッチするかどうか
-      else
-        // Quarterly Journalのページかどうか
-        if (await isMatchQuarterlyJournal(title, titleElement)) return // 2024/Q1にマッチするかどうか
-        else
-          // Yearly Journalのページかどうか
-          if (await isMatchYearlyJournal(title, titleElement)) return // 2024にマッチするかどうか
-          else
-            refreshCalendarCheckSameMonth()
+      refreshCalendarCheckSameMonth()
   else
     refreshCalendarCheckSameMonth()
 
