@@ -152,17 +152,29 @@ body {
                         &+div.desc-item[data-key="booleanBoundariesOnWeeklyJournal"] {
                             display: none;
 
-                            &+div.desc-item[data-key="boundariesBottom"] {
+                            &+div.desc-item[data-key="booleanBoundariesOnMonthlyJournal"] {
                                 display: none;
 
-                                &+div.desc-item[data-key="booleanBoundariesShowMonth"] {
+                                &+div.desc-item[data-key="booleanBoundariesOnQuarterlyJournal"] {
                                     display: none;
 
-                                    &+div.desc-item[data-key="booleanBoundariesShowWeekNumber"] {
+                                    &+div.desc-item[data-key="booleanBoundariesOnYearlyJournal"] {
                                         display: none;
 
-                                        &+div.desc-item[data-key="booleanBoundariesHolidays"] {
+                                        &+div.desc-item[data-key="boundariesBottom"] {
                                             display: none;
+
+                                            &+div.desc-item[data-key="booleanBoundariesShowMonth"] {
+                                                display: none;
+
+                                                &+div.desc-item[data-key="booleanBoundariesShowWeekNumber"] {
+                                                    display: none;
+
+                                                    &+div.desc-item[data-key="booleanBoundariesHolidays"] {
+                                                        display: none;
+                                                    }
+                                                }
+                                            }
                                         }
                                     }
                                 }

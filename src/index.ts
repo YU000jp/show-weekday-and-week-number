@@ -102,7 +102,8 @@ const main = async () => {
   // プラグインが読み込まれたら実行
   setTimeout(() => {
 
-    if (logseq.settings!.booleanJournalsBoundaries === true)
+    if (logseq.settings!.booleanBoundariesAll === true
+      && logseq.settings!.booleanJournalsBoundaries === true)
       boundaries("journals")
 
     querySelectorAllTitle(logseq.settings!.booleanBesideJournalTitle as boolean)
@@ -134,7 +135,8 @@ const main = async () => {
   // 今日の日記が作成されたときに実行される (Journal boundariesの更新のため)
   // ※ただし、今日以外の日記を作成した場合は実行されないので注意
   logseq.App.onTodayJournalCreated(async () => {
-    if (logseq.settings!.booleanBoundaries === true) {
+    if (logseq.settings!.booleanBoundariesAll === true
+      && logseq.settings!.booleanBoundaries === true) {
       const weekBoundaries = parent.document.getElementById("weekBoundaries") as HTMLDivElement | null
       if (weekBoundaries) weekBoundaries.remove()
       if ((await logseq.Editor.getCurrentPage() as { id: EntityID } | null) !== null)
