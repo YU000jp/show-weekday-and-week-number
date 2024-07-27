@@ -238,7 +238,7 @@ export const settingsTemplate = (userLanguage): SettingSchemaDesc[] => [
   //   description: t("Task color") + "🆕",
   // },
   //TODO: 進捗ゼロ
-  
+
   // 共通設定ここまで
 
 
@@ -352,7 +352,7 @@ export const settingsTemplate = (userLanguage): SettingSchemaDesc[] => [
     key: "booleanBoundariesAll",
     title: t("Enable feature"),
     type: "boolean",
-    default: true,
+    default: false,
     description: "",
   },
   { // 有効トグル
@@ -373,28 +373,28 @@ export const settingsTemplate = (userLanguage): SettingSchemaDesc[] => [
     key: "booleanBoundariesOnWeeklyJournal",
     title: "",
     type: "boolean",
-    default: true,
+    default: false,
     description: t("Use on Weekly Journal"),
   },
   { // Monthly Journalで有効にするかどうか
     key: "booleanBoundariesOnMonthlyJournal",
     title: "",
     type: "boolean",
-    default: true,
+    default: false,
     description: t("Use on Monthly Journal") + "🆕",
   },
   { // Quarterly Journalで有効にするかどうか
     key: "booleanBoundariesOnQuarterlyJournal",
     title: "",
     type: "boolean",
-    default: true,
+    default: false,
     description: t("Use on Quarterly Journal") + "🆕",
   },
   { // Yearly Journalで有効にするかどうか
     key: "booleanBoundariesOnYearlyJournal",
     title: "",
     type: "boolean",
-    default: true,
+    default: false,
     description: t("Use on Yearly Journal") + "🆕",
   },
   {//20240108
