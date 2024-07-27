@@ -1,3 +1,11 @@
+## [1.59.1](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.59.0...v1.59.1) (2024-07-27)
+
+
+### Bug Fixes
+
+* **bug:** Not work the toggle for 2 lines calendar [#149](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/149) ([f1b207a](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/f1b207a9afa13f06ecaaf75adc33be019154eb7f))
+* **bug:** When moving to another graph. (user date format) ([2451bda](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/2451bdaf5a1e6510fda8aaed83f55902c2de7903))
+
 # [1.59.0](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.58.1...v1.59.0) (2024-07-21)
 
 
