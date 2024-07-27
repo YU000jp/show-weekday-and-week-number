@@ -190,6 +190,11 @@ const main = async () => {
   })
 
 
+  logseq.App.onCurrentGraphChanged(() => {
+    // ユーザー設定を取得して更新
+    getUserConfig()
+  })
+
   // ショートカットキーを登録
   loadShortcutItems()
 
@@ -235,7 +240,7 @@ const checkJournalTitle = async (titleElement: HTMLElement) => {
     && titleElement.classList.contains("title") === true
     && title.match(/^(\d{4})/) !== null // titleの先頭が2024から始まる場合のみチェックする
   )
-    
+
     if (await isMatchWeeklyJournal(title, titleElement) // Weekly Journalのいずれかの形式にマッチ
       || await isMatchMonthlyJournal(title, titleElement) // 2024/01にマッチ
       || await isMatchQuarterlyJournal(title, titleElement) // 2024/Q1にマッチ
