@@ -198,53 +198,58 @@ body {
         }
 
         & div#left-sidebar {
-            & div#left-calendar-container>details {
+            & div#left-calendar-container {
+                z-index: 1;
+                background-color: var(--left-sidebar-bg-color);
 
-                &>div#left-calendar-inner {
+                &>details {
 
-                    &>div#left-calendar {
-                        margin-left: 0.2em;
-                        white-space: nowrap;
-                        overflow: visible;
-                        font-size: 0.86em;
+                    &>div#left-calendar-inner {
 
-                        &>table {
-                            background-color: var(--left-sidebar-bg-color);
-                            padding-top: 0.5em;
-                            padding-bottom: 0.5em;
-                            margin-top: 0.5em;
-                            margin-bottom: 0.5em;
+                        &>div#left-calendar {
+                            margin-left: 0.2em;
                             white-space: nowrap;
-                            width: 295px;
-                            border: 2px solid var(--ls-border-color);
-                            box-shadow: 0 0 7px var(--ls-border-color);
+                            overflow: visible;
+                            font-size: 0.86em;
 
-                            &>thead>tr>th {
-                                padding: 0.55em;
-                                text-align: center;
-                            }
+                            &>table {
+                                background-color: var(--left-sidebar-bg-color);
+                                padding-top: 0.5em;
+                                padding-bottom: 0.5em;
+                                margin-top: 0.5em;
+                                margin-bottom: 0.5em;
+                                white-space: nowrap;
+                                width: 295px;
+                                border: 2px solid var(--ls-border-color);
+                                box-shadow: 0 0 7px var(--ls-border-color);
 
-                            &>tbody>tr>td {
-                                padding: 0.45em;
-                                text-align: center;
-                                opacity: 0.8;
-                                font-size: 1.12em;
-                                background-color: var(--ls-tertiary-background-color);
+                                &>thead>tr>th {
+                                    padding: 0.55em;
+                                    text-align: center;
+                                }
 
-                                &:hover {
-                                    opacity: 1;
-                                    background-color: var(--ls-secondary-background-color);
-                                    box-shadow: 0 0 10px var(--ls-tertiary-background-color);
+                                &>tbody>tr>td {
+                                    padding: 0.45em;
+                                    text-align: center;
+                                    opacity: 0.8;
+                                    font-size: 1.12em;
+                                    background-color: var(--ls-tertiary-background-color);
+
+                                    &:hover {
+                                        opacity: 1;
+                                        background-color: var(--ls-secondary-background-color);
+                                        box-shadow: 0 0 10px var(--ls-tertiary-background-color);
+                                    }
                                 }
                             }
-                        }
 
-                        &>a:hover {
-                            text-decoration: underline;
-                        }
+                            &>a:hover {
+                                text-decoration: underline;
+                            }
 
-                        &>div#testOutput {
-                            overflow: scroll;
+                            &>div#testOutput {
+                                overflow: scroll;
+                            }
                         }
                     }
                 }
