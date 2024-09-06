@@ -266,7 +266,7 @@ const daysForEach = (days: number[], startDate: Date, boundariesInner: HTMLDivEl
 
       //日付をクリックできるようにするかどうか
       if (logseq.settings!.booleanBoundariesFuturePage === true
-        && isBooleanBeforeToday === true
+        && isBooleanBeforeToday === false
         && isBooleanToday === false)
         dayCell.addEventListener("click", openPageToSingleDay(dateFormatString, isBooleanBeforeToday))
       else
