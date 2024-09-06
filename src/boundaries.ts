@@ -251,11 +251,31 @@ const daysForEach = (days: number[], startDate: Date, boundariesInner: HTMLDivEl
           dayCell.style.border = `1px solid ${logseq.settings!.boundariesHighlightColorToday}` //今日をハイライト
 
       if (logseq.settings?.booleanWeekendsColor === true)
-        if (isSaturday(dayDate) as boolean)
-          dayCell.style.color = 'var(--ls-wb-stroke-color-blue)'
-        else
-          if (isSunday(dayDate) as boolean)
-            dayCell.style.color = 'var(--ls-wb-stroke-color-red)'
+        switch (dayDate.getDay()) {
+          case 0: // Sunday
+            switchCaseWeekendColor(dayCell, "Sun")
+            break
+          case 1:
+            switchCaseWeekendColor(dayCell, "Mon")
+            break
+          case 2:
+            switchCaseWeekendColor(dayCell, "Tue")
+            break
+          case 3:
+            switchCaseWeekendColor(dayCell, "Wed")
+            break
+          case 4:
+            switchCaseWeekendColor(dayCell, "Thu")
+            break
+          case 5:
+            switchCaseWeekendColor(dayCell, "Fri")
+            break
+          case 6:
+            switchCaseWeekendColor(dayCell, "Sat")
+            break
+          default:
+            break
+        }
 
       // ユーザー設定日
       if (logseq.settings!.userColorList as string !== "") {
@@ -302,6 +322,30 @@ const indicator = async (targetPageName: string, dayOfMonthElement: HTMLSpanElem
   indicatorElement.innerText = "●"
   indicatorElement.title = t("Page exists")
   dayOfMonthElement.appendChild(indicatorElement)
+}
+
+const switchCaseWeekendColor = (
+  dayCell: HTMLElement,
+  day: "Mon" | "Tue" | "Wed" | "Thu" | "Fri" | "Sat" | "Sun"
+) => {
+  let color = ""
+  switch (logseq.settings!["userWeekend" + day] as string) {
+    case "blue":
+      color = 'var(--ls-wb-stroke-color-blue)'
+      break
+    case "red":
+      color = 'var(--ls-wb-stroke-color-red)'
+      break
+    case "green":
+      color = 'var(--ls-wb-stroke-color-green)'
+      break
+    default:
+      // Nothing
+      return
+      break
+  }
+  if (color !== "")
+    dayCell.style.color = color
 }
 
 // 日誌のページを開く

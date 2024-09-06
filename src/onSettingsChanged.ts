@@ -28,6 +28,13 @@ export const isCommonSettingsChanged = (oldSet: LSPluginBaseInfo["settings"], ne
     || oldSet.boundariesHighlightColorToday !== newSet.boundariesHighlightColorToday
     || oldSet.userColorList !== newSet.userColorList
     || oldSet.choiceUserColor !== newSet.choiceUserColor
+    || oldSet.userWeekendMon !== newSet.userWeekendMon
+    || oldSet.userWeekendTue !== newSet.userWeekendTue
+    || oldSet.userWeekendWed !== newSet.userWeekendWed
+    || oldSet.userWeekendThu !== newSet.userWeekendThu
+    || oldSet.userWeekendFri !== newSet.userWeekendFri
+    || oldSet.userWeekendSat !== newSet.userWeekendSat
+    || oldSet.userWeekendSun !== newSet.userWeekendSun
     //booleanNoPageFoundCreatePageは反映不要
     //booleanBoundariesFuturePageは反映不要
 
