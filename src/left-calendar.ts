@@ -250,7 +250,7 @@ export const createCalendar = (targetDate: Date, preferredDateFormat: string, in
             dayCell.textContent = day
             const holiday = checkDay(date, month, dayCell, preferredDateFormat, innerElement)
             const pageName = format(date, preferredDateFormat)
-            dayCell.addEventListener("click", openPageToSingleDay(pageName, logseq.settings!.booleanBoundariesFuturePage as boolean))
+            dayCell.addEventListener("click", openPageToSingleDay(pageName))
             dayCell.classList.add("cursor")
             dayCell.title = holiday !== "" ?
                 holiday + "\n" + pageName
@@ -272,7 +272,7 @@ export const createCalendar = (targetDate: Date, preferredDateFormat: string, in
             dayCell.textContent = day
             const holiday = checkDay(date, month, dayCell, preferredDateFormat, innerElement)
             const pageName = format(date, preferredDateFormat)
-            dayCell.addEventListener("click", openPageToSingleDay(pageName, logseq.settings!.booleanBoundariesFuturePage as boolean))
+            dayCell.addEventListener("click", openPageToSingleDay(pageName))
             dayCell.classList.add("cursor")
             dayCell.title = holiday !== "" ?
                 holiday + "\n" + pageName

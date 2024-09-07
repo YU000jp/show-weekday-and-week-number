@@ -36,10 +36,7 @@ export const isCommonSettingsChanged = (oldSet: LSPluginBaseInfo["settings"], ne
     || oldSet.userWeekendSat !== newSet.userWeekendSat
     || oldSet.userWeekendSun !== newSet.userWeekendSun
     //booleanNoPageFoundCreatePageは反映不要
-    //booleanBoundariesFuturePageは反映不要
-
-    //Weekly Journalの設定
-    || oldSet.weekNumberOptions !== newSet.weekNumberOptions
+    || oldSet.weekNumberOptions !== newSet.weekNumberOptions //Weekly Journalの設定
   )
     return true
   else

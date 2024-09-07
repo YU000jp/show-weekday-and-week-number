@@ -247,13 +247,6 @@ export const settingsTemplate = (userLanguage): SettingSchemaDesc[] => [
     default: true,
     description: "",
   },
-  {//将来のページも開く
-    key: "booleanBoundariesFuturePage",
-    title: t("Open future page"),
-    type: "boolean",
-    default: true,
-    description: "",
-  },
   {// 特定の日付に色を付けるためのユーザー設定
     key: "userColorList",
     title: t("User color") + "🆕",

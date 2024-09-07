@@ -284,13 +284,7 @@ const daysForEach = (days: number[], startDate: Date, boundariesInner: HTMLDivEl
           dayCell.title = `${eventName}\n${dayCell.title}`
       }
 
-      //日付をクリックできるようにするかどうか
-      if (logseq.settings!.booleanBoundariesFuturePage === true
-        && isBooleanBeforeToday === false
-        && isBooleanToday === false)
-        dayCell.addEventListener("click", openPageToSingleDay(dateFormatString, isBooleanBeforeToday))
-      else
-        dayCell.style.cursor = 'unset'
+      dayCell.addEventListener("click", openPageToSingleDay(dateFormatString))
 
       //20240115
       //エントリーが存在するかどうかのインディケーターを表示する
@@ -349,7 +343,7 @@ const switchCaseWeekendColor = (
 }
 
 // 日誌のページを開く
-export function openPageToSingleDay(pageName: string, isBooleanBeforeToday: boolean): (this: HTMLSpanElement, ev: MouseEvent) => any {
+export function openPageToSingleDay(pageName: string): (this: HTMLSpanElement, ev: MouseEvent) => any {
   return async (event) => {
     if (event.shiftKey) {//Shiftキーを押しながらクリックした場合は、サイドバーでページを開く
       const page = await logseq.Editor.getPage(pageName, { includeChildren: false }) as { uuid: BlockUUID } | null
@@ -357,8 +351,7 @@ export function openPageToSingleDay(pageName: string, isBooleanBeforeToday: bool
         logseq.Editor.openInRightSidebar(page.uuid)//ページが存在しない場合は開かない
     } else
       //Shiftキーを押さずにクリックした場合は、ページを開く
-      if (logseq.settings!.booleanNoPageFoundCreatePage === true
-        && isBooleanBeforeToday === true) //過去の日付の場合はページを作成しない
+      if (logseq.settings!.booleanNoPageFoundCreatePage === true)
         //ページが存在しない場合は作成しない
         if (await logseq.Editor.getPage(pageName) as { name: string } | null)
           logseq.App.pushState('page', { name: pageName })//ページが存在する場合は開く
