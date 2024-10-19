@@ -1,3 +1,17 @@
+# [1.60.0](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.59.1...v1.60.0) (2024-10-19)
+
+
+### Bug Fixes
+
+* **bug:** cannot open the future page (mini-calendar) ([793300e](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/793300ec95eaff7a2fc8e470eeca2201f05fc878))
+* **bug:** Left Menu Monthly Calendar >> No background colour and clear. ([9865fa4](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/9865fa4efa6b457883c11b8e4a1e3f1278878d36))
+* **Delete:** config key "booleanBoundariesFuturePage" ([0110786](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/01107868b49dc0d4e15d68bd79348191c63eb26c))
+
+
+### Features
+
+* **Add:** Add per-user weekends day option [#151](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/151) ([789844b](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/789844bd1f8ce7da574ec341984844b116e10159))
+
 ## [1.59.1](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.59.0...v1.59.1) (2024-07-27)
 
 
