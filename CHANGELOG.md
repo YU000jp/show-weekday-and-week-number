@@ -1,3 +1,10 @@
+## [1.60.1](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.60.0...v1.60.1) (2024-11-30)
+
+
+### Bug Fixes
+
+* **design:** Monthly calendar sticks out of the sidebar [#153](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/issues/153) ([2000ace](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/2000ace71af109373e4c19d562f59786acaa8a57))
+
 # [1.60.0](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.59.1...v1.60.0) (2024-10-19)
 
 
