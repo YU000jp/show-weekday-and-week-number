@@ -1,5 +1,5 @@
 body {
-    &.boundaries-bottom div#weekBoundaries>div#boundariesInner {
+    &.boundaries-bottom #weekBoundaries>#boundariesInner {
         /* 下部に表示するオプション */
         position: fixed;
         bottom: 0.1em;
@@ -7,12 +7,12 @@ body {
         z-index: 1;
     }
 
-    &:not(.boundaries-bottom) div#weekBoundaries {
+    &:not(.boundaries-bottom) #weekBoundaries {
         /* 上下スクロール時の変動をなくすために必要 */
         height: 88px;
     }
 
-    &>div#root>div>main {
+    &>#root>div>main {
         & article>div[data-id*="show-weekday-and-week-number"] {
             & h2>code {
                 /* 設定キーを隠す(表示不要) */
@@ -197,18 +197,18 @@ body {
             }
         }
 
-        & div#left-sidebar {
-            & div#left-calendar-container {
+        & #left-sidebar {
+            & #left-calendar-container {
                 z-index: 1;
                 background-color: var(--left-sidebar-bg-color);
 
                 &>details {
 
-                    &>div#left-calendar-inner {
+                    &>#left-calendar-inner {
                         transform: scale(0.84);
                         margin-left: -1em;
 
-                        &>div#left-calendar {
+                        &>#left-calendar {
                             margin-left: 0.2em;
                             white-space: nowrap;
                             overflow: visible;
@@ -249,7 +249,7 @@ body {
                                 text-decoration: underline;
                             }
 
-                            &>div#testOutput {
+                            &>#testOutput {
                                 overflow: scroll;
                             }
                         }
@@ -258,12 +258,12 @@ body {
             }
         }
 
-        &>div#app-container>div#left-container>div#main-container>div#main-content-container {
+        &>#app-container>#left-container>#main-container>#main-content-container {
             & div.content>div.blocks-container div.ls-block[data-refs-self*='".thisweek"'] a[data-ref=".thisweek"] {
                 display: none;
             }
 
-            & div.page.relative div.relative>div#journalNav {
+            & div.page.relative div.relative>#journalNav {
                 overflow: visible;
                 width: max-content;
                 user-select: none;
@@ -288,7 +288,7 @@ body {
                 }
             }
 
-            & div#journals span#journalTitleDetailsPrevNextLink {
+            & #journals span#journalTitleDetailsPrevNextLink {
                 display: none;
             }
 
@@ -296,11 +296,11 @@ body {
                 color: inherit;
             }
 
-            & div#weekBoundaries {
+            & #weekBoundaries {
 
                 transition: height 0.3s ease-in-out;
 
-                &>div#boundariesInner {
+                &>#boundariesInner {
                     display: flex;
                     margin-top: 0.1em;
                     min-width: 40em;
