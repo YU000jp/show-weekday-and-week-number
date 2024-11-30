@@ -205,6 +205,8 @@ body {
                 &>details {
 
                     &>div#left-calendar-inner {
+                        transform: scale(0.84);
+                        margin-left: -1em;
 
                         &>div#left-calendar {
                             margin-left: 0.2em;
