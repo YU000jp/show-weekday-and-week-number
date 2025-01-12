@@ -1,3 +1,10 @@
+## [1.60.3](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.60.2...v1.60.3) (2025-01-12)
+
+
+### Bug Fixes
+
+* **bug:** User date format does not match due to slow triggering of logseq.App.getUserConfigs() ([c377e33](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/commit/c377e3317cb9df73c276b90999299ca148ed1718))
+
 ## [1.60.2](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number/compare/v1.60.1...v1.60.2) (2024-12-22)
 
 
