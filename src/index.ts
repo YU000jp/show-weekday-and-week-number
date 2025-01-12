@@ -49,6 +49,8 @@ export const getConfigPreferredDateFormat = (): string => configPreferredDateFor
 
 
 export const getUserConfig = async () => {
+  // 1秒待つ
+  await new Promise((resolve) => setTimeout(resolve, 1000))
   const { preferredLanguage, preferredDateFormat } = await logseq.App.getUserConfigs() as { preferredDateFormat: string; preferredLanguage: string }
   configPreferredLanguage = preferredLanguage
   configPreferredDateFormat = preferredDateFormat
