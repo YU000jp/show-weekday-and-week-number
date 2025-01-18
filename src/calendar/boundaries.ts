@@ -1,10 +1,9 @@
 import { BlockUUID, PageEntity } from '@logseq/libs/dist/LSPlugin.user'
-import { addDays, format, isBefore, isFriday, isSameDay, isSaturday, isSunday, isThursday, isToday, isWednesday, startOfISOWeek, startOfWeek, } from 'date-fns' //https://date-fns.org/
+import { addDays, format, isFriday, isSameDay, isSaturday, isSunday, isThursday, isToday, isWednesday, startOfISOWeek, startOfWeek } from 'date-fns' //https://date-fns.org/
 import { t } from "logseq-l10n"
-
-import { getConfigPreferredDateFormat, getConfigPreferredLanguage } from '.'
-import { formatRelativeDate, getJournalDayDate, getWeekStartOn, getWeeklyNumberFromDate, getWeeklyNumberString, localizeDayOfWeekString, localizeMonthString, openPageFromPageName, userColor } from './lib'
-import { holidaysWorld, lunarString } from './holidays'
+import { getConfigPreferredDateFormat, getConfigPreferredLanguage } from '..'
+import { holidaysWorld, lunarString } from '../lib/holidays'
+import { DayShortCode, colorMap, formatRelativeDate, getJournalDayDate, getWeekStartOn, getWeeklyNumberFromDate, getWeeklyNumberString, localizeDayOfWeekString, localizeMonthString, openPageFromPageName, shortDayNames, userColor } from '../lib/lib'
 
 
 let processingFoundBoundaries: boolean = false
@@ -64,7 +63,6 @@ export const boundariesProcess = async (targetElementName: string, remove: boole
     //weekBoundariesにelementを追加する
     const boundariesInner: HTMLDivElement = document.createElement('div')
     boundariesInner.id = 'boundariesInner'
-    weekBoundaries.appendChild(boundariesInner)
 
     let targetDate: Date//今日の日付もしくはそのページの日付を求める
     if (targetElementName === 'journals')
@@ -110,29 +108,49 @@ export const boundariesProcess = async (targetElementName: string, remove: boole
       ? [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13] //次の週を表示する場合
       : [-7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6] //次の週を表示しない場合
 
-    daysForEach(days, startDate, boundariesInner, today, targetDate, targetElementName, flagShowNextWeek)
+    await daysForEach(days, startDate, boundariesInner, today, targetDate, targetElementName, flagShowNextWeek)
+    weekBoundaries.appendChild(boundariesInner)
   }
   processingFoundBoundaries = false
 }
 
+/**
+ * Create an HTML element with specified classes.
+ * @param tagName The type of element to create.
+ * @param classNames The classes to add to the element.
+ * @returns The created HTML element.
+ */
+const createElementWithClass = (tagName: string, ...classNames: string[]): HTMLElement => {
+  const element = document.createElement(tagName)
+  element.classList.add(...classNames)
+  return element
+}
+
+/**
+ * Add an event listener to an element that will be executed only once.
+ * @param element The element to add the event listener to.
+ * @param event The event type to listen for.
+ * @param handler The event handler function.
+ */
+const addEventListenerOnce = (element: HTMLElement, event: string, handler: EventListenerOrEventListenerObject) => {
+  element.addEventListener(event, handler, { once: true })
+}
 
 const daySideWeekNumber = (date: Date, boundariesInner: HTMLDivElement) => {
   const { year, weekString, quarter } = getWeeklyNumberFromDate(date, logseq.settings?.weekNumberFormat === "US format" ? 0 : 1) // 週番号を取得する
   const weekNumberString = getWeeklyNumberString(year, weekString, quarter) // 週番号からユーザー指定文字列を取得する
-  const weekNumberElement: HTMLSpanElement = document.createElement('span')
-  weekNumberElement.classList.add('daySide', 'daySideWeekNumber')
+  const weekNumberElement = createElementWithClass('span', 'daySide', 'daySideWeekNumber')
   weekNumberElement.innerText = "W" + weekString
   weekNumberElement.title = t("Week number: ") + weekNumberString
   if (logseq.settings!.booleanWeeklyJournal === true)
-    weekNumberElement.addEventListener("click", ({ shiftKey }) => openPageFromPageName(weekNumberString, shiftKey))
+    addEventListenerOnce(weekNumberElement, "click", (event) => openPageFromPageName(weekNumberString, (event as MouseEvent).shiftKey))
   else
     weekNumberElement.style.cursor = 'unset'
   boundariesInner.appendChild(weekNumberElement)
 }
 
-const daySideMonth = (date: Date, boundariesInner: HTMLDivElement, monthDuplicate: Date): Date => {
-  const sideMonthElement: HTMLSpanElement = document.createElement('span')
-  sideMonthElement.classList.add('daySide')
+const daySideMonth = (date: Date, boundariesInner: HTMLDivElement, monthDuplicate: Date | null): Date => {
+  const sideMonthElement = createElementWithClass('span', 'daySide')
   //monthDuplicateが存在したら、dateの6日後を代入する
   const dateShowMonth: Date = monthDuplicate ? addDays(date, 6) as Date : date
 
@@ -155,29 +173,28 @@ const daySideMonth = (date: Date, boundariesInner: HTMLDivElement, monthDuplicat
 
 // 週のスクロール
 const daySideScroll = (index: number, boundariesInner: HTMLDivElement, targetElementName: string, startDate: Date) => {
-  const sideScrollElement: HTMLSpanElement = document.createElement('span')
-  sideScrollElement.classList.add('daySide', 'daySideScroll')
+  const sideScrollElement = createElementWithClass('span', 'daySide', 'daySideScroll')
   sideScrollElement.innerText = index === 6 ? '↑' : '↓'
   sideScrollElement.title = index === 6 ? t("Previous week") : t("Next week")
   boundariesInner.appendChild(sideScrollElement)
-  sideScrollElement.addEventListener('click', () => {
+  addEventListenerOnce(sideScrollElement, 'click', () => {
     //boundariesInnerを削除する
     boundariesInner.remove()
     //startDateを1週間ずらす
     boundariesProcess(targetElementName, true, 0, addDays(startDate, index === 6 ? -7 : 7) as Date)
-  }, { once: true })
+  })
 }
 
 
 // 1日ずつの処理
-const daysForEach = (days: number[], startDate: Date, boundariesInner: HTMLDivElement, today: Date, targetDate: Date, targetElementName: string, flagShowNextWeek: boolean) => {
-  let monthDuplicate: Date
-  const preferredDateFormat = getConfigPreferredDateFormat()
+const daysForEach = async (days: number[], startDate: Date, boundariesInner: HTMLDivElement, today: Date, targetDate: Date, targetElementName: string, flagShowNextWeek: boolean) => {
+  let monthDuplicate: Date | null = null
+  const preferredDateFormat = await getConfigPreferredDateFormat()
   //ミニカレンダー作成 1日ずつ処理
-  days.forEach((numDays, index) => {
+  for (const [index, numDays] of days.entries()) {
     const dayDate: Date = numDays === 0 ? startDate : addDays(startDate, numDays) as Date // dateを取得する
     const dateFormatString: string = format(dayDate, preferredDateFormat) //日付をフォーマットする
-    const dayCell: HTMLSpanElement = document.createElement('span')
+    const dayCell = createElementWithClass('span', 'day')
     try {
       if (index === 7) {
         const element: HTMLDivElement = document.createElement('div')
@@ -192,7 +209,7 @@ const daysForEach = (days: number[], startDate: Date, boundariesInner: HTMLDivEl
           monthDuplicate = daySideMonth(dayDate, boundariesInner, monthDuplicate) //daySideElement作成
 
       //dayElement作成
-      const isBooleanBeforeToday: boolean = isBefore(dayDate, today)
+      // const isBooleanBeforeToday: boolean = isBefore(dayDate, today)
       const isBooleanToday: boolean = isToday(dayDate)
       const isBooleanTargetSameDay: boolean = isSameDay(targetDate, dayDate)
       dayCell.classList.add('day')
@@ -203,7 +220,7 @@ const daysForEach = (days: number[], startDate: Date, boundariesInner: HTMLDivEl
       // 20240121
       // 祝日のカラーリング機能
       if (logseq.settings!.booleanBoundariesHolidays === true) {
-        const configPreferredLanguage = getConfigPreferredLanguage()
+        const configPreferredLanguage = await getConfigPreferredLanguage()
         // Chinese lunar-calendar and holidays
         if (logseq.settings!.booleanLunarCalendar === true // プラグイン設定で太陰暦オンの場合
           && (configPreferredLanguage === "zh-Hant" //中国語の場合
@@ -251,31 +268,7 @@ const daysForEach = (days: number[], startDate: Date, boundariesInner: HTMLDivEl
           dayCell.style.border = `1px solid ${logseq.settings!.boundariesHighlightColorToday}` //今日をハイライト
 
       if (logseq.settings?.booleanWeekendsColor === true)
-        switch (dayDate.getDay()) {
-          case 0: // Sunday
-            switchCaseWeekendColor(dayCell, "Sun")
-            break
-          case 1:
-            switchCaseWeekendColor(dayCell, "Mon")
-            break
-          case 2:
-            switchCaseWeekendColor(dayCell, "Tue")
-            break
-          case 3:
-            switchCaseWeekendColor(dayCell, "Wed")
-            break
-          case 4:
-            switchCaseWeekendColor(dayCell, "Thu")
-            break
-          case 5:
-            switchCaseWeekendColor(dayCell, "Fri")
-            break
-          case 6:
-            switchCaseWeekendColor(dayCell, "Sat")
-            break
-          default:
-            break
-        }
+        applyWeekendColor(dayCell, shortDayNames[dayDate.getDay()])
 
       // ユーザー設定日
       if (logseq.settings!.userColorList as string !== "") {
@@ -289,7 +282,7 @@ const daysForEach = (days: number[], startDate: Date, boundariesInner: HTMLDivEl
       //20240115
       //エントリーが存在するかどうかのインディケーターを表示する
       if (logseq.settings!.booleanBoundariesIndicator === true)
-        indicator(dateFormatString, dayOfMonthElement)
+        await indicator(dateFormatString, dayOfMonthElement)
 
     } finally {
       boundariesInner.appendChild(dayCell)
@@ -302,44 +295,22 @@ const daysForEach = (days: number[], startDate: Date, boundariesInner: HTMLDivEl
         daySideScroll(index, boundariesInner, targetElementName, startDate)
       }
     }
-  })
+  }
 }
 
 // 日誌のページが存在するかどうかのインディケーターを表示する
 const indicator = async (targetPageName: string, dayOfMonthElement: HTMLSpanElement) => {
-  const existsPage = await logseq.Editor.getPage(targetPageName, { includeChildren: false }) as { file: PageEntity["file"] } | null
-  if (!existsPage
-    || !existsPage.file)
-    return
-  const indicatorElement: HTMLSpanElement = document.createElement('span')
-  indicatorElement.classList.add('indicator')
+  const existsPage = await logseq.Editor.getPage(targetPageName) as { file: PageEntity["file"] } | null
+  if (!existsPage?.file) return
+  const indicatorElement = createElementWithClass('span', 'indicator')
   indicatorElement.innerText = "●"
   indicatorElement.title = t("Page exists")
   dayOfMonthElement.appendChild(indicatorElement)
 }
 
-const switchCaseWeekendColor = (
-  dayCell: HTMLElement,
-  day: "Mon" | "Tue" | "Wed" | "Thu" | "Fri" | "Sat" | "Sun"
-) => {
-  let color = ""
-  switch (logseq.settings!["userWeekend" + day] as string) {
-    case "blue":
-      color = 'var(--ls-wb-stroke-color-blue)'
-      break
-    case "red":
-      color = 'var(--ls-wb-stroke-color-red)'
-      break
-    case "green":
-      color = 'var(--ls-wb-stroke-color-green)'
-      break
-    default:
-      // Nothing
-      return
-      break
-  }
-  if (color !== "")
-    dayCell.style.color = color
+const applyWeekendColor = (dayCell: HTMLElement, day: DayShortCode) => {
+  const color = colorMap[logseq.settings!["userWeekend" + day] as string]
+  if (color) dayCell.style.color = color
 }
 
 // 日誌のページを開く

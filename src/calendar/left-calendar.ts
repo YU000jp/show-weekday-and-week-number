@@ -2,11 +2,11 @@ import { LSPluginBaseInfo, PageEntity } from "@logseq/libs/dist/LSPlugin.user"
 import { addDays, Day, eachDayOfInterval, getISOWeek, getWeek, isSameDay, isSameISOWeek, isSameMonth, isSameWeek, isSameYear, isToday, startOfISOWeek, startOfMonth, startOfWeek } from "date-fns"
 import { format } from "date-fns/format"
 import { t } from "logseq-l10n"
-import { getConfigPreferredDateFormat, getConfigPreferredLanguage, pluginName } from "."
+import { getConfigPreferredDateFormat, getConfigPreferredLanguage, pluginName } from ".."
+import { holidaysWorld, lunarString } from "../lib/holidays"
+import { getWeeklyNumberFromDate, getWeeklyNumberString, localizeDayOfWeekString, localizeMonthDayString, localizeMonthString, openPageFromPageName, removeElementById, userColor } from "../lib/lib"
+import { isEssentialSettingsAltered } from "../settings/onSettingsChanged"
 import { openPageToSingleDay } from "./boundaries"
-import { holidaysWorld, lunarString } from "./holidays"
-import { getWeeklyNumberFromDate, getWeeklyNumberString, localizeDayOfWeekString, localizeMonthDayString, localizeMonthString, openPageFromPageName, removeElementById, userColor } from "./lib"
-import { isCommonSettingsChanged } from "./onSettingsChanged"
 
 export const keyLeftCalendarContainer = "left-calendar-container"
 
@@ -26,7 +26,7 @@ export const loadLeftCalendar = () => {
         if (oldSet.booleanLcWeekNumber !== newSet.booleanLcWeekNumber
             || oldSet.booleanLcHolidays !== newSet.booleanLcHolidays
             || oldSet.lcHolidaysAlert !== newSet.lcHolidaysAlert
-            || isCommonSettingsChanged(newSet, oldSet) === true //共通処理
+            || isEssentialSettingsAltered(newSet, oldSet) === true //共通処理
         )
             refreshCalendar(currentCalendarDate, false, false)
 
@@ -67,13 +67,13 @@ const main = () => {
         footerElement.insertAdjacentElement("beforebegin", containerElement)
 
         //スペースに表示する
-        setTimeout(() => {
+        setTimeout(async () => {
             const innerElement: HTMLDivElement | null = parent.document.getElementById("left-calendar-inner") as HTMLDivElement | null
 
             if (innerElement === null) return //nullの場合はキャンセル
 
             if (innerElement.dataset.flag !== "true")//すでに存在する場合はキャンセル
-                createCalendar(new Date(), getConfigPreferredDateFormat(), innerElement)
+                createCalendar(new Date(), await getConfigPreferredDateFormat(), innerElement)
 
             innerElement.dataset.flag = "true" //フラグを立てる
         }, 1)
@@ -81,10 +81,63 @@ const main = () => {
     }, 500)
 }
 
+const createButton = (text: string, title: string, onClick: () => void): HTMLButtonElement => {
+    const button = document.createElement("button")
+    button.textContent = text
+    button.className = "cursor"
+    button.title = title
+    button.addEventListener("click", onClick, { once: true })
+    return button
+}
+
+const createTableCell = (text: string, className: string = "", title: string = "", colSpan: number = 1): HTMLTableCellElement => {
+    const cell = document.createElement("td")
+    cell.textContent = text
+    cell.className = className
+    cell.title = title
+    cell.colSpan = colSpan
+    return cell
+}
+
+const createTableHeaderCell = (text: string, className: string = "", title: string = "", colSpan: number = 1): HTMLTableCellElement => {
+    const cell = document.createElement("th")
+    cell.textContent = text
+    cell.className = className
+    cell.title = title
+    cell.colSpan = colSpan
+    return cell
+}
+
+const createDayCell = async (
+    date: Date,
+    month: number,
+    preferredDateFormat: string,
+    innerElement: HTMLDivElement,
+    targetDate: Date,
+    ISO: boolean,
+    weekStartsOn: Day,
+    flag?: { singlePage?: boolean, weekly?: boolean }
+): Promise<HTMLTableCellElement> => {
+    const dayCell = document.createElement("td")
+    dayCell.textContent = date.getDate().toString()
+    const holiday = await checkDay(date, month, dayCell, preferredDateFormat, innerElement)
+    const pageName = format(date, preferredDateFormat) as string
+    if (pageName) {
+        dayCell.addEventListener("click", openPageToSingleDay(pageName))
+        dayCell.classList.add("cursor")
+        dayCell.title = holiday !== "" ? holiday + "\n" + pageName : pageName
+    }
+    if (flag?.singlePage === true && isSameDay(date, targetDate))
+        dayCell.style.border = `3px solid ${logseq.settings!.boundariesHighlightColorSinglePage}`
+    else
+        if (flag?.weekly === true && (ISO ? isSameISOWeek(date, targetDate) : isSameWeek(date, targetDate, { weekStartsOn })))
+            dayCell.style.borderBottom = `3px solid ${logseq.settings!.boundariesHighlightColorSinglePage}`
+    return dayCell
+}
 
 
 //月間カレンダーを作成する
-export const createCalendar = (targetDate: Date, preferredDateFormat: string, innerElement: HTMLDivElement, flag?: { singlePage?: boolean, weekly?: boolean }) => {
+export const createCalendar = async (targetDate: Date, preferredDateFormat: string, innerElement: HTMLDivElement, flag?: { singlePage?: boolean, weekly?: boolean }) => {
     const calendarElement: HTMLElement = document.createElement("div")
     calendarElement.className = "flex items-center"
     calendarElement.id = "left-calendar"
@@ -130,57 +183,40 @@ export const createCalendar = (targetDate: Date, preferredDateFormat: string, in
     const headerNavElement = document.createElement("tr")
 
     // 前月に戻るボタン
-    const prevHeaderCell = document.createElement("th")
-    const prevButton = document.createElement("button")
-    prevButton.textContent = "<"
-    prevButton.className = "cursor"
-    prevButton.title = t("Previous month")
-    prevButton.addEventListener("click", () => {
+    const prevButton = createButton("<", t("Previous month"), () => {
         const prevMonth = new Date(targetDate)
-        prevMonth.setMonth(prevMonth.getMonth() - 1) //前月の日付を取得
-        removeCalendarAndNav()//カレンダーとナビゲーションを削除
-        createCalendar(prevMonth, preferredDateFormat, innerElement) //前月のカレンダーを再描画
-    }, { once: true })
+        prevMonth.setMonth(prevMonth.getMonth() - 1)
+        removeCalendarAndNav()
+        createCalendar(prevMonth, preferredDateFormat, innerElement)
+    })
+    const prevHeaderCell = createTableHeaderCell("")
     prevHeaderCell.appendChild(prevButton)
     headerNavElement.appendChild(prevHeaderCell)
 
     // 月のセルを作成
-    const monthHeaderCell = document.createElement("th")
-    monthHeaderCell.textContent = localizeMonthLong + (isSameYear(targetDate, new Date()) ? "" : ` ${year}`)
+    const monthHeaderCell = createTableHeaderCell(localizeMonthLong + (isSameYear(targetDate, new Date()) ? "" : ` ${year}`), "cursor", formatYearMonthTargetDate, enableWeekNumber ? 4 : 3)
     monthHeaderCell.addEventListener("click", ({ shiftKey }) => openPageFromPageName(formatYearMonthTargetDate, shiftKey))
-    monthHeaderCell.classList.add("cursor")
-    monthHeaderCell.title = formatYearMonthTargetDate
     monthHeaderCell.style.fontSize = "1.4em"
-    monthHeaderCell.colSpan = enableWeekNumber ? 4 : 3
     headerNavElement.appendChild(monthHeaderCell)
     theadElement.appendChild(headerNavElement)
 
     // 今月に戻るボタン
-    const thisMonthHeaderCell = document.createElement("th")
-    thisMonthHeaderCell.colSpan = 2
-    const thisMonthButton = document.createElement("button")
-    thisMonthButton.textContent = t("This month")
-    thisMonthButton.title = formatYearMonthThisMonth
-    thisMonthButton.className = "cursor lcThisMonthButton"
-    thisMonthButton.addEventListener("click", () => {
-        removeCalendarAndNav()//カレンダーとナビゲーションを削除
-        createCalendar(new Date(), preferredDateFormat, innerElement) //今月のカレンダーを再描画
-    }, { once: true })
+    const thisMonthButton = createButton(t("This month"), formatYearMonthThisMonth, () => {
+        removeCalendarAndNav()
+        createCalendar(new Date(), preferredDateFormat, innerElement)
+    })
+    const thisMonthHeaderCell = createTableHeaderCell("", "", "", 2)
     thisMonthHeaderCell.appendChild(thisMonthButton)
     headerNavElement.appendChild(thisMonthHeaderCell)
 
     // 次月に進むボタン
-    const nextHeaderCell = document.createElement("th")
-    const nextButton = document.createElement("button")
-    nextButton.textContent = ">"
-    nextButton.className = "cursor"
-    nextButton.title = t("Next month")
-    nextButton.addEventListener("click", () => {
+    const nextButton = createButton(">", t("Next month"), () => {
         const nextMonth = new Date(targetDate)
-        nextMonth.setMonth(nextMonth.getMonth() + 1) //次月の日付を取得
-        removeCalendarAndNav()//カレンダーとナビゲーションを削除
-        createCalendar(nextMonth, preferredDateFormat, innerElement) //次月のカレンダーを再描画
-    }, { once: true })
+        nextMonth.setMonth(nextMonth.getMonth() + 1)
+        removeCalendarAndNav()
+        createCalendar(nextMonth, preferredDateFormat, innerElement)
+    })
+    const nextHeaderCell = createTableHeaderCell("")
     nextHeaderCell.appendChild(nextButton)
     headerNavElement.appendChild(nextHeaderCell)
 
@@ -191,106 +227,58 @@ export const createCalendar = (targetDate: Date, preferredDateFormat: string, in
     const headerRowElement = document.createElement("tr")
 
     // 週番号のセルを作成
-    if (enableWeekNumber) {
-        const emptyHeaderCell = document.createElement("th")
-        emptyHeaderCell.textContent = "W"
-        headerRowElement.appendChild(emptyHeaderCell)
-    }
+    if (enableWeekNumber)
+        headerRowElement.appendChild(createTableHeaderCell("W"))
 
     // 曜日名のセルを作成
-    for (const day of dayOfWeekArray) {
-        const dayHeaderCell = document.createElement("th")
-        dayHeaderCell.textContent = day
-        // ※曜日名の着色は難しいので省略
-        headerRowElement.appendChild(dayHeaderCell)
-    }
+    for (const day of dayOfWeekArray)
+        headerRowElement.appendChild(createTableHeaderCell(day))
+
     theadElement.appendChild(headerRowElement)
     tableElement.appendChild(theadElement)
 
 
     // 3段目以降の日付を作成
     const tbodyElement = document.createElement("tbody")
-    eachDays.forEach((date, index) => {
+    for (let index = 0; index < eachDays.length; index++) {
+        const date = eachDays[index];
         const weekNumber = enableWeekNumber ?
-            `${ISO ?
-                getISOWeek(date)
-                : getWeek(date, { weekStartsOn })}` : ""
-        const day = date.getDate().toString()
+            `${ISO ? getISOWeek(date) : getWeek(date, { weekStartsOn })}` : "";
+        const day = date.getDate().toString();
 
         // 先頭の日付の場合
         if (index % 7 === 0) {
-            const rowElement = document.createElement("tr")
-
+            const rowElement = document.createElement("tr");
 
             // 週番号を表示するかどうか
             if (enableWeekNumber) {
-                const weekNumberCell = document.createElement("td")// 週番号
-                weekNumberCell.textContent = weekNumber
-                weekNumberCell.title = t("Week")
-                if (weekNumber === "W53")// 53週の場合は透明度を下げる
-                    weekNumberCell.style.opacity = "0.5"
-                weekNumberCell.style.fontSize = "0.85em"// 週番号のフォントサイズを小さくする
-                const { year, weekString, quarter } = getWeeklyNumberFromDate(date, logseq.settings?.weekNumberFormat === "US format" ? 0 : 1) // 週番号を取得する
-                const pageName = getWeeklyNumberString(year, weekString, quarter) // 週番号からユーザー指定文字列を取得する
+                const weekNumberCell = createTableCell(weekNumber, "", t("Week"));
+                if (weekNumber === "W53") weekNumberCell.style.opacity = "0.5";
+                weekNumberCell.style.fontSize = "0.85em";
+                const { year, weekString, quarter } = getWeeklyNumberFromDate(date, logseq.settings?.weekNumberFormat === "US format" ? 0 : 1); // 週番号を取得する
+                const pageName = getWeeklyNumberString(year, weekString, quarter); // 週番号からユーザー指定文字列を取得する
                 if (logseq.settings!.booleanWeeklyJournal === true) {
-                    weekNumberCell.addEventListener("click", ({ shiftKey }) => openPageFromPageName(pageName, shiftKey))
-                    weekNumberCell.classList.add("cursor")
+                    weekNumberCell.addEventListener("click", ({ shiftKey }) => openPageFromPageName(pageName, shiftKey));
+                    weekNumberCell.classList.add("cursor");
                     logseq.Editor.getPage(pageName, { includeChildren: false })
                         .then((pageEntity: { uuid: PageEntity["uuid"] } | null) => {
-                            if (pageEntity)
-                                weekNumberCell.style.textDecoration = "underline"
-                        })
-                    weekNumberCell.title = pageName
+                            if (pageEntity) weekNumberCell.style.textDecoration = "underline";
+                        });
+                    weekNumberCell.title = pageName;
                 }
-                rowElement.appendChild(weekNumberCell)
+                rowElement.appendChild(weekNumberCell);
             }
-
-
-            const dayCell = document.createElement("td")
-            dayCell.textContent = day
-            const holiday = checkDay(date, month, dayCell, preferredDateFormat, innerElement)
-            const pageName = format(date, preferredDateFormat)
-            dayCell.addEventListener("click", openPageToSingleDay(pageName))
-            dayCell.classList.add("cursor")
-            dayCell.title = holiday !== "" ?
-                holiday + "\n" + pageName
-                : pageName
-            if (flag?.singlePage === true
-                && isSameDay(date, targetDate))
-                dayCell.style.border = `3px solid ${logseq.settings!.boundariesHighlightColorSinglePage}`
-            else
-                if (flag?.weekly === true
-                    && (ISO ?
-                        isSameISOWeek(date, targetDate)
-                        : isSameWeek(date, targetDate, { weekStartsOn })))
-                    dayCell.style.borderBottom = `3px solid ${logseq.settings!.boundariesHighlightColorSinglePage}`
-            rowElement.appendChild(dayCell)
-            tbodyElement.appendChild(rowElement)
+            const dayCell = await createDayCell(date, month, preferredDateFormat, innerElement, targetDate, ISO, weekStartsOn, flag);
+            if (dayCell) rowElement.appendChild(dayCell);
+            tbodyElement.appendChild(rowElement);
         } else {
-            // 2番目以降の日付の場合
-            const dayCell = document.createElement("td")
-            dayCell.textContent = day
-            const holiday = checkDay(date, month, dayCell, preferredDateFormat, innerElement)
-            const pageName = format(date, preferredDateFormat)
-            dayCell.addEventListener("click", openPageToSingleDay(pageName))
-            dayCell.classList.add("cursor")
-            dayCell.title = holiday !== "" ?
-                holiday + "\n" + pageName
-                : pageName
-            if (flag?.singlePage === true
-                && isSameDay(date, targetDate))
-                dayCell.style.border = `3px solid ${logseq.settings!.boundariesHighlightColorSinglePage}`
-            else
-                if (flag?.weekly === true
-                    && (ISO ?
-                        isSameISOWeek(date, targetDate)
-                        : isSameWeek(date, targetDate, { weekStartsOn })))
-                    dayCell.style.borderBottom = `3px solid ${logseq.settings!.boundariesHighlightColorSinglePage}`
-
-            const lastRowElement = tbodyElement.lastElementChild as HTMLTableRowElement
-            lastRowElement.appendChild(dayCell)
+            const rowElement = tbodyElement.lastElementChild as HTMLTableRowElement | null;
+            if (rowElement) {
+                const dayCell = await createDayCell(date, month, preferredDateFormat, innerElement, targetDate, ISO, weekStartsOn, flag);
+                if (dayCell) rowElement.appendChild(dayCell);
+            }
         }
-    })
+    }
 
     tableElement.appendChild(tbodyElement)
     calendarElement.appendChild(tableElement)
@@ -334,7 +322,7 @@ export const removeCalendarAndNav = () => {
 }
 
 
-const checkDay = (dayDate: Date, month: number, dayCell: HTMLElement, preferredDateFormat: string, parentElementForHolidays: HTMLElement): string => {
+const checkDay = async (dayDate: Date, month: number, dayCell: HTMLElement, preferredDateFormat: string, parentElementForHolidays: HTMLElement): Promise<string> => {
 
     // 土日の色を変える
     if (logseq.settings!.booleanWeekendsColor === true)
@@ -361,19 +349,20 @@ const checkDay = (dayDate: Date, month: number, dayCell: HTMLElement, preferredD
     }
 
     // ページが存在する場合は下線を引く
-    if (logseq.settings!.booleanBoundariesIndicator === true) {
-        logseq.Editor.getPage(format(dayDate, preferredDateFormat)).then((pageEntity: { uuid: PageEntity["uuid"] } | null) => {
-            if (pageEntity)
-                dayCell.style.textDecoration = "underline"
-        })
-    }
+    if (logseq.settings!.booleanBoundariesIndicator === true)
+        setTimeout(async () => {
+            const pageName = format(dayDate, preferredDateFormat)
+            if (pageName)
+                if (await logseq.Editor.getPage(pageName) as { uuid: PageEntity["uuid"] } | null)
+                    dayCell.style.textDecoration = "underline"
+        }, 1)
 
     // ユーザー設定日
     if (logseq.settings!.userColorList as string !== "") {
         const eventName = userColor(dayDate, dayCell)
         if (eventName) {
             dayCell.style.fontSize = "1.3em"
-            
+
             if (eventName.includes("\n")) // eventNameが\nで区切られている場合
                 for (const event of eventName.split("\n"))
                     appendHolidayAlert(checkIsToday, dayDate, event, parentElementForHolidays) // アラートスペースに表示する
@@ -384,27 +373,24 @@ const checkDay = (dayDate: Date, month: number, dayCell: HTMLElement, preferredD
             if (logseq.settings!.booleanLcHolidays === false)
                 return eventName
             else {
-                const holiday = checkAndAppendHoliday(dayDate, dayCell, checkIsToday, parentElementForHolidays)
+                const holiday = await checkAndAppendHoliday(dayDate, dayCell, checkIsToday, parentElementForHolidays)
                 return holiday !== "" ? `${eventName}\n${holiday}` : eventName
             }
         }
     }
 
     // 祝日を表示する ユーザー設定日オフの場合
-    if (logseq.settings!.booleanLcHolidays === true)
-        return checkAndAppendHoliday(dayDate, dayCell, checkIsToday, parentElementForHolidays)
-    else
-        return ""
+    return logseq.settings!.booleanLcHolidays === true ? await checkAndAppendHoliday(dayDate, dayCell, checkIsToday, parentElementForHolidays) : ""
 }
 
 
-export const refreshCalendar = (targetDate: Date, singlePage: boolean, weekly: boolean) => {
+export const refreshCalendar = async (targetDate: Date, singlePage: boolean, weekly: boolean) => {
     const innerElement: HTMLDivElement | null = parent.document.getElementById("left-calendar-inner") as HTMLDivElement | null
     if (innerElement) {
         removeCalendarAndNav()
         createCalendar(
             targetDate,
-            getConfigPreferredDateFormat(),
+            await getConfigPreferredDateFormat(),
             innerElement,
             { singlePage, weekly })
     }
@@ -429,8 +415,8 @@ const appendHolidayAlert = (checkIsToday: boolean, date: Date, holiday: string, 
 }
 
 
-const checkAndAppendHoliday = (date: Date, dayCell: HTMLElement, checkIsToday: boolean, parentElementForHolidays: HTMLElement) => {
-    const configPreferredLanguage = getConfigPreferredLanguage()
+const checkAndAppendHoliday = async (date: Date, dayCell: HTMLElement, checkIsToday: boolean, parentElementForHolidays: HTMLElement) => {
+    const configPreferredLanguage = await getConfigPreferredLanguage()
 
     // Chinese lunar-calendar and holidays
     const holiday: string = logseq.settings!.booleanLunarCalendar === true // プラグイン設定で太陰暦オンの場合

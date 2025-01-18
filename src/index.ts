@@ -1,17 +1,20 @@
 import "@logseq/libs" //https://plugins-doc.logseq.com/
 import { EntityID, PageEntity } from "@logseq/libs/dist/LSPlugin.user"
 import { setup as l10nSetup, t } from "logseq-l10n" //https://github.com/sethyuan/logseq-l10n
+import { boundariesProcess, removeBoundaries } from "./calendar/boundaries"
+import { keyLeftCalendarContainer, loadLeftCalendar, refreshCalendarCheckSameMonth } from "./calendar/left-calendar"
 import { dailyJournalDetails, observer, observerMain, removeTitleQuery } from "./dailyJournalDetails"
-import { boundariesProcess, removeBoundaries } from "./boundaries"
-import { getHolidaysBundle } from "./holidays"
-import { keyLeftCalendarContainer, loadLeftCalendar, refreshCalendar, refreshCalendarCheckSameMonth } from "./left-calendar"
-import { convertLanguageCodeToCountryCode, getJournalDayDate, getWeekStartFromWeekNumber, removeElementById } from "./lib"
+import { getHolidaysBundle } from "./lib/holidays"
+import { currentPageIsMonthlyJournal } from "./journals/monthlyJournal"
+import { currentPageIsQuarterlyJournal } from "./journals/quarterlyJournal"
+import { currentPageIsWeeklyJournal, weeklyEmbed } from "./journals/weeklyJournal"
+import { currentPageIsYearlyJournal } from "./journals/yearlyJournal"
+import { getJournalDayDate, removeElementById } from "./lib/lib"
 import fileMainCSS from "./main.css?inline"
-import { currentPageIsMonthlyJournal } from "./monthlyJournal"
-import { notice } from "./notice"
-import { onSettingsChanged } from "./onSettingsChanged"
-import { currentPageIsQuarterlyJournal } from "./quarterlyJournal"
-import { settingsTemplate } from "./settings"
+import { mapLanguageCodeToCountry } from "./settings/languageCountry"
+import { notice } from "./settings/notice"
+import { handleSettingsUpdate } from "./settings/onSettingsChanged"
+import { settingsTemplate } from "./settings/settings"
 import { loadShortcutItems, } from "./shortcutItems"
 import af from "./translations/af.json"
 import de from "./translations/de.json"
@@ -32,8 +35,7 @@ import tr from "./translations/tr.json"
 import uk from "./translations/uk.json"
 import zhCN from "./translations/zh-CN.json"
 import zhHant from "./translations/zh-Hant.json"
-import { currentPageIsWeeklyJournal, weeklyEmbed } from "./weeklyJournal"
-import { currentPageIsYearlyJournal } from "./yearlyJournal"
+import { advancedQuery, queryCodeJournalDayFromOriginalName } from "./lib/query/advancedQuery"
 
 // プラグイン名(小文字タイプ)
 export const pluginNameCut = "show-weekday-and-week-number"
@@ -44,9 +46,23 @@ export const consoleSignature = ` <----- [${pluginName}]`
 
 let configPreferredLanguage: string
 let configPreferredDateFormat: string
-export const getConfigPreferredLanguage = (): string => configPreferredLanguage
-export const getConfigPreferredDateFormat = (): string => configPreferredDateFormat
 
+const getConfig = async (key: 'preferredLanguage' | 'preferredDateFormat'): Promise<string> => {
+  if (key === 'preferredLanguage' && configPreferredLanguage) return configPreferredLanguage
+  if (key === 'preferredDateFormat' && configPreferredDateFormat) return configPreferredDateFormat
+
+  const userConfigs = await logseq.App.getUserConfigs() as { preferredLanguage: string, preferredDateFormat: string }
+  if (key === 'preferredLanguage') {
+    configPreferredLanguage = userConfigs.preferredLanguage
+    return configPreferredLanguage
+  } else {
+    configPreferredDateFormat = userConfigs.preferredDateFormat
+    return configPreferredDateFormat
+  }
+}
+
+export const getConfigPreferredLanguage = async (): Promise<string> => getConfig('preferredLanguage')
+export const getConfigPreferredDateFormat = async (): Promise<string> => getConfig('preferredDateFormat')
 
 export const getUserConfig = async () => {
   // 1秒待つ
@@ -58,7 +74,7 @@ export const getUserConfig = async () => {
 }
 
 
-
+let processingCheck = false //処理中フラグ
 /* main */
 const main = async () => {
 
@@ -96,7 +112,7 @@ const main = async () => {
   logseq.useSettingsSchema(
     settingsTemplate(
       logseq.settings!.holidaysCountry === undefined ? // 国名が設定されていない場合は取得
-        convertLanguageCodeToCountryCode(configPreferredLanguage)
+        mapLanguageCodeToCountry(configPreferredLanguage)
         : logseq.settings!.holidaysCountry
     ))
 
@@ -116,6 +132,9 @@ const main = async () => {
 
   //ページ遷移時に実行 (Journal boundariesとBehind Journal Titleの更新)
   logseq.App.onRouteChanged(({ template }) => {
+    if (processingCheck) return
+    processingCheck = true
+    setTimeout(() => processingCheck = false, 80) //処理ロックの解除
 
     if (logseq.settings!.booleanBoundariesAll === true)
       if (logseq.settings!.booleanBoundaries === true
@@ -130,6 +149,13 @@ const main = async () => {
           //div#journals
           setTimeout(() => boundaries("journals"), 20)
 
+    setTimeout(() => querySelectorAllTitle(logseq.settings!.booleanBesideJournalTitle as boolean), 50)
+  })
+
+  logseq.App.onPageHeadActionsSlotted(() => {
+    if (processingCheck) return
+    processingCheck = true
+    setTimeout(() => processingCheck = false, 80) //処理ロックの解除
     setTimeout(() => querySelectorAllTitle(logseq.settings!.booleanBesideJournalTitle as boolean), 50)
   })
 
@@ -173,7 +199,7 @@ const main = async () => {
 
 
   // ユーザー設定が変更されたときにチェックを実行
-  onSettingsChanged()
+  handleSettingsUpdate()
 
 
   // プラグインオフ時に実行
@@ -211,13 +237,16 @@ const main = async () => {
 let processingTitleQuery: boolean = false
 
 export const querySelectorAllTitle = async (enable: boolean): Promise<void> => {
-  if (// enable === false ||
-    processingTitleQuery) return
+  if (processingTitleQuery) return
   processingTitleQuery = true
-  setTimeout(() => processingTitleQuery = false, 300) //boundaries 実行ロックの解除
-  //Journalsの場合は複数
-  parent.document.body.querySelectorAll("div#main-content-container div:is(.journal,.is-journals,.page) h1.title:not([data-checked])")
-    .forEach(async (titleElement) => await checkJournalTitle(titleElement as HTMLElement))
+  try {
+    setTimeout(() => processingTitleQuery = false, 300) //boundaries 実行ロックの解除
+    //Journalsの場合は複数
+    parent.document.body.querySelectorAll("div#main-content-container div:is(.journal,.is-journals,.page) h1.title:not([data-checked])")
+      .forEach(async (titleElement) => await checkJournalTitle(titleElement as HTMLElement))
+  } finally {
+    processingTitleQuery = false // 確実にフラグを解除
+  }
 }
 
 
@@ -229,56 +258,83 @@ const checkJournalTitle = async (titleElement: HTMLElement) => {
     || processingJournalTitlePage === true
     || titleElement.nextElementSibling?.className === "showWeekday") return // check if element already has date info
   processingJournalTitlePage = true
-  titleElement.dataset.checked = "true" //処理済みのマーク
-  setTimeout(() => processingJournalTitlePage = false, 300) //boundaries 実行ロックの解除
+  try {
+    titleElement.dataset.checked = "true" //処理済みのマーク
+    setTimeout(() => processingJournalTitlePage = false, 300) //boundaries 実行ロックの解除
 
-  const title: string = titleElement.dataset.localize === "true" ?
-    titleElement.dataset.ref || ""
-    : titleElement.dataset.ref || titleElement.textContent
+    const title: string = titleElement.dataset.localize === "true" ?
+      titleElement.dataset.ref || ""
+      : titleElement.dataset.ref || titleElement.textContent
 
-  if (title === "") return //タイトルが空の場合は処理を終了する
+    if (title === "") return //タイトルが空の場合は処理を終了する
 
 
-  //Weekly Journal、Monthly Journal、Quarterly Journal、Yearly Journalのページかどうか
-  if (titleElement.classList.contains("journal-title") === false
-    && titleElement.classList.contains("title") === true
-    && title.match(/^(\d{4})/) !== null // titleの先頭が2024から始まる場合のみチェックする
-  )
-
-    if (await isMatchWeeklyJournal(title, titleElement) // Weekly Journalのいずれかの形式にマッチ
-      || await isMatchMonthlyJournal(title, titleElement) // 2024/01にマッチ
-      || await isMatchQuarterlyJournal(title, titleElement) // 2024/Q1にマッチ
-      || await isMatchYearlyJournal(title, titleElement)) // 2024にマッチ
-      return
-    else
+    //Weekly Journal、Monthly Journal、Quarterly Journal、Yearly Journalのページかどうか
+    if (titleElement.classList.contains("journal-title") === false
+      && titleElement.classList.contains("title") === true
+      && title.match(/^(\d{4})/) !== null // titleの先頭が2024から始まる場合のみチェックする
+    ) {
+      let match: RegExpMatchArray | null = null
+      if (match = await (async () => {
+        switch (logseq.settings!.weekNumberOptions) {
+          case "YYYY-Www":
+            return title.match(/^(\d{4})-[wW](\d{2})$/) // "YYYY-Www"
+          case "YYYY/qqq/Www": // 2023/Q1/W01
+            return title.match(/^(\d{4})\/[qQ]\d{1}\/[wW](\d{2})$/) // "YYYY/qqq/Www"
+          default:
+            return title.match(/^(\d{4})\/[wW](\d{2})$/) // "YYYY/Www"
+        }
+      })()) {
+        currentPageIsWeeklyJournal(titleElement, match)
+        titleElement.title = t("Weekly Journal")
+      } else
+        if (match = title.match(/^(\d{4})\/(\d{2})$/)) { // 2023/01
+          currentPageIsMonthlyJournal(titleElement, match)
+          titleElement.title = t("Monthly Journal")
+        } else
+          if (match = title.match(/^(\d{4})\/[qQ](\d{1})$/)) { // 2023/Q1
+            currentPageIsQuarterlyJournal(titleElement, match)
+            titleElement.title = t("Quarterly Journal")
+          } else
+            if (match = title.match(/^(\d{4})$/)) { // 2023
+              currentPageIsYearlyJournal(titleElement, match)
+              titleElement.title = t("Yearly Journal")
+            } else {
+              refreshCalendarCheckSameMonth()
+            }
+    } else {
       refreshCalendarCheckSameMonth()
-  else
-    refreshCalendarCheckSameMonth()
+    }
 
-  if ((logseq.settings!.booleanBesideJournalTitle === false
-    || (logseq.settings!.booleanBesideJournalTitle === true
-      && ((logseq.settings!.booleanWeekNumber === false//設定項目ですべてのトグルがオフの場合
-        && logseq.settings!.booleanDayOfWeek === false
-        && logseq.settings!.booleanRelativeTime === false
-        && logseq.settings!.underHolidaysAlert === false
-        && logseq.settings!.booleanSettingsButton === false
-        && logseq.settings!.booleanMonthlyJournalLink === false
-        && logseq.settings!.booleanUnderLunarCalendar === false))))
-    // titleElementのクラスにjournal-titleまたはtitleが含まれている場合
-    && (titleElement.classList.contains("journal-title") === true
-      || titleElement.classList.contains("title") === true))
-    moveTitleElement(titleElement) //titleElementの後ろにdateInfoElementを追加し、スペース確保しておく
-  else {
-    // Daily Journal Detailsの処理
-    setTimeout(async () => { // 遅延処理
-      const page = (await logseq.Editor.getPage(title)) as { journalDay: number } | null
-      if (page
-        && page.journalDay)
-        dailyJournalDetails(getJournalDayDate(String(page.journalDay)), titleElement)
-    }, 10)
+    if ((logseq.settings!.booleanBesideJournalTitle === false
+      || (logseq.settings!.booleanBesideJournalTitle === true
+        && ((logseq.settings!.booleanWeekNumber === false//設定項目ですべてのトグルがオフの場合
+          && logseq.settings!.booleanDayOfWeek === false
+          && logseq.settings!.booleanRelativeTime === false
+          && logseq.settings!.underHolidaysAlert === false
+          && logseq.settings!.booleanSettingsButton === false
+          && logseq.settings!.booleanMonthlyJournalLink === false
+          && logseq.settings!.booleanUnderLunarCalendar === false))))
+      // titleElementのクラスにjournal-titleまたはtitleが含まれている場合
+      && (titleElement.classList.contains("journal-title") === true
+        || titleElement.classList.contains("title") === true))
+      moveTitleElement(titleElement) //titleElementの後ろにdateInfoElementを追加し、スペース確保しておく
+    else {
+      // Daily Journal Detailsの処理
+      setTimeout(async () => { // 遅延処理
+        const pageEntities = await advancedQuery(queryCodeJournalDayFromOriginalName, `"${title}"`) as { "journal-day": PageEntity["journalDay"] }[] | null
+        if (pageEntities && pageEntities.length > 0) {
+          const journalDay = pageEntities[0]["journal-day"]
+          if (journalDay)
+            dailyJournalDetails(getJournalDayDate(String(journalDay)), titleElement)
+        }
+      }, 10)
+    }
+
+    processingJournalTitlePage = false //Journalsの場合は複数
+  } finally {
+    processingJournalTitlePage = false // 確実にフラグを解除
   }
-
-  processingJournalTitlePage = false //Journalsの場合は複数
 }
 
 
@@ -289,60 +345,13 @@ let processingBoundaries: boolean = false
 export const boundaries = (targetElementName: string, remove?: boolean) => {
   if (processingBoundaries) return
   processingBoundaries = true
-  boundariesProcess(targetElementName, remove ? remove : false, 0)
-  processingBoundaries = false
+  try {
+    boundariesProcess(targetElementName, remove ? remove : false, 0)
+  } finally {
+    processingBoundaries = false // 確実にフラグを解除
+  }
 }
 
-
-
-const isMatchWeeklyJournal = async (title: string, titleElement: HTMLElement): Promise<boolean> => {
-  const match = (() => {
-    switch (logseq.settings!.weekNumberOptions) {
-      case "YYYY-Www":
-        return title.match(/^(\d{4})-[wW](\d{2})$/) // "YYYY-Www"
-      case "YYYY/qqq/Www": // 2023/Q1/W01
-        return title.match(/^(\d{4})\/[qQ]\d{1}\/[wW](\d{2})$/) // "YYYY/qqq/Www"
-      default:
-        return title.match(/^(\d{4})\/[wW](\d{2})$/) // "YYYY/Www"
-    }
-  })() as RegExpMatchArray
-  if (match) {
-    await currentPageIsWeeklyJournal(titleElement, match)
-    titleElement.title = t("Weekly Journal")
-    return true
-  } else
-    return false
-}
-
-const isMatchMonthlyJournal = async (title: string, titleElement: HTMLElement): Promise<boolean> => {
-  const match = title.match(/^(\d{4})\/(\d{2})$/) as RegExpMatchArray // 2023/01
-  if (match) {
-    await currentPageIsMonthlyJournal(titleElement, match)
-    titleElement.title = t("Monthly Journal")
-    return true
-  } else
-    return false
-}
-
-const isMatchQuarterlyJournal = async (title: string, titleElement: HTMLElement): Promise<boolean> => {
-  const match = title.match(/^(\d{4})\/[qQ](\d{1})$/) as RegExpMatchArray // 2023/Q1
-  if (match) {
-    await currentPageIsQuarterlyJournal(titleElement, match)
-    titleElement.title = t("Quarterly Journal")
-    return true
-  } else
-    return false
-}
-
-const isMatchYearlyJournal = async (title: string, titleElement: HTMLElement): Promise<boolean> => {
-  const match = title.match(/^(\d{4})$/) as RegExpMatchArray // 2023
-  if (match) {
-    await currentPageIsYearlyJournal(titleElement, match)
-    titleElement.title = t("Yearly Journal")
-    return true
-  } else
-    return false
-}
 
 
 const moveTitleElement = (titleElement: HTMLElement) => {
@@ -353,7 +362,5 @@ const moveTitleElement = (titleElement: HTMLElement) => {
   secondElement.style.width = "50%"
   titleElement.parentElement!.insertAdjacentElement("afterend", secondElement)
 }
-
-
 
 logseq.ready(main).catch(console.error)

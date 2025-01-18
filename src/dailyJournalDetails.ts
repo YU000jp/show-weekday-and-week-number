@@ -2,135 +2,119 @@ import { addDays, format, getWeekOfMonth, isSaturday, isSunday, subDays } from "
 import { t } from "logseq-l10n"
 import { HolidayUtil, Lunar } from "lunar-typescript"
 import { getConfigPreferredDateFormat, getConfigPreferredLanguage, querySelectorAllTitle } from "."
-import { exportHolidaysBundle } from "./holidays"
-import { createLinkMonthlyLink, createSettingButton, formatRelativeDate, getQuarter, getWeeklyNumberFromDate, getWeeklyNumberString, localizeMonthString, openPageFromPageName, userColor } from "./lib"
+import { exportHolidaysBundle } from "./lib/holidays"
+import { createLinkMonthlyLink, createSettingButton, formatRelativeDate, getDayOfWeekName, getQuarter, getRelativeTimeHtml, getWeeklyNumberFromDate, getWeeklyNumberString, getWeekNumberHtml, localizeMonthString, openPageFromPageName, userColor } from "./lib/lib"
 
 // プロセス中かどうかを判定するフラグ
 let processingBehind: boolean = false
 
+const createLinkElement = (text: string, title: string, onClick: (ev: MouseEvent) => void): HTMLAnchorElement => {
+  const link = document.createElement("a")
+  link.textContent = text
+  link.title = title
+  link.addEventListener("click", onClick)
+  return link
+}
+
+const createSpanElement = (id: string, textContent: string, style: string = ""): HTMLSpanElement => {
+  const spanElement = document.createElement("span")
+  spanElement.id = id
+  spanElement.textContent = textContent
+  if (style) spanElement.style.cssText = style
+  return spanElement
+}
 
 //Daily Journal Details 機能
 export const dailyJournalDetails = async (dayDate: Date, titleElement: HTMLElement) => {
+  if (processingBehind) return // プロセス中の場合は処理をキャンセルする
 
-  if (processingBehind === true) return // プロセス中の場合は処理をキャンセルする
-
-  // 反映する
-  const baseLineElement: HTMLSpanElement = createBaseLineElement(
-    dayDate
-    //preferredDateFormat.includes("E") === false は曜日の省略形が含まれていない場合
-    , logseq.settings!.booleanDayOfWeek === true // プラグイン設定でtrueになっている場合
-      ? new Intl.DateTimeFormat(
-        logseq.settings!.localizeOrEnglish as string || "default", // プラグイン設定でローカライズか英語か選択されている
-        { weekday: logseq.settings!.longOrShort as "short" | "long" || "long" } // プラグイン設定でlongかshortか選択されている
-      ).format(dayDate) // フォーマットして曜日の文字列を取得する
-      : "" // プラグイン設定でfalseになっている場合
-    , logseq.settings!.booleanWeekNumber === true ?
-      enableWeekNumber(
-        dayDate
-        , logseq.settings!.weekNumberFormat === "US format" ?
-          0 : 1 // 0: Sunday, 1: Monday
-      )
-      : "" //week numberの表示用の変数
-    , logseq.settings!.booleanRelativeTime === true ?
-      enableRelativeTime(dayDate)
-      : "" //relative timeの表示用の変数
-  )
-
-  // h1を移動する
+  const baseLineElement: HTMLSpanElement = createBaseLineElement(dayDate)
   moveTitleElement(titleElement)
-
-  // titleElementの後ろにdateInfoElementを追加する
   titleElement.insertAdjacentElement("afterend", baseLineElement)
 
-
-  // Monthly Journalのリンクを作成する
-  if (logseq.settings!.booleanMonthlyJournalLink === true)
+  if (logseq.settings!.booleanMonthlyJournalLink)
     enableMonthlyJournalLink(dayDate, baseLineElement)
 
+  addHolidayInfo(dayDate, baseLineElement)
 
-  // 20240123
-  // 祝日表記を追加する
-  const userLanguage = getConfigPreferredLanguage()
-  if ((userLanguage === "zh-Hant"
-    || userLanguage === "zh-CN")) { // 中国語の場合
+  if (logseq.settings!.booleanPrevNextLink)
+    baseLineElement.appendChild(enablePrevNextLink(dayDate, await getConfigPreferredDateFormat()))
 
-    if (logseq.settings!.booleanUnderLunarCalendar === true
-      || logseq.settings!.underHolidaysAlert === true) {
-      // 太陰暦の日付を取得する
-      const LunarDate = Lunar.fromDate(dayDate)
-      // 月日表記
-      if (logseq.settings!.booleanUnderLunarCalendar === true)
-        enableUnderLunarCalendar(LunarDate, baseLineElement)
-      // 祝日表記
-      if (logseq.settings!.underHolidaysAlert === true)
-        enableUnderLunarCalendarHoliday(LunarDate, baseLineElement)
-    }
-  } else  // 世界の国
-    if (logseq.settings!.underHolidaysAlert === true)
-      enableUnderHolidayForWorldCountry(dayDate, baseLineElement)
-
-  if (logseq.settings!.booleanPrevNextLink === true)
-    baseLineElement.appendChild(enablePrevNextLink(dayDate, getConfigPreferredDateFormat()))
-
-  //設定ボタンを設置
-  if (logseq.settings!.booleanSettingsButton === true
-    // titleElementのidがjournalsではない場合のみ
-  )
+  if (logseq.settings!.booleanSettingsButton)
     baseLineElement.appendChild(createSettingButton())
 
+  addUserColor(dayDate, titleElement)
 
-  // ユーザー設定日
-  if (logseq.settings!.userColorList as string !== "") {
+  setTimeout(() => processingBehind = false, 300)
+}
+
+const createBaseLineElement = (journalDate: Date): HTMLSpanElement => {
+  const dayOfWeekName = getDayOfWeekName(journalDate)
+  const printHtmlWeekNumber = getWeekNumberHtml(journalDate)
+  const relativeTime = getRelativeTimeHtml(journalDate)
+
+  const dateInfoElement: HTMLSpanElement = document.createElement("span")
+  dateInfoElement.classList.add("showWeekday")
+  dateInfoElement.innerHTML = logseq.settings!.booleanDayOfWeek
+    ? logseq.settings!.booleanWeekendsColor
+      ? `<span style="color:var(${isSaturday(journalDate) ? "--ls-wb-stroke-color-blue" : (isSunday(journalDate) ? "--ls-wb-stroke-color-red" : "")})">${dayOfWeekName}</span>${printHtmlWeekNumber}${relativeTime}`
+      : `<span>${dayOfWeekName}</span>${printHtmlWeekNumber}${relativeTime}`
+    : `${printHtmlWeekNumber}${relativeTime}`
+  return dateInfoElement
+}
+
+const addHolidayInfo = async(dayDate: Date, baseLineElement: HTMLSpanElement) => {
+  const userLanguage = await getConfigPreferredLanguage()
+  if (userLanguage === "zh-Hant" || userLanguage === "zh-CN") {
+    if (logseq.settings!.booleanUnderLunarCalendar || logseq.settings!.underHolidaysAlert) {
+      const LunarDate = Lunar.fromDate(dayDate)
+      if (logseq.settings!.booleanUnderLunarCalendar)
+        enableUnderLunarCalendar(LunarDate, baseLineElement)
+      if (logseq.settings!.underHolidaysAlert)
+        enableUnderLunarCalendarHoliday(LunarDate, baseLineElement)
+    }
+  } else
+    if (logseq.settings!.underHolidaysAlert)
+      enableUnderHolidayForWorldCountry(dayDate, baseLineElement)
+}
+
+const addUserColor = (dayDate: Date, titleElement: HTMLElement) => {
+  if (logseq.settings!.userColorList) {
     const eventName = userColor(dayDate, titleElement)
     if (eventName)
       titleElement.title = `${eventName}\n${titleElement.title}`
   }
-
-  setTimeout(() => processingBehind = false, 300)
-
-}// end of behindJournalTitle
-
-
+}
 
 const enablePrevNextLink = (journalDate: Date, preferredDateFormat: string) => {
-  const prevNextLink = document.createElement("span")
-  prevNextLink.id = "journalTitleDetailsPrevNextLink"
+  const prevNextLink = createSpanElement("journalTitleDetailsPrevNextLink", "")
   prevNextLink.classList.add("text-sm")
 
   // 前の日記のリンクボタンを作成する
-  const prevLink = document.createElement("a")
-  prevLink.textContent = "←"
-  prevLink.title = t("Previous day")
-  prevLink.addEventListener("click", (ev) => openPageFromPageName(format(subDays(journalDate, 1), preferredDateFormat), ev.shiftKey))
+  const prevLink = createLinkElement("←", t("Previous day"), (ev) => openPageFromPageName(format(subDays(journalDate, 1), preferredDateFormat), ev.shiftKey))
   prevNextLink.appendChild(prevLink)
 
   // ここに0.5文字分のスペースを入れる
-  const space = document.createElement("span")
+  const space = createSpanElement("", "")
   space.style.padding = "0 0.5em"
   prevNextLink.appendChild(space)
 
   // 次の日記のリンクボタンを作成する
-  const nextLink = document.createElement("a")
-  nextLink.textContent = "→"
-  nextLink.title = t("Next day")
-  nextLink.addEventListener("click", (ev) => openPageFromPageName(format(addDays(journalDate, 1), preferredDateFormat), ev.shiftKey))
+  const nextLink = createLinkElement("→", t("Next day"), (ev) => openPageFromPageName(format(addDays(journalDate, 1), preferredDateFormat), ev.shiftKey))
   prevNextLink.appendChild(nextLink)
   return prevNextLink
 }
-
 
 const moveTitleElement = (titleElement: HTMLElement) => {
   //h1から.blockを削除
   if (titleElement.classList.contains("block"))
     titleElement.classList.remove("block")
 
-
   //h1の中にdateInfoElementを挿入
   const aTag = titleElement.parentElement // 親要素を取得する
 
   if (aTag
     && aTag.tagName.toLowerCase() === "a") {
-
     //For journals
     //<a><h1>日付タイトル</h1></a>の構造になっているが、<h1><a>日付タイトル</a></h1>にしたい
     const titleElementTextContent = titleElement.textContent
@@ -145,72 +129,43 @@ const moveTitleElement = (titleElement: HTMLElement) => {
     //aタグから.initial-colorを削除
     if (aTag.classList.contains("initial-color"))
       aTag.classList.remove("initial-color")
-
   }
 }
 
-
-const createBaseLineElement = (journalDate: Date, dayOfWeekName: string, printHtmlWeekNumber: string, relativeTime: string) => {
-  const dateInfoElement: HTMLSpanElement = document.createElement("span")
-  dateInfoElement.classList.add("showWeekday")
-  dateInfoElement.innerHTML =
-    logseq.settings!.booleanDayOfWeek === true ?
-      logseq.settings!.booleanWeekendsColor === true ?
-        `<span style="color:var(${isSaturday(journalDate) === true ?
-          "--ls-wb-stroke-color-blue"
-          : (isSunday(journalDate) === true ?
-            "--ls-wb-stroke-color-red"
-            : "")})">${dayOfWeekName}</span>${printHtmlWeekNumber}${relativeTime}`
-        : `<span>${dayOfWeekName}</span>${printHtmlWeekNumber}${relativeTime}` //textContent
-      : `${printHtmlWeekNumber}${relativeTime}`
-  return dateInfoElement
-}
-
-
-const enableRelativeTime = (journalDate: Date): string => {
+export const enableRelativeTime = (journalDate: Date): string => {
   const formatString: string = formatRelativeDate(journalDate)
   return formatString !== "" ? `<span><small>(${formatString})</small></span>` : ""
 }
 
-
-const enableWeekNumber = (journalDate: Date, weekStartsOn: 0 | 1): string => {
-
+export const enableWeekNumber = (journalDate: Date, weekStartsOn: 0 | 1): string => {
   let printHtmlWeekNumber: string = ""
   if (logseq.settings!.weekNumberOfTheYearOrMonth === "Year") {
-
     const { year, weekString }: { year: number; weekString: string } = getWeeklyNumberFromDate(journalDate, weekStartsOn as 0 | 1)
-
     const printWeekNumber = logseq.settings!.booleanWeekNumberHideYear === true && weekString !== "53"
       ? `W<strong>${weekString}</strong>`
       : `${year}-W<strong>${weekString}</strong>`
-
     const weeklyNumberString = getWeeklyNumberString(year, weekString, getQuarter(Number(weekString)))
 
     if (logseq.settings!.booleanWeeklyJournal === true) {
-
       const linkId = "weeklyJournal-" + weeklyNumberString
       printHtmlWeekNumber = `<span title="${t("Week number: ") + weeklyNumberString}"><a id="${linkId}">${printWeekNumber}</a></span>`
-
       setTimeout(() => {
         const element = parent.document.getElementById(linkId) as HTMLSpanElement
         if (element)
           element.addEventListener("click", ({ shiftKey }) => openPageFromPageName(weeklyNumberString, shiftKey))
       }, 150)
-
-    }
-    else
+    } else {
       printHtmlWeekNumber = `<span title="${weeklyNumberString}">${printWeekNumber}</span>`
-
-  } else
+    }
+  } else {
     // get week numbers of the month
     printHtmlWeekNumber = logseq.settings!.weekNumberFormat === "Japanese format"
       && logseq.settings!.localizeOrEnglish === "default"
       ? `<span title="1か月ごとの週番号">第<strong>${getWeekOfMonth(journalDate, { weekStartsOn })}</strong>週</span>`
       : `<span title="Week number within the month"><strong>W${getWeekOfMonth(journalDate, { weekStartsOn })}</strong><small>/m</small></span>`
-
+  }
   return printHtmlWeekNumber
 }
-
 
 const enableMonthlyJournalLink = (journalDate: Date, dateInfoElement: HTMLSpanElement) => {
   const formatDateString: string = format(journalDate, "yyyy/MM")
@@ -220,27 +175,18 @@ const enableMonthlyJournalLink = (journalDate: Date, dateInfoElement: HTMLSpanEl
     , "Monthly Journal [[" + formatDateString + "]]"))
 }
 
-
 const enableUnderLunarCalendar = (LunarDate: Lunar, baseLineElement: HTMLSpanElement) => {
-  const lunarCalendarElement = document.createElement("span")
-  lunarCalendarElement.id = "lunarCalendarMonthAndDay"
-  lunarCalendarElement.textContent = LunarDate.getYear() === (new Date().getFullYear()) ?
-    LunarDate.toString().slice(5) //先頭5文字を削除する
-    : LunarDate.toString()
+  const lunarCalendarElement = createSpanElement("lunarCalendarMonthAndDay", LunarDate.getYear() === (new Date().getFullYear()) ? LunarDate.toString().slice(5) : LunarDate.toString())
   baseLineElement.appendChild(lunarCalendarElement)
 }
-
 
 const enableUnderLunarCalendarHoliday = (LunarDate: Lunar, baseLineElement: HTMLSpanElement) => {
-  const lunarCalendarElement = document.createElement("span")
-  lunarCalendarElement.id = "lunarCalendarHoliday"
-  lunarCalendarElement.style.textDecoration = "underline"
   const holiday = HolidayUtil.getHoliday(LunarDate.getYear() + LunarDate.getMonth() + LunarDate.getDay())
-  if (holiday)
-    lunarCalendarElement.textContent = holiday.getName()
-  baseLineElement.appendChild(lunarCalendarElement)
+  if (holiday) {
+    const lunarCalendarElement = createSpanElement("lunarCalendarHoliday", holiday.getName(), "text-decoration: underline")
+    baseLineElement.appendChild(lunarCalendarElement)
+  }
 }
-
 
 const enableUnderHolidayForWorldCountry = (journalDate: Date, baseLineElement: HTMLSpanElement) => {
   const bundle = exportHolidaysBundle()
@@ -251,15 +197,11 @@ const enableUnderHolidayForWorldCountry = (journalDate: Date, baseLineElement: H
     && checkHoliday[0].type === "public") { // 公休日のみ
     const holidayName = checkHoliday[0].name
     if (holidayName) {
-      const holidayElement = document.createElement("span")
-      holidayElement.id = "holidayForWorldCountry"
-      holidayElement.textContent = holidayName
-      holidayElement.style.textDecoration = "underline"
+      const holidayElement = createSpanElement("holidayForWorldCountry", holidayName, "text-decoration: underline")
       baseLineElement.appendChild(holidayElement)
     }
   }
 }
-
 
 export const removeTitleQuery = () => {
   const titleBehindElements = parent.document.body.querySelectorAll("div#main-content-container div:is(.journal,.is-journals) h1.title+span.showWeekday") as NodeListOf<HTMLElement>
@@ -268,14 +210,12 @@ export const removeTitleQuery = () => {
   titleElements.forEach((titleElement) => titleElement.removeAttribute("data-checked"))
 }
 
-
 // observer
 export const observer = new MutationObserver(async (): Promise<void> => {
   observer.disconnect()
   await querySelectorAllTitle(logseq.settings!.booleanBesideJournalTitle as boolean)
   setTimeout(() => observerMain(), 800)
 })
-
 
 //Credit: ottodevs  https://discuss.logseq.com/t/show-week-day-and-week-number/12685/18
 export const observerMain = () => observer.observe(

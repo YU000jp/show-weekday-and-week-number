@@ -1,11 +1,11 @@
 import { AppUserConfigs, BlockEntity, BlockUUID, IBatchBlock } from '@logseq/libs/dist/LSPlugin.user'
-import { addDays, addWeeks, eachDayOfInterval, format, isSameISOWeek, isSameWeek, subDays, subWeeks } from 'date-fns' //https://date-fns.org/
+import { addDays, addWeeks, eachDayOfInterval, format, isSameISOWeek, isSameWeek, subDays, subWeeks } from 'date-fns'; //https://date-fns.org/
 import { t } from 'logseq-l10n'
-import { boundariesProcess } from './boundaries'
-import { refreshCalendar } from './left-calendar'
-import { existInsertTemplate, getWeekStartFromWeekNumber } from './lib'
+import { boundariesProcess } from '../calendar/boundaries'
+import { refreshCalendar } from '../calendar/left-calendar'
+import { existInsertTemplate, getWeekStartFromWeekNumber } from '../lib/lib'
 import { weeklyJournalCreateNav } from './nav'
-import CSSThisWeekPopup from "./weeklyEmbed.css?inline" //CSSをインラインで読み込む
+import CSSThisWeekPopup from "./weeklyEmbed.css?inline"; //CSSをインラインで読み込む
 let processingFoundBoundaries: boolean = false
 let processingWeeklyJournal: boolean = false
 export const keyThisWeekPopup = "weeklyEmbed"
@@ -29,7 +29,7 @@ export const currentPageIsWeeklyJournal = async (titleElement: HTMLElement, matc
 
     //処理中フラグを立てる ここからreturnする場合は必ずfalseにすること
     processingWeeklyJournal = true
-    setTimeout(() => processingWeeklyJournal = false, 1000) // 1秒後に処理を解除する
+    setTimeout(() => processingWeeklyJournal = false, 10)
     titleElement.dataset.WeeklyJournalChecked = "true"
 
 

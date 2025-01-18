@@ -1,6 +1,19 @@
 import { BlockUUID } from "@logseq/libs/dist/LSPlugin.user"
 import { addDays, addWeeks, format, getISOWeek, getISOWeekYear, getWeek, getWeekYear, startOfISOWeek, startOfWeek } from "date-fns"
 import { t } from "logseq-l10n"
+import { enableWeekNumber, enableRelativeTime } from "../dailyJournalDetails"
+
+
+export const shortDayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"] as DayShortCode[]
+export type DayShortCode = "Mon" | "Tue" | "Wed" | "Thu" | "Fri" | "Sat" | "Sun"
+
+export const colorMap: { [key: string]: string } = {
+  blue: 'var(--ls-wb-stroke-color-blue)',
+  red: 'var(--ls-wb-stroke-color-red)',
+  green: 'var(--ls-wb-stroke-color-green)'
+}
+
+
 
 export const getJournalDayDate = (str: string): Date =>
   new Date(
@@ -9,8 +22,6 @@ export const getJournalDayDate = (str: string): Date =>
     Number(str.slice(6)) //day
   )
 
-
-//日付から週番号を求める
 export const getWeeklyNumberFromDate = (date: Date, weekStartsOn: 0 | 1): { year: number, weekString: string, quarter: number } => {
 
   const year: number = logseq.settings?.weekNumberFormat === "ISO(EU) format" ? //年
@@ -34,12 +45,8 @@ export const getWeeklyNumberFromDate = (date: Date, weekStartsOn: 0 | 1): { year
   }//weekを2文字にする
 }
 
-
-// 四半世紀を求める
 export const getQuarter = (week: number): number => week < 14 ? 1 : week < 27 ? 2 : week < 40 ? 3 : 4
 
-// 週番号のユーザー指定文字列を返す
-//"YYYY-Www","YYYY/qqq/Www", "YYYY/Www"
 export const getWeeklyNumberString = (year: number, weekString: string, quarter: number): string => {
   switch (logseq.settings?.weekNumberOptions) {
     case "YYYY-Www":
@@ -51,8 +58,6 @@ export const getWeeklyNumberString = (year: number, weekString: string, quarter:
   }
 }
 
-
-//相対時間表示
 export const formatRelativeDate = (targetDate: Date): string => {
   const currentDate = new Date()
 
@@ -70,7 +75,6 @@ export const formatRelativeDate = (targetDate: Date): string => {
   // 相対的な日付差をローカライズした文字列に変換
   return new Intl.RelativeTimeFormat(("default"), { numeric: 'auto' }).format(diffInDays, 'day') as string
 } //formatRelativeDate end
-
 
 export const getWeekStartOn = (): 0 | 1 | 6 => {
   let weekStartsOn: 0 | 1 | 6
@@ -91,54 +95,6 @@ export const getWeekStartOn = (): 0 | 1 | 6 => {
   return weekStartsOn
 }
 
-
-// プラグイン初期設定用。実際は「:」より前の文字列を使い、指定する
-export const convertLanguageCodeToCountryCode = (languageCode: string): string => {
-  switch (languageCode) {
-    case "en":
-      return "US: United States of America"
-    case "fr":
-      return "FR: France"
-    case "de":
-      return "DE: Deutschland"
-    case "nl":
-      return "NL: Nederland"
-    case "zh-CN":
-      return "CN: 中华人民共和国"
-    case "zh-Hant":
-      return "TW: 中華民國"
-    case "af":
-      return "ZA: South Africa"
-    case "es":
-      return "ES: España"
-    case "nb-NO":
-      return "NO: Norge"
-    case "pl":
-      return "PL: Polska"
-    case "pt-BR":
-      return "BR: Brasil"
-    case "pt-PT":
-      return "PT: Portugal"
-    case "ru":
-      return "RU: Россия"
-    case "ja":
-      return "JP: 日本"
-    case "it":
-      return "IT: Italia"
-    case "tr":
-      return "TR: Türkiye"
-    case "uk":
-      return "UA: Україна"
-    case "ko":
-      return "KR: 대한민국"
-    case "sk":
-      return "SK: Slovenská republika"
-    default:
-      return "US: United States of America"
-  }
-}
-
-
 export const createSettingButton = (): HTMLButtonElement => {
   const button: HTMLButtonElement = document.createElement("button")
   button.textContent = "⚙"
@@ -150,7 +106,6 @@ export const createSettingButton = (): HTMLButtonElement => {
   return button
 }
 
-
 export const createLinkMonthlyLink = (linkString: string, pageName: string, elementTitle: string): HTMLButtonElement => {
   const button: HTMLButtonElement = document.createElement("button")
   button.textContent = linkString
@@ -159,7 +114,6 @@ export const createLinkMonthlyLink = (linkString: string, pageName: string, elem
   button.addEventListener("click", ({ shiftKey }) => openPageFromPageName(pageName, shiftKey))
   return button
 }
-
 
 export const openPageFromPageName = async (pageName: string, shiftKey: boolean) => {
   if (shiftKey === true) {
@@ -170,14 +124,12 @@ export const openPageFromPageName = async (pageName: string, shiftKey: boolean) 
     logseq.App.pushState('page', { name: pageName })
 }
 
-
 export const removeProvideStyle = (className: string) => {
   const doc = parent.document.head.querySelector(
     `style[data-injected-style^="${className}"]`
   ) as HTMLStyleElement | null
   if (doc) doc.remove()
 }
-
 
 export const existInsertTemplate = async (blockUuid: BlockUUID, templateName: string, successMessage: string) => {
   if (templateName === "") return
@@ -189,27 +141,20 @@ export const existInsertTemplate = async (blockUuid: BlockUUID, templateName: st
     logseq.UI.showMsg(`Template "${templateName}" does not exist.`, 'warning', { timeout: 2000 })
 }
 
-
-// エレメント(id)を削除
 export const removeElementById = (elementById: string) => {
   const ele: HTMLDivElement | null = parent.document.getElementById(elementById) as HTMLDivElement | null
   if (ele) ele.remove()
 }
 
+const formatDate = (date: Date, options: Intl.DateTimeFormatOptions): string => new Intl.DateTimeFormat((logseq.settings?.localizeOrEnglish as string || "default"), options).format(date)
 
-//ローカライズされた月の名前を取得する
-export const localizeMonthString = (date: Date, long: boolean): string => new Intl.DateTimeFormat((logseq.settings?.localizeOrEnglish as string || "default"), { month: long === true ? "long" : "short" }).format(date)
+export const localizeMonthString = (date: Date, long: boolean): string => formatDate(date, { month: long === true ? "long" : "short" })
 
+export const localizeDayOfWeekString = (date: Date, long: boolean): string => formatDate(date, { weekday: long === true ? "long" : "short" })
 
-//ローカライズされた曜日の名前を取得する
-export const localizeDayOfWeekString = (date: Date, long: boolean): string => new Intl.DateTimeFormat((logseq.settings?.localizeOrEnglish as string || "default"), { weekday: long === true ? "long" : "short" }).format(date)
+export const localizeMonthDayString = (date: Date): string => formatDate(date, { month: "short", day: "numeric" })
 
-//ローカライズされた月日を取得する
-export const localizeMonthDayString = (date: Date): string => new Intl.DateTimeFormat((logseq.settings?.localizeOrEnglish as string || "default"), { month: "short", day: "numeric" }).format(date)
-
-//ローカライズされた、曜日と日にちを取得する
-export const localizeDayOfWeekDayString = (date: Date): string => new Intl.DateTimeFormat((logseq.settings?.localizeOrEnglish as string || "default"), { weekday: "short", day: "numeric" }).format(date)
-
+export const localizeDayOfWeekDayString = (date: Date): string => formatDate(date, { weekday: "short", day: "numeric" })
 
 export const getWeekStartFromWeekNumber = (year: number, weekNumber: number, weekStartsOn: 0 | 1 | 2 | 3 | 4 | 5 | 6 | undefined, ISO: boolean): Date => {
   if (ISO === true) {
@@ -221,7 +166,6 @@ export const getWeekStartFromWeekNumber = (year: number, weekNumber: number, wee
   else
     return addDays(startOfWeek(new Date(year, 0, 1, 0, 0, 0, 0), { weekStartsOn }), (weekNumber - 1) * 7)
 }
-
 
 export const userColor = (dayDate: Date, titleElement: HTMLElement) => {
   if (logseq.settings!.userColorList as string === "") return
@@ -254,5 +198,26 @@ export const userColor = (dayDate: Date, titleElement: HTMLElement) => {
     }
   }
   return returnEventName
+}
+
+export const getDayOfWeekName = (journalDate: Date): string => {
+  return logseq.settings!.booleanDayOfWeek
+    ? new Intl.DateTimeFormat(
+      logseq.settings!.localizeOrEnglish as string || "default",
+      { weekday: logseq.settings!.longOrShort as "long" | "short" || "long" }
+    ).format(journalDate)
+    : ""
+}
+
+export const getWeekNumberHtml = (journalDate: Date): string => {
+  return logseq.settings!.booleanWeekNumber
+    ? enableWeekNumber(journalDate, logseq.settings!.weekNumberFormat === "US format" ? 0 : 1)
+    : ""
+}
+
+export const getRelativeTimeHtml = (journalDate: Date): string => {
+  return logseq.settings!.booleanRelativeTime
+    ? enableRelativeTime(journalDate)
+    : ""
 }
 

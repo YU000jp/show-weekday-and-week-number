@@ -1,5 +1,5 @@
 import { AppUserConfigs, BlockEntity, IBatchBlock } from "@logseq/libs/dist/LSPlugin"
-import { getQuarter, getWeeklyNumberFromDate, getWeeklyNumberString } from "./lib"
+import { getQuarter, getWeeklyNumberFromDate, getWeeklyNumberString } from "./lib/lib"
 import { addMonths, addWeeks, addYears, endOfYear, format, startOfMonth, } from "date-fns"
 
 export const loadShortcutItems = () => {
