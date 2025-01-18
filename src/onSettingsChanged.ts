@@ -268,7 +268,7 @@ const changeWeekNumberToQuarterly = async (separateString: string, revert: boole
         logseq.Editor.getPage(`${year}/${weekNumberQuarter}/W${weekNumber}`).then((page: { uuid: PageEntity["uuid"] } | null) => {
           if (page) {
             logseq.Editor.renamePage(`${year}/${weekNumberQuarter}/W${weekNumber}`, `${year}${separateString}W${weekNumber}`)
-            console.log(`Page ${year}/${weekNumberQuarter}/W${weekNumber} has been renamed to ${year}${separateString}W${weekNumber}.`)
+            console.log(`Page ${year}/${weekNumberQuarter}/W${weekNumber} renamed to ${year}${separateString}W${weekNumber}.`)
           }
           else
             console.log(`Page ${year}/${weekNumberQuarter}/W${weekNumber} does not exist.`)
@@ -279,14 +279,14 @@ const changeWeekNumberToQuarterly = async (separateString: string, revert: boole
             //四半世紀を入れる
             const weekNumberQuarter = targetList2[Math.floor((week - 1) / 13)]
             logseq.Editor.renamePage(`${year}${separateString}W${weekNumber}`, `${year}/${weekNumberQuarter}/W${weekNumber}`)
-            console.log(`Page ${year}${separateString}W${weekNumber} has been renamed to ${year}/${weekNumberQuarter}/W${weekNumber}.`)
+            console.log(`Page ${year}${separateString}W${weekNumber} renamed to ${year}/${weekNumberQuarter}/W${weekNumber}.`)
           }
           else
             console.log(`Page ${year}${separateString}W${weekNumber} does not exist.`)
         })
       }
     }
-  logseq.UI.showMsg("Week number has been changed to the quarterly format.", "info", { timeout: 5000 })
+  logseq.UI.showMsg("Changed to the format", "info", { timeout: 5000 })
   setTimeout(() => {
     processingRenamePage = false
     logseq.updateSettings({ weekNumberChangeQ: false })
