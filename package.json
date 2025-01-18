@@ -22,7 +22,7 @@
     "dependencies": {
         "@logseq/libs": "^0.0.17",
         "date-fns": "^4.1.0",
-        "date-holidays": "^3.23.14",
+        "date-holidays": "^3.23.18",
         "logseq-l10n": "^0.2.0",
         "lunar-typescript": "^1.7.6"
     },
@@ -30,15 +30,15 @@
         "@semantic-release/changelog": "^6.0.3",
         "@semantic-release/exec": "^6.0.3",
         "@semantic-release/git": "^10.0.1",
-        "@types/node": "^22.10.2",
+        "@types/node": "^22.10.7",
         "conventional-changelog-conventionalcommits": "^8.0.0",
         "cz-conventional-changelog": "^3.3.0",
         "jest": "^29.7.0",
         "npx": "^10.2.2",
         "rollup-plugin-string": "^3.0.0",
-        "semantic-release": "^24.2.0",
-        "typescript": "^5.7.2",
-        "vite": "^6.0.5",
+        "semantic-release": "^24.2.1",
+        "typescript": "^5.7.3",
+        "vite": "^6.0.7",
         "vite-plugin-logseq": "^1.1.2"
     },
     "config": {
