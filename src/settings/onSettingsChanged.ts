@@ -1,5 +1,5 @@
 import { LSPluginBaseInfo, PageEntity } from "@logseq/libs/dist/LSPlugin.user"
-import { boundaries, querySelectorAllTitle, getUserConfig } from ".."
+import { invokeBoundaryHandler, fetchJournalTitles, getUserConfig } from ".."
 import { removeTitleQuery } from "../dailyJournalDetails"
 import { getHolidaysBundle, removeHolidaysBundle } from "../lib/holidays"
 import { removeElementById, removeProvideStyle } from "../lib/lib"
@@ -113,7 +113,7 @@ export const handleSettingsUpdate = () => {
         SettingKeys.booleanBesideJournalTitle
       ].some(key => oldSet[key] !== newSet[key]) || isEssentialSettingsAltered(oldSet, newSet)) {
         removeTitleQuery()
-        setTimeout(() => querySelectorAllTitle(newSet.booleanBesideJournalTitle as boolean), 500)
+        setTimeout(() => fetchJournalTitles(newSet.booleanBesideJournalTitle as boolean), 500)
       }
 
       if (oldSet.weeklyEmbed !== newSet.weeklyEmbed) {
@@ -203,15 +203,15 @@ export const ApplyBoundarySettingsOnChange = (newSet: LSPluginBaseInfo["settings
     setTimeout(() => {
       if (newSet.booleanJournalsBoundaries === true
         && parent.document.getElementById("journals") as Node)
-        boundaries("journals")
+        invokeBoundaryHandler("journals")
       else
         if (newSet.booleanBoundaries === true
           && parent.document.body.querySelector("div#main-content-container div.is-journals.page>div.relative") as Node)
-          boundaries("is-journals")
+          invokeBoundaryHandler("is-journals")
         else
           if (newSet.booleanBoundariesOnWeeklyJournal === true
             && parent.document.body.querySelector("div#main-content-container div.page.relative>div.relative") as Node)
-            boundaries("weeklyJournal")
+            invokeBoundaryHandler("weeklyJournal")
     },
       100)
 }

@@ -3,7 +3,7 @@ import { addDays, format, isFriday, isSameDay, isSaturday, isSunday, isThursday,
 import { t } from "logseq-l10n"
 import { getConfigPreferredDateFormat, getConfigPreferredLanguage } from '..'
 import { holidaysWorld, lunarString } from '../lib/holidays'
-import { DayShortCode, colorMap, formatRelativeDate, getJournalDayDate, getWeekStartOn, getWeeklyNumberFromDate, getWeeklyNumberString, localizeDayOfWeekString, localizeMonthString, openPageFromPageName, shortDayNames, userColor } from '../lib/lib'
+import { DayShortCode, addEventListenerOnce, colorMap, createElementWithClass, formatRelativeDate, getJournalDayDate, getWeekStartOn, getWeeklyNumberFromDate, getWeeklyNumberString, localizeDayOfWeekString, localizeMonthString, openPageFromPageName, shortDayNames, userColor } from '../lib/lib'
 
 
 let processingFoundBoundaries: boolean = false
@@ -26,10 +26,10 @@ export const boundariesProcess = async (targetElementName: string, remove: boole
       firstElement = parent.document.getElementById("journals") as HTMLDivElement
       break
     case "is-journals":
-      firstElement = parent.document.body.querySelector("div#main-content-container div.is-journals.page>div.relative") as HTMLDivElement
+      firstElement = parent.document.body.querySelector("#main-content-container div.is-journals.page>div.relative") as HTMLDivElement
       break
     case "weeklyJournal":
-      firstElement = parent.document.body.querySelector("div#main-content-container div.page.relative>div.relative") as HTMLDivElement
+      firstElement = parent.document.body.querySelector("#main-content-container div.page.relative>div.relative") as HTMLDivElement
       break
     default:
       firstElement = null
@@ -52,12 +52,10 @@ export const boundariesProcess = async (targetElementName: string, remove: boole
         weekBoundaries.id = 'weekBoundaries'
       } else
         weekBoundaries = parent.document.getElementById("weekBoundaries") as HTMLDivElement
-
     } else {
       weekBoundaries = document.createElement('div')
       weekBoundaries.id = 'weekBoundaries'
     }
-
     firstElement.insertBefore(weekBoundaries, firstElement.firstChild)
 
     //weekBoundariesにelementを追加する
@@ -85,56 +83,28 @@ export const boundariesProcess = async (targetElementName: string, remove: boole
           return
         }
 
-    //targetDateを週の初めにする
-    const startDate: Date = selectStartDate ? selectStartDate :
-      weekStartsOn === 1
-        && logseq.settings?.weekNumberFormat === "ISO(EU) format"
-        ? startOfISOWeek(targetDate)
-        : startOfWeek(targetDate, { weekStartsOn })
-
     // 次の週を表示するかどうかの判定
-    const isDayThursday: boolean = isThursday(targetDate)
-    const isDayFriday: boolean = isFriday(targetDate)
-    const isDaySaturday: boolean = isSaturday(targetDate)
-    const flagShowNextWeek: boolean =
-      //日曜日始まり、木曜、金曜、土曜がtargetDateの場合
-      (weekStartsOn === 0 && (isDayThursday || isDayFriday || isDaySaturday))
-        //月曜日始まり、金曜、土曜、日曜がtargetDateの場合
-        || (weekStartsOn === 1 && (isDayFriday || isDaySaturday || isSunday(targetDate)))
-        //土曜日始まり、水曜、木曜、金曜がtargetDateの場合
-        || (weekStartsOn === 6 && (isWednesday(targetDate) || isDayThursday || isDayFriday))
-        ? true : false
-    const days: number[] = flagShowNextWeek === true
-      ? [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13] //次の週を表示する場合
-      : [-7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6] //次の週を表示しない場合
+    const flagShowNextWeek: boolean = checkIfNextWeekVisible(weekStartsOn, isThursday(targetDate), isFriday(targetDate), isSaturday(targetDate), targetDate)
 
-    await daysForEach(days, startDate, boundariesInner, today, targetDate, targetElementName, flagShowNextWeek)
+    await createDaysElements(
+      getWeekOffsetDays(flagShowNextWeek) as number[], //どの週を表示するか
+      selectStartDate ? //targetDateを週の初めにする
+        selectStartDate :
+        weekStartsOn === 1
+          && logseq.settings?.weekNumberFormat === "ISO(EU) format"
+          ? startOfISOWeek(targetDate)
+          : startOfWeek(targetDate, { weekStartsOn }),
+      boundariesInner,
+      today,
+      targetDate,
+      targetElementName,
+      flagShowNextWeek
+    )
     weekBoundaries.appendChild(boundariesInner)
   }
   processingFoundBoundaries = false
 }
 
-/**
- * Create an HTML element with specified classes.
- * @param tagName The type of element to create.
- * @param classNames The classes to add to the element.
- * @returns The created HTML element.
- */
-const createElementWithClass = (tagName: string, ...classNames: string[]): HTMLElement => {
-  const element = document.createElement(tagName)
-  element.classList.add(...classNames)
-  return element
-}
-
-/**
- * Add an event listener to an element that will be executed only once.
- * @param element The element to add the event listener to.
- * @param event The event type to listen for.
- * @param handler The event handler function.
- */
-const addEventListenerOnce = (element: HTMLElement, event: string, handler: EventListenerOrEventListenerObject) => {
-  element.addEventListener(event, handler, { once: true })
-}
 
 const daySideWeekNumber = (date: Date, boundariesInner: HTMLDivElement) => {
   const { year, weekString, quarter } = getWeeklyNumberFromDate(date, logseq.settings?.weekNumberFormat === "US format" ? 0 : 1) // 週番号を取得する
@@ -148,6 +118,7 @@ const daySideWeekNumber = (date: Date, boundariesInner: HTMLDivElement) => {
     weekNumberElement.style.cursor = 'unset'
   boundariesInner.appendChild(weekNumberElement)
 }
+
 
 const daySideMonth = (date: Date, boundariesInner: HTMLDivElement, monthDuplicate: Date | null): Date => {
   const sideMonthElement = createElementWithClass('span', 'daySide')
@@ -171,8 +142,8 @@ const daySideMonth = (date: Date, boundariesInner: HTMLDivElement, monthDuplicat
 }
 
 
-// 週のスクロール
-const daySideScroll = (index: number, boundariesInner: HTMLDivElement, targetElementName: string, startDate: Date) => {
+// 週の上下スクロールボタン
+const weekScrollButtons = (index: number, boundariesInner: HTMLDivElement, targetElementName: string, startDate: Date) => {
   const sideScrollElement = createElementWithClass('span', 'daySide', 'daySideScroll')
   sideScrollElement.innerText = index === 6 ? '↑' : '↓'
   sideScrollElement.title = index === 6 ? t("Previous week") : t("Next week")
@@ -186,8 +157,8 @@ const daySideScroll = (index: number, boundariesInner: HTMLDivElement, targetEle
 }
 
 
-// 1日ずつの処理
-const daysForEach = async (days: number[], startDate: Date, boundariesInner: HTMLDivElement, today: Date, targetDate: Date, targetElementName: string, flagShowNextWeek: boolean) => {
+// 1日ずつ区画を作成する
+const createDaysElements = async (days: number[], startDate: Date, boundariesInner: HTMLDivElement, today: Date, targetDate: Date, targetElementName: string, flagShowNextWeek: boolean) => {
   let monthDuplicate: Date | null = null
   const preferredDateFormat = await getConfigPreferredDateFormat()
   //ミニカレンダー作成 1日ずつ処理
@@ -292,11 +263,12 @@ const daysForEach = async (days: number[], startDate: Date, boundariesInner: HTM
         //週番号を表示する場合
         if (logseq.settings!.booleanBoundariesShowWeekNumber === true)
           daySideWeekNumber(dayDate, boundariesInner)
-        daySideScroll(index, boundariesInner, targetElementName, startDate)
+        weekScrollButtons(index, boundariesInner, targetElementName, startDate)
       }
     }
   }
 }
+
 
 // 日誌のページが存在するかどうかのインディケーターを表示する
 const indicator = async (targetPageName: string, dayOfMonthElement: HTMLSpanElement) => {
@@ -308,12 +280,33 @@ const indicator = async (targetPageName: string, dayOfMonthElement: HTMLSpanElem
   dayOfMonthElement.appendChild(indicatorElement)
 }
 
+
+// 週末の色を適用する
 const applyWeekendColor = (dayCell: HTMLElement, day: DayShortCode) => {
   const color = colorMap[logseq.settings!["userWeekend" + day] as string]
   if (color) dayCell.style.color = color
 }
 
-// 日誌のページを開く
+
+//次の週を表示するかどうかの判定
+const checkIfNextWeekVisible = (weekStartsOn: number, isDayThursday: boolean, isDayFriday: boolean, isDaySaturday: boolean, targetDate: Date): boolean =>
+  //日曜日始まり、木曜、金曜、土曜がtargetDateの場合
+  (weekStartsOn === 0 && (isDayThursday || isDayFriday || isDaySaturday))
+    //月曜日始まり、金曜、土曜、日曜がtargetDateの場合
+    || (weekStartsOn === 1 && (isDayFriday || isDaySaturday || isSunday(targetDate)))
+    //土曜日始まり、水曜、木曜、金曜がtargetDateの場合
+    || (weekStartsOn === 6 && (isWednesday(targetDate) || isDayThursday || isDayFriday))
+    ? true : false
+
+
+//どの週を表示するか
+const getWeekOffsetDays = (flagShowNextWeek: boolean): number[] =>
+  flagShowNextWeek === true ?
+    [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13] //次の週を表示する場合
+    : [-7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6] //次の週を表示しない場合
+
+
+// 日誌のページを開く function
 export function openPageToSingleDay(pageName: string): (this: HTMLSpanElement, ev: MouseEvent) => any {
   return async (event) => {
     if (event.shiftKey) {//Shiftキーを押しながらクリックした場合は、サイドバーでページを開く
@@ -332,7 +325,10 @@ export function openPageToSingleDay(pageName: string): (this: HTMLSpanElement, e
         logseq.App.pushState('page', { name: pageName })//ページが存在しない場合も作成される
   }
 }
+
+
 export const removeBoundaries = () => {
   const weekBoundaries = parent.document.getElementById("weekBoundaries") as HTMLDivElement | null
   if (weekBoundaries) weekBoundaries.remove()
 }
+

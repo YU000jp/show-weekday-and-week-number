@@ -122,9 +122,9 @@ const main = async () => {
 
     if (logseq.settings!.booleanBoundariesAll === true
       && logseq.settings!.booleanJournalsBoundaries === true)
-      boundaries("journals")
+      invokeBoundaryHandler("journals")
 
-    querySelectorAllTitle(logseq.settings!.booleanBesideJournalTitle as boolean)
+    fetchJournalTitles(logseq.settings!.booleanBesideJournalTitle as boolean)
 
     setTimeout(() => observerMain(), 1800) //スクロール用
   }, 200)
@@ -141,22 +141,22 @@ const main = async () => {
         && template === "/page/:name")
         //page only
         //div.is-journals
-        setTimeout(() => boundaries("is-journals"), 20)
+        setTimeout(() => invokeBoundaryHandler("is-journals"), 20)
       else
         if (logseq.settings!.booleanJournalsBoundaries === true
           && template === "/")
           //journals only
           //div#journals
-          setTimeout(() => boundaries("journals"), 20)
+          setTimeout(() => invokeBoundaryHandler("journals"), 20)
 
-    setTimeout(() => querySelectorAllTitle(logseq.settings!.booleanBesideJournalTitle as boolean), 50)
+    setTimeout(() => fetchJournalTitles(logseq.settings!.booleanBesideJournalTitle as boolean), 50)
   })
 
   logseq.App.onPageHeadActionsSlotted(() => {
     if (processingCheck) return
     processingCheck = true
     setTimeout(() => processingCheck = false, 80) //処理ロックの解除
-    setTimeout(() => querySelectorAllTitle(logseq.settings!.booleanBesideJournalTitle as boolean), 50)
+    setTimeout(() => fetchJournalTitles(logseq.settings!.booleanBesideJournalTitle as boolean), 50)
   })
 
 
@@ -170,11 +170,11 @@ const main = async () => {
       if ((await logseq.Editor.getCurrentPage() as { id: EntityID } | null) !== null)
         //page only
         //div.is-journals
-        setTimeout(() => boundaries("is-journals"), 10)
+        setTimeout(() => invokeBoundaryHandler("is-journals"), 10)
       else
         //journals only
         //div#journals
-        setTimeout(() => boundaries("journals"), 10)
+        setTimeout(() => invokeBoundaryHandler("journals"), 10)
     }
   })
 
@@ -183,7 +183,7 @@ const main = async () => {
   logseq.App.onSidebarVisibleChanged(({ visible }) => {
     if (visible === true)
       setTimeout(() =>
-        querySelectorAllTitle(logseq.settings!.booleanBesideJournalTitle as boolean), 100)
+        fetchJournalTitles(logseq.settings!.booleanBesideJournalTitle as boolean), 100)
   })
 
 
@@ -236,14 +236,15 @@ const main = async () => {
 // クエリーセレクターでタイトルを取得する
 let processingTitleQuery: boolean = false
 
-export const querySelectorAllTitle = async (enable: boolean): Promise<void> => {
+// Journal Titlesが変化したときに実行
+export const fetchJournalTitles = async (enable: boolean): Promise<void> => {
   if (processingTitleQuery) return
   processingTitleQuery = true
   try {
     setTimeout(() => processingTitleQuery = false, 300) //boundaries 実行ロックの解除
     //Journalsの場合は複数
     parent.document.body.querySelectorAll("div#main-content-container div:is(.journal,.is-journals,.page) h1.title:not([data-checked])")
-      .forEach(async (titleElement) => await checkJournalTitle(titleElement as HTMLElement))
+      .forEach(async (titleElement) => await validateJournalTitle(titleElement as HTMLElement))
   } finally {
     processingTitleQuery = false // 確実にフラグを解除
   }
@@ -253,7 +254,7 @@ export const querySelectorAllTitle = async (enable: boolean): Promise<void> => {
 // Journal Titleの処理
 let processingJournalTitlePage: Boolean = false
 
-const checkJournalTitle = async (titleElement: HTMLElement) => {
+const validateJournalTitle = async (titleElement: HTMLElement) => {
   if (!titleElement.textContent
     || processingJournalTitlePage === true
     || titleElement.nextElementSibling?.className === "showWeekday") return // check if element already has date info
@@ -275,7 +276,7 @@ const checkJournalTitle = async (titleElement: HTMLElement) => {
       && title.match(/^(\d{4})/) !== null // titleの先頭が2024から始まる場合のみチェックする
     ) {
       let match: RegExpMatchArray | null = null
-      if (match = await (async () => {
+      if (match = await (() => {
         switch (logseq.settings!.weekNumberOptions) {
           case "YYYY-Www":
             return title.match(/^(\d{4})-[wW](\d{2})$/) // "YYYY-Www"
@@ -318,7 +319,7 @@ const checkJournalTitle = async (titleElement: HTMLElement) => {
       // titleElementのクラスにjournal-titleまたはtitleが含まれている場合
       && (titleElement.classList.contains("journal-title") === true
         || titleElement.classList.contains("title") === true))
-      moveTitleElement(titleElement) //titleElementの後ろにdateInfoElementを追加し、スペース確保しておく
+      moveForPageTitleElement(titleElement) //titleElementの後ろにdateInfoElementを追加し、スペース確保しておく
     else {
       // Daily Journal Detailsの処理
       setTimeout(async () => { // 遅延処理
@@ -342,7 +343,8 @@ const checkJournalTitle = async (titleElement: HTMLElement) => {
 //boundaries 実行ロックのため
 let processingBoundaries: boolean = false
 
-export const boundaries = (targetElementName: string, remove?: boolean) => {
+// Boundaries(2行カレンダー)を呼び出す
+export const invokeBoundaryHandler = (targetElementName: string, remove?: boolean) => {
   if (processingBoundaries) return
   processingBoundaries = true
   try {
@@ -354,7 +356,7 @@ export const boundaries = (targetElementName: string, remove?: boolean) => {
 
 
 
-const moveTitleElement = (titleElement: HTMLElement) => {
+const moveForPageTitleElement = (titleElement: HTMLElement) => {
   const dateInfoElement: HTMLSpanElement = document.createElement("span")
   dateInfoElement.classList.add("showWeekday")
   titleElement.insertAdjacentElement("afterend", dateInfoElement)

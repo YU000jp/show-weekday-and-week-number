@@ -50,5 +50,20 @@ export const journalInsertTemplate = async (uuid: string, templateName: string, 
   else
     logseq.UI.showMsg(`Template "${templateName}" does not exist.`, 'warning', { timeout: 2000 })
 }
+export const clearEleAll = (selector: string) => {
+  const ele = parent.document.body.querySelectorAll(selector) as NodeListOf<HTMLElement>
+  ele.forEach((e) => e.remove())
+}
+
+export const clearEle = (selector: string) => {
+  const ele = parent.document.getElementById(selector) as HTMLElement | null
+  if (ele) ele.remove()
+}
+
+export const hideMainContent = (selector: string) => {
+  const ele = parent.document.querySelector(selector) as HTMLElement
+  if (ele)
+    ele.style.display = "none"
+}
 
 

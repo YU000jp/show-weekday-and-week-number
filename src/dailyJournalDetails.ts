@@ -1,7 +1,7 @@
 import { addDays, format, getWeekOfMonth, isSaturday, isSunday, subDays } from "date-fns"
 import { t } from "logseq-l10n"
 import { HolidayUtil, Lunar } from "lunar-typescript"
-import { getConfigPreferredDateFormat, getConfigPreferredLanguage, querySelectorAllTitle } from "."
+import { getConfigPreferredDateFormat, getConfigPreferredLanguage, fetchJournalTitles } from "."
 import { exportHolidaysBundle } from "./lib/holidays"
 import { createLinkMonthlyLink, createSettingButton, formatRelativeDate, getDayOfWeekName, getQuarter, getRelativeTimeHtml, getWeeklyNumberFromDate, getWeeklyNumberString, getWeekNumberHtml, localizeMonthString, openPageFromPageName, userColor } from "./lib/lib"
 
@@ -213,7 +213,7 @@ export const removeTitleQuery = () => {
 // observer
 export const observer = new MutationObserver(async (): Promise<void> => {
   observer.disconnect()
-  await querySelectorAllTitle(logseq.settings!.booleanBesideJournalTitle as boolean)
+  await fetchJournalTitles(logseq.settings!.booleanBesideJournalTitle as boolean)
   setTimeout(() => observerMain(), 800)
 })
 

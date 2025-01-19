@@ -1,4 +1,4 @@
-import { BlockUUID } from "@logseq/libs/dist/LSPlugin.user"
+import { BlockEntity, BlockUUID } from "@logseq/libs/dist/LSPlugin.user"
 import { addDays, addWeeks, format, getISOWeek, getISOWeekYear, getWeek, getWeekYear, startOfISOWeek, startOfWeek } from "date-fns"
 import { t } from "logseq-l10n"
 import { enableWeekNumber, enableRelativeTime } from "../dailyJournalDetails"
@@ -141,11 +141,6 @@ export const existInsertTemplate = async (blockUuid: BlockUUID, templateName: st
     logseq.UI.showMsg(`Template "${templateName}" does not exist.`, 'warning', { timeout: 2000 })
 }
 
-export const removeElementById = (elementById: string) => {
-  const ele: HTMLDivElement | null = parent.document.getElementById(elementById) as HTMLDivElement | null
-  if (ele) ele.remove()
-}
-
 const formatDate = (date: Date, options: Intl.DateTimeFormatOptions): string => new Intl.DateTimeFormat((logseq.settings?.localizeOrEnglish as string || "default"), options).format(date)
 
 export const localizeMonthString = (date: Date, long: boolean): string => formatDate(date, { month: long === true ? "long" : "short" })
@@ -219,5 +214,60 @@ export const getRelativeTimeHtml = (journalDate: Date): string => {
   return logseq.settings!.booleanRelativeTime
     ? enableRelativeTime(journalDate)
     : ""
+}
+
+export const removeElementById = (elementById: string) => {
+  const ele: HTMLDivElement | null = parent.document.getElementById(elementById) as HTMLDivElement | null
+  if (ele) ele.remove()
+}
+
+export const clearBlocks = async (blocks: { uuid: BlockEntity["uuid"] }[]) => {
+  for (const block of blocks)
+    await logseq.Editor.removeBlock(block.uuid)
+}
+
+export const removeAllElements = (selector: string) => {
+  const ele = parent.document.body.querySelectorAll(selector) as NodeListOf<HTMLElement>
+  ele.forEach((e) => e.remove())
+}
+
+export const hideElementBySelector = (selector: string) => {
+  const ele = parent.document.querySelector(selector) as HTMLElement
+  if (ele)
+    ele.style.display = "none"
+}
+
+export const removeMainPageChildren = async (pageTitle: string) => {
+  const blockEntities = await logseq.Editor.getPageBlocksTree(pageTitle) as { uuid: BlockEntity["uuid"]; children: BlockEntity["children"] }[] | null
+  if (blockEntities) {
+    await logseq.Editor.updateBlock(blockEntities[0].uuid, "", {})
+    if (blockEntities[0]) {
+      const children = blockEntities[0].children as { uuid: BlockEntity["uuid"] }[] | undefined
+      if (children)
+        for (const child of children)
+          await logseq.Editor.removeBlock(child.uuid)
+
+    }
+  }
+}
+/**
+ * Create an HTML element with specified classes.
+ * @param domElementTag The type of element to create.
+ * @param classNames The classes to add to the element.
+ * @returns The created HTML element.
+ */
+export const createElementWithClass = (domElementTag: string, ...classNames: string[]): HTMLElement => {
+  const element = document.createElement(domElementTag)
+  element.classList.add(...classNames)
+  return element
+}
+/**
+ * Add an event listener to an element that will be executed only once.
+ * @param element The element to add the event listener to.
+ * @param event The event type to listen for.
+ * @param handler The event handler function.
+ */
+export const addEventListenerOnce = (element: HTMLElement, event: string, handler: EventListenerOrEventListenerObject) => {
+  element.addEventListener(event, handler, { once: true })
 }
 
